@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Parking Space</string>
+    <string name="user_name">Name</string>
+    <string name="say_hello">Say hello</string>
+    <string name="Options">Show Options</string>
+    <string name="say_hello_dialog">Hello </string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title">Welcome to Parking Space finder</string>
+    <string name="hello_blank_fragment">Open space Options go here</string>
+
+</resources>

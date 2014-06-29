@@ -1,0 +1,67 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="ro.sft.parking.parkingspace.main.MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:text="@string/Options"
+                android:id="@+id/showOptions"
+                android:background="#cda734"
+                android:paddingEnd="3dp"
+                android:paddingStart="3dp" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|left"
+                android:text="@string/title" />
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mapLayout">
+
+            <fragment
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.google.android.gms.maps.MapFragment" />
+
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/new_spot_marker"
+        android:layout_width="40dp"
+        android:layout_height="76dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="14dp"
+        android:layout_gravity="top|right"
+        android:src="@drawable/red_police"
+        android:contentDescription="new_spot_marker" />
+
+
+</FrameLayout>
