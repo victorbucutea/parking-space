@@ -4,37 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
-    tools:context="ro.sft.parking.parkingspace.main.MainActivity">
+    tools:context="ro.sft.parking.main.MainActivity">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|left"
-                android:text="@string/Options"
-                android:id="@+id/showOptions"
-                android:background="#cda734"
-                android:paddingEnd="3dp"
-                android:paddingStart="3dp" />
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center|left"
-                android:text="@string/title" />
-
-
-        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -45,11 +20,83 @@
                 android:id="@+id/map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.google.android.gms.maps.MapFragment" />
+                android:name="ro.sft.parking.map.ParkingSpaceMapFragment"
+                android:layout_gravity="right|center_vertical" />
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom">
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/chevron_up"
+                    android:id="@+id/optionsHandle"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="#77000000"
+                    android:baselineAligned="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/searchRangeBar"
+                    android:weightSum="1">
+
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/range"
+                        android:id="@+id/textView"
+                        android:layout_marginLeft="20dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:textColor="#fffbfbfb"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/buttonPlus"
+                        android:text="@string/plus"
+                        android:textSize="30sp" />
+
+                    <EditText
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:text="@integer/defaultSearchRadius"
+                        android:id="@+id/searchRadius"
+                        android:textColor="#fffbfbfb"
+                        android:paddingLeft="5dp"
+                        android:inputType="number"
+                        android:layout_weight="0.08" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/metersUom"
+                        android:id="@+id/unitOfMeasure"
+                        android:textColor="#fffbfbfb"
+                        android:textSize="20sp" />
+
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/buttonMinus"
+                        android:text="@string/minus"
+                        android:textSize="30dp" />
+                </LinearLayout>
+            </LinearLayout>
 
         </FrameLayout>
-
     </LinearLayout>
 
 
