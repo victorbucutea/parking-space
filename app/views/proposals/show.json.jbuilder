@@ -1,1 +1,1 @@
-json.extract! @proposal, :id, :title_message, :bid_amount, :bid_currency, :win_flag
+json.extract! @proposal, :id, :title_message, :bid_amount, :bid_currency, :bidder_name, :status

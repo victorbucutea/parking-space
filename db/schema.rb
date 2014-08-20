@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818213127) do
+ActiveRecord::Schema.define(version: 20140820155712) do
 
   create_table "messages", force: true do |t|
     t.string   "deviceid"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20140818213127) do
     t.string   "deviceid"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "occupied"
+    t.boolean  "approved_proposal_id"
   end
 
   create_table "proposals", force: true do |t|
@@ -40,7 +40,8 @@ ActiveRecord::Schema.define(version: 20140818213127) do
     t.datetime "updated_at"
     t.integer  "bid_amount"
     t.string   "bid_currency"
-    t.boolean  "win_flag"
+    t.string   "status"
+    t.string   "bidder_name"
   end
 
 end

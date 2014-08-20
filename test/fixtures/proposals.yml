@@ -6,7 +6,8 @@ one:
   title_message: "Hello, I'd like to buy #1"
   bid_amount: 10
   bid_currency: 'EUR'
-  win_flag: false
+  bidder_name: 'someone'
+  status: 'PENDING'
   parking_space_id: 1
 
 two:
@@ -15,7 +16,8 @@ two:
   title_message: "Hello, I'd also like to #1"
   bid_amount: 20
   bid_currency: 'EUR'
-  win_flag: false
+  bidder_name: 'someone'
+  status: 'PENDING'
   parking_space_id: 1
 
 three:
@@ -24,7 +26,8 @@ three:
   title_message: "Hello, I'd like to buy spot #2"
   bid_amount: 10
   bid_currency: 'EUR'
-  win_flag: false
+  bidder_name: 'someone'
+  status: 'PENDING'
   parking_space_id: 2
 
 four:
@@ -33,7 +36,8 @@ four:
   title_message: "Hello, I'd like to buy spot #2"
   bid_amount: 20
   bid_currency: 'RON'
-  win_flag: false
+  bidder_name: 'someone'
+  status: 'PENDING'
   parking_space_id: 2
 
 five:
@@ -42,7 +46,8 @@ five:
   title_message: "Hello, I'd like to buy spot #3"
   bid_amount: 20
   bid_currency: 'RON'
-  win_flag: false
+  bidder_name: 'someone'
+  status: 'PENDING'
   parking_space_id: 3
 
 six:
@@ -51,5 +56,6 @@ six:
   title_message: "Hello, I'd like to buy spot #3"
   bid_amount: 20
   bid_currency: 'RON'
-  win_flag: false
+  bidder_name: 'someone'
+  status: 'PENDING'
   parking_space_id: 3

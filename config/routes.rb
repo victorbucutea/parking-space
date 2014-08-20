@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :parking_spaces do
     resources :proposals do
+      post 'reject'
+      post 'approve'
       resources :messages
     end
   end
