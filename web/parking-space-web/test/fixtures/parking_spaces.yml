@@ -1,0 +1,52 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+zero:
+  id: 0
+  location_lat: 44.41514
+  location_long: 26.09321
+  recorded_from_lat: 44.41504
+  recorded_from_long: 26.04766
+  deviceid: 'IMEI8129231231'
+  created_at: <%= 5.minutes.ago.to_s(:db) %>
+
+one:
+  id: 1
+  location_lat: 44.41514
+  location_long: 26.09321
+  recorded_from_lat: 44.41504
+  recorded_from_long: 26.04766
+  deviceid: 'IMEI8129231231'
+
+
+two:
+  id: 2
+  location_lat: 44.41524 #~11 m East from id 1
+  location_long: 26.09421 # ~78 m North from id 1
+  recorded_from_lat: 44.41504
+  recorded_from_long: 26.04762
+  deviceid: 'IMEI8129331241'
+
+
+three:
+  id: 3
+  location_lat: 44.41534 #~22 m East from id 1
+  location_long: 26.09521 # ~156m North from id 1
+  recorded_from_lat: 44.41504
+  recorded_from_long: 26.04764
+  deviceid: 'IMEI8129431251'
+
+four:
+  id: 4
+  location_lat: 44.40514 #~1144 m West from id 1
+  location_long: 26.08321 #~1111m South from id 1
+  recorded_from_lat: 44.41504
+  recorded_from_long: 26.04766
+  deviceid: 'IMEI8129531261'
+
+five:
+  id: 5
+  location_lat: 44.425654 # 1178m East from id 1
+  location_long: 26.10721 # 1090 m North from id 1
+  recorded_from_lat: 44.41504
+  recorded_from_long: 26.047678
+  deviceid: 'IMEI8129631271'

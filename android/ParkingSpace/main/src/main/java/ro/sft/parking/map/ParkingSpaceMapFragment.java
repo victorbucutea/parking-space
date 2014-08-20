@@ -43,7 +43,10 @@ public class ParkingSpaceMapFragment extends InteractiveMapFragment  {
         if (newRadiusInMeters < 0 ){
             return;
         }
-        openSpotsRadius.setRadius(newRadiusInMeters);
+
+        if (openSpotsRadius != null) {
+            openSpotsRadius.setRadius(newRadiusInMeters);
+        }
     }
 
 

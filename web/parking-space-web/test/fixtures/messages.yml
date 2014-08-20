@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  deviceid: "IMEI8129631231"
+  content: "I'm not happy with the offer you gave me"
+  proposal_id: 1
+
+
+two:
+  id: 2
+  deviceid: "IMEI8129631232"
+  content: "I will give you +10 EUR"
+  proposal_id: 1
+
+
+three:
+  id: 3
+  deviceid: "IMEI8129631241"
+  content: "I'm not happy with the offer you gave me"
+  proposal_id: 2
+
+four:
+  id: 4
+  deviceid: "IMEI8129631234"
+  content: "I will give you +10 EUR"
+  proposal_id: 2
