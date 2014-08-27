@@ -163,6 +163,7 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'someone', prop['bidder_name']
     assert_equal 20, prop['bid_amount']
     assert_equal 'RON', prop['bid_currency']
+    assert_equal 'rejected', prop['status']
   end
 
 
@@ -179,7 +180,7 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'IMEI8129631235', prop.deviceid
     assert_equal 'Hello, I\'d like to buy spot #2', prop.title_message
     assert_equal 'someone', prop.bidder_name
-
+    assert_equal 'PENDING', prop['status']
 
   end
 
@@ -193,6 +194,7 @@ class ProposalsControllerTest < ActionController::TestCase
     prop = assigns(:proposal)
     assert prop.approved?
     assert_equal 'IMEI8129631235', prop.deviceid
+    assert_equal 4, prop.parking_space.approved_proposal_id
 
     prop = JSON.parse(@response.body)
     # deviceid is secret
@@ -200,6 +202,7 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'Hello, I\'d like to buy spot #2', prop['title_message']
     assert_equal 'someone', prop['bidder_name']
     assert_equal 20, prop['bid_amount']
+    assert_equal 'approved', prop['status']
     assert_equal 'RON', prop['bid_currency']
   end
 

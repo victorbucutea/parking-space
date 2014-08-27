@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140820155712) do
+ActiveRecord::Schema.define(version: 20140826173756) do
 
   create_table "messages", force: true do |t|
     t.string   "deviceid"
@@ -21,16 +21,8 @@ ActiveRecord::Schema.define(version: 20140820155712) do
     t.datetime "updated_at"
   end
 
-  create_table "parking_spaces", force: true do |t|
-    t.decimal  "location_lat"
-    t.decimal  "location_long"
-    t.decimal  "recorded_from_lat"
-    t.decimal  "recorded_from_long"
-    t.string   "deviceid"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "approved_proposal_id"
-  end
+# Could not dump table "parking_spaces" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "proposals", force: true do |t|
     t.string   "deviceid"
