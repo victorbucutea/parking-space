@@ -34,8 +34,7 @@ class ParkingSpacesController < ApplicationController
     lon_min = cur_long - long_range_in_deg
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
-    @parking_spaces = ParkingSpace.where('location_lat >= :lat_min AND location_lat <= :lat_max
-                                          AND location_long  >= :lon_min AND location_long <= :lon_max', query_attrs)
+    @parking_spaces = ParkingSpace.within_boundaries query_attrs
 
   end
 
@@ -103,6 +102,6 @@ class ParkingSpacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def parking_space_params
-    params.require(:parking_space).permit(:location_lat, :location_long, :recorded_from_lat, :recorded_from_long, :deviceid)
+    params.require(:parking_space).permit(:location_lat, :location_long, :recorded_from_lat, :recorded_from_long, :deviceid, :target_price)
   end
 end
