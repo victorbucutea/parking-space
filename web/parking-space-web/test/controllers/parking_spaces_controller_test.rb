@@ -91,13 +91,30 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  test "should create parking_space" do
+  test 'should return 1 space if range > 1200m and long term' do
+    xhr :get, :index, { lat: "44.41514", lon: "26.09321", range: "1201", term: "long_term" }
+
+    p_space = JSON.parse(@response.body)
+
+    # deviceid is secret
+    assert_nil p_space[0]['deviceid']
+    assert_equal 6, p_space[0]['id']
+    assert_equal '26.10721', p_space[0]['location_long']
+    assert_equal '44.425654', p_space[0]['location_lat']
+    assert_equal 'Victor', p_space[0]['owner_name']
+    assert_equal '0727456250', p_space[0]['phone_number']
+    assert_equal 'long_term', p_space[0]['interval']
+  end
+
+  test "should create short term parking_space" do
     assert_difference('ParkingSpace.count',1) do
       xhr :post, :create, :parking_space => {
           location_lat: 44.42534, #~22 m East from id 1
           location_long: 26.11521, # ~156m North from id 1
           recorded_from_lat: 44.42504,
           recorded_from_long: 26.05764,
+          owner_name: 'Victor',
+          phone_number: '0727456250',
           deviceid: 'IMEI8139431251'}
     end
 
@@ -106,6 +123,33 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_nil p_space['deviceid']
     assert_equal '26.11521', p_space['location_long']
     assert_equal '44.42534', p_space['location_lat']
+    assert_equal 'Victor', p_space['owner_name']
+    assert_equal '0727456250', p_space['phone_number']
+    assert_equal 'short_term', p_space['interval']
+  end
+
+
+  test "should create long term parking_space" do
+    assert_difference('ParkingSpace.count',1) do
+      xhr :post, :create, :parking_space => {
+          location_lat: 44.42534, #~22 m East from id 1
+          location_long: 26.11521, # ~156m North from id 1
+          recorded_from_lat: 44.42504,
+          recorded_from_long: 26.05764,
+          owner_name: 'Victor',
+          phone_number: '0727456250',
+          interval: 'long_term',
+          deviceid: 'IMEI8139431251'}
+    end
+
+    p_space = JSON.parse(@response.body)
+    # deviceid is secret
+    assert_nil p_space['deviceid']
+    assert_equal '26.11521', p_space['location_long']
+    assert_equal '44.42534', p_space['location_lat']
+    assert_equal 'Victor', p_space['owner_name']
+    assert_equal '0727456250', p_space['phone_number']
+    assert_equal 'long_term', p_space['interval']
   end
 
   test 'should not create parking space if lat or long invalid' do

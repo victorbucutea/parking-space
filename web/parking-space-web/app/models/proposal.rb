@@ -1,16 +1,22 @@
 class Proposal < DeviceRecord
   scope :with_messages, ->(prop_id) {includes(:messages).find(prop_id)}
 
-  enum status: [ :pending, :rejected, :approved]
+  enum approval_status: [:pending, :rejected, :approved]
 
   belongs_to :parking_space
   has_many :messages
 
   validates :title_message, :presence => true
   validates :bidder_name, :presence => true
-  validates :status, :presence => true
+  validates :approval_status, :presence => true
   validates :bid_amount, :presence => true
   validates :bid_currency, :presence => true
+
+  after_initialize :init
+
+  def init
+    self.approval_status  ||= :pending
+  end
 
   def approve(owner_deviceid)
     change_status owner_deviceid do
@@ -31,9 +37,10 @@ class Proposal < DeviceRecord
       yield
     else
       errors.add :deviceid, 'invalid'
+      return
     end
 
-    return save
+    save
   end
 
 end

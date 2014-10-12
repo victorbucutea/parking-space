@@ -15,7 +15,9 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="range">Range :</string>
-    <integer name="defaultSearchRadius">500</integer>
+    <integer name="defaultSearchRadius">150</integer>
+    <integer name="minSonarStart">15</integer>
+    <integer name="sonarDuration">4000</integer>
     <string name="metersUom">m</string>
     <integer name="minSearchRadius">1</integer>
     <integer name="maxSearchRadius">950</integer>

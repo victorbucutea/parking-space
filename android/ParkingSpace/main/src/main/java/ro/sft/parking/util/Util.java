@@ -10,7 +10,7 @@ public class Util{
 
 
     public static void showToast(String msg, Context ctxt) {
-        System.out.println(msg);
+//        System.out.println(msg);
         Toast.makeText(ctxt, msg, Toast.LENGTH_SHORT).show();
     }
 }

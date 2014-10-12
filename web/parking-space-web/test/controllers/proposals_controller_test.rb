@@ -27,7 +27,6 @@ class ProposalsControllerTest < ActionController::TestCase
           bid_amount: 10,
           bid_currency: 'RON',
           bidder_name: 'someone',
-          status: 'pending',
           parking_space_id: 2
       }
     end
@@ -38,7 +37,8 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'Proposal message for create test', prop['title_message']
     assert_equal 10, prop['bid_amount']
     assert_equal 'RON', prop['bid_currency']
-    assert_equal 'pending', prop['status']
+    assert_equal 'pending', prop['approval_status']
+    # default is pending
     assert        assigns(:proposal).pending?
 
   end
@@ -55,7 +55,7 @@ class ProposalsControllerTest < ActionController::TestCase
           title_message: 'Proposal message for create test',
           # bid_amount: 3,
           bid_currency: 'RON',
-          status: 'pending',
+          approval_status: 'pending',
           parking_space_id: 2
       }
     end
@@ -67,7 +67,7 @@ class ProposalsControllerTest < ActionController::TestCase
           title_message: 'Proposal message for create test',
           bid_amount: 3,
           #bid_currency: 'RON',
-          status: 'pending',
+          approval_status: 'pending',
           parking_space_id: 2
       }
     end
@@ -79,22 +79,11 @@ class ProposalsControllerTest < ActionController::TestCase
           title_message: 'Proposal message for create test',
           bid_amount: 3,
           bid_currency: 'RON',
-          status: 'pending',
+          approval_status: 'pending',
           parking_space_id: 2
       }
     end
 
-    assert_difference('Proposal.count',0) do
-      xhr :post, :create, parking_space_id: 2, :proposal => {
-          deviceid: 'IMEI8129532232',
-          bidder_name: 'someone',
-          title_message: 'Proposal message for create test',
-          bid_amount: 3,
-          bid_currency: 'RON',
-         # status: 'pending',
-          parking_space_id: 2
-      }
-    end
   end
 
   test 'should update proposal for parking space' do
@@ -105,7 +94,7 @@ class ProposalsControllerTest < ActionController::TestCase
         bid_amount: 10,
         bid_currency: 'RON',
         bidder_name: 'someone',
-        status: 'pending',
+        approval_status: 'pending',
         parking_space_id: 2
     }
 
@@ -163,7 +152,7 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'someone', prop['bidder_name']
     assert_equal 20, prop['bid_amount']
     assert_equal 'RON', prop['bid_currency']
-    assert_equal 'rejected', prop['status']
+    assert_equal 'rejected', prop['approval_status']
   end
 
 
@@ -175,12 +164,12 @@ class ProposalsControllerTest < ActionController::TestCase
 
     prop = assigns(:proposal)
 
-    # assert proposal unchaged
+    # assert proposal unchanged
     assert !prop.rejected?
     assert_equal 'IMEI8129631235', prop.deviceid
     assert_equal 'Hello, I\'d like to buy spot #2', prop.title_message
     assert_equal 'someone', prop.bidder_name
-    assert_equal 'PENDING', prop['status']
+    assert_equal 'pending', prop.approval_status
 
   end
 
@@ -202,7 +191,7 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'Hello, I\'d like to buy spot #2', prop['title_message']
     assert_equal 'someone', prop['bidder_name']
     assert_equal 20, prop['bid_amount']
-    assert_equal 'approved', prop['status']
+    assert_equal 'approved', prop['approval_status']
     assert_equal 'RON', prop['bid_currency']
   end
 

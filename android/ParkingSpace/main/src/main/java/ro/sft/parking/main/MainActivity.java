@@ -139,14 +139,13 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
     }
 
     @Override
-    public void onMapMove(CameraPosition cameraPosition) {
-
-        //slideOutSearchRangeBar();
+    public void onCameraMove(CameraPosition cameraPosition) {
     }
 
     @Override
     public void onMapClick(LatLng clickPosition) {
-        //slideOutSearchRangeBar();
+        ParkingSpaceMapFragment map = (ParkingSpaceMapFragment) getFragmentManager().findFragmentById(R.id.map);
+        map.setCenterOnLocationChange(false);
     }
 
 }

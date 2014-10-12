@@ -117,7 +117,7 @@ public class InteractiveMapFragment extends MapFragment implements LocationListe
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        mListener.onMapMove(cameraPosition);
+        mListener.onCameraMove(cameraPosition);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class InteractiveMapFragment extends MapFragment implements LocationListe
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public void onMapMove(CameraPosition cameraPosition);
+        public void onCameraMove(CameraPosition cameraPosition);
 
         public void onMapClick(LatLng clickPosition);
     }

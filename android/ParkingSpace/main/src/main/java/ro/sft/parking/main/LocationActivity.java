@@ -83,8 +83,6 @@ public class LocationActivity extends FragmentActivity implements
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right);
 
-//            System.out.println("lf is hidden :"+lf.isHidden());
-//            System.out.println("lf is added:"+lf.isHidden());
             if (!lf.isAdded()) {
                 ft.add(R.id.mapLayout, lf);
                 ft.addToBackStack(null);
@@ -129,18 +127,14 @@ public class LocationActivity extends FragmentActivity implements
 
         if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             System.out.println("GPS Provider is not enabled");
-            Toast.makeText(this,"GPS Provider is not enabled",Toast.LENGTH_SHORT);
         } else {
             System.out.println("GPS Provider is  enabled");
-            Toast.makeText(this,"GPS Provider is  enabled",Toast.LENGTH_SHORT);
         }
 
         if ( !manager.isProviderEnabled( LocationManager.NETWORK_PROVIDER) ) {
             System.out.println("Network Provider is not enabled");
-            Toast.makeText(this, "Network Provider is not enabled", Toast.LENGTH_SHORT);
         } else {
             System.out.println("Network Provider is  enabled");
-            Toast.makeText(this,"Network Provider is  enabled",Toast.LENGTH_SHORT);
         }
 
         mLocationClient = new LocationClient(this, this, this);
@@ -152,7 +146,6 @@ public class LocationActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        System.out.println("Location changed " + location.getLatitude() + " x " + location.getLongitude());
         Toast.makeText(this, "Location changed " + location.getLatitude() + " x " + location.getLongitude(), Toast.LENGTH_SHORT).show();
         mLocation = location;
     }

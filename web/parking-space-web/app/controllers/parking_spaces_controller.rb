@@ -10,6 +10,7 @@ class ParkingSpacesController < ApplicationController
     lat = !params[:lat] || params[:lat].empty? ? nil : params[:lat]
     lon = !params[:lon] || params[:lon].empty? ? nil : params[:lon]
     range =!params[:range] || params[:range].empty? ? nil : params[:range]
+    term =!params[:term] || params[:term].empty? ? 'short_term' : params[:term]
 
     unless lat && lon && range
       render json: {:Error => "Missing parameters 'lan', 'long' and 'range'"}, status: :unprocessable_entity
@@ -17,10 +18,16 @@ class ParkingSpacesController < ApplicationController
     end
 
 
-    if range.to_i > 1200
+    if term == 'short_term' && range.to_i > 1200
       render json: {:Error => "Cannot have a range larger than 1200"}, status: :unprocessable_entity
       return
     end
+
+    if term == 'long_term' && range.to_i > 10000
+      render json: {:Error => "Cannot have a range larger than 1200"}, status: :unprocessable_entity
+      return
+    end
+
     cur_lat = lat.to_f
     cur_long = lon.to_f
     cur_range = range.to_f
@@ -34,7 +41,11 @@ class ParkingSpacesController < ApplicationController
     lon_min = cur_long - long_range_in_deg
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
-    @parking_spaces = ParkingSpace.within_boundaries query_attrs
+    if term == 'short_term'
+      @parking_spaces = ParkingSpace.short_term.within_boundaries query_attrs
+    else
+      @parking_spaces = ParkingSpace.long_term.within_boundaries query_attrs
+    end
 
   end
 
@@ -102,6 +113,7 @@ class ParkingSpacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def parking_space_params
-    params.require(:parking_space).permit(:location_lat, :location_long, :recorded_from_lat, :recorded_from_long, :deviceid, :target_price)
+    params.require(:parking_space).permit(:location_lat, :location_long, :recorded_from_lat, :recorded_from_long,
+                                          :deviceid, :target_price, :interval, :phone_number, :owner_name,)
   end
 end
