@@ -8,6 +8,7 @@ zero:
   recorded_from_long: 26.04766
   deviceid: 'IMEI8129231231'
   created_at: <%= 5.minutes.ago.to_s(:db) %>
+  interval: 1
 
 one:
   id: 1
@@ -16,6 +17,7 @@ one:
   recorded_from_lat: 44.41504
   recorded_from_long: 26.04766
   deviceid: 'IMEI8129231231'
+  interval: 1
 
 
 two:
@@ -25,6 +27,7 @@ two:
   recorded_from_lat: 44.41504
   recorded_from_long: 26.04762
   deviceid: 'IMEI8129331241'
+  interval: 1
 
 
 three:
@@ -34,6 +37,7 @@ three:
   recorded_from_lat: 44.41504
   recorded_from_long: 26.04764
   deviceid: 'IMEI8129431251'
+  interval: 1
 
 four:
   id: 4
@@ -42,6 +46,7 @@ four:
   recorded_from_lat: 44.41504
   recorded_from_long: 26.04766
   deviceid: 'IMEI8129531261'
+  interval: 1
 
 five:
   id: 5
@@ -50,3 +55,15 @@ five:
   recorded_from_lat: 44.41504
   recorded_from_long: 26.047678
   deviceid: 'IMEI8129631271'
+  interval: 1
+
+six:
+  id: 6
+  location_lat: 44.425654 # 1178m East from id 1
+  location_long: 26.10721 # 1090 m North from id 1
+  recorded_from_lat: 44.41504
+  recorded_from_long: 26.047678
+  deviceid: 'IMEI8129631271'
+  owner_name: 'Victor'
+  phone_number: '0727456250'
+  interval: 0

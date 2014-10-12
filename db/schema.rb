@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140826173756) do
+ActiveRecord::Schema.define(version: 20140906150102) do
 
   create_table "messages", force: true do |t|
     t.string   "deviceid"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20140826173756) do
     t.string   "bid_currency"
     t.string   "status"
     t.string   "bidder_name"
+    t.integer  "approval_status"
   end
 
 end

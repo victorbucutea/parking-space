@@ -7,7 +7,7 @@ one:
   bid_amount: 10
   bid_currency: 'EUR'
   bidder_name: 'someone'
-  status: 'PENDING'
+  approval_status: 0
   parking_space_id: 1
 
 two:
@@ -17,7 +17,7 @@ two:
   bid_amount: 20
   bid_currency: 'EUR'
   bidder_name: 'someone'
-  status: 'PENDING'
+  approval_status: 0
   parking_space_id: 1
 
 three:
@@ -27,7 +27,7 @@ three:
   bid_amount: 10
   bid_currency: 'EUR'
   bidder_name: 'someone'
-  status: 'PENDING'
+  approval_status: 0
   parking_space_id: 2
 
 four:
@@ -37,7 +37,7 @@ four:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
-  status: 'PENDING'
+  approval_status: 0
   parking_space_id: 2
 
 five:
@@ -47,7 +47,7 @@ five:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
-  status: 'PENDING'
+  approval_status: 0
   parking_space_id: 3
 
 six:
@@ -57,5 +57,5 @@ six:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
-  status: 'PENDING'
+  approval_status: 0
   parking_space_id: 3

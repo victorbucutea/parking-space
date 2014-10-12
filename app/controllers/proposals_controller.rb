@@ -76,6 +76,6 @@ class ProposalsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def proposal_params
-    params.require(:proposal).permit(:deviceid, :title_message, :bid_amount, :bid_currency, :bidder_name, :status, :parking_space_id)
+    params.require(:proposal).permit(:deviceid, :title_message, :bid_amount, :bid_currency, :bidder_name, :approval_status, :parking_space_id)
   end
 end
