@@ -32,6 +32,7 @@ public class ParkingSpaceMapFragment extends InteractiveMapFragment {
     private Circle openSpotsSonarCircle;
     private ValueAnimator sonarAnim;
     private boolean centerOnLocationChange = true;
+    private boolean deviceLocated = false;
 
     @Override
     public void onLocationChanged(Location location) {
@@ -39,6 +40,10 @@ public class ParkingSpaceMapFragment extends InteractiveMapFragment {
 
         if (mLocation == null || gpsProvider) {
             centerMapAtNewLocation(location);
+            if (!deviceLocated) {
+                centerOnLocationChange = false;//stop centering after located
+                deviceLocated = true;
+            }
         }
         mLocation = location;
     }
@@ -54,17 +59,19 @@ public class ParkingSpaceMapFragment extends InteractiveMapFragment {
         }
     }
 
+    public void centerMap(){
+        LatLng latLng = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
+    }
 
     private void centerMapAtNewLocation(Location location) {
-        String text = "Location changed " + location.getLatitude() + " x " + location.getLongitude() +
-                " , speed " + location.getSpeed() + " , bearing to " +
-                (mLocation != null ? mLocation.bearingTo(location) : location.getBearing());
 
         GoogleMap map = getMap();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         addRangeCircle(latLng, map);
         addCurrentLocationIcon(location, map);
 
+        System.out.println("Centering :"+isCenterOnLocationChange());
         if (isCenterOnLocationChange()) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
         }
@@ -124,7 +131,6 @@ public class ParkingSpaceMapFragment extends InteractiveMapFragment {
 
 
     }
-
 
     public void setCenterOnLocationChange(boolean centerOnLocationChange) {
         this.centerOnLocationChange = centerOnLocationChange;

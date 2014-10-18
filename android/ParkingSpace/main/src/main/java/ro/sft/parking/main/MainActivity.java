@@ -7,23 +7,54 @@ import android.support.v4.app.FragmentActivity;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.DragShadowBuilder;
-import android.view.View.OnDragListener;
-import android.view.View.OnTouchListener;
+import android.view.View.*;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import ro.sft.parking.main.LayoutFragment.OnFragmentInteractionListener;
 import ro.sft.parking.map.ParkingSpaceMapFragment;
 import ro.sft.parking.parkingspace.main.R;
-import ro.sft.parking.util.Anim;
+import ro.sft.parking.util.Util;
 
 
 public class MainActivity extends FragmentActivity implements OnFragmentInteractionListener, ParkingSpaceMapFragment.OnFragmentInteractionListener {
 
 
+    OnClickListener centerMapListener = new OnClickListener() {
+        public boolean shown;
+
+        @Override
+        public void onClick(View v) {
+            ParkingSpaceMapFragment map = (ParkingSpaceMapFragment) getFragmentManager().findFragmentById(R.id.map);
+
+            map.centerMap();
+            if (!shown) {
+                Util.showToast(getResources().getString(R.string.long_tap_help), v.getContext());
+                shown = true;
+            }
+        }
+    };
+
+    OnLongClickListener followMapCenterListener = new OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+            ParkingSpaceMapFragment map = (ParkingSpaceMapFragment) getFragmentManager().findFragmentById(R.id.map);
+            if (map.isCenterOnLocationChange()) {
+                map.setCenterOnLocationChange(false);
+                findViewById(R.id.centerButtonBar).setBackground(getResources().getDrawable(R.drawable.shape));
+            } else {
+                System.out.println("Enabling center on location");
+                map.setCenterOnLocationChange(true);
+                findViewById(R.id.centerButtonBar).setBackground(getResources().getDrawable(R.drawable.shape_selected));
+                map.centerMap();
+            }
+
+            return true;
+        }
+    };
     View.OnDragListener dragListener = new OnDragListener() {
         public boolean onDrag(View v, DragEvent event) {
             int action = event.getAction();
@@ -40,7 +71,6 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
         }
 
     };
-
     View.OnTouchListener onTouchListener = new OnTouchListener() {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -55,32 +85,6 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
         }
 
     };
-
-
-    View.OnClickListener showSearchRangeBar = new View.OnClickListener() {
-        boolean isOpen;
-
-        @Override
-        public void onClick(View v) {
-            View searchRangeBar = findViewById(R.id.searchRangeBar);
-            View optionsHandle = findViewById(R.id.optionsHandle);
-            int optionsHandleHeight = optionsHandle.getHeight();
-            int searchRangeBarHeight = searchRangeBar.getHeight();
-
-            if (!isOpen) {
-                Anim.slideInBottom(searchRangeBar);
-                Anim.slide(optionsHandle,   searchRangeBarHeight , 0);
-                ((ImageView) optionsHandle).setImageResource(R.drawable.chevron_down);
-            } else {
-                Anim.slideOutBottom(searchRangeBar);
-                Anim.slide(optionsHandle, 0, optionsHandleHeight);
-                ((ImageView) optionsHandle).setImageResource(R.drawable.chevron_up);
-            }
-
-            isOpen = !isOpen;
-        }
-    };
-
     View.OnClickListener increaseSearchRange = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -96,7 +100,6 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
             }
         }
     };
-
     View.OnClickListener decreaseSearchRange = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -113,7 +116,6 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,30 +124,31 @@ public class MainActivity extends FragmentActivity implements OnFragmentInteract
         setContentView(R.layout.activity_main);
         findViewById(R.id.new_spot_marker).setOnTouchListener(onTouchListener);
         findViewById(R.id.new_spot_marker).setOnDragListener(dragListener);
-        findViewById(R.id.optionsHandle).setOnClickListener(showSearchRangeBar);
         findViewById(R.id.buttonPlus).setOnClickListener(increaseSearchRange);
         findViewById(R.id.buttonMinus).setOnClickListener(decreaseSearchRange);
+        findViewById(R.id.centerMapButton).setOnClickListener(centerMapListener);
+        findViewById(R.id.centerMapButton).setOnLongClickListener(followMapCenterListener);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        findViewById(R.id.searchRangeBar).setVisibility(View.GONE);
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        System.out.println("fragment interaction ");
     }
 
     @Override
     public void onCameraMove(CameraPosition cameraPosition) {
+        System.out.println("Camera move ");
     }
 
     @Override
     public void onMapClick(LatLng clickPosition) {
-        ParkingSpaceMapFragment map = (ParkingSpaceMapFragment) getFragmentManager().findFragmentById(R.id.map);
-        map.setCenterOnLocationChange(false);
+        System.out.println("Map click");
     }
+
 
 }

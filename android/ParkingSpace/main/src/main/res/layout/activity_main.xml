@@ -26,22 +26,16 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_gravity="bottom">
 
-                <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/chevron_up"
-                    android:id="@+id/optionsHandle" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_margin="6dp"
+                    android:layout_margin="8dp"
                     android:background="@drawable/shape"
                     android:baselineAligned="true"
                     android:focusableInTouchMode="true"
@@ -67,10 +61,10 @@
                         android:text="@string/plus"
                         android:textSize="30sp"
                         android:background="@drawable/shape"
-                        android:layout_margin="6dp" />
+                        android:layout_margin="8dp" />
 
                     <EditText
-                        android:layout_width="50dp"
+                        android:layout_width="54dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|center_vertical"
                         android:ems="10"
@@ -104,22 +98,26 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_margin="6dp"
+                    android:layout_margin="8dp"
                     android:background="@drawable/shape"
                     android:baselineAligned="true"
                     android:focusableInTouchMode="true"
                     android:id="@+id/centerButtonBar"
-                    android:weightSum="1">
+                    android:weightSum="1"
+                    android:gravity="center_vertical|center_horizontal">
 
-                   <Button
-                       android:layout_width="42dp"
-                       android:layout_height="42dp"
-                       android:background="@drawable/center_icon"/>
+                    <ImageButton
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/center_icon_ggl"
+                        android:contentDescription="center-icon"
+                        android:id="@+id/centerMapButton"/>
 
-                    </LinearLayout>
+
+                   </LinearLayout>
 
             </LinearLayout>
 

@@ -43,7 +43,7 @@ public class InteractiveMapFragment extends MapFragment implements LocationListe
     @Override
     public void onStart() {
         super.onStart();
-        getMap().setPadding(0, 0, 0, 135);
+        getMap().setPadding(0, 0, 0, 175);
         registerForMapInteractions();
     }
 
@@ -139,5 +139,6 @@ public class InteractiveMapFragment extends MapFragment implements LocationListe
         public void onCameraMove(CameraPosition cameraPosition);
 
         public void onMapClick(LatLng clickPosition);
+
     }
 }
