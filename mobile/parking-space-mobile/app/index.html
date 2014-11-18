@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>"ParkingSpaceMobile"</title>
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="lib/ionic/release/css/ionic.css" />
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+</head>
+
+<body ng-app="ParkingSpaceMobile">
+
+    <ion-nav-view class="map-container"></ion-nav-view>
+
+    <script id="home.html" type="text/ng-template">
+        <ion-nav-view name="content" style="height:100%" animation="slide-in-right"></ion-nav-view>
+    </script>
+
+    <script id="map.html" type="text/ng-template">
+        <div ng-controller="MapCtrl" id="map" style="height: 60%">
+            <map on-create="mapCreated(map, overlay)"></map>
+            <parking-spot-marker class="parking-spot-marker"
+                                 marker-height="markerHeight"
+                                 marker-width="markerWidth"
+                                 marker-style="markerStyle"
+                                 show-pointer="showPointer"></parking-spot-marker>
+        </div>
+
+        <div style="height: 40%" ng-controller="PostParkingSpaceCtrl">
+            <ul class="row slider-tabs-menu">
+                <li class="col" ng-click="showLongTerm = true" ng-class="{active: showLongTerm}">
+                    <a>Long term</a>
+                </li>
+                <li class="col" ng-click="showLongTerm = false" ng-class="{active: !showLongTerm}">
+                    <a>Short term</a>
+                </li>
+            </ul>
+            <div id="tab1" ng-show="showLongTerm">
+                <h2> Long term content</h2>
+            </div>
+            <div id="tab2" ng-show="!showLongTerm">
+                <parking-spot-info-box space="space" on-tap="showEdit()"></parking-spot-info-box>
+                <div class="tabs ps-control-buttons">
+                    <div class="button-bar">
+                        <a class="button icon-left ion-checkmark-round">Post</a>
+                        <a class="button icon-left ion-edit" ng-click="showEdit()">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+
+    <script id="edit-modal.html" type="text/ng-template">
+        <ion-modal-view class="transparent edit-modal" on-swipe-down="closeEdit()"  on-swipe-left="closeEdit()">
+            <ion-header-bar on-tap="closeEdit()">
+                <div class="buttons">
+                    <a class="button icon-left ion-chevron-down button-clear"></a>
+                </div>
+            </ion-header-bar>
+            <ion-content ng-controller="EditParkingSpaceCtrl" class="transparent">
+                <div class="list form-edit-details">
+
+                    <label class="item item-input important">
+                        <span class="input-label">Bid value</span>
+                        <input type="number" placeholder="Price" ng-model="spaceEdit.price">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Title</span>
+                        <input type="text" placeholder="Title" ng-model="spaceEdit.title">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Address</span>
+                        <input type="text" placeholder="Address" ng-model="spaceEdit.address">
+                    </label>
+
+                    <div class="item upload-photo">
+                        <div class="row">
+                            <div class="col-34" on-tap="takePhoto()" on-hold="attachPhoto()">
+                                <parking-sign icon="'fa-camera'" space="spaceEdit"></parking-sign>
+                            </div>
+                            <div class="col-66">
+                                <label class="item item-input item-stacked-label desc-textarea">
+                                    <span class="input-label">Description</span>
+                                    <textarea placeholder="Description" maxlength="165" ng-model="spaceEdit.description"></textarea>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ps-control-buttons">
+                        <div class="button-bar">
+                            <a class="button icon-left ion-checkmark-round" ng-click="save()">Save</a>
+                            <a class="button icon-left ion-close" ng-click="closeEdit()">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+
+
+    <!-- build:js scripts/vendor.js -->
+    <script src="vendor/google/maps.js"></script>
+    <!-- bower:js -->
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="lib/collide/collide.js"></script>
+    <script src="lib/ionic/release/js/ionic.js"></script>
+    <script src="lib/ionic/release/js/ionic-angular.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+
+    <!-- build:js scripts/scripts.js -->
+    <script src="scripts/constants.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/directives.js"></script>
+    <!-- endbuild -->
+
+</body>
+</html>

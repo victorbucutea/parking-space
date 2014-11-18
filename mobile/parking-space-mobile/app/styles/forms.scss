@@ -1,0 +1,61 @@
+
+.form-edit-details {
+  background-color: #fff;
+  padding-top: 10px;
+  
+  label:first-child {
+    border-top: 0;
+  }
+
+  .row {
+    padding: 0;
+  }
+
+  .input-label {
+    width: 31.5%;
+    color: $gray-lighter;
+  }
+
+  .upload-photo {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  .desc-textarea {
+    border: 0;
+    padding-top: 0;
+    margin-top: -4px;
+    padding-left: 0;
+
+    span {
+      padding-top: 0;
+    }
+    textarea {
+      height: 112px;
+      border-bottom: 1px solid #eee;
+    }
+  }
+
+  .important {
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+
+
+    span {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    input {
+      &::-webkit-input-placeholder {font-size: 0.9em;font-weight: normal;}
+      &:-moz-placeholder           {font-size: 0.9em;font-weight: normal;}
+      &::-moz-placeholder          {font-size: 0.9em;font-weight: normal;}
+      &:-ms-input-placeholder      {font-size: 0.9em;font-weight: normal;}
+
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+  }
+
+}
