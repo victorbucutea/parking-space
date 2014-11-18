@@ -2,7 +2,7 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="sonar">#17000000</color>
-    <color name="searchRadius">#ff637882</color>
+    <color name="searchRadius">#98637882</color>
     <color name="centerMapContinuous">#ffe8e8e8</color>
 
 </resources>
