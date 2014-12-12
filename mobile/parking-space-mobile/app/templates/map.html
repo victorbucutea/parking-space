@@ -1,0 +1,10 @@
+<ion-view>
+    <ion-content scroll="false">
+        <div ng-controller="MapCtrl" id="map" ng-style="{height: mapHeight}">
+            <map on-create="mapCreated(map, overlay, geocoder)"></map>
+            <parking-spot-marker class="parking-spot-marker" marker="marker" show-pointer="showPointer"></parking-spot-marker>
+        </div>
+
+        <ui-view name="map-controls"></ui-view>
+    </ion-content>
+</ion-view>
