@@ -2,7 +2,7 @@
 
 angular.module('ParkingSpaceMobile.directives', [])
 
-    .directive('map', function () {
+    .directive('map', function ($rootScope) {
         return {
             restrict: 'E',
             scope: {
@@ -22,102 +22,28 @@ angular.module('ParkingSpaceMobile.directives', [])
                     overlay.draw = function () {
                     };
 
-                    $scope.onCreate({map: map, overlay: overlay});
+                    var geocoder = new google.maps.Geocoder();
+
+
+                    $scope.onCreate({map: map, overlay: overlay, geocoder: geocoder});
 
                 }
 
-                google.maps.event.addDomListener(window, 'load', initialize);
+                initialize();
 
-                $scope.$on('$viewContentLoaded', function (event) {
-                    initialize();
-                });
             }
         };
     })
 
-
-    // this is not mobile compatible :(
-    // it was such a nice slide in up menu
-    .directive('slideInUpMenu', function ($ionicGesture) {
-        return {
-            restrict: 'A',
-            scope: {
-                shrinkTarget: '=',
-                minHeight: '=?', //optional
-                maxHeight: '=?', //optional
-                open: '=?'
-            },
-            link: function ($scope, $element, $attr) {
-
-                $scope.maxHeight |= $('body').height() * 0.4; //40% of body height
-                $scope.minHeight |= 0; // hidden by default
-                $element.addClass('slide-in-up-menu');
-                $element.height($scope.maxHeight);
-                var currentHeight = $scope.maxHeight; // set initial height to max
-                $element.hide();
-
-
-                $ionicGesture.on('dragup', function (e) {
-                    var newHeight = currentHeight - Math.round(e.gesture.deltaY);
-                    if (newHeight <= $scope.maxHeight) {
-                        $element.height(newHeight);
-                    }
-                    e.gesture.preventDefault();
-                }, $element);
-
-
-                $ionicGesture.on('dragdown', function (e) {
-                    var newHeight = currentHeight - Math.round(e.gesture.deltaY);
-                    if ($element.height() >= $scope.minHeight) {
-                        $element.height(newHeight);
-                    }
-                    e.gesture.preventDefault();
-                }, $element);
-
-
-                $ionicGesture.on('release', function (e) {
-                    currentHeight = $element.height();
-                    e.gesture.preventDefault();
-                }, $element);
-
-                $scope.$watch('open', function (newVal) {
-                    if (newVal) {
-                        if ($element.height() <= 0) {
-                            $element.height($scope.maxHeight);
-                        }
-                        $element.show();
-                    }
-                    else {
-                        $element.hide();
-                    }
-                });
-
-
-                $ionicGesture.on('swipeup', function (e) {
-                    $element.height($scope.maxHeight);
-                    e.gesture.preventDefault();
-                }, $element);
-
-
-                $ionicGesture.on('swipedown', function (e) {
-                    $element.height($scope.minHeight);
-                    e.gesture.preventDefault();
-                }, $element);
-            }
-        }
-    })
-
-    .directive('parkingSpotMarker', function () {
+    .directive('parkingAreaSymbol', function ($ionicGesture, $rootScope) {
         return {
             restrict: 'E',
             scope: {
-                'markerWidth': '=',
-                'markerHeight': '=',
-                'markerStyle': '=',
+                'marker': '=',
                 'showPointer': '='
             },
-            template: ' <i class="parking-area-pointer fa fa-hand-o-right" ng-show="showPointer"></i>' +
-                ' <div class="parking-area" ng-style="markerStyle">' +
+            template: '<i class="parking-area-pointer fa fa-hand-o-right" ng-show="showPointer"></i>' +
+                '<div class="parking-area" ng-style="marker.markerStyle">' +
                 '<i class="fa fa-angle-left fa-rotate-45 top-left"></i>' +
                 '&nbsp; ' +
                 ' <i class="fa fa-angle-left fa-rotate-135 top-right"></i>' +
@@ -126,9 +52,54 @@ angular.module('ParkingSpaceMobile.directives', [])
                 '&nbsp; ' +
                 ' <i class="fa fa-angle-right fa-rotate-45 bottom-right"></i>' +
                 ' </div>',
+            link: function ($scope, $element) {
+
+            }
+        }
+    })
+
+
+    .directive('parkingSpotMarker', function ($ionicGesture, $rootScope, $state) {
+        return {
+            restrict: 'E',
+            scope: {
+                'marker': '=',
+                'showPointer': '='
+            },
+            template: '<parking-area-symbol marker="marker" ng-hide="searchCenterIcon" show-pointer="showPointer"></parking-area-symbol>' +
+                      '<div ng-show="searchCenterIcon " class="search-center-icon"></div>',
             link: function ($scope, $element, $attr) {
-                $scope.markerWidth = $($element).width();
-                $scope.markerHeight = $($element).height();
+
+                var marker = $scope.marker;
+                var height = $element.height();
+                marker.rotation |= 0;
+
+                if ($state.current.name == 'home.map.search') {
+                    $scope.searchCenterIcon = true;
+                }
+
+
+                google.maps.event.addListener($rootScope.map, 'idle', function () {
+                    var mapCenter = $rootScope.overlay.getProjection().fromLatLngToContainerPixel($rootScope.map.getCenter());
+                    var markerTop = mapCenter.y - (height / 2);
+                    $element.css('top', markerTop + 'px');
+                    $element.find('.search-center-icon').css('margin-top', height / 2 - 10);
+                });
+
+
+                $scope.$watch('marker.rotation', function (newVal) {
+                    $element.find('.parking-area').css('transform', 'rotate(' + Math.round(newVal) + 'deg)');
+                });
+
+                $ionicGesture.on('tap', function (e) {
+                    if (marker.rotation >= -157.5) {
+                        marker.rotation -= 22.5;
+                    } else {
+                        marker.rotation = 0;
+                    }
+                    $scope.$apply();
+                    e.gesture.preventDefault();
+                }, $element);
 
             }
         }
@@ -137,26 +108,22 @@ angular.module('ParkingSpaceMobile.directives', [])
     .directive('parkingSign', function () {
         return {
             restrict: 'E',
-            template: '<span class="parking-sign" ng-hide="space.img">' +
-                            '<i class="fa {{icon}}"></i>' +
-                            '<i class="text"></i>'+
-                       '</span>'+
-                       '<img ng-src="{{space.img}}" ng-style="" ng-show="space.img" class="parking-spot-thumbnail">',
+            template: '<span class="parking-sign" ng-class="{small: small}" ng-hide="space.img">' +
+                '<i class="fa {{icon}}"></i>' +
+                '<i class="text"></i>' +
+                '</span>' +
+                '<img ng-src="{{space.img}}" class="parking-sign" ng-class="{small: small}" ng-show="space.img">',
             scope: {
                 icon: '=',
                 space: '=',
-                width: '='
+                small: '='
             },
             link: function ($scope, $element, $attr) {
-                var width = $scope.width || 90;
-                var height = width * (4/3);
                 var text = $element.find('.text');
                 var icon = $element.find('.fa');
                 var img = $element.find('img');
 
-                text.css('width',width );
-                text.css('height',height);
-                img.css('width',width);
+
                 if (!$scope.icon) {
                     icon.remove();
                     text.text('P');
@@ -170,23 +137,56 @@ angular.module('ParkingSpaceMobile.directives', [])
     .directive('parkingSpotInfoBox', function () {
         return {
             restrict: 'E',
-            template: '<div class="item row parking-details " >' +
-                '<parking-sign></parking-sign>' +
-                '    <div class="col-50">' +
-                '        <h2>{{space.title}}</h2>' +
-                '        <p>{{space.address}}</p>' +
+            template: '<div class="item row parking-spot-details " >' +
+                '<parking-sign small="true" ng-hide="hideThumbnail" space="space"></parking-sign>' +
+                '    <div ng-hide="space.title">' +
+                '        <h2>Drag to select a spot </h2>' +
+                '    </div>' +
+                '    <div class="col" ng-show="space.title">' +
+                '        <h2><i class="fa fa-car"></i> {{space.title}}</h2>' +
+                '        <p>{{space.address_line_1}} ' +
+                '               <br  />' +
+                '           {{space.address_line_2}} ' +
+                '        </p>' +
                 '        <h1>' +
-                '            {{space.price}}' +
-                '            <span class="currency"> Ron </span>' +
+                '            {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
+                '            <currency val="space.currency"></currency>' +
                 '        </h1>' +
                 '    </div>' +
-                '</div>',
+                '</div>' +
+                '<i class="fa watermark" ng-class="{\'fa-clock-o\': space.short_term, \'fa-calendar\': !space.short_term}"></i>',
             scope: {
-                space: '='
-            },
-            link: function( $scope, $element, $attr) {
-
+                space: '=',
+                hideThumbnail: '@'
             }
         }
-    });
+    })
+    .directive('currency', function (currencies) {
+        return {
+            restrict: 'E',
+            template: '<i class="fa" ng-class="currSym"></i> {{currName}} ',
+            scope: {
+                val: '='
+            },
+            link: function ($scope) {
+                $scope.$watch('val', function (newVal) {
+                    if (!newVal)
+                        return;
 
+                    var currency = $.grep(currencies, function (cur) {
+                        return newVal == cur.name;
+                    });
+
+
+                    if (currency[0] && currency[0].icon) {
+                        $scope.currSym = currency[0].icon;
+                        $scope.currName = null;
+                    } else {
+                        $scope.currName = currency[0].name;
+                        $scope.currSym = null;
+                    }
+                });
+            }
+        }
+    })
+;

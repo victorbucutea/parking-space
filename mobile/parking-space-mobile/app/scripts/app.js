@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('ParkingSpaceMobile', ['ionic', 'config', 'ParkingSpaceMobile.controllers', 'ParkingSpaceMobile.directives'])
+angular.module('ParkingSpaceMobile', ['ionic', 'config',
+    'ParkingSpaceMobile.controllers',
+    'ParkingSpaceMobile.directives',
+    'ParkingSpaceMobile.filters',
+    'ParkingSpaceMobile.services'])
 
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
@@ -23,37 +27,42 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'ParkingSpaceMobile.con
             .state('home', {
                 url: '/home',
                 abstract: true,
-                templateUrl: 'home.html'
+                templateUrl: 'templates/home.html'
             })
             .state('home.map', {
                 url: '/map',
                 views: {
                     'content': {
-                        templateUrl: "map.html"
+                        templateUrl: "templates/map.html"
                     }
                 }
             })
-            .state('home.edit', {
-                url: '/edit',
+            .state('home.map.post', {
+                url: '/post',
                 views: {
-                    'content': {
-                        templateUrl: "edit-space.html"
+                    'map-controls': {
+                        templateUrl: "templates/post.html"
                     }
                 }
             })
-            /*.state('home.test', {
-                url: '/test',
+            .state('home.map.search', {
+                url: '/search',
                 views: {
-                    'test': {
-                        templateUrl: "test-animation.html"
-                    },
-                    'content': {
-                        templateUrl: ""
+                    'map-controls': {
+                        templateUrl: "templates/search.html"
                     }
                 }
-            });*/
+            })
+            .state('home.myposts', {
+                url: '/myposts',
+                views: {
+                    'content': {
+                        templateUrl: "templates/myposts.html"
+                    }
+                }
+            });
 
-        $urlRouterProvider.otherwise("/home/map");
+        $urlRouterProvider.otherwise("/home/map/search");
 
         /*       $stateProvider
          .state('home',{
@@ -77,5 +86,28 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'ParkingSpaceMobile.con
          }
          })*/
 
-    });
+    })
+
+    .constant('currencies', [{
+        name: 'Usd',
+        icon: 'fa-usd'
+    },{
+        name: 'Eur',
+        icon: 'fa-eur'
+    },{
+        name: 'Ron',
+        icon: null
+    },{
+        name: 'Rur',
+        icon: 'fa-rub'
+    },{
+        name: 'Gbp',
+        icon: 'fa-gbp'
+    },{
+        name: 'Yen',
+        icon: 'fa-jpy'
+    },{
+        name: 'Inr',
+        icon: 'fa-inr'
+    }]);
 

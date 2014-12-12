@@ -1,8 +1,8 @@
 
 .form-edit-details {
   background-color: #fff;
-  padding-top: 10px;
-  
+  padding-top: $big-measure-unit;
+
   label:first-child {
     border-top: 0;
   }
@@ -31,30 +31,33 @@
       padding-top: 0;
     }
     textarea {
-      height: 112px;
+      height: 100px;
       border-bottom: 1px solid #eee;
     }
   }
 
+  input, textarea, select {
+    font-family: $font-family;
+  }
+
   .important {
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-
-
     span {
       font-weight: bold;
-      font-size: 1.1em;
     }
 
-    input {
-      &::-webkit-input-placeholder {font-size: 0.9em;font-weight: normal;}
-      &:-moz-placeholder           {font-size: 0.9em;font-weight: normal;}
-      &::-moz-placeholder          {font-size: 0.9em;font-weight: normal;}
-      &:-ms-input-placeholder      {font-size: 0.9em;font-weight: normal;}
-
+    input[type=number] {
       font-size: 1.1em;
-      font-weight: bold;
+      padding-left: $measure-unit;
+      padding-right: 0;
+      flex: none;
+      width: 40px;
+      -moz-appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
     }
   }
 
