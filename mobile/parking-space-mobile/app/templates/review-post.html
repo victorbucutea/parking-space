@@ -3,7 +3,11 @@
     <div ng-controller="EditParkingSpaceCtrl">
         <div class="form-edit-details">
             <div on-tap="close()">
-                <h3 class="ps-page-title">{{spaceEdit.short_term? 'Short Term (5 min)': 'Long Term (2 weeks)'}}</h3>
+                <h3 class="ps-page-title">
+                    <i class="fa fa-calendar" ng-show="!spaceEdit.short_term"> </i>
+                    <i class="fa fa-clock-o" ng-show="spaceEdit.short_term"> </i>
+                    {{spaceEdit.short_term? 'Short Term (5 min)': 'Long Term (2 weeks)'}}
+                </h3>
             </div>
             <div>
                 <span class="item item-input important">

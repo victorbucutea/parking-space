@@ -1,0 +1,26 @@
+<div class="chat-area-modal ps-modal" >
+    <div style="height: 200px" class="scroll">
+        <div class="list">
+            <div class="message" ng-repeat="message in selOffer.messages | orderBy: 'timestamp' "
+                 ng-class="{left :message.own , right:!message.own}"
+                 ng-repeat-finish="scrollDown">
+                <div class="desc">
+                    <span class="message-meta"> {{message.timestamp | date : 'dd MMM yyyy  H:m'}} </span>
+                </div>
+							<span ng-class="{orange: !message.read}">
+									<i class="ion-record" ng-show="!message.read"></i>
+									{{message.msg}}
+							</span>
+            </div>
+            <div ng-show="!selOffer.messages.length" class="no-message">No messages</div>
+        </div>
+    </div>
+    <div class="row message-input">
+        <div class="col-90">
+            <input type="text" placeholder="Ask ..." ng-model="newMessage">
+        </div>
+        <div class="col-10">
+            <a class="ion-android-send" on-tap="sendMessage()"></a>
+        </div>
+    </div>
+</div>

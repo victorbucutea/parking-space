@@ -178,10 +178,9 @@ angular.module('ParkingSpaceMobile.controllers', [])
         };
     })
 
-    .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, $ionicScrollDelegate, offerService) {
+    .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, offerService) {
 
         $scope.scrollDown = function () {
-            $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom();
         };
 
         $scope.sendMessage = function () {
@@ -199,7 +198,6 @@ angular.module('ParkingSpaceMobile.controllers', [])
             messageService.sendMessage('postId', newMessage, function (messages) {
                 $scope.spaceEdit.messages.push(newMessage);
                 $scope.newMessage = null;
-                $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom();
             });
         };
 
@@ -251,18 +249,19 @@ angular.module('ParkingSpaceMobile.controllers', [])
         $scope.selectOffer = function (offer) {
             $scope.selOffer = offer;
             $scope.showChatArea = true;
-            $timeout(function () {
+
+          /*  $timeout(function () {
                 messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
 
                 });
-            }, 1000);
+            }, 1000);*/
         };
 
         $timeout(function () {
-            if ($scope.selOffer) {
+            /*if ($scope.selOffer) {
                 messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
                 });
-            }
+            }*/
 
             offerService.markRead('postId', $scope.spaceEdit.offers, function (offers) {
 

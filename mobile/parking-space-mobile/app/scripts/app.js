@@ -83,6 +83,14 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config','angularMoment',
                     }
                 }
             })
+            .state('home.myposts.messages.talk', {
+                url: '/talk',
+                views: {
+                    'messages': {
+                        templateUrl: "templates/talk.html"
+                    }
+                }
+            })
             .state('home.myposts.edit', {
                 url: '/edit',
                 views: {

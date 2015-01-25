@@ -5,9 +5,6 @@
     <div class="list open-spaces-list scroll">
         <span class="item " ng-click="show(space)" ng-repeat="space in spaces">
             <parking-spot-info-box class="small" space="space"></parking-spot-info-box>
-            <div class="my-posts-notifications" ng-show="unreadNotifications(space)">
-                <i class="fa fa-bell-o"></i>
-            </div>
             <i class="fa fa-money item-notifications"> <span> Offers ({{space.offers.length}})</span> </i>
             <i class="fa fa-envelope item-notifications">
                 <span> Messages ({{unreadMessagesForSpace(space) }})</span> </i>
