@@ -102,24 +102,6 @@ module.exports = function (grunt) {
             }
         },
 
-        // Make sure code styles are up to par and there are no obvious mistakes
-//    jshint: {
-//      options: {
-//        jshintrc: '.jshintrc',
-//        reporter: require('jshint-stylish')
-//      },
-//      all: [
-//        'Gruntfile.js',
-//        '<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js'
-//      ],
-//      test: {
-//        options: {
-//          jshintrc: 'test/.jshintrc'
-//        },
-//        src: ['test/unit/**/*.js']
-//      }
-//    },
-
         // Empties folders to start fresh
         clean: {
             dist: {

@@ -1,60 +1,15 @@
-<div ng-controller="SearchParkingSpaceCtrl" style="position: relative">
+<div ng-controller="SearchParkingSpaceCtrl" class="map-controls scroll">
     <div class="search-radius-controller">
         <a class="button button-icon icon ion-minus-circled" on-tap="decreaseRadius()"></a>
         <input type="number" ng-model="circleOptions.radius" ng-value="circleOptions.radius + 'm'">
         <a class="button button-icon icon ion-plus-circled" on-tap="increaseRadius()"></a>
     </div>
-    <ion-scroll ng-style="{height: mapCtrlsHeight}">
+    <div id="search-space">
         <div class="list open-spaces-list">
-            <a class="item " on-tap="show(space)" ng-repeat="space in spaces">
+            <span class="item " on-tap="showBid(space)" ng-repeat="space in spaces">
                 <parking-spot-info-box class="small" space="space"></parking-spot-info-box>
-            </a>
+            </span>
         </div>
-    </ion-scroll>
+    </div>
+    <ui-view name="place-offer" ></ui-view>
 </div>
-
-<script type="text/ng-template" id="bid-for-space.html">
-    <ion-modal-view class="transparent edit-modal" on-swipe-down="close()" on-swipe-left="close()">
-        <ion-header-bar on-tap="close()" class="transparent">
-            <div class="buttons">
-                <a class="button icon-left ion-chevron-down button-clear"></a>
-            </div>
-        </ion-header-bar>
-        <ion-content class="transparent bid-modal">
-            <div class="list">
-                <a class="item thumbnail">
-                    <map on-create="thumbnailMapCreated(map, overlay, geocoder)"></map>
-                </a>
-                <a class="item">
-                    <parking-spot-info-box space="selectedSpace"></parking-spot-info-box>
-                </a>
-                <a class="item desc" ng-show="selectedSpace.description">
-                    <i> {{selectedSpace.description}} </i>
-                </a>
-            </div>
-            <div class="item">
-                <span class="input-label">Bid amount </span>
-
-                <div class="bid-amount">
-                    <a class="fa fa-caret-left fa-4x disable-user-behavior" on-tap="decrease()"></a>
-                    <input type="number" min="0" max="100" ng-model="bidAmount">
-                    <a class="fa fa-caret-right fa-4x disable-user-behavior" on-tap="increase()" style=""></a>
-                </div>
-            </div>
-            <div class="ps-control-buttons">
-                <div class="button-bar">
-                    <a class="button icon-center ion-checkmark-round" ng-click="save()"></a>
-                    <a class="button icon-center ion-close" ng-click="close()"></a>
-                </div>
-            </div>
-        </ion-content>
-    </ion-modal-view>
-</script>
-
-<script type="text/ng-template" id="space-image.html">
-    <ion-modal-view class="transparent edit-modal" on-tap="close()">
-        <ion-content class="transparent bid-modal">
-            <img class="parking-space-big-thumbnail" ng-src="{{selectedSpace.img}}"/>
-        </ion-content>
-    </ion-modal-view>
-</script>

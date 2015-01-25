@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ParkingSpaceMobile', ['ionic', 'config',
+angular.module('ParkingSpaceMobile', ['ionic', 'config','angularMoment',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
@@ -17,8 +17,6 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config',
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-
-            console.log(navigator.camera);
         });
     })
 
@@ -45,12 +43,28 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config',
                     }
                 }
             })
+            .state('home.map.post.review', {
+                url: '/review',
+                views: {
+                    'review': {
+                        templateUrl: "templates/review-post.html"
+                    }
+                }
+            })
             .state('home.map.search', {
                 url: '/search',
                 views: {
                     'map-controls': {
                         templateUrl: "templates/search.html"
                     }
+                }
+            })
+            .state('home.map.search.place' , {
+                url: '/place-offer',
+                views: {
+                  'place-offer': {
+                    templateUrl: "templates/place-offer.html"
+                  }
                 }
             })
             .state('home.myposts', {
@@ -60,54 +74,56 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config',
                         templateUrl: "templates/myposts.html"
                     }
                 }
+            })
+            .state('home.myposts.messages', {
+                url: '/messages',
+                views: {
+                    'edit-space': {
+                        templateUrl: "templates/bid-and-messages.html"
+                    }
+                }
+            })
+            .state('home.myposts.edit', {
+                url: '/edit',
+                views: {
+                    'edit-space': {
+                        templateUrl: "templates/review-post.html"
+                    }
+                }
             });
 
         $urlRouterProvider.otherwise("/home/map/search");
 
-        /*       $stateProvider
-         .state('home',{
-         url: '/',
-         templateUrl: 'map.html'
-         })
-         .state('home.post', {
-         url: '/post-space',
-         views: {
-         'post-space': {
-         templateUrl: "post-space.html"
-         }
-         }
-         })
-         .state('home.edit', {
-         url: '/edit',
-         views: {
-         'edit-space': {
-         templateUrl: "post-space-edit.html"
-         }
-         }
-         })*/
-
     })
 
-    .constant('currencies', [{
-        name: 'Usd',
-        icon: 'fa-usd'
-    },{
-        name: 'Eur',
-        icon: 'fa-eur'
-    },{
-        name: 'Ron',
-        icon: null
-    },{
-        name: 'Rur',
-        icon: 'fa-rub'
-    },{
-        name: 'Gbp',
-        icon: 'fa-gbp'
-    },{
-        name: 'Yen',
-        icon: 'fa-jpy'
-    },{
-        name: 'Inr',
-        icon: 'fa-inr'
-    }]);
+    .constant('currencies', [
+        {
+            name: 'Usd',
+            icon: 'fa-usd'
+        },
+        {
+            name: 'Eur',
+            icon: 'fa-eur'
+        },
+        {
+            name: 'Ron',
+            icon: null
+        },
+        {
+            name: 'Rur',
+            icon: 'fa-rub'
+        },
+        {
+            name: 'Gbp',
+            icon: 'fa-gbp'
+        },
+        {
+            name: 'Yen',
+            icon: 'fa-jpy'
+        },
+        {
+            name: 'Inr',
+            icon: 'fa-inr'
+        }
+    ]);
 

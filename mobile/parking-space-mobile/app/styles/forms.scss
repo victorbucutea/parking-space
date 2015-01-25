@@ -1,64 +1,85 @@
 
 .form-edit-details {
-  background-color: #fff;
-  padding-top: $big-measure-unit;
+    background-color: #fff;
 
-  label:first-child {
-    border-top: 0;
-  }
+    label:first-child {
+        border-top: 0;
+    }
 
-  .row {
-    padding: 0;
-  }
+    .row {
+        padding: 0;
+    }
 
-  .input-label {
-    width: 31.5%;
-    color: $gray-lighter;
-  }
+    .input-label {
+        width: 31.5%;
+        color: $gray-lighter;
+    }
 
-  .upload-photo {
-    padding-top: 30px;
-    padding-bottom: 30px;
-  }
+    .upload-photo {
+        padding-top: 30px;
+        padding-bottom: 30px;
+        z-index: 3;
+    }
 
-  .desc-textarea {
-    border: 0;
+    .desc-textarea {
+        border: 0;
+        padding-top: 0;
+        margin-top: -4px;
+        padding-left: 0;
+
+        span {
+            padding-top: 0;
+        }
+        textarea {
+            height: 100px;
+            border-bottom: 1px solid #eee;
+        }
+    }
+
+    input, textarea, select {
+        font-family: $font-family;
+    }
+
+    bid-amount {
+        width: 100%;
+
+        a {
+            line-height: 0.8em;
+        }
+
+        input {
+            height: 30px;
+            width: 30px;
+            padding: 0;
+            font-size: 24px;
+        }
+
+        select.currency {
+            font-size: 24px;
+        }
+
+    }
+
+    .important {
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+.form-edit-details-small {
+    @extend .form-edit-details;
+
     padding-top: 0;
-    margin-top: -4px;
-    padding-left: 0;
 
-    span {
-      padding-top: 0;
-    }
-    textarea {
-      height: 100px;
-      border-bottom: 1px solid #eee;
-    }
-  }
-
-  input, textarea, select {
-    font-family: $font-family;
-  }
-
-  .important {
-    span {
-      font-weight: bold;
+    .item-input {
+        padding: 0 10px;
     }
 
-    input[type=number] {
-      font-size: 1.1em;
-      padding-left: $measure-unit;
-      padding-right: 0;
-      flex: none;
-      width: 40px;
-      -moz-appearance: textfield;
-
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
+    .upload-photo {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-left: 10px;
     }
-  }
 
 }

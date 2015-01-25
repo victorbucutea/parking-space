@@ -2,21 +2,11 @@
 
 angular.module('ParkingSpaceMobile.controllers', [])
 
-    .controller('MainCtrl', function ($scope, $document) {
-        $scope.duration = 'Long Term';
-        $scope.title = ' Parking Space';
-        $scope.$on('changeSpaceDuration', function (e, data) {
-            if (data) {
-                $scope.duration = 'Short Term';
-            } else {
-                $scope.duration = 'Long Term';
-            }
-            if (!$scope.$$phase)
-                $scope.$apply();
-        });
+    .controller('MainCtrl', function ($rootScope, $scope, $document, $timeout) {
 
-        $scope.mapHeight = $($document).height() * 0.6;
-        $scope.mapCtrlsHeight = $($document).height() * 0.4;
+        $timeout(function () {
+            $rootScope.$broadcast('notification', 3);
+        }, 2500);
 
     })
 
@@ -95,31 +85,28 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
     })
 
-    .controller('PostParkingSpaceCtrl', function ($rootScope, $scope, $ionicModal, currencies) {
+    .controller('PostParkingSpaceCtrl', function ($rootScope, $scope, currencies, $state) {
         $scope.currencies = currencies;
 
-        if (!$scope.currentZoomLvl) {
-            $scope.currentZoomLvl = 19;
-        }
 
         if ($rootScope.map)
-            $rootScope.map.setZoom($scope.currentZoomLvl);
+            $rootScope.map.setZoom(19);
 
-        $ionicModal.fromTemplateUrl('edit-modal.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function (modal) {
-            $scope.modal = modal;
-        });
 
-        //Cleanup the modal when we're done with it!
-        $scope.$on('$destroy', function () {
-            $scope.modal.remove();
-        });
+        $scope.review = function () {
+            $scope.spaceEdit = {};
+            angular.copy($scope.space, $scope.spaceEdit);
+            $state.go('home.map.post.review');
+        };
+
+        $scope.save = function () {
+            $scope.space = $scope.spaceEdit;
+            $state.go('^');
+        };
 
         $scope.$on('changeAddress', function (e, data) {
             if (!$scope.space)
-                $scope.space = { price: 5, currency: 'Eur'};
+                $scope.space = {price: 5, currency: 'Eur'};
 
             var street = data.street || '';
             var street_number = data.street_number || '';
@@ -136,29 +123,9 @@ angular.module('ParkingSpaceMobile.controllers', [])
             }
         });
 
-        $scope.$watch('space.short_term', function (newVal) {
-            $rootScope.$broadcast('changeSpaceDuration', newVal);
-        });
-
-        $scope.showEdit = function () {
-            $scope.spaceEdit = {};
-            angular.copy($scope.space, $scope.spaceEdit);
-            $scope.modal.show();
-        };
-
-        $scope.closeEdit = function () {
-            $scope.modal.hide();
-        };
-
-        $scope.save = function () {
-            $scope.space = $scope.spaceEdit;
-            $scope.closeEdit();
-        };
-
     })
 
-
-    .controller('EditParkingSpaceCtrl', function ($scope) {
+    .controller('EditParkingSpaceCtrl', function ($scope, $state) {
 
         $scope.takePhoto = function () {
             var cameraSuccess = function (img) {
@@ -196,42 +163,116 @@ angular.module('ParkingSpaceMobile.controllers', [])
             });
         };
 
-        $scope.increase = function () {
-            $scope.spaceEdit.price++;
+
+        $scope.save = function () {
+            console.log('updating post', $scope.spaceEdit);
+            $state.go('^');
         };
 
-        $scope.$watch('spaceEdit.price', function (newVal, oldVal) {
-            if (!$scope.spaceEdit) {
+        $scope.close = function () {
+            $state.go('^');
+        };
+
+        $scope.delete = function () {
+            console.log('deleting post', $scope.spaceEdit);
+        };
+    })
+
+    .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, $ionicScrollDelegate, offerService) {
+
+        $scope.scrollDown = function () {
+            $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom();
+        };
+
+        $scope.sendMessage = function () {
+
+            if (!$scope.newMessage) {
                 return;
             }
 
-            if (!newVal) {
-                $scope.spaceEdit.price = 0;
-            }
-
-            if (newVal > 100) {
-                $scope.spaceEdit.price = 100;
-            }
-
-            if (newVal < 0) {
-                $scope.spaceEdit.price = 0;
-            }
-        });
-
-        $scope.decrease = function () {
-            $scope.spaceEdit.price--;
+            var newMessage = {
+                msg: $scope.newMessage,
+                timestamp: new Date().getTime(),
+                read: true,
+                own: true
+            };
+            messageService.sendMessage('postId', newMessage, function (messages) {
+                $scope.spaceEdit.messages.push(newMessage);
+                $scope.newMessage = null;
+                $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom();
+            });
         };
 
+        $scope.acceptStep1 = function (offer) {
+            var acceptedOffers = $scope.spaceEdit.offers.filter(function (d) {
+                if (d.accepted == true && offer !== d) {
+                    return true;
+                }
+            });
+
+            if (acceptedOffers.length) {
+                $scope.warn = true;
+                return;
+            }
+
+            offer.confirm = true;
+        };
+
+        $scope.accept = function (offer) {
+            console.log('accepting ', offer);
+            offerService.acceptOffer(offer, function () {
+                $scope.warn = false;
+                offer.accepted = true;
+                offer.confirm = false;
+            });
+        };
+
+        $scope.cancel = function (offer) {
+            offer.confirm = false;
+            offerService.cancelOffer(offer, function () {
+                $scope.warn = false;
+                offer.accepted = false;
+                offer.confirm = false;
+            })
+        };
+
+        $scope.unreadMessages = function (messages) {
+            var count = 0;
+            if (!messages) {
+                return count;
+            }
+
+            messages.forEach(function (d) {
+                if (!d.read) count++
+            });
+            return count;
+        };
+
+        $scope.selectOffer = function (offer) {
+            $scope.selOffer = offer;
+            $scope.showChatArea = true;
+            $timeout(function () {
+                messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
+
+                });
+            }, 1000);
+        };
+
+        $timeout(function () {
+            if ($scope.selOffer) {
+                messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
+                });
+            }
+
+            offerService.markRead('postId', $scope.spaceEdit.offers, function (offers) {
+
+            })
+        }, 3000)
     })
 
+    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, $state, currencyFactory) {
 
-    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, $ionicModal, parkingSpaceService, modalFactory) {
-
-        if (!$scope.currentZoomLvl) {
-            $scope.currentZoomLvl = 15;
-        }
-
-        $rootScope.map.setZoom($scope.currentZoomLvl);
+        $rootScope.map.setZoom(15);
 
         $scope.circleOptions = {
             strokeColor: '#111',
@@ -249,13 +290,19 @@ angular.module('ParkingSpaceMobile.controllers', [])
             }
         });
 
-        var dragListen = google.maps.event.addListener($rootScope.map, 'idle', function () {
+        var dragListenClbk = function () {
             if ($scope.searchRadiusCircle)
                 $scope.searchRadiusCircle.setMap(null);
 
             $scope.circleOptions.center = $rootScope.map.getCenter();
             $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
-        });
+
+            var latLng = $rootScope.map.getCenter();
+            parkingSpaceService.getAvailableSpaces(latLng.lat(), latLng.lng(), function (spaces) {
+                $scope.spaces = spaces;
+            });
+        };
+        var dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
 
         if (!$scope.searchRadiusCircle) {
             // user navigates on screen for first time
@@ -263,8 +310,10 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
         }
 
+        $rootScope.$broadcast('searchCenterIcon', true);
+
         $rootScope.$on('$stateChangeSuccess', function (ev, toState) {
-            if (toState.name != 'home.map.search') {
+            if (toState.name.indexOf('home.map.search') == -1) {
                 if ($scope.searchRadiusCircle) {
                     $scope.searchRadiusCircle.setMap();
                 }
@@ -275,15 +324,9 @@ angular.module('ParkingSpaceMobile.controllers', [])
                     });
                 }
 
-                google.maps.event.removeListener(dragListen);
+                google.maps.event.removeListener(dragListenHandle);
+                $rootScope.$broadcast('searchCenterIcon', false);
             }
-        });
-
-        google.maps.event.addListener($rootScope.map, 'idle', function () {
-            var latLng = $rootScope.map.getCenter();
-            parkingSpaceService.getAvailableSpaces(latLng.lat(), latLng.lng(), function (spaces) {
-                $scope.spaces = spaces;
-            });
         });
 
         $scope.$watchCollection('spaces', function (newVal) {
@@ -303,16 +346,26 @@ angular.module('ParkingSpaceMobile.controllers', [])
                     scaledSize: new google.maps.Size(53, 53)
                 };
 
+                var currencyElm = $('<i class="fa" ></i>');
+                var currency = currencyFactory.getCurrency(space.currency);
+                currencyElm.addClass(currency);
+                var currencyHtml = currencyElm.wrap('<p/>').parent().html();
                 var price = space.price + "";
                 var x = price.length == 1 ? 8 : 15;
-                $scope.markers.push(new MarkerWithLabel({
+                var markerWithLabel = new MarkerWithLabel({
                     position: new google.maps.LatLng(space.position.lat, space.position.lng),
                     map: $rootScope.map,
                     icon: image,
-                    labelContent: space.price + ' Ron',
+                    labelContent: space.price + ' ' + currencyHtml,
                     labelAnchor: new google.maps.Point(x, 44),
                     labelClass: "search-marker-label"
-                }));
+                });
+
+                google.maps.event.addListener(markerWithLabel, "click", function (e) {
+                    $scope.showBid(space);
+                });
+
+                $scope.markers.push(markerWithLabel);
             })
         });
 
@@ -340,79 +393,114 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $scope.spaces = spaces;
         });
 
-        var showBid = function (args) {
-            $scope.selectedSpace = args[0];
-            // draw marker at specified position and rotate accordingly
-            var selectedSpace = $scope.selectedSpace;
-            var latLng = new google.maps.LatLng(selectedSpace.position.lat, selectedSpace.position.lng);
-            $scope.thumbnailMap.setCenter(latLng);
+        $scope.showBid = function (space) {
 
-            var pictureLabel = $("<img>");
-            pictureLabel.attr('src','images/parking_spot_circle.png');
-            pictureLabel.attr('height',75);
-            pictureLabel.attr('width',75);
+            $scope.selectedSpace = space;
 
-            if ($scope.spotThumbnail) {
-                $scope.spotThumbnail.setMap();
+            $scope.bid = {};
+            $scope.bid.bidAmount = $scope.selectedSpace.price;
+            $scope.bid.bidCurrency = $scope.selectedSpace.currency;
+
+            $state.go('home.map.search.place');
+
+
+            google.maps.event.removeListener(dragListenHandle);
+            var latLng = new google.maps.LatLng($scope.selectedSpace.position.lat, $scope.selectedSpace.position.lng);
+            $scope.previousZoom = $rootScope.map.getZoom();
+            $scope.previousCenter = $rootScope.map.getCenter();
+
+            if ($scope.searchRadiusCircle) {
+                $scope.searchRadiusCircle.setMap();
             }
 
+            if ($scope.markers) {
+                $scope.markers.forEach(function (d) {
+                    d.setMap();//clear marker
+                });
+            }
+
+
+            var pictureLabel = $("<img>");
+            pictureLabel.attr('src', 'images/parking_spot_circle.png');
+            pictureLabel.attr('height', 56);
+            pictureLabel.attr('width', 56);
+
+            var mapCenter = new google.maps.LatLng(latLng.lat() - 0.0008, latLng.lng());
+
+            $rootScope.map.setCenter(mapCenter);
+            $rootScope.map.setZoom(17);
 
             $scope.spotThumbnail = new MarkerWithLabel({
                 position: latLng,
                 icon: {path: ''},
-                map: $scope.thumbnailMap,
+                map: $rootScope.map,
                 labelContent: pictureLabel[0],
-                labelAnchor: new google.maps.Point(32, 32),
-                labelStyle:{transform : 'rotate('+ selectedSpace.rotation+'deg)'}
+                labelAnchor: new google.maps.Point(28, 28),
+                labelStyle: {transform: 'rotate(' + $scope.selectedSpace.rotation + 'deg)'}
             });
 
         };
 
-        modalFactory.createModal('bid-for-space.html', $scope,null, null, showBid);
-
-        var showThumbnail = function (args) {
-            $scope.selectedSpace = args[0];
-        }
-
-        modalFactory.createModal('space-image.html', $scope,'spaceImgModal', null, showThumbnail);
-
-        $scope.thumbnailMapCreated = function (map, overlay) {
-            map.setOptions({
-                zoom: 18,
-                panControl: false,
-                zoomControl: false,
-                mapTypeControl: false,
-                scaleControl: false,
-                streetViewControl: false,
-                overviewMapControl: false
-            });
-            $scope.thumbnailMap = map;
+        $scope.closeBid = function () {
+            $scope.spotThumbnail.setMap();
+            $rootScope.map.setZoom($scope.previousZoom);
+            $rootScope.map.setCenter($scope.previousCenter);
+            dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
+            $state.go('^');
         };
 
-        $scope.increase = function () {
-            $scope.bidAmount++;
+        $scope.saveBid = function (bid) {
+            console.log('saving bid ', bid);
+            $scope.closeBid();
         };
 
-        $scope.$watch('bidAmount', function (newVal, oldVal) {
-            if (!$scope.bidAmount) {
-                return;
-            }
 
-            if (!newVal) {
-                $scope.bidAmount = 0;
-            }
+    })
 
-            if (newVal > 100) {
-                $scope.bidAmount = 100;
-            }
+    .controller('MyPostsCtrl', function ($scope, modalFactory, parkingSpaceService, $state) {
 
-            if (newVal < 0) {
-                $scope.bidAmount = 0;
-            }
+        $('.open-spaces-list').height($(window).height() - 105 );
+        parkingSpaceService.getMySpaces('1234', function (spaces) {
+            $scope.spaces = spaces;
         });
 
-        $scope.decrease = function () {
-            $scope.bidAmount--;
+        $scope.unreadNotifications = function (space) {
+            var show = false;
+
+            if (space.offers) {
+                space.offers.forEach(function (d) {
+
+                    if (!d.read) show = true;
+
+                    if (d.messages) {
+                        d.messages.forEach(function (d) {
+                            if (!d.read) show = true
+                        });
+                    }
+                })
+            }
+
+            return show;
+        };
+
+        $scope.unreadMessagesForSpace = function (space) {
+            var count = 0;
+            if (space.offers) {
+                space.offers.forEach(function (d) {
+                    if (d.messages) {
+                        d.messages.forEach(function (d) {
+                            if (!d.read)  count++
+                        });
+                    }
+                })
+            }
+            return count;
+        };
+
+
+        $scope.show = function (space) {
+            $scope.spaceEdit = space;
+            $state.go('home.myposts.messages');
         };
 
     });

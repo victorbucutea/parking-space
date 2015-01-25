@@ -1,0 +1,86 @@
+<div class="transparent modal ps-modal" on-swipe-down="closeEdit()" on-swipe-left="closeEdit()">
+
+  <div ng-controller="BidsAndMessagesCtrl">
+    <div class="form-edit-details-small">
+      <div class="bids-area padding">
+        <h4 class="bid-title">
+          {{spaceEdit.title}} -
+		    <span class="bid-amount">
+		    		{{spaceEdit.price | units  }}.
+		    		 <small>{{spaceEdit.price | subunits}}</small>
+		    		 <currency val="spaceEdit.currency"></currency>
+		    </span>
+        </h4>
+        <h4>
+          <small ng-show="warn"> Can only accept one single offer.</small>
+        </h4>
+        <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in spaceEdit.offers | orderBy: 'timestamp'">
+					<span class="offer-price">
+						{{offer.price | units  }}.<small>{{offer.price | subunits}}</small>
+						<currency val="offer.currency"></currency>
+					</span>
+
+          <span class="offer-accept" ng-show="unreadMessages(offer.messages)">
+            ( <i class="fa fa-envelope"></i> {{unreadMessages(offer.messages)}} )
+          </span>
+
+          <div class="pull-right offer-accept" on-tap="acceptStep1(offer)" ng-hide="offer.confirm">
+            <i class="ion-checkmark-round accepted" ng-show="offer.accepted">
+              Accepted</i>
+            <i class="ion-checkmark-round" ng-show="!offer.accepted"> Not Accepted</i>
+          </div>
+
+
+          <div class="accept-confirm pull-right" ng-show="offer.confirm">
+            Accept {{offer.price}}
+            <currency val="offer.currency"></currency>
+            ? &nbsp;&nbsp;
+            <i class="ion-checkmark-round" on-tap="accept(offer)"> Yes</i>
+            &nbsp;
+            <i class="ion-close-round" on-tap="cancel(offer)"> No</i>
+          </div>
+          <div ng-show="!spaceEdit.offers.length" class="no-offers">No active offers for current bid.</div>
+        </div>
+      </div>
+
+      <div class="offer-desc-area padding-left" ng-show="selOffer">
+        Posted {{selOffer.timestamp | amTimeAgo }} by {{selOffer.owner_name}}
+        &raquo;
+      </div>
+
+
+      <div class="chat-area" ng-show="showChatArea">
+        <ion-scroll style="height: 200px" delegate-handle="chatScroll">
+          <div class="list">
+            <div class="message" ng-repeat="message in selOffer.messages | orderBy: 'timestamp' "
+                 ng-class="{left :message.own , right:!message.own}"
+                 ng-repeat-finish="scrollDown">
+              <div class="desc">
+                <span class="message-meta"> {{message.timestamp | date : 'dd MMM yyyy  H:m'}} </span>
+              </div>
+							<span ng-class="{orange: !message.read}">
+									<i class="ion-record" ng-show="!message.read"></i>
+									{{message.msg}}
+							</span>
+            </div>
+            <div ng-show="!selOffer.messages.length" class="no-message">No messages</div>
+          </div>
+        </ion-scroll>
+        <div class="row message-input">
+          <div class="col-90">
+            <input type="text" placeholder="Ask ..." ng-model="newMessage">
+          </div>
+          <div class="col-10">
+            <a class="ion-android-send" on-tap="sendMessage()"></a>
+          </div>
+        </div>
+      </div>
+      <div class="ps-control-buttons">
+        <div class="button-bar">
+          <a class="button icon-center ion-checkmark-round" ui-sref="^"></a>
+          <a class="button icon-center ion-edit" ui-sref="home.myposts.edit"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

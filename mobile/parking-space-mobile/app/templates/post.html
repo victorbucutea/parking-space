@@ -1,4 +1,4 @@
-<div ng-style="{height: mapCtrlsHeight}" ng-controller="PostParkingSpaceCtrl">
+<div id="post-space" ng-style="{height: mapCtrlsHeight}" ng-controller="PostParkingSpaceCtrl">
     <ul class="row slider-tabs-menu">
         <li class="col" ng-click="space.short_term = false" ng-class="{active: !space.short_term}">
             <a><i class="fa fa-calendar"></i> Long term</a>
@@ -7,70 +7,15 @@
             <a><i class="fa fa-clock-o"></i> Short term</a>
         </li>
     </ul>
-    <div id="tab1" ng-hide="space.short_term">
-        <parking-spot-info-box space="space" on-tap="showEdit()"></parking-spot-info-box>
+    <div id="tab1"  ng-hide="space.short_term" ng-click="review()">
+        <parking-spot-info-box space="space" ></parking-spot-info-box>
     </div>
-    <div id="tab2" ng-show="space.short_term">
-        <parking-spot-info-box space="space" on-tap="showEdit()"></parking-spot-info-box>
+    <div id="tab2"  ng-show="space.short_term" ng-click="review()">
+        <parking-spot-info-box space="space" ></parking-spot-info-box>
     </div>
-    <div class="bar bar-footer ps-control-buttons">
-        <div class="button-bar">
-            <a class="button icon-left ion-checkmark-round">Post</a>
-            <a class="button icon-left ion-edit" ng-click="showEdit()">Edit</a>
-        </div>
+    <div class="button-bar">
+        <a class="button icon-left button-clear ion-checkmark-round" ng-click="review()">Tap to Post</a>
     </div>
+
+    <ui-view name="review"></ui-view>
 </div>
-
-<script id="edit-modal.html" type="text/ng-template">
-    <ion-modal-view class="transparent edit-modal" on-swipe-down="closeEdit()" on-swipe-left="closeEdit()">
-        <ion-header-bar on-tap="closeEdit()">
-            <div class="buttons">
-                <a class="button icon-left ion-chevron-down button-clear"></a>
-            </div>
-        </ion-header-bar>
-        <ion-content ng-controller="EditParkingSpaceCtrl" class="transparent">
-            <div class="list form-edit-details">
-                <label class="item item-input item-select important">
-                    <span class="input-label">Bid value</span>
-                    <a class="fa fa-caret-left fa-2x" on-tap="decrease()"></a>
-                    <input type="number" min="0" max="100" ng-model="spaceEdit.price">
-                    <a class="fa fa-caret-right fa-2x" on-tap="increase()"></a>
-                    <select ng-model="spaceEdit.currency" ng-options="cur.name as cur.name for cur in currencies">
-                    </select>
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Title</span>
-                    <input type="text" placeholder="Title" ng-model="spaceEdit.title">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Address</span>
-                    <input type="text" placeholder="Address line 1" ng-model="spaceEdit.address_line_1">
-                </label>
-                <label class="item item-input">
-                    <span class="input-label">Address</span>
-                    <input type="text" placeholder="Address line 2" ng-model="spaceEdit.address_line_2">
-                </label>
-
-                <div class="item upload-photo">
-                    <div class="row">
-                        <div class="col-34" on-tap="takePhoto()" on-hold="attachPhoto()">
-                            <parking-sign icon="'fa-camera'" space="spaceEdit"></parking-sign>
-                        </div>
-                        <div class="col-66">
-                            <label class="item item-input item-stacked-label desc-textarea">
-                                <span class="input-label">Description</span>
-                                <textarea placeholder="Description" maxlength="165" ng-model="spaceEdit.description"></textarea>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="ps-control-buttons">
-                    <div class="button-bar">
-                        <a class="button icon-center ion-checkmark-round" ng-click="save()"></a>
-                        <a class="button icon-center ion-close" ng-click="closeEdit()"></a>
-                    </div>
-                </div>
-            </div>
-        </ion-content>
-    </ion-modal-view>
-</script>

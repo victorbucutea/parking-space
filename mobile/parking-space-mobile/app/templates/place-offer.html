@@ -1,0 +1,19 @@
+<div class="place-offer-modal ps-modal ">
+    <div class="list">
+        <parking-spot-info-box space="selectedSpace" on-tap="showThumbnail(selectedSpace)"></parking-spot-info-box>
+        <a class="item desc" ng-show="selectedSpace.description">
+            <i> {{selectedSpace.description}} </i>
+        </a>
+    </div>
+    <div class="item">
+        <span class="input-label">Bid amount </span>
+
+        <bid-amount amount="bid.bidAmount" currency="bid.bidCurrency"></bid-amount>
+    </div>
+    <div class="ps-control-buttons">
+        <div class="button-bar">
+            <a class="button icon-center ion-checkmark-round" ng-click="saveBid()"></a>
+            <a class="button icon-center ion-close" ng-click="closeBid()"></a>
+        </div>
+    </div>
+</div>

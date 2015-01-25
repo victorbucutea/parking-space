@@ -24,7 +24,7 @@ $big-measure-unit: $base-font-size;
 $xbig-measure-unit: $big-measure-unit * $golden-ratio;
 
 // 28 px
-$xxbig-measure-unit: $big-measure-unit * $golden-ratio;
+$xxbig-measure-unit: $xbig-measure-unit * $golden-ratio;
 
 // 39 px
 $xxxbig-measure-unit: $xxbig-measure-unit * $golden-ratio;
@@ -44,6 +44,7 @@ $font-family: 'Open Sans';
 $base-font-color: #333;
 $gray: #ddd;
 $gray-lighter: #888;
+$gray-xlight: #e5e5e5;
 $gray-dark: #444;
 $blue: #7A93BA;
 $red: #d46220;
@@ -51,456 +52,703 @@ $red: #d46220;
 @import "fonts";
 @import "forms";
 
+#map {
+    height: 60%;
+}
+
+.map-controls {
+    height: 40%;
+}
+
+.full-height {
+    height: 100%
+}
+
 map {
-  display: block;
-  width: 100%;
-  height: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 html, body {
-  height: 100%;
-  font-family: $font-family;
-  color: $base-font-color;
-  background-color: #fff;
-
-  ion-nav-view {
+    height: 100%;
+    font-family: $font-family;
+    color: $base-font-color;
     background-color: #fff;
-  }
+
+    ion-nav-view {
+        background-color: #fff;
+    }
 
 }
 
-.bar.bar-dark {
-  background-color: rgba(85, 85, 85, 0.5);
-  border: 0 none;
+.bar {
+
+    &.bar-dark {
+        background-color: rgba(85, 85, 85, 0.5);
+        border: 0 none;
+
+        .buttons {
+            .button {
+                margin-right: 20px;
+                &.button-icon:before {
+                    font-size: 40px;
+                }
+            }
+        }
+
+        &.bar-header {
+            height: 48px;
+        }
+    }
+}
+
+
+.ps-modal {
+    border-top: 4px solid #d46220;
+    position: absolute;
+    top: 48px;
+    background-color: #fff;
+    width: 100%;
+    z-index: 3;
+    box-shadow: 2px 2px 34px 2px #777777;
+
+
+    .list {
+        overflow: hidden;
+    }
+}
+
+.ps-content {
+    padding-top: 48px;
 }
 
 .map-container {
-  display: block;
-  height: 100%;
-  position: relative;
+    display: block;
+    height: 100%;
+    position: relative;
 }
 
-.help-btn {
-  margin-left: 10px;
-  font-size: 2.5em;
+.relative {
+    position: relative;
 }
 
-.main-content {
-  box-shadow: -1px 0px 27px 6px rgba(23, 23, 23, 1);
+.below-header {
+    margin-top: 44px;
 }
 
 .right-nav-menu {
 
-  .bar.bar-header {
-    background-color: $red;
-  }
-  .scroll-content {
-    background-color: $gray-dark;
-  }
-
-  .list {
-    a {
-      background-color: $gray-dark;
-      color: #ffffff;
-      border-color: $gray-dark;
-      padding: 10px;
-
-      &.active {
-        background-color: #aaa;
-        border-color: #aaa;
-      }
-
-      span {
-        margin-left: 10px;
-        display: inline-block;
-        margin-bottom: 8px;
-      }
+    .bar.bar-header {
+        background-color: $red;
     }
-  }
+    .scroll-content {
+        background-color: $gray-dark;
+    }
+
+    .list {
+        a {
+            background-color: $gray-dark;
+            color: #ffffff;
+            border-color: $gray-dark;
+            padding: 10px;
+
+            &.active {
+                background-color: #aaa;
+                border-color: #aaa;
+            }
+
+            span {
+                margin-left: 10px;
+                display: inline-block;
+                margin-bottom: 8px;
+            }
+        }
+    }
 
 }
 
 .open-spaces-list {
-  > a.item {
-    padding: 0;
-  }
+    > span.item {
+        padding: 0;
+        &:active {
+            background-color: $gray-xlight;
+        }
+    }
+
+    .parking-spot-details {
+        padding-bottom: 5px !important;
+    }
+
+    .item-notifications {
+        padding: 0 $measure-unit $big-measure-unit $measure-unit;
+        font-size: 0.9em;
+        color: #666;
+
+        span {
+            font-family: $font-family;
+        }
+    }
 }
 
-.bid-modal {
-  top: 0;
+.place-offer-modal {
+    top: 150px;
 
-  .list {
-    margin-bottom: 0;
+    .list {
+        margin-bottom: 0;
 
-    > a.item {
-      padding: 0;
+        > a.item {
+            padding: 0;
 
-      &.thumbnail {
-        height: 150px;
-
-        .description.div {
-          color: $gray;
-          width: 120px;
-          margin-left: auto;
-          margin-right: auto;
+            &.desc {
+                white-space: normal;
+                padding: 10px;
+                font-size: 0.9em;
+                border: 0;
+            }
         }
-      }
-
-      &.desc {
-        white-space: normal;
-        padding: 10px;
-        font-size: 0.9em;
-        border: 0;
-      }
     }
-  }
+}
 
-  .bid-amount {
-    width: 150px;
-    margin: auto;
+.bid-amount {
 
     a {
-      float: left;
+        float: left;
+        line-height: 0.9em;
     }
 
     input {
-      margin: 0 10px;
-      width: 80px;
-      float: left;
-      height: 4em;
-      font-size: 25px;
-      padding-bottom: 40px;
+        margin: 0 10px;
+        width: 48px;
+        float: left;
+        font-size: $xxbig-measure-unit;
     }
-  }
+
+    .currency {
+        border: 0 none;
+        width: 100%;
+        font-size: $xxbig-measure-unit;
+    }
 }
 
 .slider-tabs-menu {
-  text-align: center;
-  padding: 0;
-  > li {
-    border: 0 none;
+    text-align: center;
     padding: 0;
+    > li {
+        border: 0 none;
+        padding: 0;
 
-    &.active {
-      background-color: #555;
-      color: #fff;
-      position: relative;
+        &.active {
+            background-color: #555;
+            color: #fff;
+            position: relative;
 
-      &:after {
-        content: " ";
-        position: absolute;
-        top: 34px;
-        background-color: #555;
-        transform: rotate(45deg);
-        width: $measure-unit;
-        height: $measure-unit;
-        display: inline-block;
-      }
+            &:after {
+                content: " ";
+                position: absolute;
+                top: 34px;
+                background-color: #555;
+                transform: rotate(45deg);
+                width: $measure-unit;
+                height: $measure-unit;
+                display: inline-block;
+            }
+        }
+
+        > a {
+            padding: $measure-unit;
+            display: block;
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
-
-    > a {
-      padding: $measure-unit;
-      display: block;
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
 }
 
 .transparent {
-  background: transparent !important;
+    background: transparent !important;
 }
 
 .search-center-icon {
-  border-radius: 100%;
-  width: 15px;
-  height: 15px;
-  background-color: $red;
-  border: 2px solid #fff;
-  margin-left: auto;
-  margin-right: auto;
+    border-radius: 100%;
+    width: 15px;
+    height: 15px;
+    background-color: $red;
+    border: 2px solid #fff;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .search-radius-controller {
-  position: absolute;
-  width: 114px;
-  background-color: #fff;
-  z-index: 100;
-  top: -40px;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
-  right: 0;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  box-shadow: 2px 3px 33px 1px #888;
+    position: absolute;
+    width: 114px;
+    background-color: #fff;
+    z-index: 100;
+    top: -40px;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    right: 0;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 2px 3px 33px 1px #888;
 
-  input[type=number] {
-    width: 40px;
-    display: inline-block;
-    height: 25px;
-  }
-
-  a.button {
-    min-height: 20px;
-    color :#555;
-    line-height: 20px;
-
-    &:before {
-      font-size: 20px;
-      line-height: 20px;
+    input[type=number] {
+        width: 40px;
+        display: inline-block;
+        height: 25px;
     }
-  }
+
+    a.button {
+        min-height: 20px;
+        color: #555;
+        line-height: 20px;
+
+        &:before {
+            font-size: 20px;
+            line-height: 20px;
+        }
+    }
 }
 
 .search-marker-label {
-  font-size: 11px;
-  font-weight: bold;
-  color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
 }
 
-.edit-modal {
-  border-top: 4px solid #d46220;
-
-  ion-header-bar {
-    border: 0 none;
-  }
-}
 
 @mixin parking-sign($size: $lg-jumbo-measure-unit, $icon: false) {
 
-  $width: $size * 3 / 4; // 3:4 image scale
-  $height: $size;
-  $font-size: $size * 0.8;
+    $width: $size * 3 / 4; // 3:4 image scale
+    $height: $size;
+    $font-size: $size * 0.8;
 
-  @if ($icon == true) {
-    $font-size: $size * 0.5;
-  }
+    @if ($icon == true) {
+        $font-size: $size * 0.5;
+    }
 
-  color: #23467C;
-  font-weight: bold;
-  width: $width;
-  height: $height;
-  line-height: $height;
-  text-align: center;
-  border-radius: 4px;
-  font-family: sans-serif;
-  margin-right: 10px;
-  border: 1px solid #23467C;
-  box-shadow: 2px 2px 8px 1px #ddd;
-  display: inline-block;
-  font-size: $font-size;
+    color: #23467C;
+    font-weight: bold;
+    width: $width;
+    height: $height;
+    line-height: $height;
+    text-align: center;
+    border-radius: 4px;
+    font-family: sans-serif;
+    margin-right: 10px;
+    border: 1px solid #23467C;
+    box-shadow: 2px 2px 8px 1px #ddd;
+    display: inline-block;
+    font-size: $font-size;
 
 }
 
 .parking-sign {
-  @include parking-sign($lg-jumbo-measure-unit, true);
+    @include parking-sign($lg-jumbo-measure-unit, true);
 }
 
-
 @mixin parking-spot-info-box($size: 'normal') {
-  $cur-font: $lg-font-size;
+    position: relative;
+    display: block;
+    $cur-font: $lg-font-size;
 
-  @if ($size == 'small') {
-    $cur-font: $lg-font-size * 0.8;
-  }
-
-  @if ($size == 'normal') {
-    .parking-sign.small {
-      @include parking-sign(110px);
+    @if ($size == 'small') {
+        $cur-font: $lg-font-size * 0.8;
     }
-  } @else if ($size == 'small') {
-    .parking-sign.small {
-      @include parking-sign(93px);
-    }
-  }
 
-  .parking-spot-details {
     @if ($size == 'normal') {
-      margin-top: $measure-unit;
+        .parking-sign.small {
+            @include parking-sign(110px);
+        }
     } @else if ($size == 'small') {
-      margin-top: 0;
-    }
-    border: 0 none;
-    padding: $measure-unit;
-    z-index: 3;
-    background-color: transparent;
-
-    .col {
-      padding: 0;
+        .parking-sign.small {
+            @include parking-sign(93px);
+        }
     }
 
-    h1 {
-      color: $red;
-      font-size: $xlg-font-size;
-      @if ($size == 'normal') {
-        margin-top: $measure-unit;
-      } @else if ($size == 'small') {
-        margin-top: 0;
-      }
+    .parking-spot-details {
+        border: 0 none;
+        padding: $measure-unit;
+        @if ($size == 'normal') {
+            padding-top: $xbig-measure-unit;
+        } @else if ($size == 'small') {
+            margin-top: 0;
+        }
+
+        .col {
+            padding: 0;
+        }
+
+        h1 {
+            color: $red;
+            font-size: $xlg-font-size;
+            @if ($size == 'normal') {
+                margin-top: $measure-unit;
+            } @else if ($size == 'small') {
+                margin-top: 0;
+            }
+        }
+
+        p {
+            @if ($size == 'normal') {
+                margin-bottom: $measure-unit;
+            } @else if ($size == 'small') {
+                margin-bottom: 0;
+            }
+        }
+
+        h2 {
+            font-size: $cur-font;
+            position: relative;
+            z-index: 2;
+            @if ($size == 'small') {
+                margin-bottom: 0;
+            }
+        }
+
+        .currency {
+            font-size: $cur-font;
+        }
     }
 
-    p {
-      @if ($size == 'normal') {
-        margin-bottom: $measure-unit;
-      } @else if ($size == 'small') {
-        margin-bottom: 0;
-      }
+    .watermark {
+        position: absolute;
+        top: -10px;
+        color: #ddd;
+        right: -10px;
+        font-size: 7em;
     }
-
-    h2 {
-      font-size: $cur-font;
-      @if ($size == 'small') {
-        margin-bottom: 0;
-      }
-    }
-
-    .currency {
-      font-size: $cur-font;
-    }
-  }
-
-  .watermark {
-    position: absolute;
-    bottom: 30px;
-    color: #ddd;
-    right: -10px;
-    z-index: 2;
-    font-size: 7em;
-  }
 }
 
 parking-spot-info-box {
-  @include parking-spot-info-box();
+    @include parking-spot-info-box();
 }
 
 parking-spot-info-box.small {
-  @include parking-spot-info-box('small');
+    @include parking-spot-info-box('small');
 }
 
 .parking-space-big-thumbnail {
-  max-width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  margin-top: 20%;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 20%;
 }
 
 .ps-control-buttons {
-  border: 0;
-  background-color: transparent;
-  padding: 0;
-  height: auto;
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+    height: auto;
 
-  .button-bar {
-    .button {
-      border: 0;
-      background-color: #fff;
-      min-height: 33px;
-      line-height: 33px;
-      font-size: 14px;
-      z-index: 10;
+    .button-bar {
+        .button {
+            border-top: 0;
+            background-color: #fff;
+            min-height: 33px;
+            line-height: 33px;
+            font-size: 14px;
 
-      &.icon-center {
-        font-size: 20px;
-      }
+            &.icon-center {
+                font-size: 20px;
+            }
 
-      &.activated {
-        background-color: #eee;
-      }
-      &:after {
-        line-height: 33px;
-      }
+            &.activated {
+                background-color: #eee;
+            }
+            &:after {
+                line-height: 33px;
+            }
 
-      &:before {
-        line-height: 33px;
-      }
-
-      &:first-child {
-        border-right: 1px solid #ddd;
-      }
+            &:before {
+                line-height: 33px;
+            }
+        }
     }
-  }
+}
+
+.notif-icon {
+    position: absolute;
+    right: -3px;
+    border-radius: 50%;
+    background-color: rgb(212, 98, 32);
+    padding: 0px 5px;
+    line-height: 20px;
+    font-size: 14px;
+    top: 0;
 }
 
 .parking-spot-marker {
-  position: absolute;
-  font-size: 2.5em;
-  font-weight: bold;
-  top: 120px;
-  right: 0;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
-  width: 40px;
-  height: 74px;
-
-  .parking-area-pointer {
     position: absolute;
-    left: -40px;
-    top: 23px;
-    font-size: 1em;
-  }
+    font-size: 2.5em;
+    font-weight: bold;
+    top: 120px;
+    right: 0;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40px;
+    height: 74px;
 
-  .parking-area {
-    background-color: rgba($blue, 0.34);
-    border-radius: 3px;
-    color: #333;
-  }
-
-  i {
-    font-size: 0.75em;
-    position: relative;
-
-    &.top-right {
-      top: -10px;
-      right: -4px;
+    .parking-area-pointer {
+        position: absolute;
+        left: -40px;
+        top: 23px;
+        font-size: 1em;
     }
 
-    &.top-left {
-      top: -11px;
-      left: -1px;
+    .parking-area {
+        background-color: rgba($blue, 0.34);
+        border-radius: 3px;
+        color: #333;
     }
 
-    &.bottom-right {
-      bottom: -10px;
-      right: -5px;
+    i {
+        font-size: 0.75em;
+        position: relative;
+
+        &.top-right {
+            top: -10px;
+            right: -4px;
+        }
+
+        &.top-left {
+            top: -11px;
+            left: -1px;
+        }
+
+        &.bottom-right {
+            bottom: -10px;
+            right: -5px;
+        }
+
+        &.bottom-left {
+            bottom: -10px;
+            left: -1px;
+        }
     }
 
-    &.bottom-left {
-      bottom: -10px;
-      left: -1px;
+    span {
+        font-size: 1.5em;
+        display: block;
+        width: 80%;
+        margin: auto;
     }
-  }
 
-  span {
-    font-size: 1.5em;
-    display: block;
-    width: 80%;
-    margin: auto;
-  }
+}
 
+.ps-page-title {
+    border-bottom: 1px solid #aaa;
+    font-family: 'open sans';
+    padding: 14px 14px 14px 10px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.item {
+    position: static;
+    background-color: inherit;
+}
+
+.my-posts-notifications {
+    position: absolute;
+    right: 12px;
+    z-index: 9;
+    font-size: 2em;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: $blue;
+    color: #fff;
+}
+
+.orange {
+    color: $red !important;
+}
+
+.chat-area {
+    margin: 10px;
+    overflow: auto;
+    background-color: #eee;
+    border: 1px solid $gray;
+
+    .no-message {
+        color: #aaa;
+        width: 100px;
+        margin: auto;
+        margin-top: 10%;
+    }
+
+    .message {
+        clear: both;
+        margin: 5px 10px;
+        padding: 2px 5px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        position: relative;
+        font-size: 0.9em;
+        line-height: 1.4em;
+        background-color: #fff;
+
+        .message-meta {
+            font-size: 0.8em;
+            color: $gray-lighter;
+        }
+
+        .desc {
+            overflow: auto;
+        }
+
+        &.right {
+            float: right;
+            margin-left: 40px;
+            background-color: $blue;
+            color: #fff;
+
+            &:after {
+                content: ' ';
+                background-color: $blue;
+                border-right: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+                transform: rotate(-45deg);
+                width: 10px;
+                height: 10px;
+                display: block;
+                position: absolute;
+                right: -6px;
+                bottom: 10px;
+            }
+
+            .message-meta {
+                float: right;
+                color: $gray-xlight;
+            }
+        }
+
+        &.left {
+            float: left;
+            margin-right: 40px;
+
+            &:after {
+                content: ' ';
+                background-color: #fff;
+                border-right: 1px solid #ccc;
+                border-bottom: 1px solid #ccc;
+                transform: rotate(135deg);
+                width: 10px;
+                height: 10px;
+                display: block;
+                position: absolute;
+                left: -6px;
+                bottom: 10px;
+            }
+
+            .message-meta {
+                float: left;
+            }
+        }
+    }
+
+    .message-input {
+        border: 1px solid $gray-xlight;
+
+        input {
+            padding-left: 10px;
+        }
+
+        div.col-10 {
+            background-color: #fff;
+
+            .ion-android-send {
+                display: inline-block;
+                padding-top: 8px;
+                font-size: 1.4em;
+
+                &.activated {
+                    color: #666;
+                }
+            }
+        }
+    }
+
+}
+
+.offer-desc-area {
+    font-size: 0.9em;
+}
+
+.scroll {
+    overflow-y: scroll;
+}
+
+.bids-area {
+    overflow-y: scroll;
+    max-height: 190px;
+
+    .bid-amount {
+        color: $red;
+    }
+
+    .bid-title {
+        border-bottom: 1px solid $gray;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .offer {
+
+        background-color: #f0f0f0;
+
+        .offer-price {
+            background-color: rgb(122, 147, 186);
+            color: white;
+            padding: 5px;
+            display: inline-block;
+            width: 57px;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .offer-accept {
+            padding: 5px;
+        }
+
+        .accepted {
+            color: darkgreen;
+        }
+
+        .accept-confirm {
+            padding: 5px;
+            .ion-checkmark-round {
+                color: darkgreen;
+            }
+            .ion-close-round {
+                color: darkred;
+            }
+        }
+    }
 }
 
 .fa-rotate-45 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .fa-rotate-135 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-  -webkit-transform: rotate(135deg);
-  -ms-transform: rotate(135deg);
-  transform: rotate(135deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+    -webkit-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    transform: rotate(135deg);
 }
 
 .pull-right {
-  float: right !important;
+    float: right !important;
 }
 
 .pull-left {
-  float: left !important;
+    float: left !important;
 }
