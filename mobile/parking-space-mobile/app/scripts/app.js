@@ -79,7 +79,7 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config','angularMoment',
                 url: '/messages',
                 views: {
                     'edit-space': {
-                        templateUrl: "templates/bid-and-messages.html"
+                        templateUrl: "templates/review-bids.html"
                     }
                 }
             })
@@ -87,7 +87,7 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config','angularMoment',
                 url: '/talk',
                 views: {
                     'messages': {
-                        templateUrl: "templates/talk.html"
+                        templateUrl: "templates/messages.html"
                     }
                 }
             })

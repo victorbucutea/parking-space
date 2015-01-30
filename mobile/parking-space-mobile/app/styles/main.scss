@@ -553,10 +553,17 @@ parking-spot-info-box.small {
 
 .ps-page-title {
     border-bottom: 1px solid #aaa;
-    font-family: 'open sans';
-    padding: 14px 14px 14px 10px;
+    padding: 14px 14px 5px 10px;
     margin-bottom: 0;
     margin-top: 0;
+    background-color: #fff;
+}
+
+h4.ps-page-title {
+    @extend .ps-page-title;
+    margin: 20px 10px 0 10px;
+    padding: 0;
+    border-bottom: 1px solid #ddd;
 }
 
 .item {
@@ -564,21 +571,25 @@ parking-spot-info-box.small {
     background-color: inherit;
 }
 
-.orange {
-    color: $red !important;
-}
 
 .chat-area-modal {
-    background-color: #eee;
-    border: 1px solid $gray;
+    top: -4px;
 
     .no-message {
         color: #aaa;
         width: 100px;
         margin: auto;
-        margin-top: 10%;
+        margin-top: 14%;
     }
 
+    .watermark {
+        position: absolute;
+        top: 61px;
+        left: 28%;
+        font-size: 137px;
+        z-index: -1;
+        color: $gray-xlight;
+    }
     .message {
         clear: both;
         margin: 5px 10px;
@@ -673,7 +684,7 @@ parking-spot-info-box.small {
 
 }
 
-.offer-desc-area {
+.offer-desc-item {
     font-size: 0.9em;
     padding-bottom: 5px;
 
@@ -684,6 +695,10 @@ parking-spot-info-box.small {
         background-color: #F0F0F0;
         border-radius: 3px;
     }
+}
+
+.offer-desc-area {
+    padding: 10px 10px 20px 10px;
 }
 
 .scroll {

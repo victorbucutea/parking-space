@@ -181,25 +181,28 @@ angular.module('ParkingSpaceMobile.controllers', [])
     .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, offerService) {
 
         $scope.scrollDown = function () {
+            var d = $('.scroll');
+            d.scrollTop(d.prop("scrollHeight"));
         };
 
-        $scope.sendMessage = function () {
+        $scope.sendMessage = function (newMessage) {
 
-            if (!$scope.newMessage) {
+            if (!newMessage) {
                 return;
             }
 
             var newMessage = {
-                msg: $scope.newMessage,
+                msg: newMessage,
                 timestamp: new Date().getTime(),
                 read: true,
                 own: true
             };
+
             messageService.sendMessage('postId', newMessage, function (messages) {
-                $scope.spaceEdit.messages.push(newMessage);
-                $scope.newMessage = null;
+                $scope.selOffer.messages.push(newMessage);
             });
         };
+
 
         $scope.acceptStep1 = function (offer) {
             var acceptedOffers = $scope.spaceEdit.offers.filter(function (d) {
@@ -500,6 +503,11 @@ angular.module('ParkingSpaceMobile.controllers', [])
         $scope.show = function (space) {
             $scope.spaceEdit = space;
             $state.go('home.myposts.messages');
+        };
+
+        $scope.showMessages = function (space) {
+            $scope.spaceEdit = space;
+            $state.go('home.myposts.messages.talk');
         };
 
     });

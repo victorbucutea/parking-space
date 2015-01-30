@@ -28,13 +28,12 @@
                             <currency val="offer.currency"></currency>
                         </span>
 
-                        <span class="offer-accept" ng-show="unreadMessages(offer.messages)">
+                        <span class="offer-accept" ui-sref="home.myposts.messages.talk" ng-show="unreadMessages(offer.messages)">
                             ( <i class="fa fa-envelope"></i> {{unreadMessages(offer.messages)}} )
                         </span>
 
                         <div class="pull-right offer-accept" on-tap="acceptStep1(offer)" ng-hide="offer.confirm">
-                            <i class="ion-checkmark-round accepted" ng-show="offer.accepted">
-                                Accepted</i>
+                            <i class="ion-checkmark-round accepted" ng-show="offer.accepted">Accepted</i>
                             <i class="ion-checkmark-round" ng-show="!offer.accepted"> Accept</i>
                         </div>
 
@@ -47,26 +46,24 @@
                             <i class="ion-close-round" on-tap="cancel(offer)"> No</i>
                         </div>
 
-                        <div ng-show="!spaceEdit.offers.length" class="no-offers">No active offers for current bid.
+                        <div ng-show="!spaceEdit.offers.length" class="no-offers">
+                            No active offers for current bid.
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div ng-show="selOffer" class="padding">
-                <div class="offer-desc-area padding-top padding-bottom">
+            <div ng-show="selOffer" class="offer-desc-area">
+                <div class="offer-desc-item ">
                     Posted {{selOffer.timestamp | amTimeAgo }}.
                 </div>
-                <div class="offer-desc-area">
+                <div class="offer-desc-item">
                     Owner : <div class="value pull-right">{{selOffer.owner_name}}</div>
                 </div>
-                <div class="offer-desc-area">
+                <div class="offer-desc-item">
                     Tel No: <span class="value pull-right"><i class="fa fa-phone"></i> {{selOffer.telephone_no}}</span>
                 </div>
 
-                <div>
-                    <a ui-sref="home.myposts.messages.talk"><i class="fa fa-envelope"></i> Messages &raquo;</a>
-                </div>
             </div>
 
             <ui-view name="messages"></ui-view>
