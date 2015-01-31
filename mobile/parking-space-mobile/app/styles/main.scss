@@ -75,25 +75,36 @@ html, body {
     font-family: $font-family;
     color: $base-font-color;
     background-color: #fff;
-
-    ion-nav-view {
-        background-color: #fff;
-    }
-
 }
 
-.bar {
+.bar-header {
+    .row {
+        padding: 0 10px;
+        .col {
+            padding: 3px 0 0 0;
+            text-align: center;
+        }
+    }
+
+    .menu-underline {
+        span {
+            width: 75px;
+            display: inline-block;
+            position: absolute;
+            height: 5px;
+            background-color: #D46220;
+            top: -9px;
+            left: -18px;
+        }
+    }
 
     &.bar-dark {
         background-color: rgba(85, 85, 85, 0.5);
         border: 0 none;
 
-        .buttons {
-            .button {
-                margin-right: 30px;
-                &.button-icon:before {
-                    font-size: 40px;
-                }
+        .button {
+            &.button-icon:before {
+                font-size: 38px;
             }
         }
 
@@ -103,7 +114,6 @@ html, body {
     }
 }
 
-
 .ps-modal {
     border-top: 4px solid #d46220;
     position: absolute;
@@ -112,7 +122,6 @@ html, body {
     width: 100%;
     z-index: 3;
     box-shadow: 2px 2px 34px 2px #777777;
-
 
     .list {
         overflow: hidden;
@@ -127,14 +136,6 @@ html, body {
     display: block;
     height: 100%;
     position: relative;
-}
-
-.relative {
-    position: relative;
-}
-
-.below-header {
-    margin-top: 44px;
 }
 
 .right-nav-menu {
@@ -265,10 +266,6 @@ html, body {
     }
 }
 
-.transparent {
-    background: transparent !important;
-}
-
 .search-center-icon {
     border-radius: 100%;
     width: 15px;
@@ -283,29 +280,32 @@ html, body {
     position: absolute;
     width: 114px;
     background-color: #fff;
-    z-index: 100;
-    top: -40px;
+    z-index: 1;
+    top: 53%;
     left: 0;
     margin-left: auto;
     margin-right: auto;
     right: 0;
-    border: 1px solid #ddd;
     border-radius: 20px;
-    box-shadow: 2px 3px 33px 1px #888;
+    box-shadow: 2px 1px 10px 1px $gray-dark;
 
-    input[type=number] {
-        width: 40px;
+    .value {
+        width: 47px;
         display: inline-block;
-        height: 25px;
+        height: 28px;
+        padding-top: 4px;
+        font-size: 1.2em;
     }
 
     a.button {
+        padding: 2px;
         min-height: 20px;
-        color: #555;
+        color: $gray-dark;
         line-height: 20px;
+        border: 0 none;
 
         &:before {
-            font-size: 20px;
+            font-size: 28px;
             line-height: 20px;
         }
     }
@@ -316,7 +316,6 @@ html, body {
     font-weight: bold;
     color: #fff;
 }
-
 
 @mixin parking-sign($size: $lg-jumbo-measure-unit, $icon: false) {
 
@@ -488,7 +487,7 @@ parking-spot-info-box.small {
     background-color: rgb(212, 98, 32);
     padding: 0px 5px;
     line-height: 20px;
-    font-size: 14px;
+    font-size: 13px;
     top: 0;
 }
 
@@ -561,7 +560,7 @@ parking-spot-info-box.small {
 
 h4.ps-page-title {
     @extend .ps-page-title;
-    margin: 20px 10px 0 10px;
+    margin: 20px 10px 5px 10px;
     padding: 0;
     border-bottom: 1px solid #ddd;
 }
@@ -570,7 +569,6 @@ h4.ps-page-title {
     position: static;
     background-color: inherit;
 }
-
 
 .chat-area-modal {
     top: -4px;
@@ -725,9 +723,9 @@ h4.ps-page-title {
             background-color: #f0f0f0;
 
             &.selected {
-                background-color: darken(#f0f0f0,15%);
+                background-color: darken(#f0f0f0, 15%);
                 .offer-price {
-                    $light-blue: darken($blue,15%);
+                    $light-blue: darken($blue, 15%);
                     background-color: $light-blue;
                 }
             }
@@ -785,4 +783,10 @@ h4.ps-page-title {
 
 .pull-left {
     float: left !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }

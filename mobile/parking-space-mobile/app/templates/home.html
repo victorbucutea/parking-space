@@ -1,16 +1,31 @@
 <div ng-controller="MainCtrl" class="full-height">
-        <div class="bar bar-header bar-dark">
+    <div class="bar bar-header bar-dark">
 
-            <h1 class="title"></h1>
+        <h1 class="title"></h1>
 
-            <div class="buttons ">
-                <button class="button button-icon ion-wand button-clear" ui-sref="home.map.post"></button>
-                <button class="button button-icon ion-search button-clear" ui-sref="home.map.search"></button>
-                <button class="button button-icon ion-person button-clear" ui-sref="home.myposts">
-                    <notification-icon></notification-icon>
+        <div class="row ">
+            <div class="col">
+                <button class="button button-icon ion-wand button-clear" ui-sref-active="menu-underline" ui-sref="home.map.post">
+                    <span ui-sref-active="menu-underline"></span>
                 </button>
-                <button menu-toggle="right" class="button button-icon ion-help button-clear"></button>
+            </div>
+            <div class="col">
+                <button class="button button-icon ion-search button-clear" ui-sref-active="menu-underline" ui-sref="home.map.search">
+                    <span ui-sref-active="menu-underline"></span>
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-icon ion-person button-clear" ui-sref-active="menu-underline" ui-sref="home.myposts">
+                    <notification-icon></notification-icon>
+                    <span ></span>
+                </button>
+            </div>
+            <div class="col">
+                <button menu-toggle="right" class="button button-icon ion-help button-clear">
+                    <span ui-sref-active="menu-underline"></span>
+                </button>
             </div>
         </div>
-        <ui-view name="content"></ui-view>
+    </div>
+    <ui-view name="content"></ui-view>
 </div>

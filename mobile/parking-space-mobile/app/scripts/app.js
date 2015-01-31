@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ParkingSpaceMobile', ['ionic', 'config','angularMoment',
+angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
@@ -59,12 +59,12 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config','angularMoment',
                     }
                 }
             })
-            .state('home.map.search.place' , {
+            .state('home.map.search.place', {
                 url: '/place-offer',
                 views: {
-                  'place-offer': {
-                    templateUrl: "templates/place-offer.html"
-                  }
+                    'place-offer': {
+                        templateUrl: "templates/place-offer.html"
+                    }
                 }
             })
             .state('home.myposts', {
@@ -133,5 +133,17 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config','angularMoment',
             name: 'Inr',
             icon: 'fa-inr'
         }
-    ]);
+    ])
+
+    .constant('uom', {
+        metric: {
+            name: 'meters',
+            abr: 'm'
+        },
+        imperial: {
+            name: 'feets',
+            abr: 'ft'
+        }
+    }
+);
 

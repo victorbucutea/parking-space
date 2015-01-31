@@ -253,18 +253,18 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $scope.selOffer = offer;
             $scope.showChatArea = true;
 
-          /*  $timeout(function () {
-                messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
+            /*  $timeout(function () {
+             messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
 
-                });
-            }, 1000);*/
+             });
+             }, 1000);*/
         };
 
         $timeout(function () {
             /*if ($scope.selOffer) {
-                messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
-                });
-            }*/
+             messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
+             });
+             }*/
 
             offerService.markRead('postId', $scope.spaceEdit.offers, function (offers) {
 
@@ -272,9 +272,12 @@ angular.module('ParkingSpaceMobile.controllers', [])
         }, 3000)
     })
 
-    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, $state, currencyFactory) {
+    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, $state, currencyFactory, $timeout,  $filter) {
 
         $rootScope.map.setZoom(15);
+
+        $scope.noOfLongTerm = 0;
+        $scope.noOfShortTerm = 0;
 
         $scope.circleOptions = {
             strokeColor: '#111',
@@ -332,8 +335,12 @@ angular.module('ParkingSpaceMobile.controllers', [])
         });
 
         $scope.$watchCollection('spaces', function (newVal) {
+
             if (!newVal)
                 return;
+
+            $scope.noOfLongTerm = $filter('filter')(newVal, {short_term: false});
+            $scope.noOfShortTerm = $filter('filter')(newVal, {short_term: true});
 
             if ($scope.markers) {
                 $scope.markers.forEach(function (d) {
@@ -375,7 +382,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
             var searchRadiusCircle = $scope.searchRadiusCircle;
             if (searchRadiusCircle) {
                 var prevRad = searchRadiusCircle.getRadius();
-                if (prevRad <= 950) {
+                if (prevRad <= 900) {
                     $scope.circleOptions.radius = prevRad + 50;
                 }
 
@@ -432,6 +439,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $rootScope.map.setCenter(mapCenter);
             $rootScope.map.setZoom(17);
 
+
             $scope.spotThumbnail = new MarkerWithLabel({
                 position: latLng,
                 icon: {path: ''},
@@ -447,7 +455,21 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $scope.spotThumbnail.setMap();
             $rootScope.map.setZoom($scope.previousZoom);
             $rootScope.map.setCenter($scope.previousCenter);
-            dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
+            //redraw markers
+            if ($scope.markers) {
+                $scope.markers.forEach(function (d) {
+                    d.setMap($rootScope.map);
+                });
+            }
+
+            // redraw search radius
+            $scope.circleOptions.center = $rootScope.map.getCenter();
+            $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
+
+            $timeout(function(){
+                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
+            },500);
+
             $state.go('^');
         };
 
@@ -455,13 +477,11 @@ angular.module('ParkingSpaceMobile.controllers', [])
             console.log('saving bid ', bid);
             $scope.closeBid();
         };
-
-
     })
 
     .controller('MyPostsCtrl', function ($scope, modalFactory, parkingSpaceService, $state) {
 
-        $('.open-spaces-list').height($(window).height() - 105 );
+        $('.open-spaces-list').height($(window).height() - 105);
         parkingSpaceService.getMySpaces('1234', function (spaces) {
             $scope.spaces = spaces;
         });
