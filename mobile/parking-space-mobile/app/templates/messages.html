@@ -11,7 +11,7 @@
                     <span class="message-meta"> {{message.timestamp | date : 'dd MMM yyyy  H:m'}} </span>
                 </div>
 				<span ng-class="{orange: !message.read}">
-						{{message.msg}}
+						{{message.content}}
 				</span>
             </div>
             <div ng-show="!selOffer.messages.length" class="no-message">No messages</div>

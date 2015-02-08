@@ -398,7 +398,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
             }
         };
 
-        parkingSpaceService.getAvailableSpaces(45.0, 27.0, function (spaces) {
+        parkingSpaceService.getAvailableSpaces(44.41514, 26.09321, function (spaces) {
             $scope.spaces = spaces;
         });
 

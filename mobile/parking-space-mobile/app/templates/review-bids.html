@@ -15,7 +15,9 @@
 
                 </h4>
                 <h4>
-                    <small> You have {{spaceEdit.offers.length || 0}} offers. Click  &laquo;<i class="ion-checkmark-round"></i> Accept&raquo; to confirm</small>
+                    <small> You have {{spaceEdit.offers.length || 0}} offers.
+                        <span ng-show="spaceEdit.offers"> Click  &laquo;<i class="ion-checkmark-round"></i> Accept&raquo; to confirm </span>
+                    </small>
                     <small ng-show="warn"> Can only accept one single offer.</small>
                 </h4>
                 <div class="bid-table scroll">

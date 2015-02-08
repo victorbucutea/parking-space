@@ -73,7 +73,7 @@ angular.module('ParkingSpaceMobile.services', [])
     .service('parkingSpaceService', function ($rootScope, $http, $timeout, deviceId) {
 
         this.getAvailableSpaces = function (lat, lng, clbk) {
-            $timeout(function () {
+            /*$timeout(function () {
 
                 spaces.forEach(function (item) {
                     var saltValue = Math.random() * 0.003;
@@ -91,11 +91,17 @@ angular.module('ParkingSpaceMobile.services', [])
                     return Math.round(Math.random());
                 });
                 clbk(tempSpaces);
-            }, 500);
+            }, 500);*/
+
+            $http.get('http://localhost:3000/parking_spaces.json?lat='+lat+'&lon='+lng+'&range=500').then( function(data) {
+                    console.log(data);
+                    clbk(data.data);
+                }
+            );
         };
 
         this.getMySpaces = function (devideId, clbk) {
-            this.getAvailableSpaces(45.0, 27.0, clbk);
+            this.getAvailableSpaces(44.41514, 26.09321, clbk);
         };
 
         var spaces = [
@@ -117,31 +123,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 4,
                         'id': 1,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Țӑran ! Ceri prea mult pentru atât de puțin ',
-                                timestamp: new Date().getTime(),
+                                'content': ' Țӑran ! Ceri prea mult pentru atât de puțin ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -152,30 +158,30 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 4.2,
                         'id': 2,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'owner_name': 'owner_1@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Qui sème le vent, récolte la tempête ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Qui sème le vent, récolte la tempête ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Offer 0.32 € pentru loc!!',
-                                timestamp: new Date().getTime() - 300,
+                                'content': 'Offer 0.32 € pentru loc!!',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -186,31 +192,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 5,
                         'id': 3,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer3@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Revenons à nos moutons',
-                                timestamp: new Date().getTime(),
+                                'content': 'Revenons à nos moutons',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -221,25 +227,25 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 5.6,
                         'id': 4,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer4@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'जिस की लाठी उस की भैंस',
-                                timestamp: new Date().getTime(),
+                                'content': 'जिस की लाठी उस की भैंस',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'जननी जन्मभूमिश्च स्वर्गादपि गरीयसी ॥',
-                                timestamp: new Date().getTime(),
+                                'content': 'जननी जन्मभूमिश्च स्वर्गादपि गरीयसी ॥',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -265,25 +271,25 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 12,
                         'id': 5,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer@example.com',
                         'messages': [
                             {
-                                msg: 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                timestamp: new Date().getTime(),
+                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Век живи -- век учись',
-                                timestamp: new Date().getTime(),
+                                'content': 'Век живи -- век учись',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime(),
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -294,37 +300,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 13,
                         'id': 6,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer1@example.com',
                         'messages': [
                             {
-                                msg: 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                timestamp: new Date().getTime(),
+                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Век живи -- век учись',
-                                timestamp: new Date().getTime() - 1000,
+                                'content': 'Век живи -- век учись',
+                                'created_at': new Date().getTime() - 1000,
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime(),
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime() - 2000,
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime() - 2000,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime() - 3000,
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime() - 3000,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -335,37 +341,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 14,
                         'id': 7,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer3@example.com',
                         'messages': [
                             {
-                                msg: 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                timestamp: new Date().getTime() - 8000,
+                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
+                                'created_at': new Date().getTime() - 8000,
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Век живи -- век учись',
-                                timestamp: new Date().getTime(),
+                                'content': 'Век живи -- век учись',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime() - 8000,
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime() - 8000,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime() - 8000,
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime() - 8000,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime(),
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -377,37 +383,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 15,
                         'id': 8,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 9000,
+                        'created_at': new Date().getTime() - 9000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer4@example.com',
                         'messages': [
                             {
-                                msg: 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                timestamp: new Date().getTime(),
+                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Век живи -- век учись',
-                                timestamp: new Date().getTime() - 2000,
+                                'content': 'Век живи -- век учись',
+                                'created_at': new Date().getTime() - 2000,
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime() - 8000,
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime() - 8000,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime(),
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Временами и дурак умно говорит',
-                                timestamp: new Date().getTime() - 3000,
+                                'content': 'Временами и дурак умно говорит',
+                                'created_at': new Date().getTime() - 3000,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -434,37 +440,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 13,
                         'id': 9,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer@example.com',
                         'messages': [
                             {
-                                msg: 'जान है तो जहान है',
-                                timestamp: new Date().getTime(),
+                                'content': 'जान है तो जहान है',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'जंगल में मोर नाचा किस ने देखा ?',
-                                timestamp: new Date().getTime(),
+                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'जिस की लाठी उस की भैंस',
-                                timestamp: new Date().getTime(),
+                                'content': 'जिस की लाठी उस की भैंस',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                timestamp: new Date().getTime(),
+                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                timestamp: new Date().getTime() - 300,
+                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -475,37 +481,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 13.2,
                         'id': 10,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer1@example.com',
                         'messages': [
                             {
-                                msg: 'जान है तो जहान है',
-                                timestamp: new Date().getTime(),
+                                'content': 'जान है तो जहान है',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'जंगल में मोर नाचा किस ने देखा ?',
-                                timestamp: new Date().getTime(),
+                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'जिस की लाठी उस की भैंस',
-                                timestamp: new Date().getTime(),
+                                'content': 'जिस की लाठी उस की भैंस',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                timestamp: new Date().getTime(),
+                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                timestamp: new Date().getTime() - 300,
+                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -517,31 +523,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 13,
                         'id': 11,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer3@example.com',
                         'messages': [
                             {
-                                msg: 'जंगल में मोर नाचा किस ने देखा ?',
-                                timestamp: new Date().getTime(),
+                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'जिस की लाठी उस की भैंस',
-                                timestamp: new Date().getTime(),
+                                'content': 'जिस की लाठी उस की भैंस',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                timestamp: new Date().getTime(),
+                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                timestamp: new Date().getTime() - 300,
+                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -553,31 +559,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 13.6,
                         'id': 12,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer4@example.com',
                         'messages': [
                             {
-                                msg: 'जान है तो जहान है',
-                                timestamp: new Date().getTime(),
+                                'content': 'जान है तो जहान है',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'जंगल में मोर नाचा किस ने देखा ?',
-                                timestamp: new Date().getTime(),
+                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                timestamp: new Date().getTime(),
+                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                timestamp: new Date().getTime() - 300,
+                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -604,37 +610,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 13,
                         'id': 13,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 8000,
+                        'created_at': new Date().getTime() - 8000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer@example.com',
                         'messages': [
                             {
-                                msg: '角を矯めて牛を殺す',
-                                timestamp: new Date().getTime(),
+                                'content': '角を矯めて牛を殺す',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '鳥なき里の蝙蝠',
-                                timestamp: new Date().getTime(),
+                                'content': '鳥なき里の蝙蝠',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '本末転倒',
-                                timestamp: new Date().getTime(),
+                                'content': '本末転倒',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '井戸の中の独言も三年たてば知れる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '井戸の中の独言も三年たてば知れる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '出る釘は打たれる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '出る釘は打たれる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -645,37 +651,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 13.2,
                         'id': 14,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 2000,
+                        'created_at': new Date().getTime() - 2000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer1@example.com',
                         'messages': [
                             {
-                                msg: '角を矯めて牛を殺す',
-                                timestamp: new Date().getTime(),
+                                'content': '角を矯めて牛を殺す',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '鳥なき里の蝙蝠',
-                                timestamp: new Date().getTime(),
+                                'content': '鳥なき里の蝙蝠',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '本末転倒',
-                                timestamp: new Date().getTime(),
+                                'content': '本末転倒',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '井戸の中の独言も三年たてば知れる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '井戸の中の独言も三年たてば知れる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '出る釘は打たれる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '出る釘は打たれる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -686,37 +692,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 15,
                         'id': 15,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer3@example.com',
                         'messages': [
                             {
-                                msg: '角を矯めて牛を殺す',
-                                timestamp: new Date().getTime(),
+                                'content': '角を矯めて牛を殺す',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '鳥なき里の蝙蝠',
-                                timestamp: new Date().getTime(),
+                                'content': '鳥なき里の蝙蝠',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '本末転倒',
-                                timestamp: new Date().getTime(),
+                                'content': '本末転倒',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '井戸の中の独言も三年たてば知れる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '井戸の中の独言も三年たてば知れる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '出る釘は打たれる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '出る釘は打たれる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -727,37 +733,37 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 15.6,
                         'id': 16,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer4@example.com',
                         'messages': [
                             {
-                                msg: '角を矯めて牛を殺す',
-                                timestamp: new Date().getTime(),
+                                'content': '角を矯めて牛を殺す',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '鳥なき里の蝙蝠',
-                                timestamp: new Date().getTime(),
+                                'content': '鳥なき里の蝙蝠',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '本末転倒',
-                                timestamp: new Date().getTime(),
+                                'content': '本末転倒',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '井戸の中の独言も三年たてば知れる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '井戸の中の独言も三年たてば知れる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '出る釘は打たれる',
-                                timestamp: new Date().getTime() - 300,
+                                'content': '出る釘は打たれる',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -783,49 +789,49 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 14,
                         'id': 17,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 6000,
+                        'created_at': new Date().getTime() - 6000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '  Reaaaaallly long message 2. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 3. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '3234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -836,49 +842,49 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 14.2,
                         'id': 21,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 2000,
+                        'created_at': new Date().getTime() - 2000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer1@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '  Reaaaaallly long message 2. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 3. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '3234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -889,49 +895,49 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 15,
                         'id': 22,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 5000,
+                        'created_at': new Date().getTime() - 5000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer3@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '  Reaaaaallly long message 2. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 3. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '3234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -942,49 +948,49 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 14.6,
                         'id': 23,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer4@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: '  Reaaaaallly long message 2. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 3. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '3234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -1010,31 +1016,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 9,
                         'id': 24,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime(),
+                        'created_at': new Date().getTime(),
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 3. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '3234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -1045,31 +1051,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 8.2,
                         'id': 25,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 10000,
+                        'created_at': new Date().getTime() - 10000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer1@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -1080,31 +1086,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 9,
                         'id': 26,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 11000,
+                        'created_at': new Date().getTime() - 11000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer3@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Reaaaaallly long message 2. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': ' Reaaaaallly long message 2. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '2234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 0',
-                                timestamp: new Date().getTime() - 300,
+                                'content': ' Msg 0',
+                                'created_at': new Date().getTime() - 300,
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -1115,31 +1121,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 9.6,
                         'id': 27,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 13000,
+                        'created_at': new Date().getTime() - 13000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer4@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '3234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             }
@@ -1150,31 +1156,31 @@ angular.module('ParkingSpaceMobile.services', [])
                         'price': 9.8,
                         'id': 28,
                         'currency': 'Eur',
-                        'timestamp': new Date().getTime() - 13000,
+                        'created_at': new Date().getTime() - 13000,
                         'telephone_no': '+40727456250',
                         'owner_name': 'offer4@example.com',
                         'messages': [
                             {
-                                msg: ' Msg 1',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 1',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '1234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: true,
                                 deviceId: '3234'
                             },
                             {
-                                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                                timestamp: new Date().getTime(),
+                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             },
                             {
-                                msg: ' Msg 6',
-                                timestamp: new Date().getTime(),
+                                'content': ' Msg 6',
+                                'created_at': new Date().getTime(),
                                 read: false,
                                 deviceId: '1234'
                             }
