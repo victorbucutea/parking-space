@@ -7,6 +7,8 @@ one:
   bid_amount: 10
   bid_currency: 'EUR'
   bidder_name: 'someone'
+  telephone_no: '+40727.456.250'
+  read: false
   approval_status: 0
   parking_space_id: 1
 
@@ -17,6 +19,8 @@ two:
   bid_amount: 20
   bid_currency: 'EUR'
   bidder_name: 'someone'
+  telephone_no: '+40727.456.250'
+  read: false
   approval_status: 0
   parking_space_id: 1
 
@@ -27,6 +31,8 @@ three:
   bid_amount: 10
   bid_currency: 'EUR'
   bidder_name: 'someone'
+  telephone_no: '+40727.456.250'
+  read: false
   approval_status: 0
   parking_space_id: 2
 
@@ -37,6 +43,8 @@ four:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
+  telephone_no: '+40727.456.250'
+  read: false
   approval_status: 0
   parking_space_id: 2
 
@@ -47,6 +55,8 @@ five:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
+  telephone_no: '+40727.456.250'
+  read: false
   approval_status: 0
   parking_space_id: 3
 
@@ -57,5 +67,7 @@ six:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
+  telephone_no: '+40727.456.250'
+  read: false
   approval_status: 0
   parking_space_id: 3

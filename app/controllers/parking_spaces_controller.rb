@@ -1,5 +1,5 @@
 class ParkingSpacesController < ApplicationController
-  before_action :set_parking_space, only: [:show, :edit, :update, :destroy]
+  before_action :set_parking_space, only: [:show, :update, :destroy]
   respond_to :json
 
   # GET /parking_spaces
@@ -13,7 +13,7 @@ class ParkingSpacesController < ApplicationController
     term =!params[:term] || params[:term].empty? ? 'short_term' : params[:term]
 
     unless lat && lon && range
-      render json: {:Error => "Missing parameters 'lan', 'long' and 'range'"}, status: :unprocessable_entity
+      render json: {:Error => "Missing parameters 'lat', 'lon' and 'range'"}, status: :unprocessable_entity
       return
     end
 
@@ -42,9 +42,9 @@ class ParkingSpacesController < ApplicationController
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
     if term == 'short_term'
-      @parking_spaces = ParkingSpace.short_term.within_boundaries query_attrs
+      @parking_spaces = ParkingSpace.short_term.within_boundaries(query_attrs).includes(proposals: [:messages])
     else
-      @parking_spaces = ParkingSpace.long_term.within_boundaries query_attrs
+      @parking_spaces = ParkingSpace.long_term.within_boundaries(query_attrs).includes(proposals: [:messages])
     end
 
   end
@@ -62,7 +62,7 @@ class ParkingSpacesController < ApplicationController
 
     respond_to do |format|
       if @parking_space.save
-        format.json { render :show, status: :created, location: @parking_space }
+        format.json { render :index, status: :created, location: @parking_space }
       else
         format.json { render json: @parking_space.errors, status: :unprocessable_entity }
       end
@@ -113,7 +113,10 @@ class ParkingSpacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def parking_space_params
-    params.require(:parking_space).permit(:location_lat, :location_long, :recorded_from_lat, :recorded_from_long,
-                                          :deviceid, :target_price, :interval, :phone_number, :owner_name,)
+    params.require(:parking_space).permit(:location_lat, :location_long,
+                                          :recorded_from_lat, :recorded_from_long,
+                                          :deviceid, :target_price, :interval, :phone_number,
+                                          :owner_name, :image_file_name, :image_content_type,
+                                          :image_file_size, :image_data)
   end
 end
