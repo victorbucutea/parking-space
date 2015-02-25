@@ -10,20 +10,13 @@ class ParkingSpacesController < ApplicationController
     lat = !params[:lat] || params[:lat].empty? ? nil : params[:lat]
     lon = !params[:lon] || params[:lon].empty? ? nil : params[:lon]
     range =!params[:range] || params[:range].empty? ? nil : params[:range]
-    term =!params[:term] || params[:term].empty? ? 'short_term' : params[:term]
 
     unless lat && lon && range
       render json: {:Error => "Missing parameters 'lat', 'lon' and 'range'"}, status: :unprocessable_entity
       return
     end
 
-
-    if term == 'short_term' && range.to_i > 1200
-      render json: {:Error => "Cannot have a range larger than 1200"}, status: :unprocessable_entity
-      return
-    end
-
-    if term == 'long_term' && range.to_i > 10000
+    if range.to_i > 1200
       render json: {:Error => "Cannot have a range larger than 1200"}, status: :unprocessable_entity
       return
     end
@@ -41,12 +34,9 @@ class ParkingSpacesController < ApplicationController
     lon_min = cur_long - long_range_in_deg
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
-    if term == 'short_term'
-      @parking_spaces = ParkingSpace.short_term.within_boundaries(query_attrs).includes(proposals: [:messages])
-    else
-      @parking_spaces = ParkingSpace.long_term.within_boundaries(query_attrs).includes(proposals: [:messages])
-    end
-
+    @parking_spaces = ParkingSpace.short_term.within_boundaries(query_attrs).includes(proposals: [:messages])
+    # add long term
+    @parking_spaces += ParkingSpace.long_term.within_boundaries(query_attrs).includes(proposals: [:messages])
   end
 
   # GET /parking_spaces/1
@@ -62,9 +52,9 @@ class ParkingSpacesController < ApplicationController
 
     respond_to do |format|
       if @parking_space.save
-        format.json { render :index, status: :created, location: @parking_space }
+        format.json { render :show, status: :created, location: @parking_space }
       else
-        format.json { render json: @parking_space.errors, status: :unprocessable_entity }
+        format.json { render json: {:Error => @parking_space.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -115,8 +105,14 @@ class ParkingSpacesController < ApplicationController
   def parking_space_params
     params.require(:parking_space).permit(:location_lat, :location_long,
                                           :recorded_from_lat, :recorded_from_long,
-                                          :deviceid, :target_price, :interval, :phone_number,
+                                          :deviceid, :target_price, :target_price_currency,
+                                          :interval, :phone_number,
                                           :owner_name, :image_file_name, :image_content_type,
-                                          :image_file_size, :image_data)
+                                          :image_file_size, :title,
+                                          :address_line_1, :address_line_2,
+                                          :image_data,
+                                          :thumbnail_data,
+                                          :rotation_angle,
+                                          :description)
   end
 end

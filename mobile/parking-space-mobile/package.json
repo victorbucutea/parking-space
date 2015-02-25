@@ -54,6 +54,7 @@
     "org.apache.cordova.camera",
     "https://github.com/raananw/PhoneGap-Image-Resizer.git",
     "org.apache.cordova.file",
-    "https://github.com/hazemhagrass/phonegap-base64.git"
+    "https://github.com/hazemhagrass/phonegap-base64.git",
+    "nl.x-services.plugins.googleplus"
   ]
 }

@@ -2,12 +2,19 @@
 
 angular.module('ParkingSpaceMobile.controllers', [])
 
-    .controller('MainCtrl', function ($rootScope, $scope, $document, $timeout) {
+    .controller('MainCtrl', function ($rootScope, $scope, $document, $timeout, authenticationService) {
 
         $timeout(function () {
             $rootScope.$broadcast('notification', 3);
         }, 2500);
 
+        $rootScope.$on('http.error', function(event, data ,status) {
+            $rootScope.errMsg = data + status;
+        });
+
+        $rootScope.$on('$stateChangeSuccess', function (ev, toState) {
+            $rootScope.errMsg = null;
+        } );
     })
 
     .controller('MapCtrl', function ($scope, $timeout, $rootScope, geolocationService, geocoderService) {
@@ -76,6 +83,9 @@ angular.module('ParkingSpaceMobile.controllers', [])
         $scope.calculateAddress = function () {
             var mapCenter = $rootScope.map.getCenter();
             geocoderService.getAddress(mapCenter.lat(), mapCenter.lng(), function (newAddr) {
+                newAddr.lat = mapCenter.lat();
+                newAddr.lng = mapCenter.lng();
+                newAddr.markerRotation = $scope.marker.rotation;
                 $rootScope.$broadcast('changeAddress', newAddr);
                 if (!$scope.$$phase)
                     $scope.$apply();
@@ -117,6 +127,10 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
             $scope.space.address_line_1 = street + ', ' + street_number;
             $scope.space.address_line_2 = sublocality + ', ' + city;
+            $scope.space.location_lat = data.lat;
+            $scope.space.location_long = data.lng;
+            $scope.space.rotation_angle = data.markerRotation || 0;
+
 
             if (!$scope.space.title) {
                 $scope.space.title = sublocality;
@@ -125,11 +139,15 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
     })
 
-    .controller('EditParkingSpaceCtrl', function ($scope, $state) {
+    .controller('EditParkingSpaceCtrl', function ($scope, $state, imageResizeFactory, parkingSpaceService) {
 
         $scope.takePhoto = function () {
             var cameraSuccess = function (img) {
-                $scope.spaceEdit.img = img;
+                $scope.spaceEdit.image_data = img;
+                $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
+                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/")+1);
+                $scope.spaceEdit.image_content_type = 'image/jpeg';
+
                 $scope.$apply();
             };
 
@@ -148,7 +166,11 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
         $scope.attachPhoto = function () {
             var cameraSuccess = function (img) {
-                $scope.spaceEdit.img = img;
+                $scope.spaceEdit.image_data = img;
+                $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
+                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/")+1);
+                $scope.spaceEdit.image_content_type = 'image/jpeg';
+
                 $scope.$apply();
             };
 
@@ -165,7 +187,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
 
         $scope.save = function () {
-            console.log('updating post', $scope.spaceEdit);
+            parkingSpaceService.saveSpace($scope.spaceEdit);
             $state.go('^');
         };
 
@@ -303,17 +325,21 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
 
             var latLng = $rootScope.map.getCenter();
-            parkingSpaceService.getAvailableSpaces(latLng.lat(), latLng.lng(), function (spaces) {
+            parkingSpaceService.getAvailableSpaces(latLng.lat(), latLng.lng(), $scope.circleOptions.radius, function (spaces) {
                 $scope.spaces = spaces;
             });
         };
-        var dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
+        var dragListenHandle = null;
 
-        if (!$scope.searchRadiusCircle) {
-            // user navigates on screen for first time
-            $scope.circleOptions.center = $rootScope.map.getCenter();
-            $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
-        }
+        setTimeout(function(){
+            dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
+            if (!$scope.searchRadiusCircle) {
+                // user navigates on screen for first time
+                $scope.circleOptions.center = $rootScope.map.getCenter();
+                $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
+            }
+        },1000);
+
 
         $rootScope.$broadcast('searchCenterIcon', true);
 
@@ -362,7 +388,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
                 var price = space.price + "";
                 var x = price.length == 1 ? 8 : 15;
                 var markerWithLabel = new MarkerWithLabel({
-                    position: new google.maps.LatLng(space.position.lat, space.position.lng),
+                    position: new google.maps.LatLng(space.location_lat, space.location_long),
                     map: $rootScope.map,
                     icon: image,
                     labelContent: space.price + ' ' + currencyHtml,
@@ -378,27 +404,8 @@ angular.module('ParkingSpaceMobile.controllers', [])
             })
         });
 
-        $scope.increaseRadius = function () {
-            var searchRadiusCircle = $scope.searchRadiusCircle;
-            if (searchRadiusCircle) {
-                var prevRad = searchRadiusCircle.getRadius();
-                if (prevRad <= 900) {
-                    $scope.circleOptions.radius = prevRad + 50;
-                }
-
-            }
-        };
-
-        $scope.decreaseRadius = function () {
-            var searchRadiusCircle = $scope.searchRadiusCircle;
-            if (searchRadiusCircle) {
-                var prevRad = searchRadiusCircle.getRadius();
-                if (prevRad >= 100)
-                    $scope.circleOptions.radius = prevRad - 50;
-            }
-        };
-
-        parkingSpaceService.getAvailableSpaces(44.41514, 26.09321, function (spaces) {
+        var center = $rootScope.map.getCenter();
+        parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
             $scope.spaces = spaces;
         });
 
@@ -414,7 +421,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
 
             google.maps.event.removeListener(dragListenHandle);
-            var latLng = new google.maps.LatLng($scope.selectedSpace.position.lat, $scope.selectedSpace.position.lng);
+            var latLng = new google.maps.LatLng($scope.selectedSpace.location_lat, $scope.selectedSpace.location_long);
             $scope.previousZoom = $rootScope.map.getZoom();
             $scope.previousCenter = $rootScope.map.getCenter();
 
@@ -477,9 +484,29 @@ angular.module('ParkingSpaceMobile.controllers', [])
             console.log('saving bid ', bid);
             $scope.closeBid();
         };
+
+        $scope.increaseRadius = function () {
+            var searchRadiusCircle = $scope.searchRadiusCircle;
+            if (searchRadiusCircle) {
+                var prevRad = searchRadiusCircle.getRadius();
+                if (prevRad <= 900) {
+                    $scope.circleOptions.radius = prevRad + 50;
+                }
+
+            }
+        };
+
+        $scope.decreaseRadius = function () {
+            var searchRadiusCircle = $scope.searchRadiusCircle;
+            if (searchRadiusCircle) {
+                var prevRad = searchRadiusCircle.getRadius();
+                if (prevRad >= 100)
+                    $scope.circleOptions.radius = prevRad - 50;
+            }
+        };
     })
 
-    .controller('MyPostsCtrl', function ($scope, modalFactory, parkingSpaceService, $state) {
+    .controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state) {
 
         $('.open-spaces-list').height($(window).height() - 105);
         parkingSpaceService.getMySpaces('1234', function (spaces) {

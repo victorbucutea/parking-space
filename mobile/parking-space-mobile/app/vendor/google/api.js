@@ -8,7 +8,11 @@ google.maps = google.maps || {};
     }
 
     var key = 'AIzaSyDPUL3kus7j_yLmVBvj0UO7XIQww2yKJEg';
-    var url = 'https://maps.googleapis.com/maps/api/js';
 
+    var url = 'https://maps.googleapis.com/maps/api/js';
     getScript(url, key);
-})();
+
+    url = 'https://apis.google.com/js/client.js?onload=handleClientLoad';
+    getScript(url, key);
+})()
+;

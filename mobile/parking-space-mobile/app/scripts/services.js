@@ -4,18 +4,19 @@ angular.module('ParkingSpaceMobile.services', [])
 
         function onError(error) {
             console.error('code: ' + error.code + '\n' +
-            'message: ' + error.message + '\n');
+            'message: ' + error.message + '\n', error);
         }
 
-        this.getCurrentLocation = function (clbkOk) {
+        this.getCurrentLocation = function (clbkOk, clbkErr) {
             var onSuccess = function (position) {
                 console.log('Latitude: ' + position.coords.latitude + '\n' +
                 'Longitude: ' + position.coords.longitude + '\n');
                 if (clbkOk) {
                     clbkOk(position);
                 }
+
             };
-            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+            navigator.geolocation.getCurrentPosition(onSuccess, clbkErr || onError);
         }
     })
 
@@ -69,1189 +70,81 @@ angular.module('ParkingSpaceMobile.services', [])
         }
     })
 
-
-    .service('parkingSpaceService', function ($rootScope, $http, $timeout, deviceId) {
-
-        this.getAvailableSpaces = function (lat, lng, clbk) {
-            /*$timeout(function () {
-
-                spaces.forEach(function (item) {
-                    var saltValue = Math.random() * 0.003;
-                    saltValue *= Math.round(Math.random()) ? 1 : -1;
-                    item.position = {lat: lat + saltValue, lng: lng + saltValue};
-                    item.rotation = Math.round(Math.random() * 180);
-
-                    item.offers.forEach(function (d) {
-                        d.messages.forEach(function (d) {
-                            Math.round(Math.random()) ? d.own = true : d.own = false
-                        });
-                    });
-                });
-                var tempSpaces = spaces.filter(function (item) {
-                    return Math.round(Math.random());
-                });
-                clbk(tempSpaces);
-            }, 500);*/
-
-            $http.get('http://localhost:3000/parking_spaces.json?lat='+lat+'&lon='+lng+'&range=500').then( function(data) {
-                    console.log(data);
-                    clbk(data.data);
-                }
-            );
-        };
-
-        this.getMySpaces = function (devideId, clbk) {
-            this.getAvailableSpaces(44.41514, 26.09321, clbk);
-        };
-
-        var spaces = [
-            {
-                'img': 'images/cellar.jpg',
-                'title': 'Loc la strada',
-                'short_term': true,
-                'address_line_1': 'Calea Vacaresti nr 232',
-                'address_line_2': 'Sector 4, Bucuresti',
-                'price': 5,
-                'id': 1,
-                'currency': 'Eur',
-                'post_date': new Date().getTime(),
-                'owner_name': 'aaaa@somedomain.com',
-                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim',
-                'offers': [
-                    {
-                        'read': false,
-                        'price': 4,
-                        'id': 1,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Țӑran ! Ceri prea mult pentru atât de puțin ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 4.2,
-                        'id': 2,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'owner_name': 'owner_1@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Qui sème le vent, récolte la tempête ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Offer 0.32 € pentru loc!!',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 5,
-                        'id': 3,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer3@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Revenons à nos moutons',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 5.6,
-                        'id': 4,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer4@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'जिस की लाठी उस की भैंस',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'जननी जन्मभूमिश्च स्वर्गादपि गरीयसी ॥',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                'img': 'images/cellar.jpg',
-                'title': '1 saptamana',
-                'short_term': true,
-                'address_line_1': 'Calea Vacaresti nr 234',
-                'address_line_2': 'Sector 4, Bucuresti',
-                'price': 12,
-                'id': 2,
-                'currency': 'Eur',
-                'post_date': new Date().getTime() - 5000,
-                'owner_name': 'someone@gmail.com',
-                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim',
-                'offers': [
-                    {
-                        'read': false,
-                        'price': 12,
-                        'id': 5,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer@example.com',
-                        'messages': [
-                            {
-                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Век живи -- век учись',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 13,
-                        'id': 6,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer1@example.com',
-                        'messages': [
-                            {
-                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Век живи -- век учись',
-                                'created_at': new Date().getTime() - 1000,
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime() - 2000,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime() - 3000,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 14,
-                        'id': 7,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer3@example.com',
-                        'messages': [
-                            {
-                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                'created_at': new Date().getTime() - 8000,
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Век живи -- век учись',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime() - 8000,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime() - 8000,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-
-                    },
-                    {
-                        'read': false,
-                        'price': 15,
-                        'id': 8,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 9000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer4@example.com',
-                        'messages': [
-                            {
-                                'content': 'Важно не то, как долго ты прожил, а как хорошо жил.',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Век живи -- век учись',
-                                'created_at': new Date().getTime() - 2000,
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime() - 8000,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Временами и дурак умно говорит',
-                                'created_at': new Date().getTime() - 3000,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-
-                    }
-                ]
-            },
-            {
-                'img': 'images/cellar.jpg',
-                'title': '2 sapt, in spatele OP 45',
-                'short_term': false,
-                'address_line_1': 'Calea Vacaresti nr 236',
-                'address_line_2': 'Sector 4, Bucuresti',
-                'price': 13,
-                'id': 3,
-                'currency': 'Eur',
-                'post_date': new Date().getTime() + 10000,
-                'owner_name': 'someone@example2.com',
-                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim',
-                'offers': [
-                    {
-                        'read': false,
-                        'price': 13,
-                        'id': 9,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer@example.com',
-                        'messages': [
-                            {
-                                'content': 'जान है तो जहान है',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'जिस की लाठी उस की भैंस',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 13.2,
-                        'id': 10,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer1@example.com',
-                        'messages': [
-                            {
-                                'content': 'जान है तो जहान है',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'जिस की लाठी उस की भैंस',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-
-                    },
-                    {
-                        'read': false,
-                        'price': 13,
-                        'id': 11,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer3@example.com',
-                        'messages': [
-                            {
-                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'जिस की लाठी उस की भैंस',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-
-                    },
-                    {
-                        'read': false,
-                        'price': 13.6,
-                        'id': 12,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer4@example.com',
-                        'messages': [
-                            {
-                                'content': 'जान है तो जहान है',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'जंगल में मोर नाचा किस ने देखा ?',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'अब पछताए होत क्या जब चिड़िया चुग गई खेत ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'नौ सौ चूहे खाके बिल्ली हज को चली',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-
-                    }
-                ]
-            },
-            {
-                'img': 'images/meeting.jpg',
-                'title': 'Long term, in spatele OP 45',
-                'short_term': false,
-                'address_line_1': 'Calea Vacaresti nr 236',
-                'address_line_2': 'Sector 4, Bucuresti',
-                'price': 13,
-                'id': 4,
-                'currency': 'Eur',
-                'post_date': new Date().getTime() - 12000,
-                'owner_name': 'someone_special@example.com',
-                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim',
-                'offers': [
-                    {
-                        'read': false,
-                        'price': 13,
-                        'id': 13,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 8000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer@example.com',
-                        'messages': [
-                            {
-                                'content': '角を矯めて牛を殺す',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '鳥なき里の蝙蝠',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '本末転倒',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '井戸の中の独言も三年たてば知れる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '出る釘は打たれる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 13.2,
-                        'id': 14,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 2000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer1@example.com',
-                        'messages': [
-                            {
-                                'content': '角を矯めて牛を殺す',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '鳥なき里の蝙蝠',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '本末転倒',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '井戸の中の独言も三年たてば知れる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '出る釘は打たれる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 15,
-                        'id': 15,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer3@example.com',
-                        'messages': [
-                            {
-                                'content': '角を矯めて牛を殺す',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '鳥なき里の蝙蝠',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '本末転倒',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '井戸の中の独言も三年たてば知れる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '出る釘は打たれる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 15.6,
-                        'id': 16,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer4@example.com',
-                        'messages': [
-                            {
-                                'content': '角を矯めて牛を殺す',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '鳥なき里の蝙蝠',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '本末転倒',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '井戸の中の独言も三年たてば知れる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '出る釘は打たれる',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                'img': 'images/meeting.jpg',
-                'title': '2 sapt, in spatele OP 45',
-                'short_term': false,
-                'address_line_1': 'Calea Vacaresti nr 236',
-                'address_line_2': 'Sector 4, Bucuresti',
-                'price': 14,
-                'id': 5,
-                'currency': 'Eur',
-                'post_date': new Date().getTime() - 40000,
-                'owner_name': '22132@example.com',
-                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim',
-                'offers': [
-                    {
-                        'read': false,
-                        'price': 14,
-                        'id': 17,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 6000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '3234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 14.2,
-                        'id': 21,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 2000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer1@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '3234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 15,
-                        'id': 22,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 5000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer3@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '3234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 14.6,
-                        'id': 23,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer4@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': '  Reaaaaallly long message 2. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '3234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                'img': 'images/meeting.jpg',
-                'title': '2 sapt, in spatele OP 45',
-                'short_term': false,
-                'address_line_1': 'Calea Vacaresti nr 236',
-                'address_line_2': 'Sector 4, Bucuresti',
-                'price': 9,
-                'id': 6,
-                'currency': 'Eur',
-                'post_date': new Date().getTime() - 70000,
-                'owner_name': 'some_x@example.com',
-                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim',
-                'offers': [
-                    {
-                        'read': false,
-                        'price': 9,
-                        'id': 24,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime(),
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 3. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '3234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 8.2,
-                        'id': 25,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 10000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer1@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 9,
-                        'id': 26,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 11000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer3@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Reaaaaallly long message 2. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '2234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 0',
-                                'created_at': new Date().getTime() - 300,
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 9.6,
-                        'id': 27,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 13000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer4@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '3234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    },
-                    {
-                        'read': false,
-                        'price': 9.8,
-                        'id': 28,
-                        'currency': 'Eur',
-                        'created_at': new Date().getTime() - 13000,
-                        'telephone_no': '+40727456250',
-                        'owner_name': 'offer4@example.com',
-                        'messages': [
-                            {
-                                'content': ' Msg 1',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 4. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: true,
-                                deviceId: '3234'
-                            },
-                            {
-                                'content': 'Reaaaaallly long message 5. Should wrap to next line ',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            },
-                            {
-                                'content': ' Msg 6',
-                                'created_at': new Date().getTime(),
-                                read: false,
-                                deviceId: '1234'
-                            }
-                        ]
-                    }
-                ]
-            }
-        ];
+    .service('authenticationService', function ($http) {
     })
 
+/**
+ * service provides a unique terminal and user identifier
+ * should cache user credentials
+ * device information - should be ignored in favor of auth info + phone no
+ */
+    .factory('deviceAndUserInfoService', function () {
+        return 'deviceid_userid_phoneno';
+    })
 
-    .service('messageService', function ($http, $timeout, deviceId) {
+    .service('parkingSpaceService', function ($rootScope, $http, ENV, deviceAndUserInfoService, geolocationService) {
 
-        var messages = [
-            {
-                msg: ' Msg 1',
-                timestamp: new Date().getTime(),
-                read: true,
-                deviceId: '1234'
-            },
-            {
-                msg: '  Reaaaaallly long message 2. Should wrap to next line ',
-                timestamp: new Date().getTime(),
-                read: true,
-                deviceId: '2234'
-            },
-            {
-                msg: 'Reaaaaallly long message 3. Should wrap to next line ',
-                timestamp: new Date().getTime(),
-                read: true,
-                deviceId: '1234'
-            },
-            {
-                msg: 'Reaaaaallly long message 4. Should wrap to next line ',
-                timestamp: new Date().getTime(),
-                read: true,
-                deviceId: '3234'
-            },
-            {
-                msg: 'Reaaaaallly long message 5. Should wrap to next line ',
-                timestamp: new Date().getTime(),
-                read: false,
-                deviceId: '1234'
-            },
-            {
-                msg: ' Msg 6',
-                timestamp: new Date().getTime(),
-                read: false,
-                deviceId: '1234'
-            },
-            {
-                msg: ' Msg 0',
-                timestamp: new Date().getTime() - 300,
-                read: false,
-                deviceId: '1234'
-            }
-        ];
+        this.getAvailableSpaces = function (lat, lng, range, clbk) {
+            $http.get(ENV + 'parking_spaces.json?lat=' + lat + '&lon=' + lng + '&range=' + range)
+                .success(function (data) {
+                    console.log(data);
+                    clbk(data);
+                })
+                .error(function (data, status, headers, config) {
+                    var error = 'Unkown error. Internet connected ?';
+                    // TODO replace broadcast with direct manipulation
+                    // implement same mechanism on save with different message
+                    $rootScope.$broadcast('http.error', status ,data);
+                });
+        };
+
+        this.getMySpaces = function (deviceAndUserInfoService, clbk) {
+            this.getAvailableSpaces(44.41514, 26.09321, 500, clbk);
+        };
+
+        this.saveSpace = function(space, clbk) {
+
+            // massage space a to fit the back end model
+            geolocationService.getCurrentLocation(function(position){
+                space.recorded_from_lat = position.coords.latitude;
+                space.recorded_from_long = position.coords.longitude;
+            });
+            space.target_price = space.price;
+            space.target_price_currency = space.currency;
+            // TODO fill in these fields on auth ( or make user insert them ? )
+            space.phone_number = '+40727456250';
+            space.deviceid = deviceAndUserInfoService;
+            space.owner_name = 'TODO';
+            if ( space.short_term)
+                space.interval = 1;
+            else
+                space.interval = 0;
+
+
+
+            $http.post(ENV+'parking_spaces.json',space)
+                .success(function(data){
+                    //TODO show mesage with direct dom manipulation
+                    $rootScope.$broadcast('http.error', 'Parking space saved!');
+                })
+                .error( function(data, status){
+                    $rootScope.$broadcast('http.error',status ,data);
+                })
+        }
+
+    })
+
+    .service('messageService', function ($http, $timeout, deviceAndUserInfoService) {
 
         this.markRead = function (postId, messages, clbk) {
-
             // execute call on server
             messages.forEach(function (x) {
                 x.read = true;
             });
-
             this.getMessages(postId, clbk);
-
         };
 
         this.getMessages = function (postId, clbk) {
-
             $timeout(function () {
                 if (clbk)
                     clbk(messages);
@@ -1259,13 +152,13 @@ angular.module('ParkingSpaceMobile.services', [])
         };
 
         this.sendMessage = function (postId, msg, clbk) {
-            msg.deviceId = deviceId;
+            msg.deviceAndUserInfoService= deviceAndUserInfoService;
             messages.push(msg);
             this.getMessages(postId, clbk);
         }
     })
 
-    .service('offerService', function ($http, $timeout, deviceId) {
+    .service('offerService', function ($http, $timeout, deviceAndUserInfoService) {
 
         this.acceptOffer = function (offer, clbk) {
 
@@ -1298,62 +191,42 @@ angular.module('ParkingSpaceMobile.services', [])
         };
     })
 
+/**
+ * provides back-end parameters
+ * 1. short_term_max_range: 1200
+ * 2. short_term_expiration: 10 # minutes
+ * 3. long_term_max_range: 10000
+ * 4. long_term_expiration: 2 # weeks
+ * 5. default search radius
+ * 6. starting currency
+ * 7. starting asking price
+ */
+    .service('parameterService', function($http){
 
-    .factory('modalFactory', function ($state) {
-
-
-        this.createModal = function (templateName, parentState, saveClbk, showClbk, closeClbk) {
-
-            if (!saveClbk) {
-                saveClbk = {};
-            }
-
-            if (!showClbk) {
-                showClbk = {};
-            }
-
-            if (!closeClbk) {
-                closeClbk = {};
-            }
-
-
-            var showClbkName = showClbk.name || 'show';
-            var showClbkFunc = showClbk.func || showClbk;
-
-            $scope[showClbkName] = function () {
-                $scope[scopeModalName].show();
-                if (showClbkFunc instanceof Function)
-                    showClbkFunc(arguments);
-            };
-
-
-            var closeClbkName = closeClbk.name || 'close';
-            var closeClbkFunc = closeClbk.func || closeClbk;
-
-            $scope[closeClbkName] = function () {
-                $scope[scopeModalName].hide();
-                if (closeClbkFunc instanceof Function)
-                    closeClbkFunc(arguments)
-            };
-
-
-            var saveClbkName = saveClbk.name || 'save';
-            var saveClbkFunc = saveClbk.func || saveClbk;
-
-            $scope[saveClbkName] = function () {
-                $scope[scopeModalName].hide();
-                if (saveClbkFunc instanceof Function)
-                    saveClbkFunc(arguments);
-            };
-
-        };
-
-        return this;
     })
 
+    .factory('imageResizeFactory', function () {
+        return function (base64img, newWidth, newHeight) {
+
+            // create an off-screen canvas
+            var canvas = document.createElement('canvas'),
+                ctx = canvas.getContext('2d');
+
+            // set its dimension to target size
+            canvas.width = width;
+            canvas.height = height;
+
+            // draw source image into the off-screen canvas:
+            ctx.drawImage(base64img, 0, 0, newWidth, newHeight);
+
+            // encode image to data-uri with base64 version of compressed image
+            data = canvas.toDataURL();
+            canvas.parentNode.removeChild(canvas);
+            return data;
+        }
+    })
 
     .factory('currencyFactory', function (currencies) {
-
 
         this.getCurrency = function (curName) {
             var currency = $.grep(currencies, function (cur) {
@@ -1369,8 +242,5 @@ angular.module('ParkingSpaceMobile.services', [])
         };
 
         return this;
-    })
-
-    .factory('deviceId', function () {
-        return '1234';
     });
+

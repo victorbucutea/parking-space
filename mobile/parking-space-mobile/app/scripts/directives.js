@@ -105,20 +105,22 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('parkingSign', function () {
+    .directive('parkingSign', function (ENV) {
         return {
             restrict: 'E',
-            template: '<span class="parking-sign" ng-class="{small: small}" ng-hide="space.img">' +
+            template: '<span class="parking-sign" ng-class="{small: small}" ng-hide="space.thumbnail_image_url">' +
                 '<i class="fa {{icon}}"></i>' +
                 '<i class="text"></i>' +
                 '</span>' +
-                '<img ng-src="{{space.img}}" class="parking-sign" ng-class="{small: small}" ng-show="space.img">',
+                '<img ng-src="{{space.thumbnail_image_url ? ENV + space.thumbnail_image_url : space.thumbnail_image_url }}" ' +
+            '           class="parking-sign" ng-class="{small: small}" ng-show="space.thumbnail_image_url">',
             scope: {
                 icon: '=',
                 space: '=',
                 small: '='
             },
             link: function ($scope, $element, $attr) {
+                $scope.ENV = ENV;
                 var text = $element.find('.text');
                 var icon = $element.find('.fa');
                 var img = $element.find('img');
@@ -134,7 +136,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('parkingSpotInfoBox', function () {
+    .directive('parkingSpotInfoBox', function (ENV) {
         return {
             restrict: 'E',
             template: '<div class="item row parking-spot-details " >' +
@@ -171,9 +173,9 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
             template: ' <div class="bid-amount row">' +
                 '<div class="col">' +
-                '<a class="fa fa-caret-left fa-3x disable-user-behavior" on-tap="decrease()"></a>' +
+                '<a class="fa fa-caret-left fa-3x disable-user-behavior" ng-click="decrease()"></a>' +
                 '<input type="number" min="0" max="100" ng-model="bidAmount">' +
-                '<a class="fa fa-caret-right fa-3x disable-user-behavior" on-tap="increase()" style=""></a>' +
+                '<a class="fa fa-caret-right fa-3x disable-user-behavior" ng-click="increase()" style=""></a>' +
                 '</div>' +
                 '<div class="col">' +
                 '<select ng-model="bidCurrency" ng-options="currency.name as currency.name for currency in currencies" class="currency"> </select>' +
@@ -184,7 +186,13 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
 
             link: function ($scope, element, attrs) {
+                if (!$scope.bidAmount) {
+                    $scope.bidAmount = 2;
+                }
 
+                if (!$scope.bidCurrency) {
+                    $scope.bidCurrency = currencies[1].name;
+                }
                 $scope.increase = function () {
                     if (!$scope.bidAmount) {
                         $scope.bidAmount = 0;

@@ -566,8 +566,16 @@ h4.ps-page-title {
 }
 
 .item {
-    position: static;
     background-color: inherit;
+}
+
+.error {
+    position: absolute;
+    top: 56px;
+    z-index: 100;
+    width: 100%;
+    background-color: rgb(253, 62, 62);
+    text-align: center;
 }
 
 .chat-area-modal {

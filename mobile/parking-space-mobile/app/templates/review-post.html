@@ -1,7 +1,7 @@
 <div class="ps-modal">
 
     <div ng-controller="EditParkingSpaceCtrl">
-        <div class="form-edit-details">
+        <form name="form-edit-details" class="form-edit-details">
             <div on-tap="close()">
                 <h3 class="ps-page-title">
                     <i class="fa fa-calendar" ng-show="!spaceEdit.short_term"> </i>
@@ -16,11 +16,11 @@
             </span>
                 <label class="item item-input">
                     <span class="input-label">Title</span>
-                    <input type="text" placeholder="Title" ng-model="spaceEdit.title">
+                    <input type="text" placeholder="Title" ng-model="spaceEdit.title" ng-required="true">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Address</span>
-                    <input type="text" placeholder="Address line 1" ng-model="spaceEdit.address_line_1">
+                    <input type="text" placeholder="Address line 1" ng-model="spaceEdit.address_line_1" ng-required="true">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Address</span>
@@ -50,6 +50,6 @@
                     <a class="button icon-center ion-close" ng-click="close()"></a>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>

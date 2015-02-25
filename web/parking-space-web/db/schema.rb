@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150208192113) do
+ActiveRecord::Schema.define(version: 20150224202336) do
 
   create_table "messages", force: true do |t|
     t.string   "deviceid"
@@ -20,17 +20,6 @@ ActiveRecord::Schema.define(version: 20150208192113) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "parking_space_images", force: true do |t|
-    t.text     "name"
-    t.integer  "parking_space_id"
-    t.binary   "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.binary   "thumbnail"
-  end
-
-  add_index "parking_space_images", ["parking_space_id"], name: "index_parking_space_images_on_parking_space_id"
 
 # Could not dump table "parking_spaces" because of following NoMethodError
 #   undefined method `[]' for nil:NilClass
