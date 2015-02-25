@@ -1,11 +1,13 @@
 class AddAttachmentImageToParkingSpaces < ActiveRecord::Migration
   def self.up
-    change_table :parking_spaces do |t|
-      t.attachment :image
-    end
+      add_column :parking_spaces , :image_file_name, :text
+      add_column :parking_spaces ,:image_content_type, :text
+      add_column :parking_spaces ,:image_file_size, :integer
   end
 
   def self.down
-    remove_attachment :parking_spaces, :image
+    remove_column :parking_spaces , :image_file_name
+    remove_column :parking_spaces ,:image_content_type
+    remove_column :parking_spaces ,:image_file_size
   end
 end

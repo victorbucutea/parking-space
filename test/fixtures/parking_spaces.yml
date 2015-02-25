@@ -13,6 +13,8 @@ zero:
   deviceid: 'IMEI8129231231'
   created_at: <%= 5.minutes.ago.to_s(:db) %>
   interval: 1
+  target_price: 0.3
+  target_price_currency: 'Eur'
 
 one:
   id: 1
@@ -26,6 +28,8 @@ one:
   description: 'desc'
   deviceid: 'IMEI8129231231'
   interval: 1
+  target_price: 11.3
+  target_price_currency: 'Eur'
 
 
 two:
@@ -40,6 +44,8 @@ two:
   description: 'desc'
   deviceid: 'IMEI8129331241'
   interval: 1
+  target_price: 13.3
+  target_price_currency: 'Eur'
 
 
 three:
@@ -54,6 +60,8 @@ three:
   description: 'desc'
   deviceid: 'IMEI8129431251'
   interval: 1
+  target_price: 10.3
+  target_price_currency: 'Eur'
 
 four:
   id: 4
@@ -67,6 +75,8 @@ four:
   description: 'desc'
   deviceid: 'IMEI8129531261'
   interval: 1
+  target_price: 20.3
+  target_price_currency: 'Eur'
 
 five:
   id: 5
@@ -80,11 +90,13 @@ five:
   description: 'desc'
   deviceid: 'IMEI8129631271'
   interval: 1
+  target_price: 22.3
+  target_price_currency: 'Eur'
 
 six:
   id: 6
-  location_lat: 44.425654 # 1178m East from id 1
-  location_long: 26.10721 # 1090 m North from id 1
+  location_lat: 44.425655 # 1178m East from id 1
+  location_long: 26.10723 # 1090 m North from id 1
   recorded_from_lat: 44.41504
   recorded_from_long: 26.047678
   title: 'Space Title'
@@ -95,3 +107,5 @@ six:
   owner_name: 'Victor'
   phone_number: '0727456250'
   interval: 0
+  target_price: 23.3
+  target_price_currency: 'Eur'
