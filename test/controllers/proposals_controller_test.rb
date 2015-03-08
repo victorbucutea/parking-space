@@ -27,7 +27,8 @@ class ProposalsControllerTest < ActionController::TestCase
           bid_amount: 10,
           bid_currency: 'RON',
           bidder_name: 'someone',
-          parking_space_id: 2
+          parking_space_id: 2,
+          phone_number: '+40727256250'
       }
     end
 

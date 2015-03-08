@@ -9,7 +9,7 @@ json.target_price @parking_space.target_price.to_f
 
 json.offers do
   json.array! @parking_space.proposals do |proposal|
-    json.extract! proposal, :id, :deviceid, :title_message, :telephone_no , :status ,:created_at
+    json.extract! proposal, :id, :title_message, :phone_number , :status ,:created_at
     json.price proposal.bid_amount
     json.currency proposal.bid_currency
     json.read proposal.read

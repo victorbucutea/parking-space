@@ -7,7 +7,7 @@ one:
   bid_amount: 10
   bid_currency: 'EUR'
   bidder_name: 'someone'
-  telephone_no: '+40727.456.250'
+  phone_number: '+40727.456.250'
   read: false
   approval_status: 0
   parking_space_id: 1
@@ -19,7 +19,7 @@ two:
   bid_amount: 20
   bid_currency: 'EUR'
   bidder_name: 'someone'
-  telephone_no: '+40727.456.250'
+  phone_number: '+40727.456.250'
   read: false
   approval_status: 0
   parking_space_id: 1
@@ -31,7 +31,7 @@ three:
   bid_amount: 10
   bid_currency: 'EUR'
   bidder_name: 'someone'
-  telephone_no: '+40727.456.250'
+  phone_number: '+40727.456.250'
   read: false
   approval_status: 0
   parking_space_id: 2
@@ -43,7 +43,7 @@ four:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
-  telephone_no: '+40727.456.250'
+  phone_number: '+40727.456.250'
   read: false
   approval_status: 0
   parking_space_id: 2
@@ -55,7 +55,7 @@ five:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
-  telephone_no: '+40727.456.250'
+  phone_number: '+40727.456.250'
   read: false
   approval_status: 0
   parking_space_id: 3
@@ -67,7 +67,19 @@ six:
   bid_amount: 20
   bid_currency: 'RON'
   bidder_name: 'someone'
-  telephone_no: '+40727.456.250'
+  phone_number: '+40727.456.250'
+  read: false
+  approval_status: 0
+  parking_space_id: 3
+
+seven:
+  id: 7
+  deviceid: "IMEI8129231231" #same deviceid as parking_space 0
+  title_message: "Hello, I'd like to buy spot #1"
+  bid_amount: 20
+  bid_currency: 'RON'
+  bidder_name: 'someone'
+  phone_number: '+40727.456.250'
   read: false
   approval_status: 0
   parking_space_id: 3

@@ -44,7 +44,7 @@ class ProposalsController < ApplicationController
     @proposal = Proposal.new(proposal_params)
 
     respond_to do |format|
-      if @proposal.save
+      if @proposal.save!
         format.json { render :show, status: :created, location: parking_space_proposal_url(@proposal.parking_space_id, @proposal) }
       else
         format.json { render json: @proposal.errors, status: :unprocessable_entity }
@@ -76,6 +76,6 @@ class ProposalsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def proposal_params
-    params.require(:proposal).permit(:deviceid, :title_message, :bid_amount, :bid_currency, :bidder_name, :approval_status, :parking_space_id)
+    params.require(:proposal).permit(:deviceid, :phone_number, :title_message, :bid_amount, :bid_currency, :bidder_name, :approval_status, :parking_space_id)
   end
 end

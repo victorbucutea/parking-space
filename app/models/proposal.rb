@@ -6,7 +6,6 @@ class Proposal < DeviceRecord
   belongs_to :parking_space
   has_many :messages
 
-  validates :title_message, :presence => true
   validates :bidder_name, :presence => true
   validates :approval_status, :presence => true
   validates :bid_amount, :presence => true

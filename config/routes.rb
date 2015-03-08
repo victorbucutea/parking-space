@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
+  resources :parameters
+
   resources :parking_spaces do
+
+    collection do
+      get 'myevents'
+    end
+
     resources :proposals do
       post 'reject'
       post 'approve'
