@@ -6,8 +6,8 @@
     </div>
     <div class="padding-horizontal">
         <small>
-        Radius {{circleOptions.radius}} m - {{noOfShortTerm.length}}<img src="images/marker_orange.png" height="28"> short term,
-            {{noOfLongTerm.length}}<img src="images/marker_blue.png" height="28"> long term
+        {{noOfShortTerm.length || 0}}<img src="images/marker_orange.png" height="28"> short term,
+            {{noOfLongTerm.length || 0}}<img src="images/marker_blue.png" height="28"> long term
         </small>
     </div>
     <div id="search-space">
@@ -15,6 +15,8 @@
             <span class="item " ng-click="showBid(space)" ng-repeat="space in spaces">
                 <parking-spot-info-box class="small" space="space"></parking-spot-info-box>
             </span>
+            <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
+            <div class="no-items-msg loading-finished" ng-hide="spaces.length"> No spaces found.</div>
         </div>
     </div>
     <ui-view name="place-offer" ></ui-view>

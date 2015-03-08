@@ -8,13 +8,22 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $rootScope.$broadcast('notification', 3);
         }, 2500);
 
-        $rootScope.$on('http.error', function(event, data ,status) {
-            $rootScope.errMsg = data + status;
+        $document.mousedown(function () {
+            $scope.errMsg = null;
+            $scope.notifMsg = null;
+            $scope.$apply();
         });
 
-        $rootScope.$on('$stateChangeSuccess', function (ev, toState) {
-            $rootScope.errMsg = null;
-        } );
+
+        $rootScope.$on('http.error', function (event, data, status) {
+            $scope.errMsg = data + status;
+
+        });
+
+        $rootScope.$on('http.notif', function (event, data, status) {
+            $scope.notifMsg = data;
+        });
+
     })
 
     .controller('MapCtrl', function ($scope, $timeout, $rootScope, geolocationService, geocoderService) {
@@ -95,7 +104,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
     })
 
-    .controller('PostParkingSpaceCtrl', function ($rootScope, $scope, currencies, $state) {
+    .controller('PostParkingSpaceCtrl', function ($rootScope, $scope, currencies, $state, parameterService, geolocationService) {
         $scope.currencies = currencies;
 
 
@@ -106,6 +115,10 @@ angular.module('ParkingSpaceMobile.controllers', [])
         $scope.review = function () {
             $scope.spaceEdit = {};
             angular.copy($scope.space, $scope.spaceEdit);
+            geolocationService.getCurrentLocation(function (position) {
+                $scope.spaceEdit.recorded_from_lat = position.coords.latitude;
+                $scope.spaceEdit.recorded_from_long = position.coords.longitude;
+            });
             $state.go('home.map.post.review');
         };
 
@@ -116,7 +129,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
         $scope.$on('changeAddress', function (e, data) {
             if (!$scope.space)
-                $scope.space = {price: 5, currency: 'Eur'};
+                $scope.space = {price: parameterService.getStartingAskingPrice(), currency: parameterService.getStartingCurrency()};
 
             var street = data.street || '';
             var street_number = data.street_number || '';
@@ -145,7 +158,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
             var cameraSuccess = function (img) {
                 $scope.spaceEdit.image_data = img;
                 $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
-                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/")+1);
+                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
                 $scope.spaceEdit.image_content_type = 'image/jpeg';
 
                 $scope.$apply();
@@ -168,7 +181,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
             var cameraSuccess = function (img) {
                 $scope.spaceEdit.image_data = img;
                 $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
-                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/")+1);
+                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
                 $scope.spaceEdit.image_content_type = 'image/jpeg';
 
                 $scope.$apply();
@@ -195,9 +208,6 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $state.go('^');
         };
 
-        $scope.delete = function () {
-            console.log('deleting post', $scope.spaceEdit);
-        };
     })
 
     .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, offerService) {
@@ -294,7 +304,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
         }, 3000)
     })
 
-    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, $state, currencyFactory, $timeout,  $filter) {
+    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, parameterService, $state, currencyFactory, offerService, $filter) {
 
         $rootScope.map.setZoom(15);
 
@@ -307,7 +317,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
             fillColor: '#333',
             fillOpacity: 0.1,
             map: $rootScope.map,
-            radius: 500
+            radius: parameterService.getDefaultSearchRadius()
         };
 
         $scope.$watch('circleOptions.radius', function (newVal) {
@@ -331,14 +341,13 @@ angular.module('ParkingSpaceMobile.controllers', [])
         };
         var dragListenHandle = null;
 
-        setTimeout(function(){
-            dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
-            if (!$scope.searchRadiusCircle) {
-                // user navigates on screen for first time
-                $scope.circleOptions.center = $rootScope.map.getCenter();
-                $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
-            }
-        },1000);
+        // setTimeout(function(){
+        dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
+        if (!$scope.searchRadiusCircle) {
+            // user navigates on screen for first time
+            $scope.circleOptions.center = $rootScope.map.getCenter();
+            $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
+        }
 
 
         $rootScope.$broadcast('searchCenterIcon', true);
@@ -386,13 +395,13 @@ angular.module('ParkingSpaceMobile.controllers', [])
                 currencyElm.addClass(currency);
                 var currencyHtml = currencyElm.wrap('<p/>').parent().html();
                 var price = space.price + "";
-                var x = price.length == 1 ? 8 : 15;
+                var xCoord = price.length == 1 ? 8 : 15;
                 var markerWithLabel = new MarkerWithLabel({
                     position: new google.maps.LatLng(space.location_lat, space.location_long),
                     map: $rootScope.map,
                     icon: image,
                     labelContent: space.price + ' ' + currencyHtml,
-                    labelAnchor: new google.maps.Point(x, 44),
+                    labelAnchor: new google.maps.Point(xCoord, 44),
                     labelClass: "search-marker-label"
                 });
 
@@ -410,15 +419,12 @@ angular.module('ParkingSpaceMobile.controllers', [])
         });
 
         $scope.showBid = function (space) {
-
             $scope.selectedSpace = space;
-
             $scope.bid = {};
-            $scope.bid.bidAmount = $scope.selectedSpace.price;
-            $scope.bid.bidCurrency = $scope.selectedSpace.currency;
+            $scope.bid.bid_amount = $scope.selectedSpace.price;
+            $scope.bid.bid_currency = $scope.selectedSpace.currency;
 
             $state.go('home.map.search.place');
-
 
             google.maps.event.removeListener(dragListenHandle);
             var latLng = new google.maps.LatLng($scope.selectedSpace.location_lat, $scope.selectedSpace.location_long);
@@ -435,17 +441,15 @@ angular.module('ParkingSpaceMobile.controllers', [])
                 });
             }
 
-
             var pictureLabel = $("<img>");
             pictureLabel.attr('src', 'images/parking_spot_circle.png');
-            pictureLabel.attr('height', 56);
-            pictureLabel.attr('width', 56);
+            pictureLabel.attr('height', 48);
+            pictureLabel.attr('width', 48);
 
             var mapCenter = new google.maps.LatLng(latLng.lat() - 0.0008, latLng.lng());
 
             $rootScope.map.setCenter(mapCenter);
             $rootScope.map.setZoom(17);
-
 
             $scope.spotThumbnail = new MarkerWithLabel({
                 position: latLng,
@@ -453,7 +457,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
                 map: $rootScope.map,
                 labelContent: pictureLabel[0],
                 labelAnchor: new google.maps.Point(28, 28),
-                labelStyle: {transform: 'rotate(' + $scope.selectedSpace.rotation + 'deg)'}
+                labelStyle: {transform: 'rotate(' + $scope.selectedSpace.rotation_angle + 'deg)'}
             });
 
         };
@@ -473,15 +477,16 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $scope.circleOptions.center = $rootScope.map.getCenter();
             $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
 
-            $timeout(function(){
+            setTimeout(function () {
                 dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
-            },500);
+            }, 500);
 
             $state.go('^');
         };
 
-        $scope.saveBid = function (bid) {
-            console.log('saving bid ', bid);
+        $scope.saveBid = function () {
+            console.log('saving bid ', $scope.bid);
+            offerService.placeOffer($scope.bid, $scope.selectedSpace.id);
             $scope.closeBid();
         };
 
@@ -509,7 +514,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
     .controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state) {
 
         $('.open-spaces-list').height($(window).height() - 105);
-        parkingSpaceService.getMySpaces('1234', function (spaces) {
+        parkingSpaceService.getMySpaces(function (spaces) {
             $scope.spaces = spaces;
         });
 

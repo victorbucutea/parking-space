@@ -276,9 +276,26 @@ html, body {
     margin-right: auto;
 }
 
+.loading-spinner {
+    color: $gray;
+    &.search {
+        margin-top: 30px;
+        margin-left: 41%;
+    }
+}
+
+.no-items-msg {
+    width: 51%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: $xxxbig-measure-unit;
+    color: $gray;
+    font-size: 20px;
+}
+
 .search-radius-controller {
     position: absolute;
-    width: 114px;
+    width: 120px;
     background-color: #fff;
     z-index: 1;
     top: 53%;
@@ -569,13 +586,30 @@ h4.ps-page-title {
     background-color: inherit;
 }
 
-.error {
+.message {
     position: absolute;
-    top: 56px;
+    top: 59px;
     z-index: 100;
-    width: 100%;
-    background-color: rgb(253, 62, 62);
+    width: 70%;
     text-align: center;
+    left: 15%;
+    border-radius: $measure-unit;
+    color: white;
+    padding: 5px;
+    display: none;
+    box-shadow: 1px 1px 12px 1px #525252;
+    border: 1px solid rgb(168, 11, 11);
+
+    &.error {
+        background-color: #CB3A3A;
+        display: block;
+    }
+
+    &.notification {
+        background-color: #346e24;
+        border: 1px solid #23471f;
+        display: block;
+    }
 }
 
 .chat-area-modal {

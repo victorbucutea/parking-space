@@ -102,6 +102,38 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
+  test 'should not return any posts' do
+    xhr :get, :myevents, {deviceid:'inexisting'}
+
+    parking_spaces = assigns(:parking_spaces)
+    assert_equal 0, parking_spaces.size
+
+    assert_response :success
+  end
+
+  test 'should return all posted spaces and all proposed spaces joined with messages' do
+    xhr :get, :myevents, {deviceid:'IMEI8129231231'}
+    parking_spaces = assigns(:parking_spaces)
+
+    assert_equal 3, parking_spaces.size
+
+    assert_equal 44.41514, parking_spaces[0].location_lat.to_f
+    assert_equal 26.09321, parking_spaces[0].location_long.to_f
+    assert_equal true, parking_spaces[0].short_term?
+    assert_equal 0.3, parking_spaces[0].target_price
+    assert_equal 2, parking_spaces[1].proposals.size
+    assert_equal 2, parking_spaces[1].proposals[0].messages.size
+
+    assert_response :success
+
+
+    prop = JSON.parse(@response.body)
+    #deviceid is secret !
+    assert_nil prop[1]['offers'][0]['deviceid']
+    assert_nil prop[2]['offers'][0]['deviceid']
+
+  end
+
 =begin
   Not filtering by interval, returning all interval types
   test 'should return 1 space if range > 1200m and long term' do

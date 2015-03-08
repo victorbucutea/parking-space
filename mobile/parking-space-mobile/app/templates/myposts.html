@@ -9,6 +9,9 @@
             <i class="fa fa-envelope item-notifications">
                 <span> Messages ({{unreadMessagesForSpace(space) }})</span> </i>
         </span>
+        <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
+        <div class="no-items-msg loading-finished" ng-hide="spaces.length"> No events found.</div>
+
     </div>
 
 

@@ -1,12 +1,6 @@
 defaults: &defaults
-  short_term_max_range: 1200
   short_term_expiration: 10 # minutes
-  long_term_max_range: 10000
   long_term_expiration: 2 # weeks
-  thumbnail_img_width: 89
-  thumbnail_img_height: 118
-  standard_img_width: 640
-  standard_img_height: 480
 
 development:
   <<: *defaults

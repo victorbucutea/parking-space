@@ -16,7 +16,7 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    if range.to_i > 1200
+    if range.to_i > SysParams.instance.get_i('max_search_radius')
       render json: {:Error => "Cannot have a range larger than 1200"}, status: :unprocessable_entity
       return
     end
@@ -45,11 +45,28 @@ class ParkingSpacesController < ApplicationController
   end
 
 
+  def myevents
+    deviceid = !params[:deviceid] || params[:deviceid].empty? ? nil : params[:deviceid]
+
+    unless deviceid
+      render json: {:Error => "Missing deviceid"}, status: :unprocessable_entity
+      return
+    end
+
+    all_spaces_proposed = ParkingSpace.includes(proposals: [:messages]).where(proposals: {deviceid: deviceid})
+    @parking_spaces = ParkingSpace.includes(proposals: [:messages]).where({deviceid: deviceid})
+
+    @parking_spaces += all_spaces_proposed
+
+    respond_to do |format|
+      format.json { render :index, status: :ok }
+    end
+  end
+
   # POST /parking_spaces
   # POST /parking_spaces.json
   def create
     @parking_space = ParkingSpace.new(parking_space_params)
-
     respond_to do |format|
       if @parking_space.save
         format.json { render :show, status: :created, location: @parking_space }
@@ -62,7 +79,6 @@ class ParkingSpacesController < ApplicationController
   # PATCH/PUT /parking_spaces/1
   # PATCH/PUT /parking_spaces/1.json
   def update
-    #TODO there must be a cleaner way to validate a missing incoming param
     unless parking_space_params['deviceid']
       render json: {:Error => "Device id is required"}, status: :unprocessable_entity
       return

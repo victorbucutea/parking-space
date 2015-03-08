@@ -2,30 +2,35 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a28c2a12-4bf0-471b-be1c-7ddd82a2920d" name="Default" comment="chat + additional screens">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_standard_xx1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_thumbnail_xx1.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_standard_xx2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_thumbnail_xx2.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_standard_xx3.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_thumbnail_xx3.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_standard_xx4.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_thumbnail_xx4.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_thumbnail_xx.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/images/blue_lagoon.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/images/leopard.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/images/parrot.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/images/switzerland.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/images/thumbnail_blue_lagoon.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/images/thumbnail_parrot.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/images/thumbnail_switzerland.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150221185527_add_rotation_angle_to_parking_space.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150224202336_add_index_to_parking_spaces.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/login.html" />
-      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\public\files\images\_standard_xx.jpg" afterPath="" />
-      <change type="MOVED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\app\vendor\google\maps.js" afterPath="$PROJECT_DIR$/app/vendor/google/api.js" />
-      <change type="MOVED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\public\files\images\Victor_standard_xx.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_standard_xx.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/initializers/init_system_parameters.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parameters_controller_test.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parameters_controller_test_json.rb" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\app\assets\javascripts\messages.js.coffee" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\app\assets\javascripts\parking_spaces.js.coffee" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\app\assets\javascripts\proposals.js.coffee" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\app\assets\stylesheets\messages.css.scss" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\app\assets\stylesheets\parking_spaces.css.scss" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\app\assets\stylesheets\proposals.css.scss" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\app\assets\stylesheets\scaffolds.css.scss" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_standard_xx1.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_standard_xx1.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_thumbnail_xx1.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_thumbnail_xx1.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_standard_xx2.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_standard_xx2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_thumbnail_xx2.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_thumbnail_xx2.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_standard_xx3.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_standard_xx3.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_thumbnail_xx3.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_thumbnail_xx3.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_standard_xx4.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_standard_xx4.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_thumbnail_xx4.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_thumbnail_xx4.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_standard_xx.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_standard_xx.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_thumbnail_xx.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_thumbnail_xx.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/blue_lagoon.jpg" afterPath="$PROJECT_DIR$/app/images/blue_lagoon.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/cellar_medium.jpg" afterPath="$PROJECT_DIR$/app/images/cellar_medium.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.ids" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/leopard.jpg" afterPath="$PROJECT_DIR$/app/images/leopard.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/parrot.jpg" afterPath="$PROJECT_DIR$/app/images/parrot.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/switzerland.jpg" afterPath="$PROJECT_DIR$/app/images/switzerland.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/thumbnail_blue_lagoon.jpg" afterPath="$PROJECT_DIR$/app/images/thumbnail_blue_lagoon.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/thumbnail_parrot.jpg" afterPath="$PROJECT_DIR$/app/images/thumbnail_parrot.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/thumbnail_switzerland.jpg" afterPath="$PROJECT_DIR$/app/images/thumbnail_switzerland.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.editorconfig" afterPath="$PROJECT_DIR$/.editorconfig" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.generators" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.generators" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.rakeTasks" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.rakeTasks" />
@@ -35,9 +40,12 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150207202435_add_telephone_no_read_to_proposal.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150207202435_add_telephone_no_read_to_proposal.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208110411_add_attachment_image_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208110411_add_attachment_image_to_parking_spaces.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208192113_add_image_url_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208192113_add_image_url_to_parking_spaces.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150221185527_add_rotation_angle_to_parking_space.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150221185527_add_rotation_angle_to_parking_space.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150224202336_add_index_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150224202336_add_index_to_parking_spaces.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/Gemfile" afterPath="$PROJECT_DIR$/../../web/parking-space-web/Gemfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/animation.scss" afterPath="$PROJECT_DIR$/app/styles/animation.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/vendor/google/api.js" afterPath="$PROJECT_DIR$/app/vendor/google/api.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/app.js" afterPath="$PROJECT_DIR$/app/scripts/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/application_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/application_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
@@ -56,10 +64,10 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/integration/image_processing_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/integration/image_processing_test.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/index.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/index.json.jbuilder" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/login.html" afterPath="$PROJECT_DIR$/app/login.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.scss" afterPath="$PROJECT_DIR$/app/styles/main.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/map.html" afterPath="$PROJECT_DIR$/app/templates/map.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/messages.html" afterPath="$PROJECT_DIR$/app/templates/messages.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/myposts.html" afterPath="$PROJECT_DIR$/app/templates/myposts.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
@@ -69,11 +77,15 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parking_spaces_controller_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parking_spaces_controller_test.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/place-offer.html" afterPath="$PROJECT_DIR$/app/templates/place-offer.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/post.html" afterPath="$PROJECT_DIR$/app/templates/post.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/proposal.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/proposal.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/proposals.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/proposals.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/proposals_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/proposals_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/proposals_controller_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/proposals_controller_test.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/bin/rails" afterPath="$PROJECT_DIR$/../../web/parking-space-web/bin/rails" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/bin/rake" afterPath="$PROJECT_DIR$/../../web/parking-space-web/bin/rake" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/review-bids.html" afterPath="$PROJECT_DIR$/app/templates/review-bids.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/review-post.html" afterPath="$PROJECT_DIR$/app/templates/review-post.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/routes.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/routes.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/schema.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/schema.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/search.html" afterPath="$PROJECT_DIR$/app/templates/search.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/seeds.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/seeds.rb" />
@@ -114,78 +126,57 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="services.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="services.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/scripts/services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44651163" vertical-offset="2625" max-vertical-offset="3553">
-              <caret line="199" column="27" selection-start-line="199" selection-start-column="27" selection-end-line="199" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="676" max-vertical-offset="3944">
+              <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
               <folding>
-                <element signature="e#5126#5774#0" expanded="false" />
-                <element signature="e#6888#6896#0" expanded="false" />
-                <element signature="e#6946#7614#0" expanded="false" />
+                <element signature="e#830#2524#0" expanded="false" />
+                <element signature="e#6374#7023#0" expanded="false" />
+                <element signature="e#8858#10237#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="directives.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/directives.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1734" max-vertical-offset="4165">
-              <caret line="194" column="17" selection-start-line="194" selection-start-column="17" selection-end-line="194" selection-end-column="17" />
-              <folding>
-                <element signature="e#4044#5132#0" expanded="false" />
-                <element signature="e#5187#6547#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="review-post.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/review-post.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="816">
-              <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-              <folding>
-                <element signature="n#div#0;n#div#1;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="post.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/post.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.3076923" vertical-offset="0" max-vertical-offset="459">
-              <caret line="2" column="50" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="map.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/map.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="238">
-              <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="controllers.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="controllers.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1239" max-vertical-offset="8279">
-              <caret line="145" column="17" selection-start-line="145" selection-start-column="17" selection-end-line="145" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.33294255" vertical-offset="4034" max-vertical-offset="5253">
+              <caret line="516" column="39" selection-start-line="516" selection-start-column="28" selection-end-line="516" selection-end-column="39" />
               <folding>
-                <element signature="e#1080#2013#0" expanded="false" />
-                <element signature="e#11207#11744#0" expanded="false" />
-                <element signature="e#15437#16188#0" expanded="false" />
-                <element signature="e#16231#16318#0" expanded="false" />
-                <element signature="e#16365#16675#0" expanded="false" />
-                <element signature="e#16722#17011#0" expanded="false" />
+                <element signature="e#4176#5069#0" expanded="false" />
+                <element signature="e#5188#7107#0" expanded="false" />
+                <element signature="e#7207#9738#0" expanded="false" />
+                <element signature="e#10563#11068#0" expanded="false" />
+                <element signature="e#11632#12169#0" expanded="false" />
+                <element signature="e#12233#13942#0" expanded="false" />
+                <element signature="e#14117#14164#0" expanded="false" />
+                <element signature="e#15496#15821#0" expanded="false" />
+                <element signature="e#16886#17196#0" expanded="false" />
+                <element signature="e#17243#17532#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/templates/home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="646">
+              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="place-offer.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/templates/place-offer.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="425">
+              <caret line="10" column="42" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="42" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -193,8 +184,8 @@
       <file leaf-file-name="search.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/search.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="459">
-              <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
+            <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="493">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -203,8 +194,8 @@
       <file leaf-file-name="myposts.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/myposts.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="374">
-              <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+            <state vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="425">
+              <caret line="14" column="10" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -228,32 +219,32 @@
         <option value="$PROJECT_DIR$/.editorconfig" />
         <option value="$PROJECT_DIR$/.tmp/styles/main.css" />
         <option value="$PROJECT_DIR$/app/templates/map.html" />
-        <option value="$PROJECT_DIR$/app/templates/place-offer.html" />
         <option value="$PROJECT_DIR$/app/index.html" />
         <option value="$PROJECT_DIR$/app/styles/forms.scss" />
         <option value="$PROJECT_DIR$/www/scripts/controllers.js" />
         <option value="$PROJECT_DIR$/app/styles/fonts.scss" />
         <option value="$PROJECT_DIR$/app/templates/talk.html" />
         <option value="$PROJECT_DIR$/app/templates/bid-and-messages.html" />
-        <option value="$PROJECT_DIR$/app/scripts/app.js" />
-        <option value="$PROJECT_DIR$/app/templates/search.html" />
         <option value="$PROJECT_DIR$/app/templates/review-bids.html" />
         <option value="$PROJECT_DIR$/app/templates/messages.html" />
-        <option value="$PROJECT_DIR$/app/templates/myposts.html" />
         <option value="$PROJECT_DIR$/app/vendor/google/maps.js" />
         <option value="$PROJECT_DIR$/app/login.html" />
         <option value="$PROJECT_DIR$/config.xml" />
         <option value="$PROJECT_DIR$/www/scripts/services.js" />
-        <option value="$PROJECT_DIR$/app/templates/home.html" />
-        <option value="$PROJECT_DIR$/app/styles/main.scss" />
         <option value="$PROJECT_DIR$/app/scripts/constants.js" />
         <option value="$PROJECT_DIR$/Gruntfile.js" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers.js" />
         <option value="$PROJECT_DIR$/app/templates/post.html" />
         <option value="$PROJECT_DIR$/app/templates/review-post.html" />
         <option value="$PROJECT_DIR$/www/scripts/directives.js" />
         <option value="$PROJECT_DIR$/app/scripts/directives.js" />
+        <option value="$PROJECT_DIR$/app/scripts/app.js" />
+        <option value="$PROJECT_DIR$/app/templates/search.html" />
+        <option value="$PROJECT_DIR$/app/templates/myposts.html" />
+        <option value="$PROJECT_DIR$/app/templates/place-offer.html" />
+        <option value="$PROJECT_DIR$/app/templates/home.html" />
+        <option value="$PROJECT_DIR$/app/styles/main.scss" />
         <option value="$PROJECT_DIR$/app/scripts/services.js" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers.js" />
       </list>
     </option>
   </component>
@@ -478,10 +469,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1298" />
-    <option name="y" value="27" />
-    <option name="width" value="1285" />
-    <option name="height" value="1017" />
+    <option name="x" value="2142" />
+    <option name="y" value="78" />
+    <option name="width" value="1513" />
+    <option name="height" value="1036" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -573,109 +564,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-mobile" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <option name="show-excluded-files" value="false" />
-      </pane>
       <pane id="PackagesPane">
         <subPane />
       </pane>
@@ -738,6 +626,95 @@
         </subPane>
         <subPane subId="Tests" />
       </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="styles" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <option name="show-excluded-files" value="false" />
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -747,7 +724,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="options.lastSelected" value="preferences.lookFeel" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -939,6 +916,10 @@
       <workItem from="1424505993914" duration="24258000" />
       <workItem from="1424709483093" duration="3265000" />
       <workItem from="1424805119894" duration="8313000" />
+      <workItem from="1424886201196" duration="5015000" />
+      <workItem from="1424939837159" duration="62000" />
+      <workItem from="1425717208666" duration="397000" />
+      <workItem from="1425717623545" duration="26394000" />
     </task>
     <task id="LOCAL-00001" summary="chat + additional screens">
       <created>1422189537636</created>
@@ -956,27 +937,27 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="670575000" />
+    <option name="totallyTimeSpent" value="702443000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1298" y="27" width="1285" height="1017" extended-state="0" />
+    <frame x="2142" y="78" width="1513" height="1036" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5344828" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32698768" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32596686" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.3295063" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="125" y="185" width="1427" height="481" />
-      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4322799" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" x="923" y="514" width="682" height="411" />
+      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4320442" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" x="923" y="514" width="682" height="411" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24694377" sideWeight="0.49943757" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3294621" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3227991" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1580756" sideWeight="0.49943757" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920963" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32265192" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23860812" sideWeight="0.5005624" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1133,13 +1114,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/place-offer.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="836">
-          <caret line="0" column="12" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/styles/forms.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-22.884615" vertical-offset="357" max-vertical-offset="1547">
@@ -1257,47 +1231,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34385964" vertical-offset="522" max-vertical-offset="1632">
           <caret line="48" column="10" selection-start-line="48" selection-start-column="10" selection-end-line="48" selection-end-column="10" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="1241">
-          <caret line="106" column="28" selection-start-line="106" selection-start-column="28" selection-end-line="106" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/scripts/services.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42273533" vertical-offset="1088" max-vertical-offset="21896">
-          <caret line="78" column="16" selection-start-line="78" selection-start-column="16" selection-end-line="84" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/search.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="459">
-          <caret line="8" column="40" selection-start-line="8" selection-start-column="40" selection-end-line="8" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29447114" vertical-offset="7643" max-vertical-offset="11883">
-          <caret line="571" column="8" selection-start-line="571" selection-start-column="8" selection-end-line="571" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.083028086" vertical-offset="0" max-vertical-offset="819">
-          <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1315,49 +1248,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/map.html">
+    <entry file="file://$PROJECT_DIR$/app/scripts/directives.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="238">
-          <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/myposts.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="374">
-          <caret line="6" column="27" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1239" max-vertical-offset="8279">
-          <caret line="145" column="17" selection-start-line="145" selection-start-column="17" selection-end-line="145" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.7155859" vertical-offset="1734" max-vertical-offset="4165">
+          <caret line="194" column="17" selection-start-line="194" selection-start-column="17" selection-end-line="194" selection-end-column="17" />
           <folding>
-            <element signature="e#1080#2013#0" expanded="false" />
-            <element signature="e#11207#11744#0" expanded="false" />
-            <element signature="e#15437#16188#0" expanded="false" />
-            <element signature="e#16231#16318#0" expanded="false" />
-            <element signature="e#16365#16675#0" expanded="false" />
-            <element signature="e#16722#17011#0" expanded="false" />
+            <element signature="e#4044#5132#0" expanded="false" />
+            <element signature="e#5187#6547#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/post.html">
+    <entry file="file://$PROJECT_DIR$/app/scripts/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.3076923" vertical-offset="0" max-vertical-offset="459">
-          <caret line="2" column="50" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/scripts/directives.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47343567" vertical-offset="2795" max-vertical-offset="5100">
-          <caret line="188" column="11" selection-start-line="188" selection-start-column="11" selection-end-line="194" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.4641638" vertical-offset="0" max-vertical-offset="2839">
+          <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
           <folding />
         </state>
       </provider>
@@ -1372,25 +1277,89 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/directives.js">
+    <entry file="file://$PROJECT_DIR$/app/templates/post.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1734" max-vertical-offset="4165">
-          <caret line="194" column="17" selection-start-line="194" selection-start-column="17" selection-end-line="194" selection-end-column="17" />
-          <folding>
-            <element signature="e#4044#5132#0" expanded="false" />
-            <element signature="e#5187#6547#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="-1.3076923" vertical-offset="0" max-vertical-offset="459">
+          <caret line="2" column="50" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/map.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="238">
+          <caret line="0" column="23" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/search.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.115385" vertical-offset="0" max-vertical-offset="493">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/myposts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.153846" vertical-offset="0" max-vertical-offset="425">
+          <caret line="14" column="10" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/place-offer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="425">
+          <caret line="10" column="42" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.5384617" vertical-offset="0" max-vertical-offset="646">
+          <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.557693" vertical-offset="9925" max-vertical-offset="14280">
+          <caret line="610" column="23" selection-start-line="610" selection-start-column="23" selection-end-line="610" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/services.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44651163" vertical-offset="2625" max-vertical-offset="3553">
-          <caret line="199" column="27" selection-start-line="199" selection-start-column="27" selection-end-line="199" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="676" max-vertical-offset="3944">
+          <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
           <folding>
-            <element signature="e#5126#5774#0" expanded="false" />
-            <element signature="e#6888#6896#0" expanded="false" />
-            <element signature="e#6946#7614#0" expanded="false" />
+            <element signature="e#830#2524#0" expanded="false" />
+            <element signature="e#6374#7023#0" expanded="false" />
+            <element signature="e#8858#10237#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33294255" vertical-offset="4034" max-vertical-offset="5253">
+          <caret line="516" column="39" selection-start-line="516" selection-start-column="28" selection-end-line="516" selection-end-column="39" />
+          <folding>
+            <element signature="e#4176#5069#0" expanded="false" />
+            <element signature="e#5188#7107#0" expanded="false" />
+            <element signature="e#7207#9738#0" expanded="false" />
+            <element signature="e#10563#11068#0" expanded="false" />
+            <element signature="e#11632#12169#0" expanded="false" />
+            <element signature="e#12233#13942#0" expanded="false" />
+            <element signature="e#14117#14164#0" expanded="false" />
+            <element signature="e#15496#15821#0" expanded="false" />
+            <element signature="e#16886#17196#0" expanded="false" />
+            <element signature="e#17243#17532#0" expanded="false" />
           </folding>
         </state>
       </provider>

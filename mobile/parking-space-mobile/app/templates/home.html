@@ -1,5 +1,5 @@
 <div ng-controller="MainCtrl" class="full-height">
-    <div class="error">{{errMsg}}</div>
+    <div class="message" ng-class="{error: errMsg , notification: notifMsg}" >{{errMsg || notifMsg}}</div>
     <div class="bar bar-header bar-dark">
 
         <h1 class="title"></h1>

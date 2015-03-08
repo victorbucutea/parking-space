@@ -132,6 +132,18 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
         {
             name: 'Inr',
             icon: 'fa-inr'
+        },
+        {
+            name: 'Ils',
+            icon: 'fa-ils'
+        },
+        {
+            name: 'Try',
+            icon: 'fa-try'
+        },
+        {
+            name: 'Krw',
+            icon: 'fa-krw'
         }
     ])
 
