@@ -7,6 +7,8 @@ class Message < ActiveRecord::Base
   validates :deviceid, :presence => true
 
   def deviceid_not_changed
+    valid_prop_deviceid = false
+
     if proposal.deviceid == self.deviceid
       valid_prop_deviceid = true
     end

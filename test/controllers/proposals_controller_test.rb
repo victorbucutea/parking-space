@@ -20,17 +20,19 @@ class ProposalsControllerTest < ActionController::TestCase
 
   test 'should create proposal for parking space' do
     assert_difference ('Proposal.count') do
-      xhr :post, :create, parking_space_id: 2, :proposal => {
+      xhr :post, :create, parking_space_id: 3, :proposal => {
           deviceid: 'IMEI8129532232',
           title_message: 'Proposal message for create test',
-          # parking_space_id: 2,
           bid_amount: 10,
           bid_currency: 'RON',
           bidder_name: 'someone',
-          parking_space_id: 2,
+          parking_space_id: 3,
           phone_number: '+40727256250'
       }
     end
+
+    proposal = assigns(:proposal)
+    assert 3,proposal.parking_space.id
 
     prop = JSON.parse(@response.body)
     # deviceid is secret
@@ -38,9 +40,29 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'Proposal message for create test', prop['title_message']
     assert_equal 10, prop['bid_amount']
     assert_equal 'RON', prop['bid_currency']
-    assert_equal 'pending', prop['approval_status']
     # default is pending
-    assert        assigns(:proposal).pending?
+    assert_equal 'pending', prop['approval_status']
+
+  end
+
+
+
+  test 'should not create proposal for own parking space' do
+    assert_difference('Proposal.count',0) do
+      xhr :post, :create, parking_space_id: 3, :proposal => {
+                   deviceid: 'IMEI8129431251', # device id of parking space 3
+                   title_message: 'Proposal message for create test',
+                   bid_amount: 10,
+                   bid_currency: 'RON',
+                   bidder_name: 'someone',
+                   parking_space_id: 3,
+                   phone_number: '+40727256250'
+               }
+    end
+
+    @response.status.must_be :==, 420
+    prop = JSON.parse(@response.body)
+    assert_not_empty prop['Errors']
 
   end
 

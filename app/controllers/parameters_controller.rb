@@ -4,6 +4,8 @@ class ParametersController < ApplicationController
   # GET /parameters
   # GET /parameters.json
   def index
+    deviceid = !params[:deviceid] || params[:deviceid].empty? ? nil : params[:deviceid]
+    session[:deviceid] = deviceid
     @parameters = SysParams.instance.all
   end
 

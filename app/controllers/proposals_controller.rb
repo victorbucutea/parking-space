@@ -41,10 +41,21 @@ class ProposalsController < ApplicationController
   # POST /parking_spaces/:p_sp_id/proposals
   # POST /parking_spaces/:p_sp_id/proposals.json
   def create
+    # TODO - guard against bidding on expired spaces
+    # TODO - guard against submitting the same bid twice
     @proposal = Proposal.new(proposal_params)
 
+    target_p_space= ParkingSpace.find(params[:parking_space_id])
+    unless target_p_space.nil?
+      if target_p_space.deviceid == @proposal.deviceid
+        #bidding for own parking space
+        render json: {Errors: 'Not allowed to bid on own post!'}, :status => 420 # custom code to send err messages
+        return
+      end
+    end
+
     respond_to do |format|
-      if @proposal.save!
+      if @proposal.save
         format.json { render :show, status: :created, location: parking_space_proposal_url(@proposal.parking_space_id, @proposal) }
       else
         format.json { render json: @proposal.errors, status: :unprocessable_entity }

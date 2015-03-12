@@ -6,6 +6,7 @@ class ParkingSpacesControllerTest < ActionController::TestCase
   def setup
     @request.headers['Content-Type'] = 'application/json'
     @request.headers['Accept'] = 'application/json'
+    session[:deviceid] = 'IMEI8129231231'
   end
 
 
@@ -123,6 +124,8 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_equal 0.3, parking_spaces[0].target_price
     assert_equal 2, parking_spaces[1].proposals.size
     assert_equal 2, parking_spaces[1].proposals[0].messages.size
+    assert_equal 1, parking_spaces[2].proposals.size
+    assert_equal 3, parking_spaces[2].proposals[0].messages.size
 
     assert_response :success
 
@@ -131,6 +134,14 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     #deviceid is secret !
     assert_nil prop[1]['offers'][0]['deviceid']
     assert_nil prop[2]['offers'][0]['deviceid']
+
+    # make sure that the offers and messages belonging to IMEI8129231231 are marked as own
+    assert prop[2]['offers'][0]['owner_is_current_user']
+    assert prop[2]['offers'][0]['messages'][0]['owner_is_current_user']
+
+    # make sure that the offers and messages not belonging to IMEI8129231231 are not
+    assert !prop[1]['offers'][0]['messages'][0]['owner_is_current_user']
+    assert !prop[2]['offers'][0]['messages'][1]['owner_is_current_user']
 
   end
 

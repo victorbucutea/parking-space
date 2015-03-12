@@ -11,6 +11,7 @@ class ParkingSpacesController < ApplicationController
     lon = !params[:lon] || params[:lon].empty? ? nil : params[:lon]
     range =!params[:range] || params[:range].empty? ? nil : params[:range]
 
+
     unless lat && lon && range
       render json: {:Error => "Missing parameters 'lat', 'lon' and 'range'"}, status: :unprocessable_entity
       return
@@ -34,6 +35,7 @@ class ParkingSpacesController < ApplicationController
     lon_min = cur_long - long_range_in_deg
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
+    # add short term
     @parking_spaces = ParkingSpace.short_term.within_boundaries(query_attrs).includes(proposals: [:messages])
     # add long term
     @parking_spaces += ParkingSpace.long_term.within_boundaries(query_attrs).includes(proposals: [:messages])
@@ -46,7 +48,7 @@ class ParkingSpacesController < ApplicationController
 
 
   def myevents
-    deviceid = !params[:deviceid] || params[:deviceid].empty? ? nil : params[:deviceid]
+    deviceid = session[:deviceid]
 
     unless deviceid
       render json: {:Error => "Missing deviceid"}, status: :unprocessable_entity
