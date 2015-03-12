@@ -23,7 +23,7 @@ $big-measure-unit: $base-font-size;
 // 20 px
 $xbig-measure-unit: $big-measure-unit * $golden-ratio;
 
-// 28 px
+//28px
 $xxbig-measure-unit: $xbig-measure-unit * $golden-ratio;
 
 // 39 px
@@ -46,6 +46,7 @@ $gray: #ddd;
 $gray-lighter: #888;
 $gray-xlight: #e5e5e5;
 $gray-dark: #444;
+$gray-dark-transparent: transparentize($gray-dark,0.5);
 $blue: #7A93BA;
 $red: #d46220;
 
@@ -99,7 +100,7 @@ html, body {
     }
 
     &.bar-dark {
-        background-color: rgba(85, 85, 85, 0.5);
+        background-color: $gray-dark-transparent;
         border: 0 none;
 
         .button {
@@ -115,14 +116,17 @@ html, body {
 }
 
 .ps-modal {
-    border-top: 4px solid #d46220;
+    border-top: 4px solid $red;
     position: absolute;
     top: 48px;
-    background-color: #fff;
+    background-color: $gray-dark-transparent;
     width: 100%;
     z-index: 3;
-    box-shadow: 2px 2px 34px 2px #777777;
+    height: 100%;
 
+    > div {
+        background-color: #fff;
+    }
     .list {
         overflow: hidden;
     }
@@ -194,20 +198,11 @@ html, body {
 
 .place-offer-modal {
     top: 150px;
-
     .list {
         margin-bottom: 0;
-
-        > a.item {
-            padding: 0;
-
-            &.desc {
-                white-space: normal;
-                padding: 10px;
-                font-size: 0.9em;
-                border: 0;
-            }
-        }
+    }
+    .item {
+        font-size: $base-font-size;
     }
 }
 
@@ -388,6 +383,7 @@ html, body {
         padding: $measure-unit;
         @if ($size == 'normal') {
             padding-top: $xbig-measure-unit;
+            padding-bottom: $xbig-measure-unit;
         } @else if ($size == 'small') {
             margin-top: 0;
         }
@@ -575,18 +571,12 @@ parking-spot-info-box.small {
     background-color: #fff;
 }
 
-h4.ps-page-title {
-    @extend .ps-page-title;
-    margin: 20px 10px 5px 10px;
-    padding: 0;
-    border-bottom: 1px solid #ddd;
-}
 
 .item {
     background-color: inherit;
 }
 
-.message {
+.notification-message {
     position: absolute;
     top: 59px;
     z-index: 100;
@@ -619,25 +609,24 @@ h4.ps-page-title {
         color: #aaa;
         width: 100px;
         margin: auto;
-        margin-top: 14%;
+        margin-top: 45%;
     }
 
     .watermark {
         position: absolute;
         top: 61px;
-        left: 28%;
+        left: 26%;
         font-size: 137px;
-        z-index: -1;
         color: $gray-xlight;
     }
     .message {
+        z-index:2;
         clear: both;
         margin: 5px 10px;
         padding: 2px 5px;
         border: 1px solid #ccc;
         border-radius: 7px;
         position: relative;
-        font-size: 0.9em;
         line-height: 1.4em;
         background-color: #fff;
 
@@ -722,6 +711,13 @@ h4.ps-page-title {
         }
     }
 
+
+    .title {
+        @extend .ps-page-title;
+        margin: 0 10px 0 10px;
+        padding: 20px 0 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
 }
 
 .offer-desc-item {
@@ -759,10 +755,22 @@ h4.ps-page-title {
     }
 
     .bid-table {
-        max-height: 120px;
-        .offer {
+        max-height: 110px;
+        margin-top: $xxbig-measure-unit;
+        margin-bottom: $xxbig-measure-unit;
+        border-top: 1px solid #C7C7C7;
+        border-bottom: 1px solid #c7c7c7;
 
+        &.narrow {
+            margin-top: $big-measure-unit;
+            margin-bottom: $big-measure-unit;
+        }
+
+        .offer {
             background-color: #f0f0f0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
             &.selected {
                 background-color: darken(#f0f0f0, 15%);
@@ -770,6 +778,10 @@ h4.ps-page-title {
                     $light-blue: darken($blue, 15%);
                     background-color: $light-blue;
                 }
+            }
+
+            .offer-desc {
+                font-size: 0.9em;
             }
 
             .offer-price {
@@ -780,7 +792,6 @@ h4.ps-page-title {
                 width: 57px;
                 white-space: nowrap;
                 text-align: center;
-
             }
 
             .offer-accept {

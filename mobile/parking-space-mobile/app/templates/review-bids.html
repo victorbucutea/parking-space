@@ -12,11 +12,8 @@
                     </span>
                 </h4>
                 <h4>
-
-                </h4>
-                <h4>
                     <small> You have {{spaceEdit.offers.length || 0}} offers.
-                        <span ng-show="spaceEdit.offers"> Click  &laquo;<i class="ion-checkmark-round"></i> Accept&raquo; to confirm </span>
+                        <span ng-show="spaceEdit.offers.length"> Click  &laquo;<i class="ion-checkmark-round"></i> Accept&raquo; to confirm </span>
                     </small>
                     <small ng-show="warn"> Can only accept one single offer.</small>
                 </h4>
@@ -30,11 +27,11 @@
                             <currency val="offer.currency"></currency>
                         </span>
 
-                        <span class="offer-accept" ui-sref="home.myposts.messages.talk" ng-show="unreadMessages(offer.messages)">
-                            ( <i class="fa fa-envelope"></i> {{unreadMessages(offer.messages)}} )
+                        <span ui-sref="home.myposts.messages.talk" >
+                            ( <i class="fa fa-envelope"></i> {{unreadMessagesForSpace(offer.messages)}} )
                         </span>
 
-                        <div class="pull-right offer-accept" on-tap="acceptStep1(offer)" ng-hide="offer.confirm">
+                        <div class="pull-right offer-accept" ng-click="acceptStep1(offer)" ng-hide="offer.confirm">
                             <i class="ion-checkmark-round accepted" ng-show="offer.accepted">Accepted</i>
                             <i class="ion-checkmark-round" ng-show="!offer.accepted"> Accept</i>
                         </div>
@@ -43,9 +40,9 @@
                             Accept {{offer.price}}
                             <currency val="offer.currency"></currency>
                             ? &nbsp;
-                            <i class="ion-checkmark-round" on-tap="accept(offer)"> Yes</i>
+                            <i class="ion-checkmark-round" ng-click="accept(offer)"> Yes</i>
                             &nbsp;
-                            <i class="ion-close-round" on-tap="cancel(offer)"> No</i>
+                            <i class="ion-close-round" ng-click="cancel(offer)"> No</i>
                         </div>
 
                         <div ng-show="!spaceEdit.offers.length" class="no-offers">
@@ -57,13 +54,15 @@
 
             <div ng-show="selOffer" class="offer-desc-area">
                 <div class="offer-desc-item ">
-                    Posted {{selOffer.timestamp | amTimeAgo }}.
+                    Posted {{selOffer.created_at | amTimeAgo }}.
                 </div>
                 <div class="offer-desc-item">
                     Owner : <div class="value pull-right">{{selOffer.owner_name}}</div>
                 </div>
                 <div class="offer-desc-item">
-                    Tel No: <span class="value pull-right"><i class="fa fa-phone"></i> {{selOffer.telephone_no}}</span>
+                    Tel No:
+                    <span class="value pull-right" ng-show="selOffer.accepted"><i class="fa fa-phone"></i> +{{selOffer.phone_number}}</span>
+                    <span class="value pull-right" ng-hide="selOffer.accepted">Accept offer to show</span>
                 </div>
 
             </div>

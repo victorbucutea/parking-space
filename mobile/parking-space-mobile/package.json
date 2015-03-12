@@ -55,6 +55,7 @@
     "https://github.com/raananw/PhoneGap-Image-Resizer.git",
     "org.apache.cordova.file",
     "https://github.com/hazemhagrass/phonegap-base64.git",
-    "nl.x-services.plugins.googleplus"
+    "nl.x-services.plugins.googleplus",
+    "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git"
   ]
 }

@@ -78,11 +78,15 @@ angular.module('ParkingSpaceMobile.services', [])
  * should cache user credentials
  * device information - should be ignored in favor of auth info + phone no
  */
-    .factory('deviceAndUserInfoService', function () {
-        return 'deviceid_userid_phoneno';
+    .service('deviceAndUserInfoService', function () {
+        // TODO fill in these fields on auth ( or make user insert them ? )
+        this.phoneNo = '40727456250';
+        this.userName = 'victor.bucutea@gmail.com';
+        this.deviceId = this.phoneNo + "_" + this.userName;
     })
 
-    .service('parkingSpaceService', function ($rootScope, $http, ENV, deviceAndUserInfoService, geolocationService) {
+
+    .service('parkingSpaceService', function ($rootScope, $http, ENV, deviceAndUserInfoService) {
 
         this.getAvailableSpaces = function (lat, lng, range, clbk) {
 
@@ -112,7 +116,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
-            $http.get(ENV + 'parking_spaces/myevents.json?deviceid='+deviceAndUserInfoService)
+            $http.get(ENV + 'parking_spaces/myevents.json')
                 .success(function (data) {
                     console.log(data);
                     $('.loading-spinner').hide();
@@ -136,10 +140,9 @@ angular.module('ParkingSpaceMobile.services', [])
             // massage space a to fit the back end model
             space.target_price = space.price;
             space.target_price_currency = space.currency;
-            // TODO fill in these fields on auth ( or make user insert them ? )
-            space.phone_number = '+40727456250';
-            space.deviceid = deviceAndUserInfoService;
-            space.owner_name = 'TODO';
+            space.phone_number = deviceAndUserInfoService.phoneNo;
+            space.deviceid = deviceAndUserInfoService.deviceId;
+            space.owner_name = deviceAndUserInfoService.userName;
             if (space.short_term)
                 space.interval = 1;
             else
@@ -164,7 +167,9 @@ angular.module('ParkingSpaceMobile.services', [])
 
     })
 
-    .service('messageService', function ($http, $timeout, deviceAndUserInfoService) {
+    .service('messageService', function ($rootScope, $http, $timeout, ENV, deviceAndUserInfoService) {
+        this.messages = [];
+        var _this = this;
 
         this.markRead = function (postId, messages, clbk) {
             // execute call on server
@@ -177,36 +182,50 @@ angular.module('ParkingSpaceMobile.services', [])
         this.getMessages = function (postId, clbk) {
             $timeout(function () {
                 if (clbk)
-                    clbk(messages);
+                    clbk(_this.messages);
             }, 1000)
         };
 
-        this.sendMessage = function (postId, msg, clbk) {
-            msg.deviceAndUserInfoService = deviceAndUserInfoService;
-            messages.push(msg);
-            this.getMessages(postId, clbk);
+        this.sendMessage = function (pSpaceId, proposalId, msg, clbk) {
+            msg.deviceid = deviceAndUserInfoService.deviceId;
+            msg.proposal_id = proposalId;
+            $http.post(ENV + 'parking_spaces/' + pSpaceId + '/proposals/' + proposalId + '/messages.json', msg)
+                .success(function (data) {
+                    if (clbk)
+                        clbk(data)
+                })
+                .error(function (data, status) {
+                    if (status == 420) { // 420 is an error status with business message
+                        $rootScope.$broadcast('http.error', "", data.Errors);
+                    } else {
+                        $rootScope.$broadcast('http.error', "", 'Connectivity error.');
+                    }
+                });
         }
     })
 
     .service('offerService', function ($http, $timeout, ENV, deviceAndUserInfoService, $rootScope) {
 
         this.placeOffer = function (bid, spaceId, clbk) {
-            // TODO fill in these fields on auth ( or make user insert them ? )
-            bid.phone_number = '+40727456250';
-            bid.deviceid = deviceAndUserInfoService;
-            bid.bidder_name = 'TODO';
-            bid.parking_space_id = 2;
+            bid.phone_number = deviceAndUserInfoService.phoneNo;
+            bid.deviceid = deviceAndUserInfoService.deviceId;
+            bid.bidder_name = deviceAndUserInfoService.userName;
+            bid.parking_space_id = spaceId;
 
 
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals.json', bid)
                 .success(function (data) {
-                    //TODO show mesage with direct dom manipulation
+                    //TODO show message with direct dom manipulation
                     $rootScope.$broadcast('http.notif', 'Bid placed!');
                     if (clbk)
                         clbk(data);
                 })
-                .error(function () {
-
+                .error(function (data, status) {
+                    if (status == 420) { // 420 is an error status with business message
+                        $rootScope.$broadcast('http.error', "", data.Errors);
+                    } else {
+                        $rootScope.$broadcast('http.error', "", 'Connectivity error.');
+                    }
                 })
         };
 
@@ -250,7 +269,7 @@ angular.module('ParkingSpaceMobile.services', [])
  * 6. starting currency
  * 7. starting asking price
  */
-    .service('parameterService', function ($http, ENV) {
+    .service('parameterService', function ($http, ENV, deviceAndUserInfoService) {
 
         var _this = this;
 
@@ -258,7 +277,7 @@ angular.module('ParkingSpaceMobile.services', [])
 
         var httpResp = JSON.parse($.ajax({
             type: "GET",
-            url: ENV + 'parameters.json',
+            url: ENV + 'parameters.json?deviceid=' + deviceAndUserInfoService.deviceId,
             async: false
         }).responseText);
 

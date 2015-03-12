@@ -25,3 +25,21 @@ four:
   deviceid: "IMEI8129631234"
   content: "I will give you +10 EUR"
   proposal_id: 2
+
+five:
+  id: 5
+  deviceid: "IMEI8129631241"
+  content: "7- I'm not happy with the offer you gave me"
+  proposal_id: 7
+
+six:
+  id: 6
+  deviceid: "IMEI8129631234"
+  content: "7 - I will give you +10 EUR"
+  proposal_id: 7
+
+seven:
+  id: 7
+  deviceid: "IMEI8129231231"
+  content: "Message belonging to proposal 7 and parking space 1 ( all with same deviceid)"
+  proposal_id: 7

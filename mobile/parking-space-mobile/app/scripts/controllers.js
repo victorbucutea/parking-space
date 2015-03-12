@@ -217,20 +217,15 @@ angular.module('ParkingSpaceMobile.controllers', [])
             d.scrollTop(d.prop("scrollHeight"));
         };
 
-        $scope.sendMessage = function (newMessage) {
-
-            if (!newMessage) {
+        $scope.sendMessage = function (content) {
+            if (!content) {
                 return;
             }
-
             var newMessage = {
-                msg: newMessage,
-                timestamp: new Date().getTime(),
-                read: true,
-                own: true
+                content: content
             };
-
-            messageService.sendMessage('postId', newMessage, function (messages) {
+            var offer = $scope.selOffer;
+            messageService.sendMessage($scope.spaceEdit.id, offer.id, newMessage, function (savedMsg) {
                 $scope.selOffer.messages.push(newMessage);
             });
         };
@@ -242,12 +237,10 @@ angular.module('ParkingSpaceMobile.controllers', [])
                     return true;
                 }
             });
-
             if (acceptedOffers.length) {
                 $scope.warn = true;
                 return;
             }
-
             offer.confirm = true;
         };
 
@@ -284,27 +277,11 @@ angular.module('ParkingSpaceMobile.controllers', [])
         $scope.selectOffer = function (offer) {
             $scope.selOffer = offer;
             $scope.showChatArea = true;
+        }
 
-            /*  $timeout(function () {
-             messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
-
-             });
-             }, 1000);*/
-        };
-
-        $timeout(function () {
-            /*if ($scope.selOffer) {
-             messageService.markRead('postId', $scope.selOffer.messages, function (messages) {
-             });
-             }*/
-
-            offerService.markRead('postId', $scope.spaceEdit.offers, function (offers) {
-
-            })
-        }, 3000)
     })
 
-    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, parameterService, $state, currencyFactory, offerService, $filter) {
+    .controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, parameterService, $state, currencyFactory, offerService, deviceAndUserInfoService, $filter) {
 
         $rootScope.map.setZoom(15);
 
@@ -418,7 +395,9 @@ angular.module('ParkingSpaceMobile.controllers', [])
             $scope.spaces = spaces;
         });
 
+
         $scope.showBid = function (space) {
+            $('.bar.bar-header').hide();
             $scope.selectedSpace = space;
             $scope.bid = {};
             $scope.bid.bid_amount = $scope.selectedSpace.price;
@@ -463,6 +442,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
         };
 
         $scope.closeBid = function () {
+            $('.bar.bar-header').show();
             $scope.spotThumbnail.setMap();
             $rootScope.map.setZoom($scope.previousZoom);
             $rootScope.map.setCenter($scope.previousCenter);
@@ -485,7 +465,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
         };
 
         $scope.saveBid = function () {
-            console.log('saving bid ', $scope.bid);
+            $('.bar.bar-header').show();
             offerService.placeOffer($scope.bid, $scope.selectedSpace.id);
             $scope.closeBid();
         };
@@ -509,6 +489,15 @@ angular.module('ParkingSpaceMobile.controllers', [])
                     $scope.circleOptions.radius = prevRad - 50;
             }
         };
+
+        $scope.expireDuration = function() {
+            var duration = moment.duration(parameterService.getShortTermExpiration(),'minutes');
+            if (!$scope.selectedSpace.short_term) {
+                duration = moment.duration(parameterService.getLongTermExpiration(),'weeks');
+            }
+            var expirationTimestamp = new Date($scope.selectedSpace.created_at).getTime() + duration.asMilliseconds();
+            return moment(expirationTimestamp).fromNow();
+        }
     })
 
     .controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state) {
