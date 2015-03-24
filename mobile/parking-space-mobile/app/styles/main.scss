@@ -1,22 +1,26 @@
-$dflt-border-radius: 3px;
-
 $golden-ratio: 1.428571429;
 
+$dflt-border-radius: 3px;
+$big-border-radius: 3px * $golden-ratio;
+
 $base-font-size: 14px;
+
 // 10px
 $sm-font-size: $base-font-size / $golden-ratio;
+
 // 20px
 $lg-font-size: $base-font-size * $golden-ratio;
+
 // 28px
 $xlg-font-size: $lg-font-size * $golden-ratio;
 
+// 20px
 $base-line-height: $base-font-size * $golden-ratio;
 
-// a balanced measure unit is a subunitary value of the base font size
-// actualy the measure unit would be the base font size, but that is too
-// big to be used everywhere
+// a balanced measure unit is a sub-unitary value of the base font size
 // 10px
 $measure-unit: $base-font-size / $golden-ratio;
+
 // 14 px
 $big-measure-unit: $base-font-size;
 
@@ -30,23 +34,31 @@ $xxbig-measure-unit: $xbig-measure-unit * $golden-ratio;
 $xxxbig-measure-unit: $xxbig-measure-unit * $golden-ratio;
 
 // 105 px ( $base-unit * ratio ^ 6 )
-$jumbo-measure-unit: $big-measure-unit * $golden-ratio
-          * $golden-ratio * $golden-ratio * $golden-ratio
-           * $golden-ratio;
+$jumbo-measure-unit: $xxxbig-measure-unit  * $golden-ratio * $golden-ratio;
 
 // 118 px ( $base-unit * ratio ^ 7 )
-$lg-jumbo-measure-unit: $big-measure-unit * $golden-ratio
-          * $golden-ratio * $golden-ratio * $golden-ratio
-           * $golden-ratio * $golden-ratio;
+$lg-jumbo-measure-unit: $jumbo-measure-unit * $golden-ratio;
+
+// 7px
+$sm-measure-unit: $measure-unit / $golden-ratio;
+
+// 5px
+$xsm-measure-unit: $sm-measure-unit / $golden-ratio;
+
+// 3px
+$xxsm-measure-unit: $xsm-measure-unit / $golden-ratio;
 
 $font-family: 'Open Sans';
 
 $base-font-color: #333;
 $gray: #ddd;
+
 $gray-lighter: #888;
 $gray-xlight: #e5e5e5;
+$gray-xxlight: #f0f0f0;
+
 $gray-dark: #444;
-$gray-dark-transparent: transparentize($gray-dark,0.5);
+$gray-dark-transparent: transparentize($gray-dark, 0.5);
 $blue: #7A93BA;
 $red: #d46220;
 
@@ -115,6 +127,41 @@ html, body {
     }
 }
 
+
+.ps-control-buttons {
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+    height: auto;
+
+    .button-bar {
+        .button {
+            border: 0;
+            background-color: #fff;
+            min-height: $xxxbig-measure-unit;
+            line-height: $xxxbig-measure-unit;
+            font-size: 14px;
+
+            &.icon-center {
+                font-size: $xbig-measure-unit;
+            }
+
+            &.activated {
+                background-color: #eee;
+            }
+            &:after {
+                line-height: 33px;
+            }
+
+            &:before {
+                line-height: 33px;
+            }
+        }
+    }
+}
+
+
+
 .ps-modal {
     border-top: 4px solid $red;
     position: absolute;
@@ -129,6 +176,33 @@ html, body {
     }
     .list {
         overflow: hidden;
+    }
+}
+
+.ps-dialog {
+    display: none;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+
+    .ps-dialog-content {
+        z-index: 100;
+        background-color: white;
+        position: relative;
+        top: 30%;
+        left: 10%;
+        width: 74%;
+        box-shadow: 1px 1px 3px;
+        border-top: 4px solid $red;
+
+        .ps-question {
+            padding: $sm-measure-unit;
+            padding-bottom: $big-measure-unit;
+        }
     }
 }
 
@@ -272,6 +346,7 @@ html, body {
 }
 
 .loading-spinner {
+    display: none;
     color: $gray;
     &.search {
         margin-top: 30px;
@@ -349,7 +424,7 @@ html, body {
     font-family: sans-serif;
     margin-right: 10px;
     border: 1px solid #23467C;
-    box-shadow: 2px 2px 8px 1px #ddd;
+    //    box-shadow: 2px 2px 8px 1px #ddd;
     display: inline-block;
     font-size: $font-size;
 
@@ -461,37 +536,6 @@ parking-spot-info-box.small {
     margin-top: 20%;
 }
 
-.ps-control-buttons {
-    border: 0;
-    background-color: transparent;
-    padding: 0;
-    height: auto;
-
-    .button-bar {
-        .button {
-            border-top: 0;
-            background-color: #fff;
-            min-height: 33px;
-            line-height: 33px;
-            font-size: 14px;
-
-            &.icon-center {
-                font-size: 20px;
-            }
-
-            &.activated {
-                background-color: #eee;
-            }
-            &:after {
-                line-height: 33px;
-            }
-
-            &:before {
-                line-height: 33px;
-            }
-        }
-    }
-}
 
 .notif-icon {
     position: absolute;
@@ -571,7 +615,6 @@ parking-spot-info-box.small {
     background-color: #fff;
 }
 
-
 .item {
     background-color: inherit;
 }
@@ -620,7 +663,7 @@ parking-spot-info-box.small {
         color: $gray-xlight;
     }
     .message {
-        z-index:2;
+        z-index: 2;
         clear: both;
         margin: 5px 10px;
         padding: 2px 5px;
@@ -711,12 +754,11 @@ parking-spot-info-box.small {
         }
     }
 
-
     .title {
         @extend .ps-page-title;
         margin: 0 10px 0 10px;
         padding: 20px 0 10px 0;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $gray;
     }
 }
 
@@ -728,7 +770,7 @@ parking-spot-info-box.small {
         font-weight: 600;
         padding-right: 10px;
         padding-left: 10px;
-        background-color: #F0F0F0;
+        background-color: $gray-xlight;
         border-radius: 3px;
     }
 }
@@ -767,7 +809,7 @@ parking-spot-info-box.small {
         }
 
         .offer {
-            background-color: #f0f0f0;
+            background-color: $gray-xxlight;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -789,7 +831,7 @@ parking-spot-info-box.small {
                 color: white;
                 padding: 5px;
                 display: inline-block;
-                width: 57px;
+                width: 80px;
                 white-space: nowrap;
                 text-align: center;
             }
@@ -815,6 +857,36 @@ parking-spot-info-box.small {
 
     }
 }
+
+.btn-grp {
+    padding: $measure-unit 0;
+    text-align: center;
+    .btn {
+        border: 1px solid $gray;
+        padding: ($measure-unit/$golden-ratio) 18px;
+        background-color: $gray-xxlight;
+        color: $base-font-color;
+        display: inline-block;
+
+        span {
+            text-decoration: underline;
+        }
+    }
+}
+
+.fa-facebook-square {
+    color: #3a5795;
+}
+
+.fa-google-plus-square {
+    color: #d73d32;
+}
+
+.fa-twitter-square {
+    color: #5EA9DD;
+}
+
+
 
 .fa-rotate-45 {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);

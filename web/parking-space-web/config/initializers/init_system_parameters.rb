@@ -18,17 +18,25 @@ class SysParams
   def get_i(name)
     if get(name)
       get(name).to_i
+    else
+      10
     end
   end
 
   def get_f(name)
     if get(name)
       get(name).to_f
+    else
+      0.1
     end
   end
 
   def all
     @params
+  end
+
+  def set_default_value!(name, value)
+    @params_map[name] = value
   end
 
   def reinit

@@ -73,11 +73,31 @@ angular.module('ParkingSpaceMobile.services', [])
     .service('authenticationService', function ($http) {
     })
 
-/**
- * service provides a unique terminal and user identifier
- * should cache user credentials
- * device information - should be ignored in favor of auth info + phone no
- */
+    .service('errorHandlingService', function($rootScope) {
+
+        this.handle = function(data, status){
+            if (status == 420  || status == 422) { // 420  || 422 is an error status with business message
+                // transform error response into a manageable obj
+                var errMsgs = [];
+                var i = 0;
+                for (item in data.Error){
+                    var fieldName = item == 'general'? '' : item ;
+                    errMsgs[i] = {fieldName: fieldName , text: data.Error[item][0]};
+                    i++;
+                }
+                $rootScope.$broadcast('http.error', errMsgs);
+            } else {
+                $rootScope.$broadcast('http.error',{fieldName: '', text: 'Connectivity error.'});
+            }
+            $('.loading-spinner').hide();
+        }
+    })
+
+    /**
+     * service provides a unique terminal and user identifier
+     * should cache user credentials
+     * device information - should be ignored in favor of auth info + phone no
+     */
     .service('deviceAndUserInfoService', function () {
         // TODO fill in these fields on auth ( or make user insert them ? )
         this.phoneNo = '40727456250';
@@ -86,7 +106,7 @@ angular.module('ParkingSpaceMobile.services', [])
     })
 
 
-    .service('parkingSpaceService', function ($rootScope, $http, ENV, deviceAndUserInfoService) {
+    .service('parkingSpaceService', function ($rootScope, $http, ENV, deviceAndUserInfoService, errorHandlingService) {
 
         this.getAvailableSpaces = function (lat, lng, range, clbk) {
 
@@ -101,14 +121,9 @@ angular.module('ParkingSpaceMobile.services', [])
                     if (clbk)
                         clbk(data);
                 })
-                .error(function (data, status, headers, config) {
-                    var error = 'Connectivity error.';
-                    // TODO replace broadcast with direct manipulation
-                    // implement same mechanism on save with different message
-
-                    $('.loading-spinner').hide();
+                .error(function (data, status) {
+                    errorHandlingService.handle(data,status);
                     $('.loading-finished').show();
-                    $rootScope.$broadcast('http.error', "", error);
                 });
         };
 
@@ -118,20 +133,14 @@ angular.module('ParkingSpaceMobile.services', [])
 
             $http.get(ENV + 'parking_spaces/myevents.json')
                 .success(function (data) {
-                    console.log(data);
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
                     if (clbk)
                         clbk(data);
                 })
                 .error(function (data, status, headers, config) {
-                    var error = 'Connectivity error.';
-                    // TODO replace broadcast with direct manipulation
-                    // implement same mechanism on save with different message
-
-                    $('.loading-spinner').hide();
+                    errorHandlingService.handle(data,status);
                     $('.loading-finished').show();
-                    $rootScope.$broadcast('http.error', "", error);
                 });
         };
 
@@ -149,21 +158,34 @@ angular.module('ParkingSpaceMobile.services', [])
                 space.interval = 0;
 
 
-            $('.loading-spinner').show();
+            var loading = $('.loading-spinner');
+            loading.show();
             $http.post(ENV + 'parking_spaces.json', space)
                 .success(function (data) {
                     //TODO show mesage with direct dom manipulation
                     $rootScope.$broadcast('http.notif', 'Parking space saved!');
-                    $('.loading-spinner').hide();
+                    loading.hide();
                 })
                 .error(function (data, status) {
-                    var error = 'Connectivity error.';
-                    // TODO replace broadcast with direct manipulation
-                    // implement same mechanism on save with different message
-                    $rootScope.$broadcast('http.error', "", error);
-                    $('.loading-spinner').hide();
+                    errorHandlingService.handle(data,status);
                 })
-        }
+        };
+
+        this.deleteSpace = function(spaceId, clbk) {
+            $('.loading-spinner').show();
+            $http.delete(ENV+'parking_spaces/'+spaceId+'.json')
+                .success(function(data) {
+                    $rootScope.$broadcast('http.notif', 'Parking space deleted!');
+                    $('.loading-spinner').hide();
+                    if (clbk) {
+                        clbk(data);
+                    }
+                })
+                .error(function(data) {
+                    errorHandlingService.handle(data,status);
+                })
+
+        };
 
     })
 
@@ -195,16 +217,12 @@ angular.module('ParkingSpaceMobile.services', [])
                         clbk(data)
                 })
                 .error(function (data, status) {
-                    if (status == 420) { // 420 is an error status with business message
-                        $rootScope.$broadcast('http.error', "", data.Errors);
-                    } else {
-                        $rootScope.$broadcast('http.error', "", 'Connectivity error.');
-                    }
+                    errorHandlingService.handle(data,status);
                 });
         }
     })
 
-    .service('offerService', function ($http, $timeout, ENV, deviceAndUserInfoService, $rootScope) {
+    .service('offerService', function ($http, $timeout, ENV, deviceAndUserInfoService, $rootScope, errorHandlingService) {
 
         this.placeOffer = function (bid, spaceId, clbk) {
             bid.phone_number = deviceAndUserInfoService.phoneNo;
@@ -221,29 +239,40 @@ angular.module('ParkingSpaceMobile.services', [])
                         clbk(data);
                 })
                 .error(function (data, status) {
-                    if (status == 420) { // 420 is an error status with business message
-                        $rootScope.$broadcast('http.error', "", data.Errors);
-                    } else {
-                        $rootScope.$broadcast('http.error', "", 'Connectivity error.');
-                    }
+                    errorHandlingService.handle(data,status);
                 })
         };
 
-        this.acceptOffer = function (offer, clbk) {
-
-            $timeout(function () {
-                offer.accepted = true;
-                if (clbk)
-                    clbk(offer);
-            }, 1000)
+        this.acceptOffer = function (spaceId, offer, clbk) {
+            var loading = $('.loading-spinner');
+            loading.show();
+            $http.post(ENV+'parking_spaces/'+spaceId+'/proposals/'+offer.id+'/approve.json')
+                .success(function(data) {
+                    $rootScope.$broadcast('http.notif', 'Accepted offer for '+offer.price+' '+offer.currency);
+                    $('.loading-spinner').hide();
+                    if (clbk) {
+                        clbk(data);
+                    }
+                })
+                .error(function(data,status) {
+                    errorHandlingService.handle(data,status);
+                })
         };
 
-        this.cancelOffer = function (offer, clbk) {
-            $timeout(function () {
-                offer.accepted = false;
-                if (clbk)
-                    clbk(offer);
-            }, 1000)
+        this.rejectOffer = function (spaceId, offer, clbk) {
+            var loading = $('.loading-spinner');
+            loading.show();
+            $http.post(ENV+'parking_spaces/'+spaceId+'/proposals/'+offer.id+'/reject.json')
+                .success(function(data) {
+                    $rootScope.$broadcast('http.notif', 'Rejected offer for '+offer.price+' '+offer.currency);
+                    $('.loading-spinner').hide();
+                    if (clbk) {
+                        clbk(data);
+                    }
+                })
+                .error(function(data,status) {
+                    errorHandlingService.handle(data,status);
+                })
         };
 
         this.markRead = function (postId, offers, clbk) {
@@ -275,6 +304,8 @@ angular.module('ParkingSpaceMobile.services', [])
 
         _this.parameters = {};
 
+
+        // TODO. Order of init is: 1. init from client side defaults, 2. init from local storage, 3. init from async call ( if internet av.)
         var httpResp = JSON.parse($.ajax({
             type: "GET",
             url: ENV + 'parameters.json?deviceid=' + deviceAndUserInfoService.deviceId,

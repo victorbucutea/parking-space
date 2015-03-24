@@ -1,14 +1,19 @@
 <div class="place-offer-modal ps-modal ">
+    <div class="padding">
+        <h3>Your post <i class="ion-android-share pull-right" ></i></h3>
+        <span> {{selectedSpace.created_at | date: 'EEEE, MMM d, h:mm' }} </span>
+    </div>
     <div class="list">
-        <parking-spot-info-box class="small" space="selectedSpace" on-tap="showThumbnail(selectedSpace)"></parking-spot-info-box>
+        <parking-spot-info-box class="small" space="selectedSpace" ng-click="showThumbnail(selectedSpace)"></parking-spot-info-box>
         <!-- TODO add modal with image and description
         <a class="item desc" ng-show="selectedSpace.description">
             <i> {{selectedSpace.description}} </i>
         </a>
         -->
     </div>
-    <div  class="padding-left padding-right" ng-hide="selectedSpace.owner_is_current_user">
-        <span> Space will expire {{expireDuration()}}. </span> <span ng-show="selectedSpace.offers.length">Current offers are:</span>
+    <div class="padding-left padding-right" ng-hide="selectedSpace.owner_is_current_user">
+        <span> Space will expire {{expireDuration()}}. </span>
+        <span ng-show="selectedSpace.offers.length">Current offers are:</span>
 
         <div class="bids-area">
             <div class="bid-table narrow scroll">
@@ -28,18 +33,18 @@
         <bid-amount amount="bid.bid_amount" currency="bid.bid_currency"></bid-amount>
     </div>
     <div ng-show="selectedSpace.owner_is_current_user">
-        <span>Posted by you on {{selectedSpace.created_at | date: 'EEEE, MMM d, y h:mm' }} </span>
-
-        <!--<div>
-            <i class="fa fa-facebook-square fa-2x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
-            &nbsp;&nbsp;&nbsp;
-            <i class="fa fa-google-plus fa-2x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
-        </div>-->
+        <div class="btn-grp">
+            <a ng-click="showOffers(selectedSpace.id)" class="btn btn-grp-left"><i class="fa fa-money"></i> <span>Offers</span> ({{selectedSpace.offers.length}})</a>
+            <a ng-click="showEdit(selectedSpace.id)" class="btn btn-grp-center ion-edit"> <span>Edit</span></a>
+            <a ng-click="showDelete(selectedSpace.id)" class="btn btn-grp-right ion-trash-a"> <span>Delete</span></a>
+        </div>
     </div>
+
+
+
     <div class="ps-control-buttons">
         <div class="button-bar">
-            <a class="button icon-center ion-edit" ui-sref="home.myposts.edit" ng-show="selectedSpace.owner_is_current_user"></a>
-            <a class="button icon-center ion-checkmark-round" ng-click="saveBid()" ng-hide="selectedSpace.owner_is_current_user"></a>
+            <a class="button icon-center ion-checkmark-round" ng-click="saveBid()"></a>
             <a class="button icon-center ion-close" ng-click="closeBid()"></a>
         </div>
     </div>

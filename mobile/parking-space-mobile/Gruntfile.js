@@ -37,9 +37,15 @@ module.exports = function (grunt) {
                 name: 'config',
                 dest: '<%= yeoman.app %>/scripts/constants.js'
             },
-            development: {
+            local_development: {
                 constants: {
                     ENV: "http://localhost:3000/"
+
+                }
+            },
+            development: {
+                constants: {
+                    ENV: "http://parking-space-web-qqxzmgpj3b.elasticbeanstalk.com/"
 
                 }
             },
@@ -477,6 +483,10 @@ module.exports = function (grunt) {
         return grunt.task.run(['init', 'concurrent:ionic']);
     });
 
+    grunt.registerTask('run_dev', function () {
+        return grunt.task.run(['run','ngconstant:development']);
+    });
+
     grunt.registerTask('run', function () {
         grunt.config('concurrent.ionic.tasks', ['ionic:run:' + this.args.join(), 'watch']);
         return grunt.task.run(['init', 'concurrent:ionic']);
@@ -488,7 +498,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('init', [
         'clean',
-        'ngconstant:development',
+        'ngconstant:local_development',
         'wiredep',
         'concurrent:server',
         'autoprefixer',

@@ -186,13 +186,7 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
 
             link: function ($scope, element, attrs) {
-                if (!$scope.bidAmount) {
-                    $scope.bidAmount = 2;
-                }
 
-                if (!$scope.bidCurrency) {
-                    $scope.bidCurrency = currencies[1].name;
-                }
                 $scope.increase = function () {
                     if (!$scope.bidAmount) {
                         $scope.bidAmount = 0;

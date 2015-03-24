@@ -16,8 +16,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
 
         $rootScope.$on('http.error', function (event, data, status) {
-            $scope.errMsg = data + status;
-
+            $scope.errMsg = data;
         });
 
         $rootScope.$on('http.notif', function (event, data, status) {
@@ -152,64 +151,6 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
     })
 
-    .controller('EditParkingSpaceCtrl', function ($scope, $state, imageResizeFactory, parkingSpaceService) {
-
-        $scope.takePhoto = function () {
-            var cameraSuccess = function (img) {
-                $scope.spaceEdit.image_data = img;
-                $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
-                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
-                $scope.spaceEdit.image_content_type = 'image/jpeg';
-
-                $scope.$apply();
-            };
-
-            var cameraError = function (img) {
-                console.log('error while taking :', img);
-            };
-
-            navigator.camera.getPicture(cameraSuccess, cameraError, {
-                quality: 80,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                encodingType: Camera.EncodingType.JPEG,
-                targetWidth: 480,
-                targetHeight: 640
-            });
-        };
-
-        $scope.attachPhoto = function () {
-            var cameraSuccess = function (img) {
-                $scope.spaceEdit.image_data = img;
-                $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
-                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
-                $scope.spaceEdit.image_content_type = 'image/jpeg';
-
-                $scope.$apply();
-            };
-
-            var cameraError = function (img) {
-                console.log('error while taking :', img);
-            };
-
-            navigator.camera.getPicture(cameraSuccess, cameraError, {
-                quality: 50,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-            });
-        };
-
-
-        $scope.save = function () {
-            parkingSpaceService.saveSpace($scope.spaceEdit);
-            $state.go('^');
-        };
-
-        $scope.close = function () {
-            $state.go('^');
-        };
-
-    })
-
     .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, offerService) {
 
         $scope.scrollDown = function () {
@@ -230,10 +171,10 @@ angular.module('ParkingSpaceMobile.controllers', [])
             });
         };
 
-
-        $scope.acceptStep1 = function (offer) {
+        $scope.confirmApproval = function (offer) {
+            $scope.warn = false;
             var acceptedOffers = $scope.spaceEdit.offers.filter(function (d) {
-                if (d.accepted == true && offer !== d) {
+                if (d.approved == true && offer !== d) {
                     return true;
                 }
             });
@@ -241,24 +182,26 @@ angular.module('ParkingSpaceMobile.controllers', [])
                 $scope.warn = true;
                 return;
             }
-            offer.confirm = true;
+
+            $('#confirmOffer').show();
         };
 
-        $scope.accept = function (offer) {
-            console.log('accepting ', offer);
-            offerService.acceptOffer(offer, function () {
-                $scope.warn = false;
-                offer.accepted = true;
-                offer.confirm = false;
-            });
+        $scope.accept = function (space, offer) {
+
+            if( offer.approved) {
+                offerService.acceptOffer(space.id, offer, function () {
+                });
+            } else {
+                offerService.rejectOffer(space.id, offer, function () {
+                });
+            }
+
+            $('#confirmOffer').hide()
         };
 
-        $scope.cancel = function (offer) {
-            offer.confirm = false;
-            offerService.cancelOffer(offer, function () {
-                $scope.warn = false;
-                offer.accepted = false;
-                offer.confirm = false;
+        $scope.reject = function (space, offer) {
+            offerService.rejectOffer(space.id, offer, function () {
+                offer.approved = false;
             })
         };
 
@@ -466,7 +409,9 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
         $scope.saveBid = function () {
             $('.bar.bar-header').show();
-            offerService.placeOffer($scope.bid, $scope.selectedSpace.id);
+            offerService.placeOffer($scope.bid, $scope.selectedSpace.id, function (bid) {
+                $scope.selectedSpace.offers.push(bid);
+            });
             $scope.closeBid();
         };
 
@@ -490,26 +435,52 @@ angular.module('ParkingSpaceMobile.controllers', [])
             }
         };
 
-        $scope.expireDuration = function() {
-            var duration = moment.duration(parameterService.getShortTermExpiration(),'minutes');
+        $scope.expireDuration = function () {
+            var duration = moment.duration(parameterService.getShortTermExpiration(), 'minutes');
             if (!$scope.selectedSpace.short_term) {
-                duration = moment.duration(parameterService.getLongTermExpiration(),'weeks');
+                duration = moment.duration(parameterService.getLongTermExpiration(), 'weeks');
             }
             var expirationTimestamp = new Date($scope.selectedSpace.created_at).getTime() + duration.asMilliseconds();
             return moment(expirationTimestamp).fromNow();
-        }
+        };
+
+        $scope.showOffers = function (parkingSpaceId) {
+            $('.bar.bar-header').show();
+            $state.go('home.myposts.messages', {parking_space_id: parkingSpaceId});
+        };
+
+        $scope.showEdit = function (parkingSpaceId) {
+            $('.bar.bar-header').show();
+            $state.go('home.myposts.edit', {parking_space_id: parkingSpaceId});
+        };
+
+        $scope.showDelete = function (parkingSpaceId) {
+            $('.bar.bar-header').show();
+            $state.go('home.myposts.delete', {parking_space_id: parkingSpaceId});
+
+        };
+
     })
 
-    .controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state) {
+    .controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state, $stateParams) {
 
         $('.open-spaces-list').height($(window).height() - 105);
+
         parkingSpaceService.getMySpaces(function (spaces) {
             $scope.spaces = spaces;
+            var selectedSpace = spaces.filter(function (item) {
+                if (item.id == $stateParams.parking_space_id) {
+                    return true;
+                }
+            });
+
+            if (selectedSpace && selectedSpace[0]) {
+                $scope.spaceEdit = selectedSpace[0];
+            }
         });
 
         $scope.unreadNotifications = function (space) {
             var show = false;
-
             if (space.offers) {
                 space.offers.forEach(function (d) {
 
@@ -522,21 +493,21 @@ angular.module('ParkingSpaceMobile.controllers', [])
                     }
                 })
             }
-
             return show;
         };
 
         $scope.unreadMessagesForSpace = function (space) {
             var count = 0;
-            if (space.offers) {
-                space.offers.forEach(function (d) {
-                    if (d.messages) {
-                        d.messages.forEach(function (d) {
-                            if (!d.read)  count++
-                        });
-                    }
-                })
+            if (!space.offers) {
+                return count;
             }
+            space.offers.forEach(function (d) {
+                if (d.messages) {
+                    d.messages.forEach(function (d) {
+                        if (!d.read)  count++
+                    });
+                }
+            });
             return count;
         };
 
@@ -549,6 +520,84 @@ angular.module('ParkingSpaceMobile.controllers', [])
         $scope.showMessages = function (space) {
             $scope.spaceEdit = space;
             $state.go('home.myposts.messages.talk');
+        };
+
+    })
+
+    .controller('EditParkingSpaceCtrl', function ($scope, $state, imageResizeFactory, parkingSpaceService) {
+
+        var copiedSpaceEdit = false;
+
+        $scope.$watch('spaceEdit', function (newVal) {
+            if (!newVal) {
+                return;
+            }
+            // make a copy of this variable when the reference changes
+            // e.g. ajax loading or manually assigned in the parent
+            if (!copiedSpaceEdit) {
+                $scope.spaceEdit = angular.copy(newVal);
+                copiedSpaceEdit = true
+            }
+        });
+
+        $scope.takePhoto = function () {
+            var cameraSuccess = function (img) {
+                $scope.spaceEdit.image_data = img;
+                $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
+                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
+                $scope.spaceEdit.image_content_type = 'image/jpeg';
+                $scope.$apply();
+            };
+
+            var cameraError = function (img) {
+                console.log('error while taking :', img);
+            };
+
+            navigator.camera.getPicture(cameraSuccess, cameraError, {
+                quality: 80,
+                destinationType: navigator.camera.DestinationType.FILE_URI,
+                encodingType: Camera.EncodingType.JPEG,
+                targetWidth: 480,
+                targetHeight: 640
+            });
+        };
+
+        $scope.attachPhoto = function () {
+            var cameraSuccess = function (img) {
+                $scope.spaceEdit.image_data = img;
+                $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
+                $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
+                $scope.spaceEdit.image_content_type = 'image/jpeg';
+                $scope.$apply();
+            };
+
+            var cameraError = function (img) {
+                console.log('error while taking :', img);
+            };
+
+            navigator.camera.getPicture(cameraSuccess, cameraError, {
+                quality: 50,
+                destinationType: navigator.camera.DestinationType.FILE_URI,
+                sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+            });
+        };
+
+
+        $scope.save = function () {
+            parkingSpaceService.saveSpace($scope.spaceEdit);
+            $state.go('^');
+        };
+
+        $scope.close = function () {
+            $state.go('^');
+        };
+
+    })
+
+    .controller('DeleteParkingSpaceCtrl', function ($scope, parkingSpaceService,$state) {
+        $scope.deleteSpace = function (parkingSpaceId) {
+            parkingSpaceService.deleteSpace(parkingSpaceId);
+            $state.go('^');
         };
 
     });

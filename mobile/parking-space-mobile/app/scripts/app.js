@@ -76,7 +76,7 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                 }
             })
             .state('home.myposts.messages', {
-                url: '/messages',
+                url: '/messages/{parking_space_id}',
                 views: {
                     'edit-space': {
                         templateUrl: "templates/review-bids.html"
@@ -92,10 +92,18 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                 }
             })
             .state('home.myposts.edit', {
-                url: '/edit',
+                url: '/edit/{parking_space_id}',
                 views: {
                     'edit-space': {
                         templateUrl: "templates/review-post.html"
+                    }
+                }
+            })
+            .state('home.myposts.delete', {
+                url: '/delete/{parking_space_id}',
+                views: {
+                    'edit-space': {
+                        templateUrl: "templates/delete-post.html"
                     }
                 }
             });

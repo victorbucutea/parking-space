@@ -104,12 +104,16 @@ class ParkingSpacesControllerTest < ActionController::TestCase
   end
 
   test 'should not return any posts' do
-    xhr :get, :myevents, {deviceid:'inexisting'}
+    old_deviceid = session[:deviceid]
+    session[:deviceid] = 'inexisting'
+    xhr :get, :myevents
 
+    session[:deviceid] = old_deviceid
     parking_spaces = assigns(:parking_spaces)
     assert_equal 0, parking_spaces.size
 
     assert_response :success
+
   end
 
   test 'should return all posted spaces and all proposed spaces joined with messages' do
@@ -193,9 +197,9 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_equal '44.42534', p_space['location_lat']
     assert_equal 'TODO', p_space['owner_name']
     assert_equal '+40727456250', p_space['phone_number']
-    assert_equal 'short_term', p_space['interval']
+    assert_equal true, p_space['short_term']
     assert_equal -67.5, p_space['rotation_angle']
-    assert_equal 5, p_space['target_price']
+    assert_equal 5, p_space['price']
   end
 
 
@@ -203,7 +207,7 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_difference('ParkingSpace.count', 1) do
 
 
-      post :create, :parking_space => {
+      post :create,  {
                       location_lat: 44.42534, #~22 m East from id 1
                       location_long: 26.11521, # ~156m North from id 1
                       recorded_from_lat: 44.42504,
@@ -212,16 +216,20 @@ class ParkingSpacesControllerTest < ActionController::TestCase
                       address_line_2: 'Dane County, Madison',
                       currency: 'Eur',
                       deviceid: '1234',
+                      interval: 0,
                       owner_name: 'TODO',
                       phone_number: '+40727456250',
                       price: 5,
-                      interval: 'long_term',
                       rotation_angle: -67.5,
                       target_price: 5,
                       target_price_currency: 'Eur',
-                      title: 'Dane County'}
-
+                      title: 'Dane County',
+                      format: :json}
     end
+
+    space = assigns :parking_space
+
+    assert space.long_term?
 
     p_space = JSON.parse(@response.body)
     # deviceid is secret
@@ -230,9 +238,9 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_equal '44.42534', p_space['location_lat']
     assert_equal 'TODO', p_space['owner_name']
     assert_equal '+40727456250', p_space['phone_number']
-    assert_equal 'long_term', p_space['interval']
+    assert_equal false, p_space['short_term']
     assert_equal -67.5, p_space['rotation_angle']
-    assert_equal 5, p_space['target_price']
+    assert_equal 5, p_space['price']
   end
 
 
@@ -291,10 +299,6 @@ class ParkingSpacesControllerTest < ActionController::TestCase
   test 'should create short term parking_space with image' do
     assert_difference('ParkingSpace.count', 1) do
 
-      @request.headers['Content-Type'] = 'application/json'
-      @request.headers['Accept'] = 'application/json'
-
-
       post :create, :parking_space => {
                       location_lat: 44.42534, #~22 m East from id 1
                       location_long: 26.11521, # ~156m North from id 1
@@ -321,7 +325,7 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_equal '44.42534', p_space['location_lat']
     assert_equal 'Victor', p_space['owner_name']
     assert_equal '0727456250', p_space['phone_number']
-    assert_equal 'short_term', p_space['interval']
+    assert_equal true, p_space['short_term']
 
     # image created
 
@@ -514,8 +518,8 @@ class ParkingSpacesControllerTest < ActionController::TestCase
 
     p_spaces = JSON.parse(@response.body)
     assert_equal 4, p_spaces.size
-    p_space = p_spaces[0]
 
+    p_space = p_spaces[1]
 
     assert_nil p_space['deviceid']
     assert_equal '26.09321', p_space['location_long']
@@ -524,21 +528,22 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     offers = p_space['offers']
 
     offers.wont_be_nil
-    offers[0]['deviceid'].must_be :==, 'IMEI8129631232'
-    offers[1]['deviceid'].must_be :==, 'IMEI8129631233'
+    # deviceids should never be sent over the wire
+    assert_nil offers[0]['deviceid']
+    assert_nil offers[1]['deviceid']
 
     assert_equal false, offers[1]['read']
     assert_equal 20, offers[1]['price']
     assert_equal 'EUR', offers[1]['currency']
-    offer_date = Time.iso8601(offers[1]['timestamp'])
+    offer_date = Time.iso8601(offers[1]['created_at'])
 
     offer_date.must_be :>=, (10.seconds.ago)
 
-
     messages = offers[0]['messages']
-    assert_equal 'IMEI8129631231', messages[0]['deviceid']
+    assert_nil messages[0]['deviceid']  # deviceids should never be sent over the wire
     assert_equal "I'm not happy with the offer you gave me", messages[0]['content']
-    assert_equal 'IMEI8129631232', messages[1]['deviceid']
+    # deviceids should never be sent over the wire
+    assert_nil messages[1]['deviceid']  # deviceids should never be sent over the wire
     assert_equal 'I will give you +10 EUR', messages[1]['content']
 
   end
@@ -602,30 +607,21 @@ class ParkingSpacesControllerTest < ActionController::TestCase
 
   test "should destroy parking_space" do
     assert_difference('ParkingSpace.count', -1) do
-      xhr :delete, :destroy, id: 1, :parking_space => {deviceid: 'IMEI8129231231'}
+      xhr :delete, :destroy, id: 1
     end
     assert_response :success
   end
 
-  test "should not destroy parking_space if no device id present" do
+
+  test "should not destroy parking_space if invalid device id" do
+    old_deviceid = session[:deviceid]
+    session[:deviceid] = 'IMEX8129231231'
     assert_difference('ParkingSpace.count', 0) do
       xhr :delete, :destroy, id: 1
     end
+    session[:deviceid] = old_deviceid
     assert_response :unprocessable_entity
   end
 
-  test "should not destroy parking_space if invalid device id" do
-    assert_difference('ParkingSpace.count', 0) do
-      xhr :delete, :destroy, id: 1, :parking_space => {deviceid: 'IMEX8129231231'}
-    end
-    assert_response :unprocessable_entity
-  end
-
-  test "should not destroy parking_space if empty device id" do
-    assert_difference('ParkingSpace.count', 0) do
-      xhr :delete, :destroy, id: 1, :parking_space => {deviceid: ''}
-    end
-    assert_response :unprocessable_entity
-  end
 
 end
