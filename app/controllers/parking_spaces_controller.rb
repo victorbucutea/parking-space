@@ -13,12 +13,12 @@ class ParkingSpacesController < ApplicationController
 
 
     unless lat && lon && range
-      render json: {:Error => "Missing parameters 'lat', 'lon' and 'range'"}, status: :unprocessable_entity
+      render json: {Error: {general: "Missing parameters 'lat', 'lon' and 'range'"}}, status: :unprocessable_entity
       return
     end
 
     if range.to_i > SysParams.instance.get_i('max_search_radius')
-      render json: {:Error => "Cannot have a range larger than 1200"}, status: :unprocessable_entity
+      render json: {Error: {general: "Cannot have a range larger than 1200"}}, status: :unprocessable_entity
       return
     end
 
@@ -51,7 +51,7 @@ class ParkingSpacesController < ApplicationController
     deviceid = session[:deviceid]
 
     unless deviceid
-      render json: {:Error => "Missing deviceid"}, status: :unprocessable_entity
+      render json: {Error: {general: "Missing deviceid"}}, status: :unprocessable_entity
       return
     end
 
@@ -73,7 +73,7 @@ class ParkingSpacesController < ApplicationController
       if @parking_space.save
         format.json { render :show, status: :created, location: @parking_space }
       else
-        format.json { render json: {:Error => @parking_space.errors}, status: :unprocessable_entity }
+        format.json { render json: {Error: @parking_space.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -82,7 +82,7 @@ class ParkingSpacesController < ApplicationController
   # PATCH/PUT /parking_spaces/1.json
   def update
     unless parking_space_params['deviceid']
-      render json: {:Error => "Device id is required"}, status: :unprocessable_entity
+      render json: {Error: {general: "Device id is required"}}, status: :unprocessable_entity
       return
     end
 
@@ -90,7 +90,7 @@ class ParkingSpacesController < ApplicationController
       if @parking_space.update(parking_space_params)
         format.json { render :show, status: :ok, location: @parking_space }
       else
-        format.json { render json: @parking_space.errors, status: :unprocessable_entity }
+        format.json { render json: {Error: @parking_space.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -98,13 +98,8 @@ class ParkingSpacesController < ApplicationController
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-    unless params[:parking_space]
-      render json: {:Error => "Device id is required"}, status: :unprocessable_entity
-      return
-    end
-
-    if params[:parking_space]['deviceid'] != @parking_space.deviceid
-      render json: {:Error => "Device id invalid"}, status: :unprocessable_entity
+    if session[:deviceid] != @parking_space.deviceid
+      render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
     @parking_space.destroy

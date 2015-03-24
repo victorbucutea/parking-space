@@ -3,8 +3,10 @@ class ParkingSpace < DeviceRecord
 
   enum interval: [:long_term, :short_term]
 
-  scope :long_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:long_term], APP_CONFIG['long_term_expiration'].weeks.ago) }
-  scope :short_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:short_term], APP_CONFIG['short_term_expiration'].minutes.ago) }
+  scope :non_expired, -> { where(' parking_spaces.created_at >= ? ', SysParams.instance.get_i('long_term_expiration').weeks.ago) }
+
+  scope :long_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:long_term], SysParams.instance.get_i('long_term_expiration').weeks.ago) }
+  scope :short_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:short_term], SysParams.instance.get_i('short_term_expiration').minutes.ago) }
   scope :within_boundaries, ->(attrs) {
     where('parking_spaces.location_lat >= :lat_min
            AND parking_spaces.location_lat <= :lat_max
@@ -16,10 +18,7 @@ class ParkingSpace < DeviceRecord
 
   validates :location_lat, :presence => true, numericality: {greater_than_or_equal_to: -90, less_than_or_equal_to: 90}
   validates :location_long, :presence => true, numericality: {greater_than_or_equal_to: -180, less_than_or_equal_to: 180}
-  # these values can default to something, but that would be the same as being null
-  # if we restrict nulls we can't test using browser
-  # validates :recorded_from_lat, :presence => true
-  # validates :recorded_from_long, :presence => true
+
   validates :address_line_1, :presence => true
   validates :title, :presence => true
   validates :target_price, :presence => true
@@ -53,12 +52,19 @@ class ParkingSpace < DeviceRecord
   end
 
   def delete_image
-    path = "#{Rails.root}/files/images/"
-    std = path+"#{deviceid}_standard_#{image_file_name}"
-    thumbnail = path+"#{deviceid}_thumbnail_#{image_file_name}"
+    path = "#{Rails.root}/public/"
 
-    File.delete(std) if File.exist?(std)
-    File.delete(thumbnail) if File.exist?(thumbnail)
+    std = path + ( standard_image_url || '' )
+    thumbnail = path + ( thumbnail_image_url || '' )
+
+    File.delete(std) if File.exist?(std) && File.file?(std)
+    File.delete(thumbnail) if File.exist?(thumbnail) && File.file?(thumbnail)
+  end
+
+  def expired?
+    sysparams = SysParams.instance
+    expire_date = short_term? ? sysparams.get_i('short_term_expiration').minutes.ago : sysparams.get_i('long_term_expiration').weeks.ago
+    expire_date >= created_at
   end
 
   def init

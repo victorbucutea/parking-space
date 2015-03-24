@@ -32,21 +32,20 @@ class MessagesControllerTest < ActionController::TestCase
           proposal_id: 2
       }
 
-      assert_equal 3, assigns(:proposal).messages.size
+      msg_entity = assigns(:message)
 
-      proposal = JSON.parse(@response.body)
+      msg = JSON.parse(@response.body)
 
-      assert_equal 3, proposal['messages'].size
-      assert_equal 2, proposal['id']
-      assert_equal 20, proposal['bid_amount']
-      assert_equal 'EUR', proposal['bid_currency']
+      assert_equal 2, msg['proposal_id']
+      assert_equal 'message for proposal 2, parking space 1 ', msg['content']
+      msg_entity.created_at > 10.seconds.ago
     end
 
   end
 
 
   test 'should not create message with no proposal or parking space device id' do
-    assert_difference ('Message.count') do
+    assert_difference('Message.count', 0) do
       xhr :post, :create, parking_space_id: 1, proposal_id: 2, :message => {
           content: 'message for proposal 2, parking space 1 ',
           proposal_id: 2
@@ -55,7 +54,6 @@ class MessagesControllerTest < ActionController::TestCase
       assert assigns(:message).invalid?
       assert_equal 2, assigns(:message).errors.size
       assert_equal 'invalid', assigns(:message).errors[:deviceid][0]
-      assert_equal 'can\'t be blank', assigns(:message).errors[:deviceid][0]
     end
   end
 

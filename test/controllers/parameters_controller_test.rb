@@ -1,14 +1,14 @@
 require 'test_helper'
 
 class ParametersControllerTest < ActionController::TestCase
-  # setup do
-  #   @parameter = parameters(:one)
-  # end
+
 
   setup do
     @request.headers['Content-Type'] = 'application/json'
     @request.headers['Accept'] = 'application/json'
+    @parameter = parameters(:one)
   end
+
 
 
   test 'should get all props' do
@@ -16,7 +16,7 @@ class ParametersControllerTest < ActionController::TestCase
     parameters = assigns(:parameters)
 
     assert 2 ,parameters.size
-    assert 3 ,parameters.parameter_values.size
+    assert 3 ,parameters[0].parameter_values.size
 
   end
 
@@ -26,9 +26,12 @@ class ParametersControllerTest < ActionController::TestCase
     parameters = assigns(:parameters)
 
     assert 2 ,parameters.size
-    assert 3 ,parameters.parameter_values.size
+    assert 3 ,parameters[0].parameter_values.size
 
   end
+
+=begin
+  These tests should not be maintained as we don't need any to modify the params via web
 
 
   test "should get index" do
@@ -73,4 +76,5 @@ class ParametersControllerTest < ActionController::TestCase
 
     assert_redirected_to parameters_path
   end
+=end
 end

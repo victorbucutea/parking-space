@@ -10,15 +10,14 @@ class ProposalsController < ApplicationController
   end
 
   def reject
-
     @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = params[:reject][:owner_deviceid]
+    owner_deviceid = session[:deviceid]
 
     respond_to do |format|
       if @proposal.reject(owner_deviceid)
-        format.json { render :show, status: :ok, location: parking_space_proposal_url(@proposal.parking_space_id, @proposal) }
+        format.json { render :show, status: :ok}
       else
-        format.json { render json: @proposal.errors, status: :unprocessable_entity }
+        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
       end
     end
 
@@ -26,13 +25,13 @@ class ProposalsController < ApplicationController
 
   def approve
     @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = params[:approve][:owner_deviceid]
+    owner_deviceid = session[:deviceid]
 
     respond_to do |format|
       if @proposal.approve(owner_deviceid)
-        format.json { render :show, status: :ok, location: parking_space_proposal_url(@proposal.parking_space_id, @proposal) }
+        format.json { render :show, status: :ok }
       else
-        format.json { render json: @proposal.errors, status: :unprocessable_entity }
+        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
       end
     end
 
@@ -41,24 +40,13 @@ class ProposalsController < ApplicationController
   # POST /parking_spaces/:p_sp_id/proposals
   # POST /parking_spaces/:p_sp_id/proposals.json
   def create
-    # TODO - guard against bidding on expired spaces
-    # TODO - guard against submitting the same bid twice
     @proposal = Proposal.new(proposal_params)
-
-    target_p_space= ParkingSpace.find(params[:parking_space_id])
-    unless target_p_space.nil?
-      if target_p_space.deviceid == @proposal.deviceid
-        #bidding for own parking space
-        render json: {Errors: 'Not allowed to bid on own post!'}, :status => 420 # custom code to send err messages
-        return
-      end
-    end
 
     respond_to do |format|
       if @proposal.save
-        format.json { render :show, status: :created, location: parking_space_proposal_url(@proposal.parking_space_id, @proposal) }
+        format.json { render :show, status: :created }
       else
-        format.json { render json: @proposal.errors, status: :unprocessable_entity }
+        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -66,13 +54,12 @@ class ProposalsController < ApplicationController
   # PATCH/PUT /parking_spaces/:p_sp_id/proposals
   # PATCH/PUT /parking_spaces/:p_sp_id/proposals.json
   def update
-    #TODO there must be a cleaner way to validate a missing incoming param
-    unless proposal_params['deviceid']
-      render json: {:Error => "Device id is required"}, status: :unprocessable_entity
+    @proposal = Proposal.find(params[:id])
+
+    if session[:deviceid] != @proposal.deviceid
+      render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
-
-    @proposal = Proposal.find(params[:id])
 
     respond_to do |format|
       if @proposal.update(proposal_params)

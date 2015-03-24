@@ -9,6 +9,8 @@
 Message.delete_all
 Proposal.delete_all
 ParkingSpace.delete_all
+ParameterValue.delete_all
+Parameter.delete_all
 
 ParkingSpace.create!([
                          {id: 1,
@@ -110,22 +112,22 @@ ParkingSpace.create!([
 Proposal.create! ([
                      {id: 1, deviceid: "IMEI8129631232",
                       title_message: "Hello, I'd like to buy #1", bid_amount: 10, bid_currency: 'Eur',
-                      bidder_name: 'someone@x.ro', status: 'PENDING', parking_space_id: 1},
+                      bidder_name: 'someone@x.ro', approval_status: 'pending',phone_number: '+40755034034', parking_space_id: 1},
                      {id: 2, deviceid: "IMEI8129631233",
-                      title_message: "Hello, I'd also like to #1", bid_amount: 20, bid_currency: 'Eur',
-                      bidder_name: 'someone@x.ro', status: 'PENDING', parking_space_id: 1},
+                      title_message: "Hello, I'd also like to #1", bid_amount: 26, bid_currency: 'Eur',
+                      bidder_name: 'someone@x.ro', approval_status: 'pending',phone_number: '+40755034034', parking_space_id: 1},
                      {id: 3, deviceid: "IMEI8129631234",
-                      title_message: "Hello, I'd like to buy spot #2", bid_amount: 10, bid_currency: 'Eur',
-                      bidder_name: 'someone@x.ro', status: 'PENDING', parking_space_id: 2},
+                      title_message: "Hello, I'd like to buy spot #2", bid_amount: 11, bid_currency: 'Eur',
+                      bidder_name: 'someone@x.ro', approval_status: 'pending',phone_number: '+40755034034', parking_space_id: 2},
                      {id: 4, deviceid: "IMEI8129631235",
-                      title_message: "Hello, I'd like to buy spot #2", bid_amount: 20, bid_currency: 'Ron',
-                      bidder_name: 'someone@x.ro', status: 'PENDING', parking_space_id: 2},
+                      title_message: "Hello, I'd like to buy spot #2", bid_amount: 21, bid_currency: 'Ron',
+                      bidder_name: 'someone@x.ro', approval_status: 'pending',phone_number: '+40755034034', parking_space_id: 2},
                      {id: 5, deviceid: "IMEI8129631236",
-                      title_message: "Hello, I'd like to buy spot #3", bid_amount: 20, bid_currency: 'Ron',
-                      bidder_name: 'someone@x.ro', status: 'PENDING', parking_space_id: 3},
+                      title_message: "Hello, I'd like to buy spot #3", bid_amount: 22, bid_currency: 'Ron',
+                      bidder_name: 'someone@x.ro', approval_status: 'pending',phone_number: '+40755034034', parking_space_id: 3},
                      {id: 6, deviceid: "IMEI8129631237",
-                      title_message: "Hello, I'd like to buy spot #3", bid_amount: 20, bid_currency: 'Ron',
-                      bidder_name: 'someone@x.ro', status: 'PENDING', parking_space_id: 3},
+                      title_message: "Hello, I'd like to buy spot #3", bid_amount: 23, bid_currency: 'Ron',
+                      bidder_name: 'someone@x.ro', approval_status: 'pending',phone_number: '+40755034034', parking_space_id: 3},
                  ])
 
 
@@ -143,7 +145,8 @@ Parameter.create! ([
                       {id: 4,name: 'long_term_expiration', default_value: 2}, #weeks
                       {id: 5,name: 'default_range', default_value: 500},
                       {id: 6,name: 'starting_currency', default_value: 'Eur'},
-                      {id: 7,name: 'starting_asking_price', default_value: 5}
+                      {id: 7,name: 'starting_asking_price', default_value: 5},
+                      {id: 8,name: 'bid_price_epsilon', default_value: 0.05}
                   ])
 
 ParameterValue.create! ([

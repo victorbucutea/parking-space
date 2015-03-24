@@ -40,7 +40,7 @@ four:
   id: 4
   deviceid: "IMEI8129631235"
   title_message: "Hello, I'd like to buy spot #2"
-  bid_amount: 20
+  bid_amount: 21
   bid_currency: 'RON'
   bidder_name: 'someone'
   phone_number: '+40727.456.250'
