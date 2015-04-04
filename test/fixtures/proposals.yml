@@ -83,3 +83,15 @@ seven:
   read: false
   approval_status: 0
   parking_space_id: 3
+
+eight:
+  id: 8
+  deviceid: "IMEI8129299231"
+  title_message: "Hello, I'd like to buy spot #0"
+  bid_amount: 22
+  bid_currency: 'RON'
+  bidder_name: 'someone'
+  phone_number: '+40727.456.250'
+  read: false
+  approval_status: 0
+  parking_space_id: 0

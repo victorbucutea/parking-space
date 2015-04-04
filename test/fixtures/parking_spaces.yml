@@ -12,7 +12,7 @@ zero:
   description: 'desc'
   deviceid: 'IMEI8129231231'
   created_at: <%= 5.minutes.ago.to_s(:db) %>
-  interval: 1
+  interval: 0
   target_price: 0.3
   target_price_currency: 'Eur'
 

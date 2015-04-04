@@ -32,7 +32,8 @@ class ProposalsControllerTest < ActionController::TestCase
                    bidder_name: 'someone',
                    parking_space_id: 3,
                    phone_number: '+40727256250'
-               }
+               },
+          format: :json
     end
 
     proposal = assigns(:proposal)
@@ -45,7 +46,9 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 11, prop['price']
     assert_equal 'RON', prop['currency']
     # default is pending
-    assert_equal 'pending', prop['approval_status']
+    assert true, prop['pending']
+    assert !prop['approved']
+    assert !prop['rejected']
 
   end
 
@@ -60,13 +63,13 @@ class ProposalsControllerTest < ActionController::TestCase
                    bidder_name: 'someone',
                    parking_space_id: 2,
                    phone_number: '+40727256250'
-               }
+               },
+           format: :json
     end
 
     @response.status.must_be :==, 422
     prop = JSON.parse(@response.body)
-    prop['Error']['general'].size.must_be :==, 1 # cannot bid on own parking space
-    prop['Error']['bid_amount'].size.must_be :==, 1 # a bid already exists with that price
+    prop['Error']['general'].size.must_be :==, 2 # cannot bid on own parking space & a bid already exists with that price
 
   end
 
@@ -80,13 +83,14 @@ class ProposalsControllerTest < ActionController::TestCase
                    bid_currency: 'RON',
                    approval_status: 'pending',
                    parking_space_id: 2
-               }
+               },
+          format: :json
     end
 
 
     @response.status.must_be :==, 422
     prop = JSON.parse(@response.body)
-    prop['Error']['bid_amount'].size.must_be :==, 1
+    prop['Error']['general'].size.must_be :==, 1
 
   end
 
@@ -101,7 +105,8 @@ class ProposalsControllerTest < ActionController::TestCase
                    bid_currency: 'RON',
                    approval_status: 'pending',
                    parking_space_id: 2
-               }
+               },
+          format: :json
     end
 
     assert_difference('Proposal.count', 0) do
@@ -113,7 +118,8 @@ class ProposalsControllerTest < ActionController::TestCase
                    #bid_currency: 'RON',
                    approval_status: 'pending',
                    parking_space_id: 2
-               }
+               },
+          format: :json
     end
 
     assert_difference('Proposal.count', 0) do
@@ -125,7 +131,8 @@ class ProposalsControllerTest < ActionController::TestCase
                    bid_currency: 'RON',
                    approval_status: 'pending',
                    parking_space_id: 2
-               }
+               },
+          format: :json
     end
 
   end
@@ -185,10 +192,10 @@ class ProposalsControllerTest < ActionController::TestCase
   end
 
 
-  test 'reject proposal ' do
-    xhr :post, :reject, parking_space_id: 2, proposal_id: 4, :reject => {
-                 owner_deviceid: 'IMEI8129331241'
-             }
+  test 'reject proposal' do
+    old_session_devid = session[:deviceid]
+    session[:deviceid] = 'IMEI8129331241'
+    xhr :post, :reject, parking_space_id: 2, proposal_id: 4, :reject => {},format: :json
     assert_response :success
 
     prop = assigns(:proposal)
@@ -202,14 +209,17 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'someone', prop['owner_name']
     assert_equal 21, prop['price']
     assert_equal 'RON', prop['currency']
-    assert_equal 'rejected', prop['approval_status']
+    assert_equal true, prop['rejected']
+    assert_equal false, prop['approved']
+
+    session[:deviceid]= old_session_devid
   end
 
 
   test 'reject proposal invalid deviceid ' do
-    xhr :post, :reject, parking_space_id: 2, proposal_id: 4, :reject => {
-                 owner_deviceid: 'IMEI81293312X1'
-             }
+    old_session_devid = session[:deviceid]
+    session[:deviceid] = 'IMEI812933124X' # parking space deviceid is IMEI8129331241
+    xhr :post, :reject, parking_space_id: 2, proposal_id: 4, :reject => {}, format: :json
     assert_response :unprocessable_entity
 
     prop = assigns(:proposal)
@@ -220,14 +230,14 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'Hello, I\'d like to buy spot #2', prop.title_message
     assert_equal 'someone', prop.bidder_name
     assert_equal 'pending', prop.approval_status
+    session[:deviceid]= old_session_devid
   end
 
 
   test 'approve proposal ' do
-    xhr :post, :approve, parking_space_id: 2, proposal_id: 4, :approve => {
-                 owner_deviceid: 'IMEI8129331241',
-                 format: :json
-             }
+    old_session_devid = session[:deviceid]
+    session[:deviceid] = 'IMEI8129331241'
+    xhr :post, :approve, parking_space_id: 2, proposal_id: 4, :approve => {}, format: :json
     assert_response :success
 
     prop = assigns(:proposal)
@@ -241,8 +251,43 @@ class ProposalsControllerTest < ActionController::TestCase
     assert_equal 'Hello, I\'d like to buy spot #2', prop['title_message']
     assert_equal 'someone', prop['owner_name']
     assert_equal 21.0, prop['price']
-    assert_equal 'approved', prop['approval_status']
+    assert_equal true, prop['approved']
     assert_equal 'RON', prop['currency']
+
+    session[:deviceid] = old_session_devid
+  end
+
+
+  test 'approve proposal should return error for expired space ' do
+    old_session_devid = session[:deviceid]
+    session[:deviceid] = 'IMEI8129331241'
+    xhr :post, :approve, parking_space_id: 0, proposal_id: 8, :approve => {}, format: :json
+    assert_response :unprocessable_entity
+
+    prop = assigns(:proposal)
+    assert !prop.approved?
+    assert_equal 'IMEI8129299231', prop.deviceid # expect the right offer was approved
+
+    prop = JSON.parse(@response.body)
+    prop['Error']['general'].size.must_be :==,1
+
+    session[:deviceid] = old_session_devid
+  end
+
+  test 'approve proposal should return error for invalid deviceid ' do
+    old_session_devid = session[:deviceid]
+    session[:deviceid] = 'IMEI812933124X'
+    xhr :post, :approve, parking_space_id: 2, proposal_id: 3, :approve => {}, format: :json
+    assert_response :unprocessable_entity
+
+    prop = assigns(:proposal)
+    assert !prop.approved?
+    assert_equal 'IMEI8129631234', prop.deviceid # expect the target offer was not approved (id: 3)
+
+    prop = JSON.parse(@response.body)
+    prop['Error']['general'].size.must_be :==,1
+
+    session[:deviceid] = old_session_devid
   end
 
 

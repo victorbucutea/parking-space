@@ -47,7 +47,7 @@ class ParkingSpacesController < ApplicationController
   end
 
 
-  def myevents
+  def myspaces
     deviceid = session[:deviceid]
 
     unless deviceid
@@ -55,10 +55,22 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    all_spaces_proposed = ParkingSpace.includes(proposals: [:messages]).where(proposals: {deviceid: deviceid})
     @parking_spaces = ParkingSpace.includes(proposals: [:messages]).where({deviceid: deviceid})
 
-    @parking_spaces += all_spaces_proposed
+    respond_to do |format|
+      format.json { render :index, status: :ok }
+    end
+  end
+
+  def myoffers
+    deviceid = session[:deviceid]
+
+    unless deviceid
+      render json: {Error: {general: "Missing deviceid"}}, status: :unprocessable_entity
+      return
+    end
+
+    @parking_spaces = ParkingSpace.includes(proposals: [:messages]).where(proposals: {deviceid: deviceid})
 
     respond_to do |format|
       format.json { render :index, status: :ok }
