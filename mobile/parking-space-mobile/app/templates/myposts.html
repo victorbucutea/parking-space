@@ -1,6 +1,14 @@
 <div ng-controller="MyPostsCtrl" class="ps-content">
 
-    <h3 class="ps-page-title">My events</h3>
+    <ul class="row slider-tabs-menu">
+        <li class="col" ui-sref="home.myposts" ui-sref-active="active">
+            <a>My spaces</a>
+        </li>
+        <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
+            <a>My offers</a>
+        </li>
+    </ul>
+
 
     <div class="list open-spaces-list scroll">
         <span class="item "  ng-repeat="space in spaces" ng-click="show(space)">

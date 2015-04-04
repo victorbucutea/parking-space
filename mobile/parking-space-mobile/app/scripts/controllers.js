@@ -151,7 +151,7 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
     })
 
-    .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, offerService) {
+    .controller('BidsAndMessagesCtrl', function ($scope, $timeout, messageService, offerService,replaceById) {
 
         $scope.scrollDown = function () {
             var d = $('.scroll');
@@ -188,11 +188,13 @@ angular.module('ParkingSpaceMobile.controllers', [])
 
         $scope.accept = function (space, offer) {
 
-            if( offer.approved) {
-                offerService.acceptOffer(space.id, offer, function () {
+            if(!offer.approved) {
+                offerService.acceptOffer(space.id, offer, function (result) {
+                    replaceById(result, space.offers);
                 });
             } else {
-                offerService.rejectOffer(space.id, offer, function () {
+                offerService.rejectOffer(space.id, offer, function (result) {
+                    replaceById(result, space.offers);
                 });
             }
 
@@ -599,5 +601,11 @@ angular.module('ParkingSpaceMobile.controllers', [])
             parkingSpaceService.deleteSpace(parkingSpaceId);
             $state.go('^');
         };
+
+    })
+
+    .controller('MyOffersCtrl', function($scope, parkingSpaceService){
+
+        parkingSpaceService.get
 
     });

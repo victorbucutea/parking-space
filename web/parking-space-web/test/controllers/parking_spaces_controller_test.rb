@@ -103,10 +103,10 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  test 'should not return any posts' do
+  test 'should not return any spaces for invalid deviceid' do
     old_deviceid = session[:deviceid]
     session[:deviceid] = 'inexisting'
-    xhr :get, :myevents
+    xhr :get, :myspaces
 
     session[:deviceid] = old_deviceid
     parking_spaces = assigns(:parking_spaces)
@@ -116,11 +116,24 @@ class ParkingSpacesControllerTest < ActionController::TestCase
 
   end
 
-  test 'should return all posted spaces and all proposed spaces joined with messages' do
-    xhr :get, :myevents, {deviceid:'IMEI8129231231'}
+  test 'should not return any offers for invalid deviceid' do
+    old_deviceid = session[:deviceid]
+    session[:deviceid] = 'inexisting'
+    xhr :get, :myoffers
+
+    session[:deviceid] = old_deviceid
+    parking_spaces = assigns(:parking_spaces)
+    assert_equal 0, parking_spaces.size
+
+    assert_response :success
+
+  end
+
+  test 'should return all posted spaces joined with messages' do
+    xhr :get, :myspaces, {deviceid:'IMEI8129231231'}
     parking_spaces = assigns(:parking_spaces)
 
-    assert_equal 3, parking_spaces.size
+    assert_equal 2, parking_spaces.size
 
     assert_equal 44.41514, parking_spaces[0].location_lat.to_f
     assert_equal 26.09321, parking_spaces[0].location_long.to_f
@@ -128,8 +141,6 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     assert_equal 0.3, parking_spaces[0].target_price
     assert_equal 2, parking_spaces[1].proposals.size
     assert_equal 2, parking_spaces[1].proposals[0].messages.size
-    assert_equal 1, parking_spaces[2].proposals.size
-    assert_equal 3, parking_spaces[2].proposals[0].messages.size
 
     assert_response :success
 
@@ -137,15 +148,38 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     prop = JSON.parse(@response.body)
     #deviceid is secret !
     assert_nil prop[1]['offers'][0]['deviceid']
-    assert_nil prop[2]['offers'][0]['deviceid']
-
-    # make sure that the offers and messages belonging to IMEI8129231231 are marked as own
-    assert prop[2]['offers'][0]['owner_is_current_user']
-    assert prop[2]['offers'][0]['messages'][0]['owner_is_current_user']
+    assert_nil prop[2]
 
     # make sure that the offers and messages not belonging to IMEI8129231231 are not
     assert !prop[1]['offers'][0]['messages'][0]['owner_is_current_user']
-    assert !prop[2]['offers'][0]['messages'][1]['owner_is_current_user']
+
+  end
+
+
+  test 'should return all spaces for which an offer has been placed joined with messages' do
+    xhr :get, :myoffers, {deviceid:'IMEI8129231231'}
+    parking_spaces = assigns(:parking_spaces)
+
+    assert_equal 1, parking_spaces.size
+
+    assert_equal 44.41534, parking_spaces[0].location_lat.to_f
+    assert_equal 26.09521, parking_spaces[0].location_long.to_f
+    assert_equal false, parking_spaces[0].long_term?
+    assert_equal 10.3, parking_spaces[0].target_price
+
+    assert_response :success
+
+
+    prop = JSON.parse(@response.body)
+    #deviceid is secret !
+    assert_nil prop[0]['offers'][0]['deviceid']
+    assert_nil prop[1]
+
+    # make sure that the offers and messages belonging to IMEI8129231231 are fetched and marked as own
+    assert prop[0]['offers'][0]['owner_is_current_user']
+    messages = prop[0]['offers'][0]['messages']
+    assert_equal 3, messages.size
+    assert_equal '7 - I will give you +10 EUR', messages[1]['content']
 
   end
 

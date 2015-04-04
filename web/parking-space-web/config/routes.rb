@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   resources :parking_spaces do
 
     collection do
-      get 'myevents'
+      get 'myspaces'
+    end
+    collection do
+      get 'myoffers'
     end
 
     resources :proposals do

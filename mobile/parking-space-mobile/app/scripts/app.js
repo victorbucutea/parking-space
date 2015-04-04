@@ -67,6 +67,9 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                     }
                 }
             })
+            .state('home.my',{
+
+            })
             .state('home.myposts', {
                 url: '/myposts',
                 views: {
@@ -104,6 +107,14 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                 views: {
                     'edit-space': {
                         templateUrl: "templates/delete-post.html"
+                    }
+                }
+            })
+            .state('home.myoffers', {
+                url: '/myoffers',
+                views: {
+                    'content': {
+                        templateUrl: "templates/myoffers.html"
                     }
                 }
             });

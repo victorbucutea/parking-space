@@ -1,0 +1,36 @@
+<div ng-controller="MyOffersCtrl" class="ps-content">
+
+        <ul class="row slider-tabs-menu">
+                <li class="col" ui-sref="home.myposts" ui-sref-active="active">
+                        <a>My spaces</a>
+                </li>
+                <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
+                        <a>My offers</a>
+                </li>
+        </ul>
+
+        <div class="padding">
+                <div class="bid-table scroll" ng-show="spaceEdit.offers.length">
+                        <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in spaceEdit.offers | orderBy: 'timestamp'"
+                             ng-class="{selected: selOffer == offer}">
+
+                        <span class="offer-price">
+                            {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
+                            <currency val="offer.currency"></currency>
+                        </span>
+
+                        <span ui-sref="home.myposts.messages.talk">
+                            ( <i class="fa fa-envelope"></i> {{unreadMessagesForSpace(offer.messages)}} )
+                        </span>
+
+                                <div class="pull-right offer-accept" ng-click="confirmApproval(offer)">
+                                        <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
+                                        <i class="ion-checkmark-round" ng-show="!offer.approved"> Accept</i>
+                                </div>
+
+                        </div>
+                </div>
+        </div>
+
+</div>
+

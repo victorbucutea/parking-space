@@ -2,6 +2,17 @@
 
     <div ng-controller="BidsAndMessagesCtrl">
         <div class="form-edit-details-small">
+            <div style="
+                        width: 100%;
+                        height: 4px;
+                        background-color: #fff;
+                    ">
+                                    <div style="
+                        height: 100%;
+                        width: 134px;
+                        background-color: orange;
+                    "></div>
+            </div>
             <div class="bids-area padding-left padding-right padding-top">
                 <h4 class="bid-title">
                     {{spaceEdit.title}} -
@@ -80,7 +91,7 @@
                                     {{selOffer.price | units}}.<small>{{selOffer.price | subunits}}</small>
                                     <currency val="selOffer.currency"></currency>
                         </span>
-                            ?
+                        ?
                     </div>
                     <div class="ps-control-buttons">
                         <div class="button-bar">

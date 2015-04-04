@@ -162,8 +162,9 @@ html, body {
 
 
 
+
 .ps-modal {
-    border-top: 4px solid $red;
+//    border-top: 4px solid $red;
     position: absolute;
     top: 48px;
     background-color: $gray-dark-transparent;
@@ -322,6 +323,7 @@ html, body {
                 width: $measure-unit;
                 height: $measure-unit;
                 display: inline-block;
+                z-index: 3;
             }
         }
 

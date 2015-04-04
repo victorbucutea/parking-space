@@ -73,31 +73,31 @@ angular.module('ParkingSpaceMobile.services', [])
     .service('authenticationService', function ($http) {
     })
 
-    .service('errorHandlingService', function($rootScope) {
+    .service('errorHandlingService', function ($rootScope) {
 
-        this.handle = function(data, status){
-            if (status == 420  || status == 422) { // 420  || 422 is an error status with business message
+        this.handle = function (data, status) {
+            if (status == 420 || status == 422) { // 420  || 422 is an error status with business message
                 // transform error response into a manageable obj
                 var errMsgs = [];
                 var i = 0;
-                for (item in data.Error){
-                    var fieldName = item == 'general'? '' : item ;
-                    errMsgs[i] = {fieldName: fieldName , text: data.Error[item][0]};
+                for (item in data.Error) {
+                    var fieldName = item == 'general' ? '' : item;
+                    errMsgs[i] = {fieldName: fieldName, text: data.Error[item][0]};
                     i++;
                 }
                 $rootScope.$broadcast('http.error', errMsgs);
             } else {
-                $rootScope.$broadcast('http.error',{fieldName: '', text: 'Connectivity error.'});
+                $rootScope.$broadcast('http.error', {fieldName: '', text: 'Connectivity error.'});
             }
             $('.loading-spinner').hide();
         }
     })
 
-    /**
-     * service provides a unique terminal and user identifier
-     * should cache user credentials
-     * device information - should be ignored in favor of auth info + phone no
-     */
+/**
+ * service provides a unique terminal and user identifier
+ * should cache user credentials
+ * device information - should be ignored in favor of auth info + phone no
+ */
     .service('deviceAndUserInfoService', function () {
         // TODO fill in these fields on auth ( or make user insert them ? )
         this.phoneNo = '40727456250';
@@ -122,7 +122,7 @@ angular.module('ParkingSpaceMobile.services', [])
                         clbk(data);
                 })
                 .error(function (data, status) {
-                    errorHandlingService.handle(data,status);
+                    errorHandlingService.handle(data, status);
                     $('.loading-finished').show();
                 });
         };
@@ -131,7 +131,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
-            $http.get(ENV + 'parking_spaces/myevents.json')
+            $http.get(ENV + 'parking_spaces/myspaces.json')
                 .success(function (data) {
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
@@ -139,10 +139,26 @@ angular.module('ParkingSpaceMobile.services', [])
                         clbk(data);
                 })
                 .error(function (data, status, headers, config) {
-                    errorHandlingService.handle(data,status);
+                    errorHandlingService.handle(data, status);
                     $('.loading-finished').show();
                 });
         };
+
+        this.getMyOffers = function() {
+            $('.loading-spinner').show();
+            $('.loading-finished').hide();
+            $http.get(ENV + 'parking_spaces/myoffers.json')
+                .success(function (data) {
+                    $('.loading-spinner').hide();
+                    $('.loading-finished').show();
+                    if (clbk)
+                        clbk(data);
+                })
+                .error(function (data, status, headers, config) {
+                    errorHandlingService.handle(data, status);
+                    $('.loading-finished').show();
+                });
+        }
 
         this.saveSpace = function (space, clbk) {
 
@@ -167,22 +183,22 @@ angular.module('ParkingSpaceMobile.services', [])
                     loading.hide();
                 })
                 .error(function (data, status) {
-                    errorHandlingService.handle(data,status);
+                    errorHandlingService.handle(data, status);
                 })
         };
 
-        this.deleteSpace = function(spaceId, clbk) {
+        this.deleteSpace = function (spaceId, clbk) {
             $('.loading-spinner').show();
-            $http.delete(ENV+'parking_spaces/'+spaceId+'.json')
-                .success(function(data) {
+            $http.delete(ENV + 'parking_spaces/' + spaceId + '.json')
+                .success(function (data) {
                     $rootScope.$broadcast('http.notif', 'Parking space deleted!');
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
                     }
                 })
-                .error(function(data) {
-                    errorHandlingService.handle(data,status);
+                .error(function (data) {
+                    errorHandlingService.handle(data, status);
                 })
 
         };
@@ -217,7 +233,7 @@ angular.module('ParkingSpaceMobile.services', [])
                         clbk(data)
                 })
                 .error(function (data, status) {
-                    errorHandlingService.handle(data,status);
+                    errorHandlingService.handle(data, status);
                 });
         }
     })
@@ -239,39 +255,39 @@ angular.module('ParkingSpaceMobile.services', [])
                         clbk(data);
                 })
                 .error(function (data, status) {
-                    errorHandlingService.handle(data,status);
+                    errorHandlingService.handle(data, status);
                 })
         };
 
         this.acceptOffer = function (spaceId, offer, clbk) {
             var loading = $('.loading-spinner');
             loading.show();
-            $http.post(ENV+'parking_spaces/'+spaceId+'/proposals/'+offer.id+'/approve.json')
-                .success(function(data) {
-                    $rootScope.$broadcast('http.notif', 'Accepted offer for '+offer.price+' '+offer.currency);
+            $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
+                .success(function (data) {
+                    $rootScope.$broadcast('http.notif', 'Accepted offer for ' + offer.price + ' ' + offer.currency);
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
                     }
                 })
-                .error(function(data,status) {
-                    errorHandlingService.handle(data,status);
+                .error(function (data, status) {
+                    errorHandlingService.handle(data, status);
                 })
         };
 
         this.rejectOffer = function (spaceId, offer, clbk) {
             var loading = $('.loading-spinner');
             loading.show();
-            $http.post(ENV+'parking_spaces/'+spaceId+'/proposals/'+offer.id+'/reject.json')
-                .success(function(data) {
-                    $rootScope.$broadcast('http.notif', 'Rejected offer for '+offer.price+' '+offer.currency);
+            $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
+                .success(function (data) {
+                    $rootScope.$broadcast('http.notif', 'Rejected offer for ' + offer.price + ' ' + offer.currency);
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
                     }
                 })
-                .error(function(data,status) {
-                    errorHandlingService.handle(data,status);
+                .error(function (data, status) {
+                    errorHandlingService.handle(data, status);
                 })
         };
 
@@ -381,5 +397,22 @@ angular.module('ParkingSpaceMobile.services', [])
         };
 
         return this;
+    })
+
+    .factory('replaceById', function () {
+        return function (item, collection) {
+            if (!collection || !item) {
+                return;
+            }
+            var i = 0;
+            var idx = 0;
+            collection.forEach(function (colItem) {
+                if (colItem.id == item.id) {
+                    idx = i;
+                }
+                i++;
+            });
+            collection[idx] = item;
+        };
     });
 
