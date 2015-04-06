@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Time how long tasks take. Can help when optimizing build times
-    require('time-grunt')(grunt);
+    //require('time-grunt')(grunt);
 
     // Define the configuration for all the tasks
     grunt.initConfig({
@@ -25,6 +25,7 @@ module.exports = function (grunt) {
             styles: 'styles',
             images: 'images'
         },
+
 
         // Environment Variables for Angular App
         // This creates an Angular Module that can be injected via ENV
@@ -66,11 +67,11 @@ module.exports = function (grunt) {
             // do not watch, trigger on-demand
             html: {
                 files: ['<%= yeoman.app %>/**/*.html'],
-                tasks: ['newer:copy:app']
+                tasks: ['newer:copy:app','newer:copy:tmp']
             },
             js: {
                 files: ['<%= yeoman.app %>/<%= yeoman.scripts %>/**/*.js'],
-                tasks: ['newer:copy:app' /*'newer:jshint:all'*/]
+                tasks: ['includeSource', 'newer:copy:tmp','newer:copy:app' /*'newer:jshint:all'*/]
             },
             compass: {
                 files: ['<%= yeoman.app %>/<%= yeoman.styles %>/**/*.{scss,sass}'],
@@ -145,6 +146,18 @@ module.exports = function (grunt) {
             sass: {
                 src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 ignorePath: /(\.\.\/){1,2}lib\//
+            }
+        },
+
+        includeSource: {
+            options: {
+                basePath: 'app',
+                baseUrl: ''
+            },
+            dist: {
+                files: {
+                    '.tmp/index.html': 'app/index.html'
+                }
             }
         },
 
@@ -499,6 +512,7 @@ module.exports = function (grunt) {
     grunt.registerTask('init', [
         'clean',
         'ngconstant:local_development',
+        'includeSource',
         'wiredep',
         'concurrent:server',
         'autoprefixer',

@@ -1,4 +1,5 @@
 'use strict';
+angular.module('ParkingSpaceMobile.controllers',[]);
 
 angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
     'ParkingSpaceMobile.controllers',
@@ -78,16 +79,16 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                     }
                 }
             })
-            .state('home.myposts.messages', {
-                url: '/messages/{parking_space_id}',
+            .state('home.myposts.bids', {
+                url: '/bids/{parking_space_id}',
                 views: {
                     'edit-space': {
                         templateUrl: "templates/review-bids.html"
                     }
                 }
             })
-            .state('home.myposts.messages.talk', {
-                url: '/talk',
+            .state('home.myposts.bids.talk', {
+                url: '/talk?offer',
                 views: {
                     'messages': {
                         templateUrl: "templates/messages.html"
@@ -115,6 +116,14 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                 views: {
                     'content': {
                         templateUrl: "templates/myoffers.html"
+                    }
+                }
+            })
+            .state('home.myoffers.talk', {
+                url: '/talk?offer',
+                views: {
+                    'messages': {
+                        templateUrl: "templates/messages.html"
                     }
                 }
             });

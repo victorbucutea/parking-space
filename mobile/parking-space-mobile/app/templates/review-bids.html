@@ -1,18 +1,7 @@
 <div class="ps-modal" on-swipe-down="closeEdit()" on-swipe-left="closeEdit()">
 
-    <div ng-controller="BidsAndMessagesCtrl">
+    <div ng-controller="ReviewBidsCtrl">
         <div class="form-edit-details-small">
-            <div style="
-                        width: 100%;
-                        height: 4px;
-                        background-color: #fff;
-                    ">
-                                    <div style="
-                        height: 100%;
-                        width: 134px;
-                        background-color: orange;
-                    "></div>
-            </div>
             <div class="bids-area padding-left padding-right padding-top">
                 <h4 class="bid-title">
                     {{spaceEdit.title}} -
@@ -39,8 +28,8 @@
                             <currency val="offer.currency"></currency>
                         </span>
 
-                        <span ui-sref="home.myposts.messages.talk">
-                            ( <i class="fa fa-envelope"></i> {{unreadMessagesForSpace(offer.messages)}} )
+                        <span ui-sref="home.myposts.bids.talk">
+                            ( <i class="fa fa-envelope"></i> {{messagesForSpace(offer.messages)}} )
                         </span>
 
                         <div class="pull-right offer-accept" ng-click="confirmApproval(offer)">

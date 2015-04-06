@@ -281,7 +281,8 @@ angular.module('ParkingSpaceMobile.directives', [])
             var clbk = attrs.ngRepeatFinish;
             if (scope.$last) {
                 console.log('calling ', clbk, ' on ', scope);
-                scope[clbk]();
+                if (scope[clbk])
+                    scope[clbk]();
             }
         }
     })

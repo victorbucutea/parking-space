@@ -1,51 +1,61 @@
 <div class="place-offer-modal ps-modal ">
-    <div class="padding">
-        <h3>Your post <i class="ion-android-share pull-right" ></i></h3>
-        <span> {{selectedSpace.created_at | date: 'EEEE, MMM d, h:mm' }} </span>
-    </div>
-    <div class="list">
-        <parking-spot-info-box class="small" space="selectedSpace" ng-click="showThumbnail(selectedSpace)"></parking-spot-info-box>
-        <!-- TODO add modal with image and description
-        <a class="item desc" ng-show="selectedSpace.description">
-            <i> {{selectedSpace.description}} </i>
-        </a>
-        -->
-    </div>
-    <div class="padding-left padding-right" ng-hide="selectedSpace.owner_is_current_user">
-        <span> Space will expire {{expireDuration()}}. </span>
-        <span ng-show="selectedSpace.offers.length">Current offers are:</span>
+        <div class="padding">
+                <h3 ng-hide="selectedSpace.owner_is_current_user">{{selectedSpace.owner_name}}
+                        <i class="ion-android-share pull-right"></i>
+                </h3>
 
-        <div class="bids-area">
-            <div class="bid-table narrow scroll">
-                <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in selectedSpace.offers | orderBy: '-price'"
-                     ng-class="{selected: selOffer == offer}">
-                        <span class="offer-price">
-                            {{offer.price | units  }}.<small>{{offer.price | subunits}}</small>
-                            <currency val="offer.currency"></currency>
-                        </span>
-                        <span class="offer-desc">
-                            {{offer.owner_name}} - {{offer.created_at | date}}
-                        </span>
+                <h3 ng-show="selectedSpace.owner_is_current_user">Your post <i class="ion-android-share pull-right"></i></h3>
+                <span> Posted on {{selectedSpace.created_at | date: 'EEEE, MMM d, h:mm' }} </span>
+        </div>
+        <div class="list">
+                <parking-spot-info-box class="small" space="selectedSpace" ng-click="showFullImage = true"></parking-spot-info-box>
+        </div>
+
+        <div class="padding-left padding-right" ng-hide="selectedSpace.owner_is_current_user">
+                <div ng-show="selectedSpace.offers.length">
+                        <!--<span>Current offers are:</span>-->
+
+                        <div class="bids-area">
+                                <div class="bid-table narrow scroll">
+                                        <div class="offer" ng-click="selectOffer(offer)"
+                                             ng-repeat="offer in selectedSpace.offers | orderBy: '-price'"
+                                             ng-class="{selected: selOffer == offer}">
+                                                <span class="offer-price">
+                                                    {{offer.price | units  }}.<small>{{offer.price | subunits}}</small>
+                                                    <currency val="offer.currency"></currency>
+                                                </span>
+                                                <span class="offer-desc">
+                                                    {{offer.owner_name}} - {{offer.created_at | date}}
+                                                </span>
+                                        </div>
+                                </div>
+                        </div>
                 </div>
-            </div>
+                Make a better offer:
+                <bid-amount amount="bid.bid_amount" currency="bid.bid_currency"></bid-amount>
         </div>
-        Make a better offer:
-        <bid-amount amount="bid.bid_amount" currency="bid.bid_currency"></bid-amount>
-    </div>
-    <div ng-show="selectedSpace.owner_is_current_user">
-        <div class="btn-grp">
-            <a ng-click="showOffers(selectedSpace.id)" class="btn btn-grp-left"><i class="fa fa-money"></i> <span>Offers</span> ({{selectedSpace.offers.length}})</a>
-            <a ng-click="showEdit(selectedSpace.id)" class="btn btn-grp-center ion-edit"> <span>Edit</span></a>
-            <a ng-click="showDelete(selectedSpace.id)" class="btn btn-grp-right ion-trash-a"> <span>Delete</span></a>
+        <div ng-show="selectedSpace.owner_is_current_user">
+                <div class="btn-grp">
+                        <a ng-click="showOffers(selectedSpace.id)" class="btn btn-grp-left">
+                                <i class="fa fa-money"></i>
+                                <span>Offers</span>
+                                ({{selectedSpace.offers.length}})
+                        </a>
+                        <a ng-click="showEdit(selectedSpace.id)" class="btn btn-grp-center ion-edit"> <span>Edit</span></a>
+                        <a ng-click="showDelete(selectedSpace.id)" class="btn btn-grp-right ion-trash-a"> <span>Delete</span></a>
+                </div>
         </div>
-    </div>
 
 
-
-    <div class="ps-control-buttons">
-        <div class="button-bar">
-            <a class="button icon-center ion-checkmark-round" ng-click="saveBid()"></a>
-            <a class="button icon-center ion-close" ng-click="closeBid()"></a>
+        <div class="ps-modal thumbnail-modal" ng-show="showFullImage">
+                <img ng-src="{{stdImageUrl(selectedSpace.standard_image_url)}}" ng-click="showFullImage = false" class="ps-std-thumbnail"/>
+                <span>{{selectedSpace.description}}</span>
         </div>
-    </div>
+
+        <div class="ps-control-buttons">
+                <div class="button-bar">
+                        <a class="button icon-center ion-checkmark-round" ng-click="saveBid()"></a>
+                        <a class="button icon-center ion-close" ng-click="closeBid()"></a>
+                </div>
+        </div>
 </div>

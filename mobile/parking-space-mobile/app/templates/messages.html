@@ -1,4 +1,4 @@
-<div class="chat-area-modal ps-modal">
+<div class="chat-area-modal ps-modal" ng-controller="MessagesCtrl">
     <div>
         <div>
             <h4 class="title ">Chat with {{selOffer.owner_name}}</h4>
@@ -9,7 +9,7 @@
                      ng-class="{left :message.owner_is_current_user , right:!message.owner_is_current_user}"
                      ng-repeat-finish="scrollDown">
                     <div class="desc">
-                        <span class="message-meta"> {{message.created_at | date : 'dd MMM yyyy  H:m'}} </span>
+                        <span class="message-meta"> {{message.created_at | date : 'dd MMM yyyy  HH:mm'}} </span>
                     </div>
                     <span ng-class="{orange: !message.read}">
                         {{message.content}}

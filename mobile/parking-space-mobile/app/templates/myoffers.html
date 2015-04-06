@@ -1,36 +1,49 @@
 <div ng-controller="MyOffersCtrl" class="ps-content">
 
-        <ul class="row slider-tabs-menu">
-                <li class="col" ui-sref="home.myposts" ui-sref-active="active">
-                        <a>My spaces</a>
-                </li>
-                <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
-                        <a>My offers</a>
-                </li>
-        </ul>
+    <div style="position: relative">
+        <ui-view name="messages"></ui-view>
+    </div>
 
-        <div class="padding">
-                <div class="bid-table scroll" ng-show="spaceEdit.offers.length">
-                        <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in spaceEdit.offers | orderBy: 'timestamp'"
-                             ng-class="{selected: selOffer == offer}">
+    <ul class="row slider-tabs-menu">
+        <li class="col" ui-sref="home.myposts" ui-sref-active="active">
+            <a>My spaces</a>
+        </li>
+        <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
+            <a>My offers</a>
+        </li>
+    </ul>
 
-                        <span class="offer-price">
-                            {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
-                            <currency val="offer.currency"></currency>
-                        </span>
+    <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
+    <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You haven't placed any offers.</div>
 
-                        <span ui-sref="home.myposts.messages.talk">
-                            ( <i class="fa fa-envelope"></i> {{unreadMessagesForSpace(offer.messages)}} )
-                        </span>
+    <div class="bids-area padding" ng-repeat="space in spaces| orderBy: 'timestamp'">
+        <h4 class="bid-title">
+            {{space.title}} -
+                 <span class="bid-amount">
+                     {{space.price | units  }}.<small>{{space.price | subunits}}</small>
+                      <currency val="space.currency"></currency>
+                 </span>
+            <i class="fa fa-refresh fa-spin loading-spinner"></i>
+        </h4>
+        <div class="bid-table no-margin" ng-show="space.offers.length">
+            <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in space.offers | orderBy: 'timestamp'" ng-class="{selected: selOffer == offer}">
+                <span class="offer-price">
+                    {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
+                    <currency val="offer.currency"></currency>
+                </span>
 
-                                <div class="pull-right offer-accept" ng-click="confirmApproval(offer)">
-                                        <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
-                                        <i class="ion-checkmark-round" ng-show="!offer.approved"> Accept</i>
-                                </div>
+                <span ui-sref="home.myoffers.talk">
+                    ( <i class="fa fa-envelope"></i> {{messagesForOffer(offer)}} )
+                </span>
 
-                        </div>
+                <div class="pull-right offer-accept" >
+                    <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
+                    <i class="ion-checkmark-round" ng-show="!offer.approved"> Proposed </i>
                 </div>
+
+            </div>
         </div>
+    </div>
 
 </div>
 

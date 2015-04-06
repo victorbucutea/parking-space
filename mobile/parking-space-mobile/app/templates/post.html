@@ -1,10 +1,10 @@
 <div id="post-space" ng-controller="PostParkingSpaceCtrl">
-    <ul class="row slider-tabs-menu">
-        <li class="col" ng-click="space.short_term = false" ng-class="{active: !space.short_term}">
-            <a><i class="fa fa-calendar"></i> Long term</a>
+    <ul class="row select-pill">
+        <li class="col" ng-click="space.short_term = false">
+            <a  ng-class="{active: !space.short_term}"><i class="fa fa-calendar"></i> Long term</a>
         </li>
-        <li class="col" ng-click="space.short_term = true" ng-class="{active: space.short_term}">
-            <a><i class="fa fa-clock-o"></i> Short term</a>
+        <li class="col" ng-click="space.short_term = true">
+            <a  ng-class="{active: space.short_term}"><i class="fa fa-clock-o"></i> Short term</a>
         </li>
     </ul>
     <div id="tab1"  ng-hide="space.short_term" ng-click="review()">
