@@ -39,8 +39,8 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     parking_spaces = assigns(:parking_spaces)
     assert_equal 3, parking_spaces.size
     assert_equal 'IMEI8129231231', parking_spaces[0].deviceid
-    assert_equal 'IMEI8129231231', parking_spaces[1].deviceid
-    assert_equal 'IMEI8129331241', parking_spaces[2].deviceid
+    assert_equal 'IMEI8129331241', parking_spaces[1].deviceid
+    assert_equal 'IMEI8129231231', parking_spaces[2].deviceid
 
   end
 
@@ -50,9 +50,9 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     parking_spaces = assigns(:parking_spaces)
     assert_equal 4, parking_spaces.size
     assert_equal 'IMEI8129231231', parking_spaces[0].deviceid
-    assert_equal 'IMEI8129231231', parking_spaces[1].deviceid
-    assert_equal 'IMEI8129331241', parking_spaces[2].deviceid
-    assert_equal 'IMEI8129431251', parking_spaces[3].deviceid
+    assert_equal 'IMEI8129331241', parking_spaces[1].deviceid
+    assert_equal 'IMEI8129431251', parking_spaces[2].deviceid
+    assert_equal 'IMEI8129231231', parking_spaces[3].deviceid
 
   end
 
@@ -62,9 +62,9 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     parking_spaces = assigns(:parking_spaces)
     assert_equal 4, parking_spaces.size
     assert_equal 'IMEI8129231231', parking_spaces[0].deviceid
-    assert_equal 'IMEI8129231231', parking_spaces[1].deviceid
-    assert_equal 'IMEI8129331241', parking_spaces[2].deviceid
-    assert_equal 'IMEI8129431251', parking_spaces[3].deviceid
+    assert_equal 'IMEI8129331241', parking_spaces[1].deviceid
+    assert_equal 'IMEI8129431251', parking_spaces[2].deviceid
+    assert_equal 'IMEI8129231231', parking_spaces[3].deviceid
 
   end
 
@@ -74,11 +74,11 @@ class ParkingSpacesControllerTest < ActionController::TestCase
     parking_spaces = assigns(:parking_spaces)
     assert_equal 7, parking_spaces.size
     assert_equal 'IMEI8129231231', parking_spaces[0].deviceid
-    assert_equal 'IMEI8129231231', parking_spaces[1].deviceid
-    assert_equal 'IMEI8129331241', parking_spaces[2].deviceid
-    assert_equal 'IMEI8129431251', parking_spaces[3].deviceid
-    assert_equal 'IMEI8129531261', parking_spaces[4].deviceid
-    assert_equal 'IMEI8129631271', parking_spaces[5].deviceid
+    assert_equal 'IMEI8129331241', parking_spaces[1].deviceid
+    assert_equal 'IMEI8129431251', parking_spaces[2].deviceid
+    assert_equal 'IMEI8129531261', parking_spaces[3].deviceid
+    assert_equal 'IMEI8129631271', parking_spaces[4].deviceid
+    assert_equal 'IMEI8129231231', parking_spaces[5].deviceid
   end
 
   test 'should return error if no lat|long|range' do
@@ -137,8 +137,10 @@ class ParkingSpacesControllerTest < ActionController::TestCase
 
     assert_equal 44.41514, parking_spaces[0].location_lat.to_f
     assert_equal 26.09321, parking_spaces[0].location_long.to_f
-    assert_equal true, parking_spaces[0].short_term?
+    assert !parking_spaces[0].short_term?
     assert_equal 0.3, parking_spaces[0].target_price
+    assert parking_spaces[1].short_term?
+    assert_equal 11.3, parking_spaces[1].target_price
     assert_equal 2, parking_spaces[1].proposals.size
     assert_equal 2, parking_spaces[1].proposals[0].messages.size
 
@@ -546,18 +548,18 @@ class ParkingSpacesControllerTest < ActionController::TestCase
 
   end
 
-  test "should return child proposals and messages in proper structure" do
+  test "index should fetch child proposals and messages" do
     xhr :get, :index, {lat: "44.41514", lon: "26.09321", range: "1000"}
     assert_response :success
 
     p_spaces = JSON.parse(@response.body)
     assert_equal 4, p_spaces.size
 
-    p_space = p_spaces[1]
+    p_space = p_spaces[0]
 
     assert_nil p_space['deviceid']
-    assert_equal '26.09321', p_space['location_long']
-    assert_equal '44.41514', p_space['location_lat']
+    assert_equal 26.09321, p_space['location_long'].to_f
+    assert_equal 44.41514, p_space['location_lat'].to_f
 
     offers = p_space['offers']
 
