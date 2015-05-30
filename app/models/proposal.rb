@@ -4,7 +4,7 @@ class Proposal < DeviceRecord
   enum approval_status: [:pending, :rejected, :approved]
 
   belongs_to :parking_space
-  has_many :messages
+  has_many :messages, :dependent => :destroy
 
   validates :bidder_name, :presence => true
   validates :approval_status, :presence => true
@@ -37,7 +37,7 @@ class Proposal < DeviceRecord
     end
     bid_price_epsilon = SysParams.instance.get_f('bid_price_epsilon')
     prop_with_same_price = Proposal.where(:bid_amount => (bid_amount - bid_price_epsilon).to_f .. (bid_amount + bid_price_epsilon).to_f,
-                                          :parking_space_id => parking_space_id)
+                                          :parking_space_id => parking_space_id, :bid_currency => bid_currency )
     if prop_with_same_price.exists?
       errors.add :general, 'A bid already exists with that price (±0.05)!'
     end

@@ -642,10 +642,22 @@ class ParkingSpacesControllerTest < ActionController::TestCase
 
 
   test "should destroy parking_space" do
+    old_deviceid = session[:deviceid]
+    session[:deviceid] = 'IMEI8129431251'
+
     assert_difference('ParkingSpace.count', -1) do
-      xhr :delete, :destroy, id: 1
+      xhr :delete, :destroy, id: 3
     end
+
+    #@proposals = Proposal.where parking_space_id: params[:parking_space_id]
+    proposals_for_space = Proposal.where(parking_space_id: 3)
+    assert_empty proposals_for_space
+
+    messages_for_proposal = Message.where(proposal_id: 7 )
+    assert_empty messages_for_proposal
+
     assert_response :success
+    session[:deviceid] = old_deviceid
   end
 
 

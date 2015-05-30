@@ -8,9 +8,9 @@ json.timestamp parking_space.created_at
 json.short_term parking_space.short_term?
 json.price parking_space.target_price.to_f
 json.currency parking_space.target_price_currency
-json.owner_is_current_user parking_space.deviceid == session[:deviceid]
+json.owner_is_current_user parking_space.deviceid == current_user.device_id
 json.expired parking_space.expired?
-
+json.image image_tag 'Romania.png'
 
 json.offers do
   # this call increases costs by 40%, replacing the partial call it with its raw content
@@ -22,13 +22,13 @@ json.offers do
     json.pending proposal.pending?
     json.price proposal.bid_amount.to_f
     json.currency proposal.bid_currency
-    json.owner_is_current_user proposal.deviceid == session[:deviceid]
+    json.owner_is_current_user proposal.deviceid == current_user.device_id
     json.read proposal.read
     json.owner_name proposal.bidder_name
     json.messages do
       json.array! proposal.messages do |message|
         json.extract! message, :id, :proposal_id, :content, :created_at
-        json.owner_is_current_user message.deviceid == session[:deviceid]
+        json.owner_is_current_user message.deviceid == current_user.device_id
       end
     end
   end

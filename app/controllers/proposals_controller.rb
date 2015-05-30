@@ -1,4 +1,5 @@
 class ProposalsController < ApplicationController
+  before_action :authenticate_user!
 
   def show
     @proposal = Proposal.find(params[:id])
@@ -11,7 +12,7 @@ class ProposalsController < ApplicationController
 
   def reject
     @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = session[:deviceid]
+    owner_deviceid = current_user.device_id
 
     respond_to do |format|
       if @proposal.reject(owner_deviceid)
@@ -25,7 +26,7 @@ class ProposalsController < ApplicationController
 
   def approve
     @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = session[:deviceid]
+    owner_deviceid = current_user.device_id
 
     respond_to do |format|
       if @proposal.approve(owner_deviceid)
@@ -56,7 +57,7 @@ class ProposalsController < ApplicationController
   def update
     @proposal = Proposal.find(params[:id])
 
-    if session[:deviceid] != @proposal.deviceid
+    if current_user.device_id != @proposal.deviceid
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
