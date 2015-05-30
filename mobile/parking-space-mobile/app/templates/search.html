@@ -4,6 +4,9 @@
         <div class="value"> {{circleOptions.radius}} <small>m</small></div>
         <a class="button button-icon icon ion-plus-circled pull-right" ng-click="increaseRadius()"></a>
     </div>
+    <div class="center-map-to-location" ng-click="centerMapOnCurrentLocation()">
+        <i class="ion-android-locate fa-2x" ></i>
+    </div>
     <div class="padding-horizontal">
         <small>
         {{noOfShortTerm.length || 0}}<img src="images/marker_orange.png" height="28"> short term,
@@ -20,4 +23,5 @@
         </div>
     </div>
     <ui-view name="place-offer" ></ui-view>
+    <ui-view name="help"></ui-view>
 </div>

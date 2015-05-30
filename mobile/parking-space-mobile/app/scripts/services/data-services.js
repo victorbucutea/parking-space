@@ -1,23 +1,25 @@
 angular.module('ParkingSpaceMobile.services', [])
 
-    .service('parkingSpaceService', function ($rootScope, $http, ENV, deviceAndUserInfoService, errorHandlingService) {
+    .service('parkingSpaceService', function ($rootScope, $http, ENV, userService, errorHandlingService) {
 
-        this.getAvailableSpaces = function (lat, lng, range, clbk) {
-
+        this.getAvailableSpaces = function (lat, lng, range, clbk, errClbk) {
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
             $http.get(ENV + 'parking_spaces.json?lat=' + lat + '&lon=' + lng + '&range=' + range)
                 .success(function (data) {
-                    console.log(data);
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
                     if (clbk)
                         clbk(data);
                 })
                 .error(function (data, status) {
-                    errorHandlingService.handle(data, status);
-                    $('.loading-finished').show();
+                    if (!errClbk) {
+                        errorHandlingService.handle(data, status);
+                        $('.loading-finished').show();
+                    } else {
+                        errClbk(data,status);
+                    }
                 });
         };
 
@@ -59,9 +61,9 @@ angular.module('ParkingSpaceMobile.services', [])
             // massage space a to fit the back end model
             space.target_price = space.price;
             space.target_price_currency = space.currency;
-            space.phone_number = deviceAndUserInfoService.phoneNo;
-            space.deviceid = deviceAndUserInfoService.deviceId;
-            space.owner_name = deviceAndUserInfoService.userName;
+            space.phone_number = userService.getUser().phone_number;
+            space.deviceid = userService.getUser().device_id;
+            space.owner_name = userService.getUser().full_name;
             if (space.short_term)
                 space.interval = 1;
             else
@@ -105,7 +107,7 @@ angular.module('ParkingSpaceMobile.services', [])
 
     })
 
-    .service('messageService', function ($rootScope, $http, $timeout, ENV, deviceAndUserInfoService) {
+    .service('messageService', function ($rootScope, $http, $timeout, ENV, userService) {
         this.messages = [];
         var _this = this;
 
@@ -138,14 +140,13 @@ angular.module('ParkingSpaceMobile.services', [])
         }
     })
 
-    .service('offerService', function ($http, $timeout, ENV, deviceAndUserInfoService, $rootScope, errorHandlingService) {
+    .service('offerService', function ($http, $timeout, ENV, userService, $rootScope, errorHandlingService) {
 
         this.placeOffer = function (bid, spaceId, clbk) {
-            bid.phone_number = deviceAndUserInfoService.phoneNo;
-            bid.deviceid = deviceAndUserInfoService.deviceId;
-            bid.bidder_name = deviceAndUserInfoService.userName;
+            bid.phone_number = userService.getUser().phone_number;
+            bid.deviceid = userService.getUser().device_id;
+            bid.bidder_name = userService.getUser().full_name;
             bid.parking_space_id = spaceId;
-
 
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals.json', bid)
                 .success(function (data) {
@@ -192,7 +193,6 @@ angular.module('ParkingSpaceMobile.services', [])
         };
 
         this.markRead = function (postId, offers, clbk) {
-
             // execute call on server
             offers.forEach(function (x) {
                 x.read = true;
@@ -205,7 +205,7 @@ angular.module('ParkingSpaceMobile.services', [])
         };
     })
 
-    .service('parameterService', function ($http, ENV, deviceAndUserInfoService) {
+    .service('parameterService', function ($http, ENV) {
 
         /**
          * provides back-end parameters
@@ -213,28 +213,37 @@ angular.module('ParkingSpaceMobile.services', [])
          * 3. max_search_radius: 1200
          * 4. long_term_expiration: 2 # weeks
          * 5. default_range: 500
-         * 6. starting currency
-         * 7. starting asking price
+         * 6. countries list ( starting asking price, country_name, etc.)
          */
 
         var _this = this;
 
         _this.parameters = {};
 
+        this.retrieveParameters = function(okClbk, errClbk){
+            $http.get(ENV+'parameters.json')
+                .success(function (data) {
+                   _this.setParameters(data);
+                    if (okClbk) {
+                        okClbk(data);
+                    }
+                })
+                .error(function (data, status) {
+                    if (errClbk) {
+                        errClbk(data,status);
+                    }
+                })
 
-        // TODO. Order of init is: 1. init from client side defaults, 2. init from local storage, 3. init from async call ( if internet av.)
-        var httpResp = JSON.parse($.ajax({
-            type: "GET",
-            url: ENV + 'parameters.json?deviceid=' + deviceAndUserInfoService.deviceId,
-            async: false
-        }).responseText);
+        };
 
-        httpResp.forEach(function (item) {
-            _this.parameters[item.name] = item.default_value;
-            if (item.values && item.values.length) {
-                _this.parameters[item.name + '_values'] = item.values
-            }
-        });
+        this.setParameters = function(params){
+            params.forEach(function (item) {
+                _this.parameters[item.name] = item.default_value;
+                if (item.values && item.values.length) {
+                    _this.parameters[item.name + '_values'] = item.values
+                }
+            });
+        };
 
         this.getParameters = function () {
             return _this.parameters;
@@ -258,7 +267,36 @@ angular.module('ParkingSpaceMobile.services', [])
 
         this.getStartingAskingPrice = function () {
             return parseInt(_this.parameters.starting_asking_price) || 5;// bkp for  no connectivity
-        }
-    })
+        };
 
+        this.getCountryList = function () {
+            return _this.parameters.country_values;
+        };
 
+        this.getCountryListAsync = function(clbk) {
+            _this.retrieveParameters(
+                function (data) {
+                    var countries = _this.getCountryList();
+
+                   countries.map(function (item) {
+                        var countryName = item.value4.replace(/ /g, "_") + ".png";
+                        item.url = ENV + '/assets/flags/' + countryName;
+                        item.prefix = item.value3;
+                        item.name = item.value4;
+                    });
+
+                    countries.sort(function (item1, item2) {
+                        if (item1.name < item2.name)
+                            return -1;
+                        if (item1.name > item2.name)
+                            return 1;
+                        return 0;
+                    });
+
+                    if (clbk) {
+                        clbk(countries);
+                    }
+
+                });
+        };
+    });

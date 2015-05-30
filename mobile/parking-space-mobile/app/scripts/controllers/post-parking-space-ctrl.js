@@ -26,6 +26,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtr
                 $state.go('^');
         };
 
+        $scope.centerMapOnCurrentLocation = function() {
+                geolocationService.getCurrentLocation(function(position) {
+                        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        $rootScope.map.setCenter(pos);
+                })
+        };
+
         $scope.$on('changeAddress', function (e, data) {
                 if (!$scope.space)
                         $scope.space = {price: parameterService.getStartingAskingPrice(), currency: parameterService.getStartingCurrency()};
@@ -49,5 +56,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtr
                 }
         });
 
-})
+});
 

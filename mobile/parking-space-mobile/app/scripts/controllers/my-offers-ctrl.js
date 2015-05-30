@@ -30,7 +30,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl', func
 
     $scope.selectOffer = function (offer) {
         $scope.selOffer = offer;
-    }
+    };
 
 
     $scope.showMessages = function (offer) {

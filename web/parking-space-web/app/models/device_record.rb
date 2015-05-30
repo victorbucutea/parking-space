@@ -4,6 +4,7 @@ class DeviceRecord < ActiveRecord::Base
   validate :deviceid_not_changed
   validates :deviceid, :presence => true
 
+
   private
   def deviceid_not_changed
 

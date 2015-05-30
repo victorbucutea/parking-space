@@ -1,4 +1,5 @@
 class ParkingSpacesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_parking_space, only: [:show, :update, :destroy]
   respond_to :json
 
@@ -48,7 +49,7 @@ class ParkingSpacesController < ApplicationController
 
 
   def myspaces
-    deviceid = session[:deviceid]
+    deviceid = current_user.device_id
 
     unless deviceid
       render json: {Error: {general: "Missing deviceid"}}, status: :unprocessable_entity
@@ -63,7 +64,7 @@ class ParkingSpacesController < ApplicationController
   end
 
   def myoffers
-    deviceid = session[:deviceid]
+    deviceid = current_user.device_id
 
     unless deviceid
       render json: {Error: {general: "Missing deviceid"}}, status: :unprocessable_entity
@@ -81,6 +82,8 @@ class ParkingSpacesController < ApplicationController
   # POST /parking_spaces.json
   def create
     @parking_space = ParkingSpace.new(parking_space_params)
+    @parking_space.deviceid = current_user.device_id
+
     respond_to do |format|
       if @parking_space.save
         format.json { render :show, status: :created, location: @parking_space }
@@ -93,11 +96,6 @@ class ParkingSpacesController < ApplicationController
   # PATCH/PUT /parking_spaces/1
   # PATCH/PUT /parking_spaces/1.json
   def update
-    unless parking_space_params['deviceid']
-      render json: {Error: {general: "Device id is required"}}, status: :unprocessable_entity
-      return
-    end
-
     respond_to do |format|
       if @parking_space.update(parking_space_params)
         format.json { render :show, status: :ok, location: @parking_space }
@@ -110,7 +108,7 @@ class ParkingSpacesController < ApplicationController
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-    if session[:deviceid] != @parking_space.deviceid
+    if current_user.device_id != @parking_space.deviceid
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
@@ -131,13 +129,9 @@ class ParkingSpacesController < ApplicationController
     params.require(:parking_space).permit(:location_lat, :location_long,
                                           :recorded_from_lat, :recorded_from_long,
                                           :deviceid, :target_price, :target_price_currency,
-                                          :interval, :phone_number,
-                                          :owner_name, :image_file_name, :image_content_type,
-                                          :image_file_size, :title,
-                                          :address_line_1, :address_line_2,
-                                          :image_data,
-                                          :thumbnail_data,
-                                          :rotation_angle,
-                                          :description)
+                                          :interval, :phone_number,:owner_name, :image_file_name,
+                                          :image_content_type, :image_file_size, :title,
+                                          :address_line_1, :address_line_2, :image_data,
+                                          :thumbnail_data, :rotation_angle, :description)
   end
 end

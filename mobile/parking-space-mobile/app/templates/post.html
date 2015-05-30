@@ -7,6 +7,9 @@
             <a  ng-class="{active: space.short_term}"><i class="fa fa-clock-o"></i> Short term</a>
         </li>
     </ul>
+    <div class="center-map-to-location" ng-click="centerMapOnCurrentLocation()">
+        <i class="ion-android-locate fa-2x" ></i>
+    </div>
     <div id="tab1"  ng-hide="space.short_term" ng-click="review()">
         <parking-spot-info-box space="space" ></parking-spot-info-box>
     </div>
@@ -18,4 +21,5 @@
     </div>
 
     <ui-view name="review"></ui-view>
+    <ui-view name="help"></ui-view>
 </div>

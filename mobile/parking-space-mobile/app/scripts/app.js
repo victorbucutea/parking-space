@@ -1,7 +1,10 @@
 'use strict';
-angular.module('ParkingSpaceMobile.controllers',[]);
+angular.module('ParkingSpaceMobile.controllers', []);
 
-angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
+angular.module('ParkingSpaceMobile', [
+    'ionic',
+    'config',
+    'angularMoment',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
@@ -28,6 +31,17 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                 abstract: true,
                 templateUrl: 'templates/home.html'
             })
+            .state('home.register', {
+                url: '/register',
+                views: {
+                    'content': {
+                        templateUrl: "templates/register.html"
+                    }
+                },
+                params: {
+                    hide_blanket: false
+                }
+            })
             .state('home.map', {
                 url: '/map',
                 views: {
@@ -44,11 +58,27 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                     }
                 }
             })
+            .state('home.map.post.help', {
+                url: '/help',
+                views: {
+                    'help': {
+                        templateUrl: "templates/post-help.html"
+                    }
+                }
+            })
             .state('home.map.post.review', {
                 url: '/review',
                 views: {
                     'review': {
                         templateUrl: "templates/review-post.html"
+                    }
+                }
+            })
+            .state('home.map.post.review.help', {
+                url: '/help',
+                views: {
+                    'help': {
+                        templateUrl: "templates/review-post-help.html"
                     }
                 }
             })
@@ -60,6 +90,14 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                     }
                 }
             })
+            .state('home.map.search.help', {
+                url: '/help',
+                views: {
+                    'help': {
+                        templateUrl: "templates/search-help.html"
+                    }
+                }
+            })
             .state('home.map.search.place', {
                 url: '/place-offer',
                 views: {
@@ -68,14 +106,27 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                     }
                 }
             })
-            .state('home.my',{
-
+            .state('home.map.search.place.help', {
+                url: '/help',
+                views: {
+                    'help': {
+                        templateUrl: "templates/place-offer-help.html"
+                    }
+                }
             })
             .state('home.myposts', {
                 url: '/myposts',
                 views: {
                     'content': {
                         templateUrl: "templates/myposts.html"
+                    }
+                }
+            })
+            .state('home.myposts.help', {
+                url: '/help',
+                views: {
+                    'help': {
+                        templateUrl: "templates/myposts-help.html"
                     }
                 }
             })
@@ -116,6 +167,14 @@ angular.module('ParkingSpaceMobile', ['ionic', 'config', 'angularMoment',
                 views: {
                     'content': {
                         templateUrl: "templates/myoffers.html"
+                    }
+                }
+            })
+            .state('home.myoffers.help', {
+                url: '/help',
+                views: {
+                    'help': {
+                        templateUrl: "templates/myoffers-help.html"
                     }
                 }
             })

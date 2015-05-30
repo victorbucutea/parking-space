@@ -14,7 +14,7 @@ class ParkingSpace < DeviceRecord
            AND parking_spaces.location_long <= :lon_max', attrs)
   }
 
-  has_many :proposals
+  has_many :proposals, :dependent => :destroy
 
   validates :location_lat, :presence => true, numericality: {greater_than_or_equal_to: -90, less_than_or_equal_to: 90}
   validates :location_long, :presence => true, numericality: {greater_than_or_equal_to: -180, less_than_or_equal_to: 180}

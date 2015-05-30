@@ -4,9 +4,13 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('DeleteParkingSpaceCtrl', function ($scope, parkingSpaceService,$state) {
-        $scope.deleteSpace = function (parkingSpaceId) {
-                parkingSpaceService.deleteSpace(parkingSpaceId);
+        $scope.deleteSpace = function (parkingSpace) {
+                parkingSpaceService.deleteSpace(parkingSpace.id);
+                var idx = $scope.spaces.indexOf(parkingSpace);
+                if (idx > -1) {
+                        $scope.spaces.splice(idx, 1);
+                }
                 $state.go('^');
         };
 
-})
+});

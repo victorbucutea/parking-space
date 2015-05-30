@@ -6,15 +6,15 @@
                 <h3 class="ps-page-title">
                     <i class="fa fa-calendar" ng-show="!spaceEdit.short_term"> </i>
                     <i class="fa fa-clock-o" ng-show="spaceEdit.short_term"> </i>
-                    {{spaceEdit.short_term? 'Short Term (5 min)': 'Long Term (2 weeks)'}}
+                    {{spaceEdit.short_term? 'Short Term (10 min)': 'Long Term (2 weeks)'}}
                     <i class="fa fa-refresh fa-spin loading-spinner"></i>
                 </h3>
             </div>
             <div>
                 <span class="item item-input important">
-                <span class="input-label">Bid value</span>
-                <bid-amount amount="spaceEdit.price" currency="spaceEdit.currency"></bid-amount>
-            </span>
+                    <span class="input-label">Bid value</span>
+                    <bid-amount amount="spaceEdit.price" currency="spaceEdit.currency"></bid-amount>
+                </span>
                 <label class="item item-input">
                     <span class="input-label">Title</span>
                     <input type="text" placeholder="Title" ng-model="spaceEdit.title" ng-required="true">
@@ -51,4 +51,5 @@
             </div>
         </form>
     </div>
+    <ui-view name="help"></ui-view>
 </div>

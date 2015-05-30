@@ -61,120 +61,120 @@ $gray-dark: #444;
 $gray-dark-transparent: transparentize($gray-dark, 0.5);
 $blue: #7A93BA;
 $red: #d46220;
+$darkgreen: darkgreen;
 
 @import "fonts";
 @import "forms";
 
 #map {
-    height: 60%;
+  height: 60%;
 }
 
 .map-controls {
-    height: 40%;
+  height: 40%;
 }
 
 .full-height {
-    height: 100%
+  height: 100%
 }
 
 map {
-    display: block;
-    width: 100%;
-    height: 100%;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 html, body {
-    height: 100%;
-    font-family: $font-family;
-    color: $dflt-font-color;
-    background-color: #fff;
+  height: 100%;
+  font-family: $font-family;
+  color: $dflt-font-color;
+  background-color: #fff;
 }
 
 .bar-header {
-    .row {
-        padding: 0 10px;
-        .col {
-            padding: 3px 0 0 0;
-            text-align: center;
-        }
+  .row {
+    padding: 0 10px;
+    .col {
+      padding: 3px 0 0 0;
+      text-align: center;
+    }
+  }
+
+  .menu-underline {
+    span {
+      width: 75px;
+      display: inline-block;
+      position: absolute;
+      height: 5px;
+      background-color: #D46220;
+      top: -9px;
+      left: -18px;
+    }
+  }
+
+  &.bar-dark {
+    background-color: $gray-dark-transparent;
+    border: 0 none;
+
+    .button {
+      &.button-icon:before {
+        font-size: 38px;
+      }
     }
 
-    .menu-underline {
-        span {
-            width: 75px;
-            display: inline-block;
-            position: absolute;
-            height: 5px;
-            background-color: #D46220;
-            top: -9px;
-            left: -18px;
-        }
+    &.bar-header {
+      height: 48px;
     }
-
-    &.bar-dark {
-        background-color: $gray-dark-transparent;
-        border: 0 none;
-
-        .button {
-            &.button-icon:before {
-                font-size: 38px;
-            }
-        }
-
-        &.bar-header {
-            height: 48px;
-        }
-    }
+  }
 }
 
-
 .ps-control-buttons {
-    border: 0;
-    background-color: transparent;
-    padding: 0;
-    height: auto;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  height: auto;
 
-    .button-bar {
-        .button {
-            border: 0;
-            background-color: #fff;
-            min-height: $xxxbig-measure-unit;
-            line-height: $xxxbig-measure-unit;
-            font-size: 14px;
+  .button-bar {
+    .button {
+      border: 0;
+      background-color: #fff;
+      min-height: $xxxbig-measure-unit;
+      line-height: $xxxbig-measure-unit;
+      font-size: 14px;
 
-            &.icon-center {
-                font-size: $xbig-measure-unit;
-            }
+      &.icon-center {
+        font-size: $xbig-measure-unit;
+      }
 
-            &.activated {
-                background-color: #eee;
-            }
-            &:after {
-                line-height: 33px;
-            }
+      &.activated {
+        background-color: #eee;
+      }
+      &:after {
+        line-height: 33px;
+      }
 
-            &:before {
-                line-height: 33px;
-            }
-        }
+      &:before {
+        line-height: 33px;
+      }
     }
+  }
 }
 
 .ps-modal {
-    border-top: 4px solid $red;
-    position: fixed;
-    top: 48px;
-    background-color: $gray-dark-transparent;
-    width: 100%;
-    z-index: 3;
-    height: 100%;
+  border-top: 4px solid $red;
+  position: fixed;
+  top: 48px;
+  background-color: $gray-dark-transparent;
+  width: 100%;
+  z-index: 3;
+  height: 100%;
 
-    > div {
-        background-color: #fff;
-    }
-    .list {
-        overflow: hidden;
-    }
+  > div {
+    background-color: #fff;
+  }
+  .list {
+    overflow: hidden;
+  }
 }
 
 .place-offer-modal {
@@ -307,8 +307,8 @@ html, body {
   }
 }
 
-.thumbnail-modal{
-  background-color:  transparentize($gray-dark, 0.3) !important;
+.thumbnail-modal {
+  background-color: transparentize($gray-dark, 0.3) !important;
   top: 0;
   .ps-std-thumbnail {
     max-width: 95%;
@@ -317,7 +317,7 @@ html, body {
     display: block;
     margin-top: 20px;
   }
-  
+
   span {
     color: #fff;
     padding: $measure-unit;
@@ -326,614 +326,768 @@ html, body {
 }
 
 .ps-dialog {
-    display: none;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  display: none;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
+  .ps-dialog-content {
+    z-index: 100;
+    background-color: white;
+    position: relative;
+    top: 30%;
+    left: 10%;
+    width: 74%;
+    box-shadow: 1px 1px 3px;
+    border-top: 4px solid $red;
 
-    .ps-dialog-content {
-        z-index: 100;
-        background-color: white;
-        position: relative;
-        top: 30%;
-        left: 10%;
-        width: 74%;
-        box-shadow: 1px 1px 3px;
-        border-top: 4px solid $red;
-
-        .ps-question {
-            padding: $sm-measure-unit;
-            padding-bottom: $big-measure-unit;
-        }
+    .ps-question {
+      padding: $sm-measure-unit;
+      padding-bottom: $big-measure-unit;
     }
+  }
 }
 
 .ps-content {
-    padding-top: 48px;
+  padding-top: 48px;
 }
 
 .map-container {
-    display: block;
-    height: 100%;
-    position: relative;
+  display: block;
+  height: 100%;
+  position: relative;
 }
 
 .right-nav-menu {
 
-    .bar.bar-header {
-        background-color: $red;
-    }
-    .scroll-content {
-        background-color: $gray-dark;
-    }
+  .bar.bar-header {
+    background-color: $red;
+  }
+  .scroll-content {
+    background-color: $gray-dark;
+  }
 
-    .list {
-        a {
-            background-color: $gray-dark;
-            color: #ffffff;
-            border-color: $gray-dark;
-            padding: 10px;
+  .list {
+    a {
+      background-color: $gray-dark;
+      color: #ffffff;
+      border-color: $gray-dark;
+      padding: 10px;
 
-            &.active {
-                background-color: #aaa;
-                border-color: #aaa;
-            }
+      &.active {
+        background-color: #aaa;
+        border-color: #aaa;
+      }
 
-            span {
-                margin-left: 10px;
-                display: inline-block;
-                margin-bottom: 8px;
-            }
-        }
+      span {
+        margin-left: 10px;
+        display: inline-block;
+        margin-bottom: 8px;
+      }
     }
+  }
 
 }
 
 .open-spaces-list {
-    > .item:first-child {
-      border-top: 0;
-    }
+  > .item:first-child {
+    border-top: 0;
+  }
 
-    > span.item {
-        padding: 0;
-        &:active {
-            background-color: $gray-xlight;
-        }
+  > span.item {
+    padding: 0;
+    &:active {
+      background-color: $gray-xlight;
     }
+  }
 
-    .item-notifications {
-        padding: 0 $measure-unit $big-measure-unit $measure-unit;
-        font-size: 0.9em;
-        color: #666;
+  .item-notifications {
+    padding: 0 $measure-unit $big-measure-unit $measure-unit;
+    font-size: 0.9em;
+    color: #666;
 
-        span {
-            font-family: $font-family;
-        }
+    span {
+      font-family: $font-family;
     }
+  }
 }
 
 .bid-amount {
 
-    a {
-        float: left;
-        line-height: 0.9em;
-    }
+  a {
+    float: left;
+    line-height: 0.9em;
+  }
 
-    input {
-        margin: 0 10px;
-        width: 48px;
-        float: left;
-        font-size: $xxbig-measure-unit;
-    }
+  input {
+    margin: 0 10px;
+    width: 48px;
+    float: left;
+    font-size: $xxbig-measure-unit;
+  }
 
-    .currency {
-        border: 0 none;
-        width: 100%;
-        font-size: $xxbig-measure-unit;
-    }
+  .currency {
+    border: 0 none;
+    width: 100%;
+    font-size: $xxbig-measure-unit;
+  }
 }
 
 .slider-tabs-menu {
-    text-align: center;
+  text-align: center;
+  padding: 0;
+  > li {
+    border: 0 none;
     padding: 0;
-    > li {
-        border: 0 none;
-        padding: 0;
-        background-color: #555;
-        color: #fff;
+    background-color: #555;
+    color: #fff;
 
-        &.active {
-            background-color: #fff;
-            color: $dflt-font-color;
-            position: relative;
-        }
-
-        > a {
-            padding: $measure-unit;
-            display: block;
-            &:hover {
-                cursor: pointer;
-            }
-        }
+    &.active {
+      background-color: #fff;
+      color: $dflt-font-color;
+      position: relative;
     }
+
+    > a {
+      padding: $measure-unit;
+      display: block;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .select-pill {
-    @extend .slider-tabs-menu;
-    >li {
-        background-color: #fff;
-        padding: $xsm-measure-unit;
+  @extend .slider-tabs-menu;
+  > li {
+    background-color: #fff;
+    padding: $xsm-measure-unit;
 
-        a {
-            color: $dflt-font-color;
-            padding: $sm-measure-unit;
-            &.active {
-                background-color: #555;
-                color: #fff;
-                border-radius: 11px;
-            }
-        }
+    a {
+      color: $dflt-font-color;
+      padding: $sm-measure-unit;
+      &.active {
+        background-color: #555;
+        color: #fff;
+        border-radius: 11px;
+      }
     }
+  }
 }
 
 .search-center-icon {
-    border-radius: 100%;
-    width: 15px;
-    height: 15px;
-    background-color: $red;
-    border: 2px solid #fff;
-    margin-left: auto;
-    margin-right: auto;
+  border-radius: 100%;
+  width: 15px;
+  height: 15px;
+  background-color: $red;
+  border: 2px solid #fff;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .loading-spinner {
-    display: none;
-    color: $gray;
-    &.search {
-        margin-top: 30px;
-        margin-left: 41%;
-    }
+  display: none;
+  color: $gray;
+  &.search {
+    margin-top: 30px;
+    margin-left: 41%;
+  }
 }
 
 .no-items-msg {
-    width: 51%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: $xxxbig-measure-unit;
-    color: $gray;
-    font-size: 20px;
-    text-align: center;
+  width: 51%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: $xxxbig-measure-unit;
+  color: $gray;
+  font-size: 20px;
+  text-align: center;
 }
 
 .search-radius-controller {
-    position: absolute;
-    width: 120px;
-    background-color: #fff;
-    z-index: 1;
-    top: 53%;
-    left: 0;
-    margin-left: auto;
-    margin-right: auto;
-    right: 0;
-    border-radius: 20px;
-    box-shadow: 2px 1px 10px 1px $gray-dark;
+  position: absolute;
+  width: 120px;
+  background-color: #fff;
+  z-index: 1;
+  top: 53%;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  right: 0;
+  border-radius: 20px;
+  box-shadow: 2px 1px 10px 1px $gray-dark;
 
-    .value {
-        width: 47px;
-        display: inline-block;
-        height: 28px;
-        padding-top: 4px;
-        font-size: 1.2em;
+  .value {
+    width: 47px;
+    display: inline-block;
+    height: 28px;
+    padding-top: 4px;
+    font-size: 1.2em;
+  }
+
+  a.button {
+    padding: 2px;
+    min-height: 20px;
+    color: $gray-dark;
+    line-height: 20px;
+    border: 0 none;
+
+    &:before {
+      font-size: 28px;
+      line-height: 20px;
     }
-
-    a.button {
-        padding: 2px;
-        min-height: 20px;
-        color: $gray-dark;
-        line-height: 20px;
-        border: 0 none;
-
-        &:before {
-            font-size: 28px;
-            line-height: 20px;
-        }
-    }
-}
-
-.search-marker-label {
-    font-size: 11px;
-    font-weight: bold;
-    color: #fff;
+  }
 }
 
 @mixin parking-sign($size: $lg-jumbo-measure-unit, $icon: false) {
 
-    $width: $size * 3 / 4; // 3:4 image scale
-    $height: $size;
-    $font-size: $size * 0.8;
+  $width: $size * 3 / 4; // 3:4 image scale
+  $height: $size;
+  $font-size: $size * 0.8;
 
-    @if ($icon == true) {
-        $font-size: $size * 0.5;
-    }
+  @if ($icon == true) {
+    $font-size: $size * 0.5;
+  }
 
-    color: #23467C;
-    font-weight: bold;
-    width: $width;
-    height: $height;
-    line-height: $height;
-    text-align: center;
-    border-radius: 4px;
-    font-family: sans-serif;
-    margin-right: 10px;
-    border: 1px solid #23467C;
-    //    box-shadow: 2px 2px 8px 1px #ddd;
-    display: inline-block;
-    font-size: $font-size;
+  color: #23467C;
+  font-weight: bold;
+  width: $width;
+  height: $height;
+  line-height: $height;
+  text-align: center;
+  border-radius: 4px;
+  font-family: sans-serif;
+  margin-right: 10px;
+  border: 1px solid #23467C;
+  //    box-shadow: 2px 2px 8px 1px #ddd;
+  display: inline-block;
+  font-size: $font-size;
 
 }
 
 .parking-sign {
-    @include parking-sign($lg-jumbo-measure-unit, true);
+  @include parking-sign($lg-jumbo-measure-unit, true);
 }
 
 parking-spot-info-box {
-    position: relative;
-    display: block;
-    .parking-sign {
-            @include parking-sign(110px);
-    }
+  position: relative;
+  display: block;
+  .parking-sign {
+    @include parking-sign(110px);
+  }
 
-    .parking-spot-details {
-        border: 0 none;
-        padding: $measure-unit;
+  .parking-spot-details {
+    border: 0 none;
+    padding: $measure-unit;
 
-        .col {
-            padding: 0;
-        }
-
-        h1 {
-            color: $red;
-            font-size: $xlg-font-size;
-            margin-top: $measure-unit;
-        }
-
-        p {
-            margin-bottom: $measure-unit;
-        }
-
-        h2 {
-            font-size: $lg-font-size;
-            position: relative;
-            z-index: 2;
-        }
-
-        .currency {
-            font-size: $lg-font-size;
-        }
-    }
-
-    .watermark {
-        position: absolute;
-        top: -10px;
-        color: #ddd;
-        right: -10px;
-        font-size: 7em;
-    }
-
-    .my-posts-notifications {
-        position: absolute;
-        right: 30px;
-        z-index: 3;
-        font-size: 2em;
-        border-radius: 50%;
-        padding: 10px;
-        background-color: $blue;
-        color: #fff;
-        top: 60px;
-    }
-}
-
-
-parking-spot-info-box.small {
-
-    .parking-sign {
-      @include parking-sign(93px);
-    }
-
-    .parking-spot-details {
-        margin-top: 0;
-        padding-top: $sm-measure-unit;
-        padding-bottom: $sm-measure-unit;
-
-    }
-
-    h2 {
-        margin-bottom: 0;
-        font-size: $lg-font-size * 0.8;
+    .col {
+      padding: 0;
     }
 
     h1 {
-        margin-top: 0;
+      color: $red;
+      font-size: $xlg-font-size;
+      margin-top: $measure-unit;
     }
 
     p {
-        margin-bottom: 0;
+      margin-bottom: $measure-unit;
+    }
+
+    h2 {
+      font-size: $lg-font-size;
+      position: relative;
+      z-index: 2;
     }
 
     .currency {
-        font-size: $lg-font-size * 0.8;
+      font-size: $lg-font-size;
     }
+  }
+
+  .watermark {
+    position: absolute;
+    top: -10px;
+    color: #ddd;
+    right: -10px;
+    font-size: 7em;
+  }
+
+  .my-posts-notifications {
+    position: absolute;
+    right: 30px;
+    z-index: 3;
+    font-size: 2em;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: $blue;
+    color: #fff;
+    top: 60px;
+  }
+}
+
+parking-spot-info-box.small {
+
+  .parking-sign {
+    @include parking-sign(93px);
+  }
+
+  .parking-spot-details {
+    margin-top: 0;
+    padding-top: $sm-measure-unit;
+    padding-bottom: $sm-measure-unit;
+
+  }
+
+  h2 {
+    margin-bottom: 0;
+    font-size: $lg-font-size * 0.8;
+  }
+
+  h1 {
+    margin-top: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .currency {
+    font-size: $lg-font-size * 0.8;
+  }
 }
 
 .notif-icon {
-    position: absolute;
-    right: -3px;
-    border-radius: 50%;
-    background-color: rgb(212, 98, 32);
-    padding: 0px 5px;
-    line-height: 20px;
-    font-size: 13px;
-    top: 0;
+  position: absolute;
+  right: -3px;
+  border-radius: 50%;
+  background-color: rgb(212, 98, 32);
+  padding: 0px 5px;
+  line-height: 20px;
+  font-size: 13px;
+  top: 0;
 }
 
 .parking-spot-marker {
+  position: absolute;
+  font-size: 2.5em;
+  font-weight: bold;
+  top: 120px;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40px;
+  height: 74px;
+
+  .parking-area-pointer {
     position: absolute;
-    font-size: 2.5em;
-    font-weight: bold;
-    top: 120px;
-    right: 0;
-    left: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40px;
-    height: 74px;
+    left: -40px;
+    top: 23px;
+    font-size: 1em;
+  }
 
-    .parking-area-pointer {
-        position: absolute;
-        left: -40px;
-        top: 23px;
-        font-size: 1em;
+  .parking-area {
+    background-color: rgba($blue, 0.34);
+    border-radius: 3px;
+    color: #333;
+  }
+
+  i {
+    font-size: 0.75em;
+    position: relative;
+
+    &.top-right {
+      top: -10px;
+      right: -4px;
     }
 
-    .parking-area {
-        background-color: rgba($blue, 0.34);
-        border-radius: 3px;
-        color: #333;
+    &.top-left {
+      top: -11px;
+      left: -1px;
     }
 
-    i {
-        font-size: 0.75em;
-        position: relative;
-
-        &.top-right {
-            top: -10px;
-            right: -4px;
-        }
-
-        &.top-left {
-            top: -11px;
-            left: -1px;
-        }
-
-        &.bottom-right {
-            bottom: -10px;
-            right: -5px;
-        }
-
-        &.bottom-left {
-            bottom: -10px;
-            left: -1px;
-        }
+    &.bottom-right {
+      bottom: -10px;
+      right: -5px;
     }
 
-    span {
-        font-size: 1.5em;
-        display: block;
-        width: 80%;
-        margin: auto;
+    &.bottom-left {
+      bottom: -10px;
+      left: -1px;
     }
+  }
+
+  span {
+    font-size: 1.5em;
+    display: block;
+    width: 80%;
+    margin: auto;
+  }
 
 }
 
 .ps-page-title {
-    border-bottom: 1px solid #aaa;
-    padding: 14px 14px 5px 10px;
-    margin-bottom: 0;
-    margin-top: 0;
-    background-color: #fff;
+  border-bottom: 1px solid #aaa;
+  padding: 14px 14px 5px 10px;
+  margin-bottom: 0;
+  margin-top: 0;
+  background-color: #fff;
 }
 
-
 .item {
-    background-color: inherit;
+  background-color: inherit;
 }
 
 .notification-message {
-    position: absolute;
-    top: 59px;
-    z-index: 100;
-    width: 70%;
-    text-align: center;
-    left: 15%;
-    border-radius: $measure-unit;
-    color: white;
-    padding: 5px;
-    display: none;
-    box-shadow: 1px 1px 12px 1px #525252;
-    border: 1px solid rgb(168, 11, 11);
+  position: absolute;
+  top: 59px;
+  z-index: 100;
+  width: 70%;
+  text-align: center;
+  left: 15%;
+  border-radius: $measure-unit;
+  color: white;
+  padding: 5px;
+  display: none;
+  box-shadow: 1px 1px 12px 1px #525252;
+  border: 1px solid rgb(168, 11, 11);
 
-    &.error {
-        background-color: #CB3A3A;
-        display: block;
-    }
+  &.error {
+    background-color: #CB3A3A;
+    display: block;
+  }
 
-    &.notification {
-        background-color: #346e24;
-        border: 1px solid #23471f;
-        display: block;
-    }
+  &.notification {
+    background-color: #346e24;
+    border: 1px solid #23471f;
+    display: block;
+  }
 }
 
-.offer-desc-item {
+.offer-desc-area {
+  padding: 10px 10px 20px 10px;
+  .offer-desc-item {
     font-size: 0.9em;
     padding-bottom: 5px;
 
     .value {
-        font-weight: 600;
-        padding-right: 10px;
-        padding-left: 10px;
-        background-color: $gray-xlight;
-        border-radius: 3px;
+      font-weight: 600;
+      padding-right: 10px;
+      padding-left: 10px;
+      background-color: $gray-xlight;
+      border-radius: 3px;
     }
-}
-
-.offer-desc-area {
-    padding: 10px 10px 20px 10px;
+  }
 }
 
 .scroll {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 .bids-area {
 
-    .bid-amount {
-        color: $red;
+  .bid-amount {
+    color: $red;
+  }
+
+  .bid-title {
+    border-bottom: 1px solid $gray;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bid-table {
+    max-height: 110px;
+    margin-top: $xxbig-measure-unit;
+    margin-bottom: $xxbig-measure-unit;
+    border-top: 1px solid #C7C7C7;
+    border-bottom: 1px solid #c7c7c7;
+
+    &.no-margin {
+      margin-top: 0;
+      margin-bottom: 0;
     }
 
-    .bid-title {
-        border-bottom: 1px solid $gray;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    &.narrow {
+      margin-top: 0;
+      margin-bottom: $big-measure-unit;
+    }
+
+    .offer {
+      background-color: $gray-xxlight;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &.selected {
+        background-color: darken(#f0f0f0, 15%);
+        .offer-price {
+          $light-blue: darken($blue, 15%);
+          background-color: $light-blue;
+        }
+      }
+
+      .offer-desc {
+        font-size: 0.9em;
+      }
+
+      .offer-price {
+        background-color: $blue;
+        color: white;
+        padding: 5px;
+        display: inline-block;
+        width: 80px;
         white-space: nowrap;
+        text-align: center;
+      }
+
+      .offer-accept {
+        padding: 5px;
+      }
+
+      .accepted {
+        color: $darkgreen;
+      }
+
+      .accept-confirm {
+        padding: 5px;
+        .ion-checkmark-round {
+          color: $darkgreen;
+        }
+        .ion-close-round {
+          color: darkred;
+        }
+      }
     }
 
-    .bid-table {
-        max-height: 110px;
-        margin-top: $xxbig-measure-unit;
-        margin-bottom: $xxbig-measure-unit;
-        border-top: 1px solid #C7C7C7;
-        border-bottom: 1px solid #c7c7c7;
-
-        &.no-margin  {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        &.narrow {
-            margin-top: 0;
-            margin-bottom: $big-measure-unit;
-        }
-
-        .offer {
-            background-color: $gray-xxlight;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            &.selected {
-                background-color: darken(#f0f0f0, 15%);
-                .offer-price {
-                    $light-blue: darken($blue, 15%);
-                    background-color: $light-blue;
-                }
-            }
-
-            .offer-desc {
-                font-size: 0.9em;
-            }
-
-            .offer-price {
-                background-color: $blue;
-                color: white;
-                padding: 5px;
-                display: inline-block;
-                width: 80px;
-                white-space: nowrap;
-                text-align: center;
-            }
-
-            .offer-accept {
-                padding: 5px;
-            }
-
-            .accepted {
-                color: darkgreen;
-            }
-
-            .accept-confirm {
-                padding: 5px;
-                .ion-checkmark-round {
-                    color: darkgreen;
-                }
-                .ion-close-round {
-                    color: darkred;
-                }
-            }
-        }
-
-    }
+  }
 }
 
+// default buttons
 
 .btn-grp {
-    padding: $measure-unit 0;
-    text-align: center;
-    .btn {
-        border: 1px solid $gray;
-        padding: ($measure-unit/$golden-ratio) 18px;
-        background-color: $gray-xxlight;
-        color: $dflt-font-color;
-        display: inline-block;
+  padding: $measure-unit 0;
+  text-align: center;
+  .btn {
+    border: 1px solid $gray;
+    padding: ($measure-unit/$golden-ratio) 18px;
+    background-color: $gray-xxlight;
+    color: $dflt-font-color;
+    display: inline-block;
 
-        span {
-            text-decoration: underline;
-        }
+    span {
+      text-decoration: underline;
     }
+  }
 }
 
+.help-blanket {
+  position: fixed;
+  height: 100%;
+  background-color: transparentize($gray-dark, 0.4);
+  top: 0;
+  color: #ffffff;
+  padding: $measure-unit;
+  text-align: center;
+  z-index: 10;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+  }
+}
+
+.center-map-to-location {
+  position: absolute;
+  top: 52%;
+  right: 10px;
+  font-size: 1.1em;
+  padding: 3px;
+  border-radius: 4px;
+}
+
+.country-list {
+  height: 110px;
+  overflow-y: scroll;
+  .flag {
+    font-size: 1.1em;
+    padding: $xxsm-measure-unit;
+
+    &.selected {
+      background-color: $gray;
+    }
+  }
+}
+
+.register {
+  background: url('/images/register_bg.png') no-repeat;
+  h1 {
+    margin-bottom: 25px;
+  }
+  h2, h3 {
+    border-bottom: 1px solid $gray;
+  }
+
+  .parking-spot-watermark {
+    position: absolute;
+    top: 20px;
+    z-index: -1;
+  }
+
+  input {
+    &.phone-number {
+      width: 70%;
+    }
+    &.email {
+      width: 70%;
+    }
+    &.first-name {
+      width: 70%;
+    }
+    &.password-register {
+      width: 70%;
+    }
+    &.user-name {
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    &.password {
+      width: 70%;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+
+    padding: $xsm-measure-unit;
+    margin-bottom: 2px;
+    border-bottom: 1px solid $gray;
+    display: inline-block;
+
+    &.ng-valid + i.fa {
+      &:before {
+        content: "\f00c";
+      }
+      font-size: 1.8em;
+      color: $darkgreen;
+    }
+
+    &.ng-invalid + i.fa {
+
+      &:before {
+        content: "\f00d";
+      }
+
+      font-size: 1.8em;
+      color: red;
+    }
+  }
+
+  .prefix {
+    background-color: $gray;
+    padding: $xxsm-measure-unit;
+  }
+
+  .invalid-field-list {
+    font-size: 0.9em;
+    list-style: disc;
+    margin-top: 10px;
+    margin-left: 14px;
+  }
+  
+  .recover-pw-link {
+    text-decoration: underline;
+    display: block;
+    width: 70%;
+    margin: auto;
+    text-align: right;
+  }
+
+  .register-btn {
+    border: 0 none;
+    padding: $sm-measure-unit $measure-unit;
+    margin-top: $xxbig-measure-unit;
+    display: block;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 20;
+    background-color: $red;
+    color: #fff;
+    border-radius: 4px;
+
+    &.blue {
+      background-color: $blue;
+    }
+  }
+
+  .or-text{
+    text-align: center;
+    margin-top: $xbig-measure-unit;
+  }
+
+}
+
+#login-blanket {
+  width: 100%;
+
+  .fa-refresh {
+    font-size: 8em;
+  }
+}
+
+.car-icon {
+  font-size: 10em;
+  color: $gray;
+  position: absolute;
+  bottom: 100px;
+  right: -100px;
+}
+
+// Social buttons
+
 .fa-facebook-square {
-    color: #3a5795;
+  color: #3a5795;
 }
 
 .fa-google-plus-square {
-    color: #d73d32;
+  color: #d73d32;
 }
 
 .fa-twitter-square {
-    color: #5EA9DD;
+  color: #5EA9DD;
 }
 
-
-
 .fa-rotate-45 {
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .fa-rotate-135 {
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-    -webkit-transform: rotate(135deg);
-    -ms-transform: rotate(135deg);
-    transform: rotate(135deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  transform: rotate(135deg);
 }
 
 .pull-right {
-    float: right !important;
+  float: right !important;
 }
 
 .pull-left {
-    float: left !important;
+  float: left !important;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }

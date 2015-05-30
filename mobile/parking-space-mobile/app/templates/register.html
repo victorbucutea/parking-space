@@ -1,0 +1,120 @@
+<div class="help-blanket" id="login-blanket">
+    <br/>
+    <br/>
+    <br/>
+    <h2> Logging in ...</h2>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <i class="fa fa-5x fa-refresh fa-spin "></i>
+</div>
+
+<div ng-controller="RegisterCtrl" class="padding register">
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <div id="login">
+        <br/>
+        <br/>
+
+        <h3> Welcome stranger ! </h3>
+
+        <input type="text" class="user-name" placeholder="Email" ng-model="userName" required/>
+
+        <input type="password" class="password" placeholder="Password" ng-model="password" required/>
+        <a onclick="$('#recoverPassword').show();" class="recover-pw-link">Recover password</a>
+
+        <button class="register-btn" ng-click="login()"><i class="fa fa-spinner loading-spinner fa-spin"></i> Login</button>
+
+        <div class="or-text">Or</div>
+
+        <button class="register-btn blue" onclick=" $('#register').show();$('#login').hide();"><i
+                class="fa fa-spinner loading-spinner fa-spin"></i> Register
+        </button>
+
+    </div>
+
+    <div id="register">
+        <form name="registerForm">
+            <h3> Select your country </h3>
+
+            <div class="country-list">
+                <div class="flag" ng-repeat="country in countries" ng-click="selectCountry(country)"
+                     ng-class="{selected: selectedCountry == country}">
+                    <img ng-src="{{country.url}}" height="13" width="27"/>
+                    &nbsp; {{country.name}} ({{country.prefix}})
+                </div>
+            </div>
+
+            <h3> Enter your details </h3>
+
+            <span class="prefix">{{ selectedCountry.prefix || '+XX'}}</span>
+
+            <input class="phone-number" type="text" id="phoneNo"
+                   placeholder="Phone Number" ng-model="phoneNumber" name="phoneNumber" required minlength="5" pattern="[0-9\. ]*"/>
+            <i class="fa "></i>
+
+            <input type="text" class="email"
+                   placeholder="Email" ng-model="email" name="email" required minlength="5"
+                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+            <i class="fa "></i>
+
+            <input type="text" class="first-name" placeholder="Full name" ng-model="firstName" name="firstName" required minlength="5"/>
+            <i class="fa "></i>
+
+            <input type="password" class="password-register" placeholder="Password" ng-model="password" name="password" required
+                   minlength="8"/>
+            <i class="fa "></i>
+
+
+            <i class="fa fa-car car-icon"></i>
+
+            <button class="register-btn" ng-click="register()"><i class="fa fa-spinner loading-spinner fa-spin"></i> Register</button>
+
+            <div class="ps-dialog" id="requiredFieldsDialog">
+                <div class="ps-dialog-content">
+                    <div class="ps-question">
+                        Please select a country, and fill in all required fields!
+                        <ul class="invalid-field-list">
+                            <li ng-hide="registerForm.email.$valid"> Email (e.g. 'john@domain.com')</li>
+                            <li ng-hide="registerForm.phoneNumber.$valid"> Phone number (e.g. 723 xxx xxx)</li>
+                            <li ng-hide="registerForm.firstName.$valid"> First name (min 5 characters)</li>
+                            <li ng-hide="registerForm.password.$valid"> Password (min 8 characters)</li>
+                        </ul>
+                    </div>
+                    <div class="ps-control-buttons">
+                        <div class="button-bar">
+                            <a class="button icon-center ion-checkmark-round" onclick="$('#requiredFieldsDialog').hide()"></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+    <div id="recoverPassword" class="ps-dialog">
+        <div class="ps-dialog-content">
+            <div class="ps-question">
+                Please enter your email <br/>
+                <input type="text" class="user-name"
+                       placeholder="Email" ng-model="recoveryEmail" name="email" required minlength="5"
+                       pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+            </div>
+            <div class="ps-control-buttons">
+                <div class="button-bar">
+                    <a class="button icon-center ion-checkmark-round" ng-click="recoverPassword();"></a>
+                    <a class="button icon-center ion-close" onclick="$('#recoverPassword').hide()"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

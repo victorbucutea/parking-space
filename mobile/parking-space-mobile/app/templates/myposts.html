@@ -9,7 +9,6 @@
         </li>
     </ul>
 
-
     <div class="list open-spaces-list scroll">
         <span class="item "  ng-repeat="space in spaces" ng-click="show(space)">
             <parking-spot-info-box class="small"  space="space" show-notif="true"></parking-spot-info-box>
@@ -21,6 +20,6 @@
         <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You did not post any spaces.</div>
     </div>
 
-
     <ui-view name="edit-space"></ui-view>
+    <ui-view name="help"></ui-view>
 </div>

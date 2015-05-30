@@ -58,7 +58,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
 
     $scope.selectOffer = function (offer) {
         $scope.selOffer = offer;
-    }
+    };
 
 
     $scope.showMessages = function (offer) {

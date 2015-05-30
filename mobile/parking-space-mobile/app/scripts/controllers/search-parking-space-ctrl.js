@@ -3,8 +3,9 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, parameterService, $state, currencyFactory, offerService, deviceAndUserInfoService, ENV, $filter) {
+angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $filter) {
 
+    $('.bar.bar-header').show();
     $rootScope.map.setZoom(15);
 
     $scope.noOfLongTerm = 0;
@@ -101,7 +102,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 icon: image,
                 labelContent: space.price + ' ' + currencyHtml,
                 labelAnchor: new google.maps.Point(xCoord, 44),
-                labelClass: "search-marker-label"
+                labelStyle: {color:'#fff'}
             });
 
             google.maps.event.addListener(markerWithLabel, "click", function (e) {
@@ -117,6 +118,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         $scope.spaces = spaces;
     });
 
+
+    $scope.centerMapOnCurrentLocation = function() {
+        geolocationService.getCurrentLocation(function(position) {
+            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            $rootScope.map.setCenter(pos);
+        })
+    };
 
     $scope.showBid = function (space) {
         $('.bar.bar-header').hide();
@@ -226,6 +234,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
     };
 
     $scope.stdImageUrl = function (url) {
+        if (!url) {
+            return '#';
+        }
         return ENV + url;
     };
 

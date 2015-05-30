@@ -63,5 +63,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
                 $state.go('home.myposts.bids.talk');
         };
 
-})
+});
 
