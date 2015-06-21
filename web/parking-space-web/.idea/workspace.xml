@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="715c58ec-7279-41a8-b369-1b81e5ffc5c8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/controllers/notifications_controller.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pushGCM.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sns.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Austria.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Austria.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Belarus.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Belarus.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Belgium.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Belgium.png" />
@@ -13,7 +10,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Denmark.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Denmark.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Estonia.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Estonia.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Finland.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Finland.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/FontAwesome.otf" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/FontAwesome.otf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/France.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/France.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Germany.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Germany.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Greece.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Greece.png" />
@@ -62,12 +58,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/blue_lagoon.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/blue_lagoon.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/cellar_medium.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/cellar_medium.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.eot" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.ttf" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.woff" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.woff" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.eot" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.eot" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.ttf" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.ttf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.woff" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.woff" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/leopard.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/leopard.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/parrot.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/parrot.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/register_bg.png" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/register_bg.png" />
@@ -104,7 +94,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523085317_remove_last_name_from_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523085317_remove_last_name_from_users.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523085418_rename_first_name_from_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523085418_rename_first_name_from_users.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523120235_add_country_to_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523120235_add_country_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150530233440_make_device_id_unique.rb" afterPath="$PROJECT_DIR$/db/migrate/20150530233440_make_device_id_unique.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/Gruntfile.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/Gruntfile.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/_form.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/_form.html.erb" />
@@ -122,7 +113,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/constants.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/constants.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/data-services.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/data-services.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/delete-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/delete-parking-space-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/delete-post.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/delete-post.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/environments/development.rb" afterPath="$PROJECT_DIR$/config/environments/development.rb" />
@@ -133,7 +123,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/edit-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/edit-parking-space-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/edit.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/edit.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/factories.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/factories.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.svg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/fontawesome-webfont.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/fonts.scss" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/fonts.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/forms.scss" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/forms.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/geo-services.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/geo-services.js" />
@@ -145,7 +134,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parking_spaces/index.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parking_spaces/index.json.jbuilder" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/proposals/index.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/proposals/index.json.jbuilder" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/initializers/init_system_parameters.rb" afterPath="$PROJECT_DIR$/config/initializers/init_system_parameters.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.svg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/fonts/ionicons.svg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/login.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/login.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/main-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/main-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/main.scss" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/main.scss" />
@@ -166,6 +154,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts-help.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/new.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/new.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/notifications_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/notifications_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/package.json" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/parameter.rb" afterPath="$PROJECT_DIR$/app/models/parameter.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/models/parameter_test.rb" afterPath="$PROJECT_DIR$/test/models/parameter_test.rb" />
@@ -179,7 +168,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/parameters_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/parameters_controller_test.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/helpers/parameters_helper.rb" afterPath="$PROJECT_DIR$/app/helpers/parameters_helper.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/helpers/parameters_helper_test.rb" afterPath="$PROJECT_DIR$/test/helpers/parameters_helper_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parking-space-web.iml" afterPath="$PROJECT_DIR$/parking-space-web.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/parking_space.rb" afterPath="$PROJECT_DIR$/app/models/parking_space.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/parking_spaces.yml" afterPath="$PROJECT_DIR$/test/fixtures/parking_spaces.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb" />
@@ -195,6 +183,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/proposals.yml" afterPath="$PROJECT_DIR$/test/fixtures/proposals.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/proposals_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/proposals_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/proposals_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/proposals_controller_test.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pushGCM.rb" afterPath="$PROJECT_DIR$/pushGCM.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/rails" afterPath="$PROJECT_DIR$/bin/rails" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/rake" afterPath="$PROJECT_DIR$/bin/rake" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/rebel_project.xml" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/rebel_project.xml" />
@@ -211,6 +200,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search-help.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/search-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/search-parking-space-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/secrets.yml" afterPath="$PROJECT_DIR$/config/secrets.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/seeds.rb" afterPath="$PROJECT_DIR$/db/seeds.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/sessions_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/sessions_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/show.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/show.html.erb" />
@@ -218,6 +208,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parameters/show.json.jbuilder" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parking_spaces/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parking_spaces/show.json.jbuilder" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/proposals/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/proposals/show.json.jbuilder" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sns.rb" afterPath="$PROJECT_DIR$/sns.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/system-services.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/system-services.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/environments/test.rb" afterPath="$PROJECT_DIR$/config/environments/test.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_helper.rb" afterPath="$PROJECT_DIR$/test/test_helper.rb" />
@@ -256,7 +247,7 @@
     <SUITE FILE_PATH="coverage/parking-space-web@test_should_not_create_proposal_for_own_parking_space__parking_space_web.coverage" NAME="test_should_not_create_proposal_for_own_parking_space: parking-space-web Coverage Results" MODIFIED="1427638159810" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
     <SUITE FILE_PATH="coverage/parking-space-web@test_should_destroy_parking_space__parking_space_web.coverage" NAME="test_should_destroy_parking_space: parking-space-web Coverage Results" MODIFIED="1428311146666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
     <SUITE FILE_PATH="coverage/parking-space-web@test_should_return_all_posted_spaces_joined_with_messages__parking_space_web.coverage" NAME="test_should_return_all_posted_spaces_joined_with_messages: parking-space-web Coverage Results" MODIFIED="1428139279158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
-    <SUITE FILE_PATH="coverage/parking-space-web@pushGCM.coverage" NAME="pushGCM Coverage Results" MODIFIED="1434880933104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
+    <SUITE FILE_PATH="coverage/parking-space-web@pushGCM.coverage" NAME="pushGCM Coverage Results" MODIFIED="1434898191125" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -312,6 +303,24 @@
         <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
       </PATH_ELEMENT>
     </PATH>
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DbRootNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="Rails parking-space-web: development" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="parking_spaces" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -319,17 +328,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="pushGCM.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pushGCM.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pushGCM.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.14991182">
+              <caret line="5" column="178" selection-start-line="5" selection-start-column="178" selection-end-line="5" selection-end-column="178" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="users" pinned="false" current-in-tab="true">
+      <file leaf-file-name="secrets.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/secrets.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="16" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="16" />
+              <folding>
+                <marker date="1434895431003" expanded="true" signature="1019:1137" placeholder="production:" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="user.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/user.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15" column="89" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="89" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="users" pinned="false" current-in-tab="false">
         <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..users">
           <provider editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
@@ -344,11 +375,56 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="registrations_controller.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/registrations_controller.rb">
+      <file leaf-file-name="proposals_controller.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/proposals_controller.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="20150621100933_add_notif_registration_id_to_users.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="parking_spaces" pinned="false" current-in-tab="false">
+        <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..parking_spaces">
+          <provider editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="seeds.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/db/seeds.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/config.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="3" column="16" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -359,66 +435,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="5" column="48" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="parking_spaces_controller.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.923077">
-              <caret line="51" column="27" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="routes.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/routes.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="1" column="115" selection-start-line="1" selection-start-column="115" selection-end-line="1" selection-end-column="115" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="routes.rb" pinned="false" current-in-tab="false">
-        <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/devise-3.4.1/lib/devise/rails/routes.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="206" column="8" selection-start-line="206" selection-start-column="8" selection-end-line="206" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sessions_controller.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/sessions_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="application_controller.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/application_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="20150523081514_add_device_id_and_phone_number_to_users.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/migrate/20150523081514_add_device_id_and_phone_number_to_users.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -444,8 +460,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/views/parking_spaces/show.json.jbuilder" />
-        <option value="$PROJECT_DIR$/app/views/proposals/show.json.jbuilder" />
         <option value="$PROJECT_DIR$/app/views/proposals/index.json.jbuilder" />
         <option value="$PROJECT_DIR$/test/integration/image_processing_test.rb" />
         <option value="$PROJECT_DIR$/test/controllers/parameters_controller_test_json.rb" />
@@ -476,7 +490,6 @@
         <option value="$PROJECT_DIR$/app/controllers/application_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/messages_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/parameters_controller.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/proposals_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/messages/show.json.jbuilder" />
         <option value="$PROJECT_DIR$/app/views/parking_spaces/_show.json.jbuilder" />
         <option value="$PROJECT_DIR$/app/views/proposals/_show.json.jbuilder" />
@@ -490,11 +503,14 @@
         <option value="$PROJECT_DIR$/db/migrate/20150530233440_make_device_id_unique.rb" />
         <option value="$PROJECT_DIR$/sns.rb" />
         <option value="$PROJECT_DIR$/Gemfile" />
-        <option value="$PROJECT_DIR$/pushGCM.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb" />
         <option value="$PROJECT_DIR$/config/routes.rb" />
         <option value="$PROJECT_DIR$/app/controllers/registrations_controller.rb" />
         <option value="$PROJECT_DIR$/app/controllers/notifications_controller.rb" />
+        <option value="$PROJECT_DIR$/config/secrets.yml" />
+        <option value="$PROJECT_DIR$/config/config.yml" />
+        <option value="$PROJECT_DIR$/app/controllers/proposals_controller.rb" />
+        <option value="$PROJECT_DIR$/pushGCM.rb" />
       </list>
     </option>
   </component>
@@ -558,156 +574,6 @@
               <option name="myItemId" value="parking-space-web" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise (v3.4.1, ruby-2.1.5-p273) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise (v3.4.1, ruby-2.1.5-p273) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise (v3.4.1, ruby-2.1.5-p273) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise (v3.4.1, ruby-2.1.5-p273) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rails" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise (v3.4.1, ruby-2.1.5-p273) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise (v3.4.1, ruby-2.1.5-p273) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise (v3.4.1, ruby-2.1.5-p273) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="devise" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -744,6 +610,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migrate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -794,6 +678,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1353,12 +1255,12 @@
       <workItem from="1429526099794" duration="1315000" />
       <workItem from="1432279985833" duration="28782000" />
       <workItem from="1433004109069" duration="32678000" />
-      <workItem from="1434876859148" duration="9942000" />
+      <workItem from="1434876859148" duration="12654000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="444559000" />
+    <option name="totallyTimeSpent" value="447271000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1382,11 +1284,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1672" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32928178" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" x="1767" y="67" width="1401" height="770" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2761117" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13951011" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47983453" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="59" y="369" width="1431" height="779" />
@@ -1398,7 +1301,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15228967" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3867632" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" x="62" y="171" width="1471" height="812" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3867632" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" x="62" y="171" width="1471" height="812" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -1407,7 +1310,6 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27668393" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1447,27 +1349,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/devise-3.4.1/lib/devise/controllers/sign_in_out.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/passwords_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/actionpack-4.1.4/lib/action_controller/metal/strong_parameters.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="13.0199">
-          <caret line="531" column="9" selection-start-line="531" selection-start-column="9" selection-end-line="531" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/devise-3.4.1/lib/devise/controllers/helpers.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1512,25 +1393,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="39" column="79" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..parking_spaces">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/user.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1608,14 +1470,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/secrets.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="39" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1753,26 +1607,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08994709">
-          <caret line="3" column="54" selection-start-line="3" selection-start-column="54" selection-end-line="3" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/application_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pushGCM.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1833,6 +1671,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/user.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="89" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="89" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/secrets.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="16" selection-start-line="24" selection-start-column="2" selection-end-line="24" selection-end-column="16" />
+          <folding>
+            <marker date="1434895431003" expanded="true" signature="1019:1137" placeholder="production:" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="16" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..users">
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1843,6 +1707,51 @@
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..parking_spaces">
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/seeds.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/proposals_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pushGCM.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14991182">
+          <caret line="5" column="178" selection-start-line="5" selection-start-column="178" selection-end-line="5" selection-end-column="178" />
+          <folding />
         </state>
       </provider>
     </entry>

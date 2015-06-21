@@ -308,6 +308,34 @@ angular.module('ParkingSpaceMobile.services', [])
         _this.deferred = $q.defer();
 
         _this.registerForNotifications = function () {
+
+            // TODO move registration code in another function
+            var pushNotification = window.plugins.pushNotification;
+            var deviceId = window.cordova.platformId;
+            if (deviceId == 'android' || deviceId == 'Android') {
+                try {
+                    pushNotification.register(
+                        successHandler,
+                        errorHandler,
+                        {
+                            "senderID": "889259686632",
+                            "ecb": _this.onNotification
+                        });
+                } catch (err) {
+                    var txt = "There was an error on this page.\n\n";
+                    txt += "Error description: " + err.message + "\n\n";
+                    console.error(txt, err);
+                }
+            }
+
+            function successHandler(result) {
+                console.log("Success", result);
+            }
+
+            function errorHandler(error) {
+                console.error("Error", error);
+
+            }
             // fail with error if we didn't receive a registration id in 3 seconds
             setTimeout(function () {
                 if (!_this.notifRegistrationId) {
@@ -324,7 +352,7 @@ angular.module('ParkingSpaceMobile.services', [])
         _this.saveNotificationId = function (notifId) {
             console.log("regID = " + notifId);
             _this.notifRegistrationId = notifId;
-            $http.post(ENV + '/notif', {notif_registration_id: 'xxx'}).then(
+            $http.post(ENV + '/notif', {notif_registration_id: notifId}).then(
                 function (data) {
                     _this.deferred.resolve(notifId);
                 },

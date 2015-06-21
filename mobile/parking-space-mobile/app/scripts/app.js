@@ -24,32 +24,6 @@ angular.module('ParkingSpaceMobile', [
                 StatusBar.styleDefault();
             }
 
-            var pushNotification = window.plugins.pushNotification;
-            var deviceId = window.cordova.platformId;
-            if (deviceId == 'android' || deviceId == 'Android') {
-                try {
-                    pushNotification.register(
-                        successHandler,
-                        errorHandler,
-                        {
-                            "senderID": "889259686632",
-                            "ecb": "window.onNotification"
-                        });
-                } catch (err) {
-                    var txt = "There was an error on this page.\n\n";
-                    txt += "Error description: " + err.message + "\n\n";
-                    console.error(txt, err);
-                }
-            }
-
-            function successHandler(result) {
-                console.log("Success", result);
-            }
-
-            function errorHandler(error) {
-                console.error("Error", error);
-
-            }
 
         }
 
