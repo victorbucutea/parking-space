@@ -4,6 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   before_filter :configure_permitted_parameters
 
+
   protected
 
   # my custom fields are :name, :heard_how

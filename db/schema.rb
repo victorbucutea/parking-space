@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150523120235) do
+ActiveRecord::Schema.define(version: 20150621100933) do
 
   create_table "messages", force: true do |t|
     t.string   "deviceid"
@@ -64,9 +64,11 @@ ActiveRecord::Schema.define(version: 20150523120235) do
     t.string   "full_name"
     t.string   "phone_number"
     t.string   "device_id"
-    t.text     "country"
+    t.string   "country"
+    t.string   "notif_registration_id"
   end
 
+  add_index "users", ["device_id"], name: "index_users_on_device_id", unique: true
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
