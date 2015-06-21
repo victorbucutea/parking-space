@@ -2,26 +2,58 @@
 angular.module('ParkingSpaceMobile.controllers', []);
 
 angular.module('ParkingSpaceMobile', [
-    'ionic',
-    'config',
-    'angularMoment',
+    'ionic', 'config',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
     'ParkingSpaceMobile.services'])
 
-    .run(function ($ionicPlatform) {
-        $ionicPlatform.ready(function () {
+    .run(function () {
+
+
+
+        function onDeviceReady() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             }
+
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-        });
+
+            var pushNotification = window.plugins.pushNotification;
+            var deviceId = window.cordova.platformId;
+            if (deviceId == 'android' || deviceId == 'Android') {
+                try {
+                    pushNotification.register(
+                        successHandler,
+                        errorHandler,
+                        {
+                            "senderID": "889259686632",
+                            "ecb": "window.onNotification"
+                        });
+                } catch (err) {
+                    var txt = "There was an error on this page.\n\n";
+                    txt += "Error description: " + err.message + "\n\n";
+                    console.error(txt, err);
+                }
+            }
+
+            function successHandler(result) {
+                console.log("Success", result);
+            }
+
+            function errorHandler(error) {
+                console.error("Error", error);
+
+            }
+
+        }
+
+        document.addEventListener('deviceready', onDeviceReady, true);
     })
 
     .config(function ($stateProvider, $urlRouterProvider) {

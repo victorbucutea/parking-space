@@ -14,11 +14,25 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
 
 
     $rootScope.$on('http.error', function (event, data, status) {
-        $scope.errMsg = data;
+        if (!$scope.errMsg) {
+            $scope.errMsg = []
+        }
+        if (data instanceof Array) {
+            $scope.errMsg = $scope.errMsg.concat(data);
+        } else {
+            $scope.errMsg.push(data);
+        }
     });
 
     $rootScope.$on('http.notif', function (event, data, status) {
-        $scope.notifMsg = data;
+        if (!$scope.notifMsg) {
+            $scope.notifMsg = []
+        }
+        if (data instanceof Array) {
+            $scope.notifMsg = $scope.notifMsg.concat(data);
+        } else {
+            $scope.notifMsg.push(data);
+        }
     });
 
     $scope.showHelp = function () {

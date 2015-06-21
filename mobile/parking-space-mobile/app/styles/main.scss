@@ -741,31 +741,36 @@ parking-spot-info-box.small {
 
 .item {
   background-color: inherit;
+  width:100%;
 }
 
-.notification-message {
+.notification-area {
   position: absolute;
   top: 59px;
   z-index: 100;
-  width: 70%;
-  text-align: center;
   left: 15%;
-  border-radius: $measure-unit;
-  color: white;
-  padding: 5px;
-  display: none;
-  box-shadow: 1px 1px 12px 1px #525252;
-  border: 1px solid rgb(168, 11, 11);
+  width: 70%;
 
-  &.error {
-    background-color: #CB3A3A;
-    display: block;
-  }
+  .notification-message {
+    text-align: center;
+    border-radius: $measure-unit;
+    color: white;
+    padding: $xsm-measure-unit;
+    display: none;
+    margin-top: $xsm-measure-unit;
+    box-shadow: 1px 1px 12px 1px #525252;
+    border: 1px solid rgb(168, 11, 11);
 
-  &.notification {
-    background-color: #346e24;
-    border: 1px solid #23471f;
-    display: block;
+    &.error {
+      background-color: #CB3A3A;
+      display: block;
+    }
+
+    &.notification {
+      background-color: #346e24;
+      border: 1px solid #23471f;
+      display: block;
+    }
   }
 }
 

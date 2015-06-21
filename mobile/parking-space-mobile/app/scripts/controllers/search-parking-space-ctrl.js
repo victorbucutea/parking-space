@@ -210,6 +210,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             var prevRad = searchRadiusCircle.getRadius();
             if (prevRad <= 900) {
                 $scope.circleOptions.radius = prevRad + 50;
+                var center = $rootScope.map.getCenter();
+                parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
+                    $scope.spaces = spaces;
+                });
             }
 
         }
@@ -219,19 +223,24 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         var searchRadiusCircle = $scope.searchRadiusCircle;
         if (searchRadiusCircle) {
             var prevRad = searchRadiusCircle.getRadius();
-            if (prevRad >= 100)
+            if (prevRad >= 100) {
                 $scope.circleOptions.radius = prevRad - 50;
+                var center = $rootScope.map.getCenter();
+                parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
+                    $scope.spaces = spaces;
+                });
+            }
         }
     };
 
-    $scope.expireDuration = function () {
+   /* $scope.expireDuration = function () {
         var duration = moment.duration(parameterService.getShortTermExpiration(), 'minutes');
         if (!$scope.selectedSpace.short_term) {
             duration = moment.duration(parameterService.getLongTermExpiration(), 'weeks');
         }
         var expirationTimestamp = new Date($scope.selectedSpace.created_at).getTime() + duration.asMilliseconds();
         return moment(expirationTimestamp).fromNow();
-    };
+    };*/
 
     $scope.stdImageUrl = function (url) {
         if (!url) {

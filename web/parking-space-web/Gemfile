@@ -34,6 +34,9 @@ gem 'devise'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'aws-sdk', '~> 2'
+gem 'pushmeup'
+
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 

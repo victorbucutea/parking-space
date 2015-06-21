@@ -18,7 +18,7 @@ angular.module('ParkingSpaceMobile.services', [])
                         errorHandlingService.handle(data, status);
                         $('.loading-finished').show();
                     } else {
-                        errClbk(data,status);
+                        errClbk(data, status);
                     }
                 });
         };
@@ -73,17 +73,17 @@ angular.module('ParkingSpaceMobile.services', [])
             var loading = $('.loading-spinner');
             loading.show();
 
-            var url = space.id ? ENV + 'parking_spaces/'+space.id+'.json' : ENV + 'parking_spaces.json' ;
+            var url = space.id ? ENV + 'parking_spaces/' + space.id + '.json' : ENV + 'parking_spaces.json';
             var restCall = space.id ? $http.put(url, space) : $http.post(url, space);
 
             restCall.success(function (data) {
-                    //TODO show mesage with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Parking space saved!');
-                    loading.hide();
-                    if(clbk) {
-                        clbk(data);
-                    }
-                })
+                //TODO show mesage with direct dom manipulation
+                $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Parking space saved!'});
+                loading.hide();
+                if (clbk) {
+                    clbk(data);
+                }
+            })
                 .error(function (data, status) {
                     errorHandlingService.handle(data, status);
                 })
@@ -93,7 +93,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $('.loading-spinner').show();
             $http.delete(ENV + 'parking_spaces/' + spaceId + '.json')
                 .success(function (data) {
-                    $rootScope.$broadcast('http.notif', 'Parking space deleted!');
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Parking space deleted!'});
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
@@ -151,7 +151,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals.json', bid)
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Bid placed!');
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Bid placed!'});
                     if (clbk)
                         clbk(data);
                 })
@@ -165,7 +165,7 @@ angular.module('ParkingSpaceMobile.services', [])
             loading.show();
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
                 .success(function (data) {
-                    $rootScope.$broadcast('http.notif', 'Accepted offer for ' + offer.price + ' ' + offer.currency);
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Accepted offer for ' + offer.price + ' ' + offer.currency});
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
@@ -181,7 +181,7 @@ angular.module('ParkingSpaceMobile.services', [])
             loading.show();
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
                 .success(function (data) {
-                    $rootScope.$broadcast('http.notif', 'Rejected offer for ' + offer.price + ' ' + offer.currency);
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Rejected offer for ' + offer.price + ' ' + offer.currency});
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
@@ -220,23 +220,23 @@ angular.module('ParkingSpaceMobile.services', [])
 
         _this.parameters = {};
 
-        this.retrieveParameters = function(okClbk, errClbk){
-            $http.get(ENV+'parameters.json')
+        this.retrieveParameters = function (okClbk, errClbk) {
+            $http.get(ENV + 'parameters.json')
                 .success(function (data) {
-                   _this.setParameters(data);
+                    _this.setParameters(data);
                     if (okClbk) {
                         okClbk(data);
                     }
                 })
                 .error(function (data, status) {
                     if (errClbk) {
-                        errClbk(data,status);
+                        errClbk(data, status);
                     }
                 })
 
         };
 
-        this.setParameters = function(params){
+        this.setParameters = function (params) {
             params.forEach(function (item) {
                 _this.parameters[item.name] = item.default_value;
                 if (item.values && item.values.length) {
@@ -273,12 +273,12 @@ angular.module('ParkingSpaceMobile.services', [])
             return _this.parameters.country_values;
         };
 
-        this.getCountryListAsync = function(clbk) {
+        this.getCountryListAsync = function (clbk) {
             _this.retrieveParameters(
                 function (data) {
                     var countries = _this.getCountryList();
 
-                   countries.map(function (item) {
+                    countries.map(function (item) {
                         var countryName = item.value4.replace(/ /g, "_") + ".png";
                         item.url = ENV + '/assets/flags/' + countryName;
                         item.prefix = item.value3;
@@ -299,4 +299,64 @@ angular.module('ParkingSpaceMobile.services', [])
 
                 });
         };
+    })
+
+    .service('notificationService', function ($rootScope, $http, $q, ENV) {
+
+        var _this = this;
+
+        _this.deferred = $q.defer();
+
+        _this.registerForNotifications = function () {
+            // fail with error if we didn't receive a registration id in 3 seconds
+            setTimeout(function () {
+                if (!_this.notifRegistrationId) {
+                    _this.deferred.resolve();
+                }
+            }, 3000);
+            return _this.deferred.promise;
+        };
+
+        _this.registerForMessages = function () {
+
+        };
+
+        _this.saveNotificationId = function (notifId) {
+            console.log("regID = " + notifId);
+            _this.notifRegistrationId = notifId;
+            $http.post(ENV + '/notif', {notif_registration_id: 'xxx'}).then(
+                function (data) {
+                    _this.deferred.resolve(notifId);
+                },
+                function () {
+                    _this.deferred.resolve();
+                }
+            );
+        };
+
+        _this.onNotification = function (e) {
+            switch (e.event) {
+                case 'registered':
+                    _this.saveNotificationId(e.regid);
+                    break;
+                case 'message':
+                    if (e.foreground) {
+                        console.log('--INLINE NOTIFICATION--');
+                    } else {
+                        // otherwise we were launched because the user touched a notification in the notification tray.
+                        if (e.coldstart)
+                            console.log('--COLDSTART NOTIFICATION--');
+                        else
+                            console.log('--BACKGROUND NOTIFICATION--');
+                    }
+                    console.log('MESSAGE -> MSG: ' + e.payload.message);
+                    break;
+                case 'error':
+                    _this.deferred.resolve();
+                    break;
+                default:
+                    _this.deferred.resolve();
+                    break;
+            }
+        }
     });

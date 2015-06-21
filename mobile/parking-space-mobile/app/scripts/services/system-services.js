@@ -3,14 +3,14 @@
  */
 angular.module('ParkingSpaceMobile.services')
 
-    .service('userService', function ($http, ENV, errorHandlingService, $rootScope, parameterService, $state) {
+    .service('userService', function ($http, ENV, errorHandlingService, $rootScope, parameterService, $state, notificationService) {
         var _this = this;
 
         _this.registerUser = function (user, clbk) {
             $http.post(ENV + 'users.json', {user: user})
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Logged in as ' + user.email + '!');
+                    $rootScope.$broadcast('http.notif',{fieldName:'',text:  'Logged in as ' + user.email + '!'});
                     localStorage.setItem('user', JSON.stringify(data));
                     if (clbk)
                         clbk(data);
@@ -24,7 +24,7 @@ angular.module('ParkingSpaceMobile.services')
             $http.post(ENV + 'users/password.json', {user: {email: email}})
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Password recovery link sent to ' + email + '.');
+                    $rootScope.$broadcast('http.notif', {fieldName:'',text: 'Password recovery link sent to ' + email + '.'});
                     if (clbk)
                         clbk(data);
                 })
@@ -35,13 +35,25 @@ angular.module('ParkingSpaceMobile.services')
         };
 
         _this.login = function (user, password, clbk, errClbk) {
+
+
             $http.post(ENV + '/users/sign_in.json', {user: {email: user, password: password, remember_me: 1}})
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Hello ' + user + '!');
+                    $rootScope.$broadcast('http.notif',{fieldName:'',text: 'Hello ' + user + '!'});
                     localStorage.setItem('user', JSON.stringify(data));
-                    if (clbk)
+                    if (clbk) {
                         clbk(data);
+                    }
+
+                    notificationService.registerForNotifications().then(
+                        function(regid) {
+                            if (!regid) {
+                                //TODO show message with direct dom manipulation
+                                $rootScope.$broadcast('http.error', [{fieldName: '', text: 'Cannot register for notifications! You won\'t receive any notifications'}]);
+                            }
+                        }
+                    );
                 })
                 .error(function (data, status) {
                     if (!errClbk)
@@ -50,7 +62,6 @@ angular.module('ParkingSpaceMobile.services')
                         errClbk(data, status);
                     }
                 })
-
         };
 
 
@@ -61,6 +72,10 @@ angular.module('ParkingSpaceMobile.services')
             } else {
                 console.error('cannot initialize user. Not logged in?');
             }
+        };
+
+        _this.setNotifRegistrationId = function (newNotifId) {
+            var user = _this.getUser();
         };
 
         // attempt to access a protected resource to check whether user is logged in
@@ -77,14 +92,15 @@ angular.module('ParkingSpaceMobile.services')
                     if (item) {
                         var user = JSON.parse(item);
                         _this.login(user.email, user.password,
-                            function () {},
+                            function () {
+                            },
                             function () {
                                 // if error show login screen
                                 $('#login-blanket').hide();
                             });
                     } else {
                         $('#login-blanket').hide();
-                        $rootScope.$broadcast('http.notif', 'Cannot log in automatically. Please fill in your credentials');
+                        $rootScope.$broadcast('http.notif',{fieldName:'',text:  'Cannot log in automatically. Please fill in your credentials'});
                     }
                 } else {
                     $('#login-blanket').hide();
@@ -94,24 +110,24 @@ angular.module('ParkingSpaceMobile.services')
             });
     })
 
-    .service('errorHandlingService', function ($rootScope,$state) {
+    .service('errorHandlingService', function ($rootScope, $state) {
 
         var _this = this;
         _this = this;
 
-        _this.buildErrorMessages = function(data){
+        _this.buildErrorMessages = function (data) {
             var errMsgs = [];
             var i = 0;
             var errors = data.Error || data.errors || data.error;
 
-            if( typeof errors === "string") {
-                errMsgs[i] = {fieldName:'', text: errors};
+            if (typeof errors === "string") {
+                errMsgs[i] = {fieldName: '', text: errors};
                 return errMsgs;
             }
 
             for (item in errors) {
                 var fieldName = item == 'general' ? '' : item;
-                var text = typeof errors[item] == 'string'? errors[item]: errors[item][0];
+                var text = typeof errors[item] == 'string' ? errors[item] : errors[item][0];
                 errMsgs[i] = {fieldName: fieldName, text: text};
                 i++;
             }
@@ -127,7 +143,7 @@ angular.module('ParkingSpaceMobile.services')
                 //if unauthorized, go to login
                 errorMessages = _this.buildErrorMessages(data);
                 $rootScope.$broadcast('http.error', errorMessages);
-                $state.go('home.register',{'hide_blanket':true});//hide blanket
+                $state.go('home.register', {'hide_blanket': true});//hide blanket
             } else {
                 $rootScope.$broadcast('http.error', [{fieldName: '', text: 'Connectivity error.'}]);
             }

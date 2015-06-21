@@ -7,7 +7,7 @@ google.maps = google.maps || {};
         document.write('<script src="' + url + '" type="text/javascript"></script>');
     }
 
-    var key = 'AIzaSyDPUL3kus7j_yLmVBvj0UO7XIQww2yKJEg';
+    var key = 'AIzaSyBav7lmoAirQqKUXjha6LURDfpISyt9AiE';
 
     var url = 'https://maps.googleapis.com/maps/api/js';
     getScript(url, key);

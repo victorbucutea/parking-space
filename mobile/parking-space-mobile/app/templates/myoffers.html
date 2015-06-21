@@ -14,19 +14,22 @@
     </ul>
 
     <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
+
     <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You haven't placed any offers.</div>
 
-    <div class="bids-area padding" ng-repeat="space in spaces| orderBy: 'timestamp'">
-        <h4 class="bid-title">
-            {{space.title}} -
+    <div class="scroll">
+        <div class="bids-area padding" ng-repeat="space in spaces| orderBy: 'timestamp'">
+            <h4 class="bid-title">
+                {{space.title}} -
                  <span class="bid-amount">
                      {{space.price | units  }}.<small>{{space.price | subunits}}</small>
                       <currency val="space.currency"></currency>
                  </span>
-            <i class="fa fa-refresh fa-spin loading-spinner"></i>
-        </h4>
-        <div class="bid-table no-margin" ng-show="space.offers.length">
-            <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in space.offers | orderBy: 'timestamp'" ng-class="{selected: selOffer == offer}">
+                <i class="fa fa-refresh fa-spin loading-spinner"></i>
+            </h4>
+            <div class="bid-table no-margin" ng-show="space.offers.length">
+                <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in space.offers | orderBy: 'timestamp'"
+                     ng-class="{selected: selOffer == offer}">
                 <span class="offer-price">
                     {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
                     <currency val="offer.currency"></currency>
@@ -36,11 +39,12 @@
                     ( <i class="fa fa-envelope"></i> {{messagesForOffer(offer)}} )
                 </span>
 
-                <div class="pull-right offer-accept" >
-                    <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
-                    <i class="ion-checkmark-round" ng-show="!offer.approved"> Proposed </i>
-                </div>
+                    <div class="pull-right offer-accept">
+                        <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
+                        <i class="ion-checkmark-round" ng-show="!offer.approved"> Proposed </i>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>

@@ -1,10 +1,20 @@
 <div ng-controller="MainCtrl" class="full-height">
-    <div class="notification-message" ng-class="{error: errMsg , notification: notifMsg}" >
-        <ul>
-            <li ng-repeat="msg in errMsg">{{msg.fieldName}} {{msg.text}}</li>
-        </ul>
-        {{notifMsg}}
+
+    <div class="notification-area">
+        <div class="notification-message error" ng-show="errMsg">
+            <ul>
+                <li ng-repeat="msg in errMsg">{{msg.fieldName}} {{msg.text}}</li>
+            </ul>
+        </div>
+
+        <div class="notification-message notification" ng-show="notifMsg">
+            <ul>
+                <li ng-repeat="msg in notifMsg">{{msg.text}}</li>
+            </ul>
+        </div>
     </div>
+
+
     <div class="bar bar-header bar-dark">
 
         <h1 class="title"></h1>

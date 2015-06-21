@@ -47,7 +47,6 @@ module.exports = function (grunt) {
             development: {
                 constants: {
                     ENV: "http://parking-space-web-qqxzmgpj3b.elasticbeanstalk.com/"
-
                 }
             },
             production: {
@@ -497,7 +496,8 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('run_dev', function () {
-        return grunt.task.run(['run','ngconstant:development']);
+        grunt.config('concurrent.ionic.tasks', ['ionic:run:' + this.args.join(), 'watch']);
+        return grunt.task.run(['init_dev', 'concurrent:ionic']);
     });
 
     grunt.registerTask('run', function () {
@@ -512,6 +512,17 @@ module.exports = function (grunt) {
     grunt.registerTask('init', [
         'clean',
         'ngconstant:local_development',
+        'includeSource',
+        'wiredep',
+        'concurrent:server',
+        'autoprefixer',
+        'newer:copy:app',
+        'newer:copy:tmp'
+    ]);
+
+    grunt.registerTask('init_dev', [
+        'clean',
+        'ngconstant:development',
         'includeSource',
         'wiredep',
         'concurrent:server',
