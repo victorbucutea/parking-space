@@ -79,4 +79,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
 
         };
 
-})
+});

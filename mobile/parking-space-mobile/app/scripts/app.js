@@ -24,7 +24,6 @@ angular.module('ParkingSpaceMobile', [
                 StatusBar.styleDefault();
             }
 
-
         }
 
         document.addEventListener('deviceready', onDeviceReady, true);

@@ -59,6 +59,7 @@
     "nl.x-services.plugins.googleplus",
     "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
     "https://github.com/phonegap-build/PushPlugin.git",
-    "com.ionic.keyboard"
+    "com.ionic.keyboard",
+    "https://github.com/apache/cordova-plugin-vibration"
   ]
 }

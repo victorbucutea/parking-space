@@ -3,9 +3,11 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state, $stateParams) {
+angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state, $stateParams, notificationService) {
 
         $('.open-spaces-list').height($(window).height() - 105);
+
+        notificationService.hideParkingSpaceNotifications();
 
         parkingSpaceService.getMySpaces(function (spaces) {
                 $scope.spaces = spaces;

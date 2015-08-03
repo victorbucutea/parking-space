@@ -308,8 +308,6 @@ angular.module('ParkingSpaceMobile.services', [])
         _this.deferred = $q.defer();
 
         _this.registerForNotifications = function () {
-
-            // TODO move registration code in another function
             var pushNotification = window.plugins.pushNotification;
             var deviceId = window.cordova.platformId;
             if (deviceId == 'android' || deviceId == 'Android') {
@@ -319,7 +317,7 @@ angular.module('ParkingSpaceMobile.services', [])
                         errorHandler,
                         {
                             "senderID": "889259686632",
-                            "ecb": _this.onNotification
+                            "ecb": "onNotification"
                         });
                 } catch (err) {
                     var txt = "There was an error on this page.\n\n";
@@ -336,6 +334,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 console.error("Error", error);
 
             }
+
             // fail with error if we didn't receive a registration id in 3 seconds
             setTimeout(function () {
                 if (!_this.notifRegistrationId) {
@@ -345,24 +344,83 @@ angular.module('ParkingSpaceMobile.services', [])
             return _this.deferred.promise;
         };
 
-        _this.registerForMessages = function () {
-
-        };
-
         _this.saveNotificationId = function (notifId) {
             console.log("regID = " + notifId);
             _this.notifRegistrationId = notifId;
-            $http.post(ENV + '/notif', {notif_registration_id: notifId}).then(
+            $http.post(ENV + '/notif.json', {notif_registration_id: notifId}).then(
                 function (data) {
                     _this.deferred.resolve(notifId);
                 },
                 function () {
                     _this.deferred.resolve();
-                }
-            );
+                })
         };
 
-        _this.onNotification = function (e) {
+        _this.registerForMessages = function () {
+
+        };
+
+
+        document.addEventListener('deviceready', function () {
+            _this.registerForNotifications().then(
+                function (regid) {
+                    $http.post(ENV + '/notif.json', {notif_registration_id: regid}).then(
+                        function (data) {
+                        },
+                        function () {
+                            //TODO show message with direct dom manipulation
+                            $rootScope.$broadcast('http.error', [{
+                                fieldName: '',
+                                text: 'Cannot register for notifications! You won\'t receive any notifications'
+                            }])
+                        })
+                }
+            );
+        });
+
+        _this.activeNotifications = {};
+        _this.offerNotifications = {};
+        _this.parkingSpaceNotifications = {};
+
+
+        _this.hideOfferNotifications = function () {
+            _this.hideNotifications('offer');
+        };
+
+        _this.hideParkingSpaceNotifications = function () {
+            _this.hideNotifications('parking_space');
+        };
+
+        _this.hideNotifications = function (area) {
+            var keys = [];
+            for (prop in _this.activeNotifications) {
+                if (prop.indexOf(area) != -1){
+                 keys.push (prop);
+                }
+            }
+            keys.forEach(function(item) {
+               delete _this.activeNotifications[item];
+            });
+            var notifmyposts = $('#notifmyposts');
+            notifmyposts.text(Object.keys(_this.activeNotifications).length);
+        };
+
+        _this.showNotifications = function (msg) {
+            var current = _this.activeNotifications;
+            var key = msg.area + "_" + (msg[msg.area]);
+            current[key] = {};
+
+            navigator.vibrate(800);
+            var notifmyposts = $('#notifmyposts');
+            notifmyposts.show();
+            var currentCount = Object.keys(current).length;
+            notifmyposts.text(currentCount);
+        };
+
+        // register callback has to receive a string as an argument
+        // in the register callback call context it's not possible to get a service reference
+        // therefore we refer to the notification clbk as "onNotification"
+        window.onNotification = function (e) {
             switch (e.event) {
                 case 'registered':
                     _this.saveNotificationId(e.regid);
@@ -370,6 +428,8 @@ angular.module('ParkingSpaceMobile.services', [])
                 case 'message':
                     if (e.foreground) {
                         console.log('--INLINE NOTIFICATION--');
+                        console.log('MESSAGE -> MSG: ' + e.payload.message);
+                        _this.showNotifications(e.payload);
                     } else {
                         // otherwise we were launched because the user touched a notification in the notification tray.
                         if (e.coldstart)
@@ -377,7 +437,6 @@ angular.module('ParkingSpaceMobile.services', [])
                         else
                             console.log('--BACKGROUND NOTIFICATION--');
                     }
-                    console.log('MESSAGE -> MSG: ' + e.payload.message);
                     break;
                 case 'error':
                     _this.deferred.resolve();

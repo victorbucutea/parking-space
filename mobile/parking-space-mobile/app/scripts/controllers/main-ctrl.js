@@ -2,9 +2,7 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, parameterService, $state) {
 
-    setTimeout(function () {
-        $rootScope.$broadcast('notification', 3);
-    }, 2500);
+
 
     $document.mousedown(function () {
         $scope.errMsg = null;
@@ -20,7 +18,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         if (data instanceof Array) {
             $scope.errMsg = $scope.errMsg.concat(data);
         } else {
-            $scope.errMsg.push(data);
+            if ($scope.errMsg.indexOf(data) == -1)
+                $scope.errMsg.push(data);
         }
     });
 
@@ -31,7 +30,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         if (data instanceof Array) {
             $scope.notifMsg = $scope.notifMsg.concat(data);
         } else {
-            $scope.notifMsg.push(data);
+            if ($scope.notifMsg.indexOf(data) == -1)
+                $scope.notifMsg.push(data);
         }
     });
 

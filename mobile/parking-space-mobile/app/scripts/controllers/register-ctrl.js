@@ -3,15 +3,12 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', function ($rootScope, $scope, parameterService, ENV, userService, $state, $stateParams) {
+angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', function ($rootScope, $scope, parameterService, ENV, userService, $state) {
 
     $('.bar.bar-header').hide();
     $('#register').hide();
     $('.fa-spin.fa-spinner').hide();
 
-    if ($stateParams.hide_blanket) {
-        $('#login-blanket').hide();
-    }
 
     // get the list of countries
 
@@ -56,6 +53,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
         backEndUser.email = $scope.email;
         backEndUser.password = $scope.password;
         backEndUser.password_confirmation = $scope.password;
+
 
         $('.fa-spin.fa-spinner').show();
         userService.registerUser(backEndUser, function () {

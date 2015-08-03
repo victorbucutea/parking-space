@@ -3,7 +3,7 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function ($rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $filter) {
+angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $filter) {
 
     $('.bar.bar-header').show();
     $rootScope.map.setZoom(15);
@@ -263,6 +263,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         $('.bar.bar-header').show();
         $state.go('home.myposts.delete', {parking_space_id: parkingSpaceId});
 
+    };
+
+    $scope.logout = function() {
+        console.log('logging out');
+        userService.logout();
     };
 
 });

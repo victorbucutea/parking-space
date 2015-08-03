@@ -46,6 +46,11 @@ module.exports = function (grunt) {
             },
             development: {
                 constants: {
+                    ENV: "http://192.168.0.180:3000/"
+                }
+            },
+            staging: {
+                constants: {
                     ENV: "http://parking-space-web-qqxzmgpj3b.elasticbeanstalk.com/"
                 }
             },

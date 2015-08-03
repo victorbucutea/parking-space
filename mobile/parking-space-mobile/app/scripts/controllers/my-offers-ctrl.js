@@ -3,7 +3,9 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl', function ($scope, $state, parkingSpaceService) {
+angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl', function ($scope, $state, parkingSpaceService, notificationService) {
+
+    notificationService.hideOfferNotifications();
 
     parkingSpaceService.getMyOffers(function (spaces) {
         if (!spaces) {

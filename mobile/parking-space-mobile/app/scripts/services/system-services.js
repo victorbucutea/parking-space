@@ -7,10 +7,11 @@ angular.module('ParkingSpaceMobile.services')
         var _this = this;
 
         _this.registerUser = function (user, clbk) {
+            user.notif_registration_id = notificationService.notifRegistrationId;
             $http.post(ENV + 'users.json', {user: user})
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif',{fieldName:'',text:  'Logged in as ' + user.email + '!'});
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Logged in as ' + user.email + '!'});
                     localStorage.setItem('user', JSON.stringify(data));
                     if (clbk)
                         clbk(data);
@@ -24,36 +25,38 @@ angular.module('ParkingSpaceMobile.services')
             $http.post(ENV + 'users/password.json', {user: {email: email}})
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', {fieldName:'',text: 'Password recovery link sent to ' + email + '.'});
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Password recovery link sent to ' + email + '.'});
                     if (clbk)
                         clbk(data);
                 })
                 .error(function (data, status) {
                     errorHandlingService.handle(data, status);
                 })
-
         };
 
         _this.login = function (user, password, clbk, errClbk) {
-
-
             $http.post(ENV + '/users/sign_in.json', {user: {email: user, password: password, remember_me: 1}})
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif',{fieldName:'',text: 'Hello ' + user + '!'});
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Hello ' + user + '!'});
                     localStorage.setItem('user', JSON.stringify(data));
                     if (clbk) {
                         clbk(data);
                     }
+                })
+                .error(function (data, status) {
+                    if (!errClbk)
+                        errorHandlingService.handle(data, status);
+                    else {
+                        errClbk(data, status);
+                    }
+                })
+        };
 
-                    notificationService.registerForNotifications().then(
-                        function(regid) {
-                            if (!regid) {
-                                //TODO show message with direct dom manipulation
-                                $rootScope.$broadcast('http.error', [{fieldName: '', text: 'Cannot register for notifications! You won\'t receive any notifications'}]);
-                            }
-                        }
-                    );
+        _this.logout = function() {
+            $http['delete'](ENV + '/users/sign_out.json', {})
+                .success(function (data) {
+                    localStorage.removeItem('user');
                 })
                 .error(function (data, status) {
                     if (!errClbk)
@@ -74,40 +77,6 @@ angular.module('ParkingSpaceMobile.services')
             }
         };
 
-        _this.setNotifRegistrationId = function (newNotifId) {
-            var user = _this.getUser();
-        };
-
-        // attempt to access a protected resource to check whether user is logged in
-        $http.get(ENV + 'parking_spaces.json?lat=0&lon=0&range=0')
-            .success(function (data) {
-                // we're logged in, hide login blanket
-                $('#login-blanket').hide();
-                $state.go('home.map.search');
-            })
-            .error(function (data, status) {
-                if (status == 401) { // Unauthorized
-                    // attempt a re-login with stored credentials
-                    var item = localStorage.getItem('user');
-                    if (item) {
-                        var user = JSON.parse(item);
-                        _this.login(user.email, user.password,
-                            function () {
-                            },
-                            function () {
-                                // if error show login screen
-                                $('#login-blanket').hide();
-                            });
-                    } else {
-                        $('#login-blanket').hide();
-                        $rootScope.$broadcast('http.notif',{fieldName:'',text:  'Cannot log in automatically. Please fill in your credentials'});
-                    }
-                } else {
-                    $('#login-blanket').hide();
-                    // show connectivity error
-                    $rootScope.$broadcast('http.error', [{fieldName: '', text: 'Connectivity error.'}]);
-                }
-            });
     })
 
     .service('errorHandlingService', function ($rootScope, $state) {
