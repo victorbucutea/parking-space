@@ -9,7 +9,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   # my custom fields are :name, :heard_how
   def configure_permitted_parameters
-    permitted = [:full_name, :phone_number, :country, :email, :password, :password_confirmation]
+    permitted = [:full_name, :phone_number, :country, :email, :password, :password_confirmation, :notif_registration_id]
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(*permitted)
     end

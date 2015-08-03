@@ -4,8 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-
-  before_save :generate_device_id
+  before_create :generate_device_id
 
 
   def generate_device_id

@@ -19,12 +19,12 @@ class ProposalsController < ApplicationController
 
     respond_to do |format|
       if @proposal.reject(owner_deviceid)
-        format.json { render :show, status: :ok}
+        notify_proposal_owner_reject @proposal
+        format.json { render :show, status: :ok }
       else
         format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
       end
     end
-
   end
 
   def approve
@@ -33,6 +33,7 @@ class ProposalsController < ApplicationController
 
     respond_to do |format|
       if @proposal.approve(owner_deviceid)
+        notify_proposal_owner_approve @proposal
         format.json { render :show, status: :ok }
       else
         format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
@@ -86,16 +87,48 @@ class ProposalsController < ApplicationController
 
   def notify_space_owner (proposal)
     owner_device_id = proposal.parking_space.deviceid
-    owner_space = ParkingSpace.find_by_deviceid owner_device_id
+    space_owner = User.find_by_device_id owner_device_id
 
-    GCM.host = Rails.application.config.android_gcm_url
-    GCM.format = :json
-    GCM.key = Rails.application.secrets.google_api_key
+    data = {:area => :parking_space,
+            :parking_space => proposal.parking_space.id,
+            :msgcnt => 1}
 
-    destination = [owner_space.notif_registration_id]
+    send_notification(space_owner, data)
+  end
 
-    data = {:offer_placed => '1', :msgcnt => "1"}
+  def notify_proposal_owner_approve(proposal)
+    owner_device_id = proposal.deviceid
+    proposal_owner = User.find_by_device_id owner_device_id
+    data = {:area => :offer,
+            :offer => proposal.id,
+            :msgcnt => 1}
 
-    GCM.send_notification( destination, data)
+    send_notification(proposal_owner, data)
+  end
+
+  def notify_proposal_owner_reject(proposal)
+    owner_device_id = proposal.deviceid
+    proposal_owner = User.find_by_device_id owner_device_id
+    data = {:area => :offer,
+            :offer => proposal.id,
+            :msgcnt => 1}
+
+    send_notification(proposal_owner, data)
+  end
+
+  def send_notification(destination_user, data)
+    begin
+      GCM.host = APP_CONFIG['android_gcm_url']
+      GCM.format = :json
+      GCM.key = Rails.application.secrets.google_api_key
+
+      destination = [destination_user.notif_registration_id]
+
+
+      GCM.send_notification(destination, data)
+    rescue => e
+      logger.error e.message
+      logger.error e.backtrace.join("\n")
+    end
   end
 end

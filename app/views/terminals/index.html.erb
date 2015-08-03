@@ -1,0 +1,35 @@
+<h1>Listing terminals <%=  Time.now.to_formatted_s(:short)%></h1>
+
+<table style="width: 80%">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Full Name</th>
+      <th>Current Sign in at</th>
+      <th>Current Sign in expiration</th>
+      <th>Remember me expiration</th>
+      <th>Sign in count</th>
+      <th>Notification registration ID</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @registrations.each do |terminal| %>
+      <tr>
+        <td><%= terminal.email %></td>
+        <td><%= terminal.full_name %></td>
+        <td><%= terminal.current_sign_in_at ? terminal.current_sign_in_at.to_formatted_s(:short) : 'N/A' %></td>
+        <td><%= terminal.current_sign_in_at ? terminal.current_sign_in_at.plus_with_duration(30.minutes).to_formatted_s(:short) : 'N/A' %></td>
+        <td><%= terminal.current_sign_in_at ? terminal.current_sign_in_at.plus_with_duration(2.weeks).to_formatted_s(:short) :'N/A' %></td>
+        <td><%= terminal.sign_in_count %></td>
+        <td><%= terminal.notif_registration_id %></td>
+        <td><%= link_to 'Logout', terminal_logout_path(terminal) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Terminal', new_terminal_path %>

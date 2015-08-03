@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :terminals  do
+    get '/logout' => 'terminals#logout', :as => 'logout'
+  end
+
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}
 
   post '/notif' => 'notifications#notif', :as => 'notif'
