@@ -70,12 +70,18 @@ $darkgreen: darkgreen;
   height: 60%;
 }
 
-.map-controls {
-  height: 40%;
-}
-
 .full-height {
   height: 100%
+}
+
+.map-container {
+  display: block;
+  height: 100%;
+  position: relative;
+}
+
+.map-controls {
+  height: 40%;
 }
 
 map {
@@ -344,6 +350,11 @@ html, body {
     box-shadow: 1px 1px 3px;
     border-top: 4px solid $red;
 
+    a {
+      color: $dflt-font-color;
+      text-decoration: none;
+    }
+
     .ps-question {
       padding: $sm-measure-unit;
       padding-bottom: $big-measure-unit;
@@ -351,14 +362,18 @@ html, body {
   }
 }
 
-.ps-content {
-  padding-top: 48px;
+.ps-text-xbig {
+  font-size: 1.5em;
+  text-align: center;
 }
 
-.map-container {
-  display: block;
-  height: 100%;
-  position: relative;
+.ps-text-xxbig {
+  font-size: 2em;
+  text-align: center;
+}
+
+.ps-content {
+  padding-top: 48px;
 }
 
 .right-nav-menu {
@@ -617,17 +632,6 @@ parking-spot-info-box {
     font-size: 7em;
   }
 
-  .my-posts-notifications {
-    position: absolute;
-    right: 30px;
-    z-index: 3;
-    font-size: 2em;
-    border-radius: 50%;
-    padding: 10px;
-    background-color: $blue;
-    color: #fff;
-    top: 60px;
-  }
 }
 
 parking-spot-info-box.small {
@@ -671,6 +675,19 @@ parking-spot-info-box.small {
   font-size: 13px;
   top: 0;
   display: none;
+}
+
+
+.unread-item-notif {
+  position: absolute;
+  right: 20px;
+  z-index: 3;
+  font-size: 2em;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: $red;
+  color: #fff;
+  top: 25%;
 }
 
 .parking-spot-marker {
@@ -742,7 +759,7 @@ parking-spot-info-box.small {
 
 .item {
   background-color: inherit;
-  width:100%;
+  width: 100%;
 }
 
 .notification-area {
@@ -778,8 +795,9 @@ parking-spot-info-box.small {
 .offer-desc-area {
   padding: 10px 10px 20px 10px;
   .offer-desc-item {
-    font-size: 0.9em;
+    font-size: 1.1em;
     padding-bottom: 5px;
+    clear: both;
 
     .value {
       font-weight: 600;
@@ -787,6 +805,7 @@ parking-spot-info-box.small {
       padding-left: 10px;
       background-color: $gray-xlight;
       border-radius: 3px;
+      white-space: nowrap;
     }
   }
 }
@@ -818,6 +837,10 @@ parking-spot-info-box.small {
     &.no-margin {
       margin-top: 0;
       margin-bottom: 0;
+    }
+
+    &.no-height {
+      max-height: none;
     }
 
     &.narrow {
@@ -1006,7 +1029,7 @@ parking-spot-info-box.small {
     margin-top: 10px;
     margin-left: 14px;
   }
-  
+
   .recover-pw-link {
     text-decoration: underline;
     display: block;
@@ -1033,19 +1056,11 @@ parking-spot-info-box.small {
     }
   }
 
-  .or-text{
+  .or-text {
     text-align: center;
     margin-top: $xbig-measure-unit;
   }
 
-}
-
-#login-blanket {
-  width: 100%;
-
-  .fa-refresh {
-    font-size: 8em;
-  }
 }
 
 .car-icon {

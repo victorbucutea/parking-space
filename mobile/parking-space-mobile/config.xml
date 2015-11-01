@@ -4,13 +4,15 @@
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Parking Space</name>
     <description>
-        A way to sell and buy parking spaces.
+        Social tool for parking space sharing. Offers possibility to sell and buy parking spaces.
     </description>
     <author email="victor.bucutea@gmail.com" href="http://softspot.ro">
         Victor Bucutea
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <access origin="tel:*" launch-external="yes"/>
+    <access origin="mailto:*" launch-external="yes"/>
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="ShowSplashScreenSpinner" value="true" />
 </widget>

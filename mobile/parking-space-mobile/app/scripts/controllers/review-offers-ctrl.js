@@ -5,6 +5,7 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function ($scope, $state, offerService, replaceById) {
 
+
     $scope.confirmApproval = function (offer) {
         $scope.warn = false;
         var acceptedOffers = $scope.spaceEdit.offers.filter(function (d) {
@@ -25,10 +26,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
         if (!offer.approved) {
             offerService.acceptOffer(space.id, offer, function (result) {
                 replaceById(result, space.offers);
+                $scope.selOffer = result;
             });
         } else {
             offerService.rejectOffer(space.id, offer, function (result) {
                 replaceById(result, space.offers);
+                $scope.selOffer = result;
             });
         }
 
@@ -36,8 +39,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
     };
 
     $scope.reject = function (space, offer) {
-        offerService.rejectOffer(space.id, offer, function () {
-            offer.approved = false;
+        offerService.rejectOffer(space.id, offer, function (result) {
+            replaceById(result, space.offers);
+            $scope.selOffer = result;
         })
     };
 

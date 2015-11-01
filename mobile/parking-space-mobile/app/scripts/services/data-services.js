@@ -83,10 +83,9 @@ angular.module('ParkingSpaceMobile.services', [])
                 if (clbk) {
                     clbk(data);
                 }
+            }).error(function (data, status) {
+                errorHandlingService.handle(data, status);
             })
-                .error(function (data, status) {
-                    errorHandlingService.handle(data, status);
-                })
         };
 
         this.deleteSpace = function (spaceId, clbk) {
@@ -102,6 +101,18 @@ angular.module('ParkingSpaceMobile.services', [])
                 .error(function (data) {
                     errorHandlingService.handle(data, status);
                 })
+
+        };
+
+        this.markOffersAsRead = function (spaceId, clbk) {
+            var url = ENV + 'parking_spaces/' + spaceId + '/mark_offers_as_read.json';
+            $http.get(url).success(function (data) {
+                if (clbk) {
+                    clbk(data);
+                }
+            }).error(function (data, status) {
+                errorHandlingService.handle(data, status);
+            });
 
         };
 
@@ -301,7 +312,7 @@ angular.module('ParkingSpaceMobile.services', [])
         };
     })
 
-    .service('notificationService', function ($rootScope, $http, $q, ENV) {
+    .service('notificationService', function ($rootScope, $http, $q, ENV, $state) {
 
         var _this = this;
 
@@ -394,15 +405,20 @@ angular.module('ParkingSpaceMobile.services', [])
         _this.hideNotifications = function (area) {
             var keys = [];
             for (prop in _this.activeNotifications) {
-                if (prop.indexOf(area) != -1){
-                 keys.push (prop);
+                if (prop.indexOf(area) != -1) {
+                    keys.push(prop);
                 }
             }
-            keys.forEach(function(item) {
-               delete _this.activeNotifications[item];
+            keys.forEach(function (item) {
+                delete _this.activeNotifications[item];
             });
             var notifmyposts = $('#notifmyposts');
-            notifmyposts.text(Object.keys(_this.activeNotifications).length);
+            var noOfNotifs = Object.keys(_this.activeNotifications).length;
+            if (noOfNotifs) {
+                notifmyposts.text(noOfNotifs);
+            } else {
+                notifmyposts.hide();
+            }
         };
 
         _this.showNotifications = function (msg) {
@@ -410,6 +426,12 @@ angular.module('ParkingSpaceMobile.services', [])
             var key = msg.area + "_" + (msg[msg.area]);
             current[key] = {};
 
+            var state = $state.current.name;
+            var stateIsMyPosts = state.indexOf('home.myposts') != -1;
+            var stateIsMyOffers = state.indexOf('home.myoffers') != -1;
+            if (stateIsMyOffers || stateIsMyPosts) {
+                $state.reload();
+            }
             navigator.vibrate(800);
             var notifmyposts = $('#notifmyposts');
             notifmyposts.show();

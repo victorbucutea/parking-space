@@ -40,18 +40,18 @@ module.exports = function (grunt) {
             },
             local_development: {
                 constants: {
-                    ENV: "http://localhost:3000/"
+                    ENV: "http://192.168.0.180:3000/"
 
                 }
             },
             development: {
                 constants: {
-                    ENV: "http://192.168.0.180:3000/"
+                    ENV: "http://parking-space-web-dev.elasticbeanstalk.com//"
                 }
             },
             staging: {
                 constants: {
-                    ENV: "http://parking-space-web-qqxzmgpj3b.elasticbeanstalk.com/"
+                    ENV: "http://parking-space-staging.elasticbeanstalk.com//"
                 }
             },
             production: {
@@ -495,9 +495,19 @@ module.exports = function (grunt) {
         grunt.task.run(['init', 'concurrent:ionic']);
     });
 
-    grunt.registerTask('emulate', function () {
-        grunt.config('concurrent.ionic.tasks', ['ionic:emulate:' + this.args.join(), 'watch']);
-        return grunt.task.run(['init', 'concurrent:ionic']);
+    grunt.registerTask('serve_dev', function (target) {
+        if (target === 'compress') {
+            return grunt.task.run(['compress', 'ionic:serve']);
+        }
+
+        grunt.config('concurrent.ionic.tasks', ['ionic:serve', 'watch']);
+        grunt.task.run(['init_dev', 'concurrent:ionic']);
+    });
+
+
+    grunt.registerTask('run_staging', function () {
+        grunt.config('concurrent.ionic.tasks', ['ionic:run:' + this.args.join(), 'watch']);
+        return grunt.task.run(['init_staging', 'concurrent:ionic']);
     });
 
     grunt.registerTask('run_dev', function () {
@@ -510,6 +520,12 @@ module.exports = function (grunt) {
         return grunt.task.run(['init', 'concurrent:ionic']);
     });
 
+
+    grunt.registerTask('emulate', function () {
+        grunt.config('concurrent.ionic.tasks', ['ionic:emulate:' + this.args.join(), 'watch']);
+        return grunt.task.run(['init', 'concurrent:ionic']);
+    });
+
     grunt.registerTask('build', function () {
         return grunt.task.run(['init', 'ionic:build:' + this.args.join()]);
     });
@@ -517,6 +533,17 @@ module.exports = function (grunt) {
     grunt.registerTask('init', [
         'clean',
         'ngconstant:local_development',
+        'includeSource',
+        'wiredep',
+        'concurrent:server',
+        'autoprefixer',
+        'newer:copy:app',
+        'newer:copy:tmp'
+    ]);
+
+    grunt.registerTask('init_staging', [
+        'clean',
+        'ngconstant:staging',
         'includeSource',
         'wiredep',
         'concurrent:server',

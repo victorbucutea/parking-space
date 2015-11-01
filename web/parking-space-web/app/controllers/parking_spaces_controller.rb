@@ -78,6 +78,19 @@ class ParkingSpacesController < ApplicationController
     end
   end
 
+  # GET /parking_spaces/1/mark_offers_as_read
+  def mark_offers_as_read
+    @parking_space = ParkingSpace.find(params[:parking_space_id])
+
+    if @parking_space.proposals
+      @parking_space.proposals.update_all(read: true)
+    end
+
+    respond_to do |format|
+      format.json { render :show, status: :ok }
+    end
+  end
+
   # POST /parking_spaces
   # POST /parking_spaces.json
   def create
@@ -119,11 +132,6 @@ class ParkingSpacesController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_parking_space
-    @parking_space = ParkingSpace.find(params[:id])
-  end
-
   # Never trust parameters from the scary internet, only allow the white list through.
   def parking_space_params
     params.require(:parking_space).permit(:location_lat, :location_long,
@@ -132,6 +140,7 @@ class ParkingSpacesController < ApplicationController
                                           :interval, :phone_number,:owner_name, :image_file_name,
                                           :image_content_type, :image_file_size, :title,
                                           :address_line_1, :address_line_2, :image_data,
-                                          :thumbnail_data, :rotation_angle, :description)
+                                          :thumbnail_image_url, :standard_image_url,
+                                          :rotation_angle, :description, :created_at)
   end
 end

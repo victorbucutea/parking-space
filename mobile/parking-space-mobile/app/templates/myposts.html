@@ -11,12 +11,17 @@
 
     <div class="list open-spaces-list scroll">
         <span class="item "  ng-repeat="space in spaces" ng-click="show(space)">
-            <parking-spot-info-box class="small"  space="space" show-notif="true"></parking-spot-info-box>
-            <i class="fa fa-money item-notifications"> <span> Offers ({{space.offers.length}})</span> </i>
+            <parking-spot-info-box class="small"  space="space" ></parking-spot-info-box>
+            <span class="unread-item-notif" ng-show="unreadNotifications(space)"> {{unreadNotifications(space)}} </span>
+            <i class="fa fa-money item-notifications">
+                <span> Offers ({{space.offers.length}})</span>
+            </i>
             <i class="fa fa-envelope item-notifications">
-                <span> Messages ({{unreadMessagesForSpace(space) }})</span> </i>
+                <span> Messages ({{unreadMessagesForSpace(space) }})</span>
+            </i>
         </span>
         <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
+
         <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You did not post any spaces.</div>
     </div>
 

@@ -10,15 +10,21 @@
                              <small>{{spaceEdit.price | subunits}}</small>
                              <currency val="spaceEdit.currency"></currency>
                     </span>
-                    <i class="fa fa-refresh fa-spin loading-spinner"></i>
                 </h4>
                 <h4>
-                    <small> You have {{spaceEdit.offers.length || 0}} offers.
-                        <span ng-show="spaceEdit.offers.length"> Tap &laquo;<i class="ion-checkmark-round"></i> Accept&raquo;
-                            to confirm </span>
+                    <small>
+                        You have {{spaceEdit.offers.length || 0}} offers.
+                        <span ng-show="spaceEdit.offers.length">
+                            Tap &laquo;<i class="ion-checkmark-round"></i> Accept&raquo;to confirm
+                        </span>
+                        <br/>
+                        <div ng-hide="spaceEdit.offers.length" class="ps-text-xxbig">
+                            :(
+                        </div>
                     </small>
                     <small ng-show="warn"> Can only accept one single offer.</small>
                 </h4>
+
                 <div class="bid-table scroll" ng-show="spaceEdit.offers.length">
                     <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in spaceEdit.offers | orderBy: 'timestamp'"
                          ng-class="{selected: selOffer == offer}">
@@ -28,8 +34,8 @@
                             <currency val="offer.currency"></currency>
                         </span>
 
-                        <span ui-sref="home.myposts.bids.talk">
-                            ( <i class="fa fa-envelope"></i> {{messagesForSpace(offer.messages)}} )
+                        <span ng-hide="offer.read" >
+                            ( <i class="fa fa-bell"></i> new )
                         </span>
 
                         <div class="pull-right offer-accept" ng-click="confirmApproval(offer)">
@@ -53,8 +59,10 @@
                 </div>
                 <div class="offer-desc-item phone-number">
                     Tel No:
-                    <span class="value pull-right" ng-show="selOffer.approved"><i class="fa fa-phone"></i> +{{selOffer.phone_number}}</span>
-                    <span class="value pull-right" ng-hide="selOffer.approved">Accept offer to show</span>
+                    <span class="value pull-right" ng-show="selOffer.approved"><i class="fa fa-phone"></i>{{selOffer.phone_number}}</span>
+                    <span class="value pull-right" ng-hide="selOffer.approved" ng-click="confirmApproval(selOffer)">
+                        &laquo;<i class="ion-checkmark-round"></i> Accept&raquo; offer first
+                    </span>
                 </div>
             </div>
 
@@ -62,11 +70,11 @@
                 <h4>
                     <small>Share your parking space to attract customers:</small>
                 </h4>
-                <i class="fa fa-facebook-square fa-4x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
+                <i class="fa fa-facebook-square fa-3x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
                 &nbsp;&nbsp;&nbsp;
-                <i class="fa fa-google-plus-square fa-4x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
+                <i class="fa fa-google-plus-square fa-3x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
                 &nbsp;&nbsp;&nbsp;
-                <i class="fa fa-twitter-square fa-4x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
+                <i class="fa fa-twitter-square fa-3x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
             </div>
 
 

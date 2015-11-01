@@ -11,9 +11,12 @@ Rails.application.routes.draw do
 
   resources :parking_spaces do
 
+    get 'mark_offers_as_read'
+
     collection do
       get 'myspaces'
     end
+
     collection do
       get 'myoffers'
     end

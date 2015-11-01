@@ -1,221 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BuildServerSettings">
+    <option name="LOGIN" value="" />
+    <option name="SERVER_URL" value="http://buildserver" />
+    <option name="PASSWORD" />
+    <option name="REMEMBER_ME" value="true" />
+    <option name="USE_IDEA_PROXY_SETTINGS" value="true" />
+    <option name="INSPECTIONS_BUILD_TYPE_IDS" />
+    <option name="DUPLICATES_BUILD_TYPE_IDS" />
+    <option name="COVERAGE_SETTINGS" />
+    <option name="TEST_STATUS_ENABLED" value="true" />
+    <option name="TEST_STATUS_SHOW_SUCCESSFUL" value="false" />
+    <option name="ARTIFACTS_BUILD_TYPE_IDS" />
+    <option name="PERFORM_COMMIT_IF_SUCCESSFUL" value="true" />
+    <option name="PERFORM_COMMIT_IF_NO_NEW_FAILED_TESTS" value="false" />
+    <option name="REQUEST_CONFIRMATON" value="false" />
+    <option name="PRE_TESTED_COMMIT" value="true" />
+    <option name="PROJECT_STATUS_DIALOG_SPLITTER_DIVIDER_LOCATION" value="500" />
+    <option name="CHANGES_STATUS_DIALOG_SPLITTER_DIVIDER_LOCATION" value="500" />
+    <option name="FILTER_BY_STATUS" value="false" />
+    <option name="FILTER_MARKED_AS_FIXED" value="false" />
+    <option name="SHOW_CLOSE_PROMPT" value="true" />
+    <option name="TOOL_WINDOW_SELECTED_CONTENT_INDEX" value="0" />
+    <option name="FILTER_BY_CURRENT_PROJECT" value="true" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="a28c2a12-4bf0-471b-be1c-7ddd82a2920d" name="Default" comment="view offers screen improvement">
-      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\app\login.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Austria.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Austria.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Belarus.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Belarus.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Belgium.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Belgium.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Canada.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Canada.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Czech_Republic.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Czech_Republic.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Denmark.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Denmark.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Estonia.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Estonia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Finland.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Finland.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/France.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/France.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Germany.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Germany.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Greece.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Greece.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Hungary.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Hungary.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_standard_xx1.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_standard_xx1.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_thumbnail_xx1.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129231231_thumbnail_xx1.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_standard_xx2.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_standard_xx2.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_thumbnail_xx2.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129331241_thumbnail_xx2.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_standard_xx3.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_standard_xx3.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_thumbnail_xx3.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129431251_thumbnail_xx3.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_standard_xx4.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_standard_xx4.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_thumbnail_xx4.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8129531261_thumbnail_xx4.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_standard_xx.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_standard_xx.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_thumbnail_xx.jpg" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/files/images/IMEI8139431251_thumbnail_xx.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/India.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/India.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Israel.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Israel.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Italy.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Italy.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Japan.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Japan.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Latvia.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Latvia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Lithuania.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Lithuania.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Luxembourg.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Luxembourg.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Netherlands.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Netherlands.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Poland.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Poland.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Portugal.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Portugal.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/Romania-7548c7044d99b61b9ca65e3a1f91ab26.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/Romania-7548c7044d99b61b9ca65e3a1f91ab26.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Romania.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Romania.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Russia.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Russia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/Russian_Federation-c3afbd566ac21c05cb0f228b37cf29c5.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/Russian_Federation-c3afbd566ac21c05cb0f228b37cf29c5.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Saudi_Arabia.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Saudi_Arabia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Slovakia.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Slovakia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Slovenia.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Slovenia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/South_Africa.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/South_Africa.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/South_Korea.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/South_Korea.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Spain.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Spain.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Sweden.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Sweden.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Switzerland.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Switzerland.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Turkey.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Turkey.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Ukraine.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/Ukraine.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/United_Arab_Emirates.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/United_Arab_Emirates.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/United_Kingdom-87b526c01fd81c96e96ec8f8fbbcc4e3.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/United_Kingdom-87b526c01fd81c96e96ec8f8fbbcc4e3.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/United_Kingdom.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/United_Kingdom.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/United_States_of_America-04093d90d4f8266d91b0d3b2cfc0050f.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/flags/United_States_of_America-04093d90d4f8266d91b0d3b2cfc0050f.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/United_States_of_America.png" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/images/flags/United_States_of_America.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js.gz" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css.gz" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/blue_lagoon.jpg" afterPath="$PROJECT_DIR$/app/images/blue_lagoon.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/cellar_medium.jpg" afterPath="$PROJECT_DIR$/app/images/cellar_medium.jpg" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\pushGCM.rb" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\web\parking-space-web\sns.rb" afterPath="" />
+      <change type="MOVED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\app\scripts\controllers\review-bids-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/review-offers-ctrl.js" />
+      <change type="MOVED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\app\templates\review-bids.html" afterPath="$PROJECT_DIR$/app/templates/review-offers.html" />
+      <change type="MOVED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\app\templates\thumbnail.html" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.ebextensions/seed.config" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/leopard.jpg" afterPath="$PROJECT_DIR$/app/images/leopard.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/parrot.jpg" afterPath="$PROJECT_DIR$/app/images/parrot.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/register_bg.png" afterPath="$PROJECT_DIR$/app/images/register_bg.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/switzerland.jpg" afterPath="$PROJECT_DIR$/app/images/switzerland.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/thumbnail_blue_lagoon.jpg" afterPath="$PROJECT_DIR$/app/images/thumbnail_blue_lagoon.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/thumbnail_parrot.jpg" afterPath="$PROJECT_DIR$/app/images/thumbnail_parrot.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/images/thumbnail_switzerland.jpg" afterPath="$PROJECT_DIR$/app/images/thumbnail_switzerland.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.generators" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.generators" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.gitignore" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.rakeTasks" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/.rakeTasks" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20140818175749_create_parking_spaces.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20140818175749_create_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20140818213127_drop_degree_to_meters.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20140818213127_drop_degree_to_meters.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150201123803_add_addr_line1_addr_line2_title_desc_to_parking_space.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150201123803_add_addr_line1_addr_line2_title_desc_to_parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150206164157_add_target_price_currency_to_parking_space.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150206164157_add_target_price_currency_to_parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150207202435_add_telephone_no_read_to_proposal.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150207202435_add_telephone_no_read_to_proposal.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208110411_add_attachment_image_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208110411_add_attachment_image_to_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208192113_add_image_url_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150208192113_add_image_url_to_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150221185527_add_rotation_angle_to_parking_space.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150221185527_add_rotation_angle_to_parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150224202336_add_index_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150224202336_add_index_to_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150225184631_create_parameters.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150225184631_create_parameters.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150225184655_create_parameter_values.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150225184655_create_parameter_values.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308114129_add_phone_number_to_proposals.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308114129_add_phone_number_to_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308120325_remove_telephone_no_from_proposals.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308120325_remove_telephone_no_from_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308175701_add_messaged_from_device_id_to_proposals.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308175701_add_messaged_from_device_id_to_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308194620_add_device_id_index.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150308194620_add_device_id_index.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150310180615_drop_status_from_proposal.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150310180615_drop_status_from_proposal.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150313165034_add_index_to_price_in_proposals.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150313165034_add_index_to_price_in_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150315144817_change_bid_amount_to_decimal_in_proposals.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150315144817_change_bid_amount_to_decimal_in_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150413134415_add_value2_value3_to_parameter_values.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150413134415_add_value2_value3_to_parameter_values.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150419163825_add_value3_value4_to_paramater_values.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150419163825_add_value3_value4_to_paramater_values.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150522183203_devise_create_users.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150522183203_devise_create_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523075827_add_first_name_last_name_to_users.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523075827_add_first_name_last_name_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523081514_add_device_id_and_phone_number_to_users.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523081514_add_device_id_and_phone_number_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523085317_remove_last_name_from_users.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523085317_remove_last_name_from_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523085418_rename_first_name_from_users.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523085418_rename_first_name_from_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523120235_add_country_to_users.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150523120235_add_country_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150530233440_make_device_id_unique.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150530233440_make_device_id_unique.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150621100933_add_notif_registration_id_to_users.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/migrate/20150621100933_add_notif_registration_id_to_users.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/Gemfile.lock" afterPath="$PROJECT_DIR$/../../web/parking-space-web/Gemfile.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/Gemfile" afterPath="$PROJECT_DIR$/../../web/parking-space-web/Gemfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gruntfile.js" afterPath="$PROJECT_DIR$/Gruntfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/_form.html.erb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/_form.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/_show.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/_show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/proposals/_show.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/proposals/_show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/vendor/google/api.js" afterPath="$PROJECT_DIR$/app/vendor/google/api.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/app.js" afterPath="$PROJECT_DIR$/app/scripts/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/application_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/application_controller.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/bin/bundle" afterPath="$PROJECT_DIR$/../../web/parking-space-web/bin/bundle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.xml" afterPath="$PROJECT_DIR$/config.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/config.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/config.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/constants.js" afterPath="$PROJECT_DIR$/app/scripts/constants.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/data-services.js" afterPath="$PROJECT_DIR$/app/scripts/services/data-services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/delete-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/delete-parking-space-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/delete-post.html" afterPath="$PROJECT_DIR$/app/templates/delete-post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/environments/development.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/environments/development.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/device_record.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/device_record.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/locales/devise.en.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/locales/devise.en.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/dataSources.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/initializers/devise.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/initializers/devise.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/directives.js" afterPath="$PROJECT_DIR$/app/scripts/directives.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/edit-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/edit-parking-space-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/edit.html.erb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/edit.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/factories.js" afterPath="$PROJECT_DIR$/app/scripts/services/factories.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/fonts.scss" afterPath="$PROJECT_DIR$/app/styles/fonts.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/forms.scss" afterPath="$PROJECT_DIR$/app/styles/forms.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/geo-services.js" afterPath="$PROJECT_DIR$/app/scripts/services/geo-services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/home.html" afterPath="$PROJECT_DIR$/app/templates/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/integration/image_processing_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/integration/image_processing_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/index.html.erb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/index.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/index.html" afterPath="$PROJECT_DIR$/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/index.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/index.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/index.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/index.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/proposals/index.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/proposals/index.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/initializers/init_system_parameters.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/initializers/init_system_parameters.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/main-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/main-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.scss" afterPath="$PROJECT_DIR$/app/styles/main.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/manifest-f5a585744e6cb0f54639bcabe185a73f.json" afterPath="$PROJECT_DIR$/../../web/parking-space-web/public/assets/manifest-f5a585744e6cb0f54639bcabe185a73f.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/map-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/map-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/map.html" afterPath="$PROJECT_DIR$/app/templates/map.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/message.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/message.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/messages-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/messages-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/messages.html" afterPath="$PROJECT_DIR$/app/templates/messages.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/messages.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/messages.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/messages_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/messages_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/messages_controller_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/messages_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/my-offers-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/my-offers-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/my-posts-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/my-posts-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/myoffers-help.html" afterPath="$PROJECT_DIR$/app/templates/myoffers-help.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/myoffers.html" afterPath="$PROJECT_DIR$/app/templates/myoffers.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/myposts-help.html" afterPath="$PROJECT_DIR$/app/templates/myposts-help.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/myposts.html" afterPath="$PROJECT_DIR$/app/templates/myposts.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/new.html.erb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/new.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/notifications_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/notifications_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/parameter.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/parameter.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/models/parameter_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/models/parameter_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/parameter_value.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/parameter_value.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/models/parameter_value_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/models/parameter_value_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/parameter_values.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/parameter_values.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/stylesheets/parameters.css.scss" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/stylesheets/parameters.css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/javascripts/parameters.js.coffee" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/javascripts/parameters.js.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/parameters.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/parameters.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/parameters_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/parameters_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parameters_controller_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parameters_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/helpers/parameters_helper.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/helpers/parameters_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/helpers/parameters_helper_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/helpers/parameters_helper_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/parking_space.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/parking_spaces.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/parking_spaces.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/parking-space-web.iml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/parking-space-web.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/parking_spaces_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/parking_spaces_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parking_spaces_controller_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/parking_spaces_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/passwords_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/passwords_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/place-offer-help.html" afterPath="$PROJECT_DIR$/app/templates/place-offer-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/place-offer.html" afterPath="$PROJECT_DIR$/app/templates/place-offer.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/post-help.html" afterPath="$PROJECT_DIR$/app/templates/post-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/post-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/post-parking-space-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/post.html" afterPath="$PROJECT_DIR$/app/templates/post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/proposal.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/proposal.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/models/proposal_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/models/proposal_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/proposals.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/proposals.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/proposals_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/proposals_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/proposals_controller_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/controllers/proposals_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/pushGCM.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/pushGCM.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/bin/rails" afterPath="$PROJECT_DIR$/../../web/parking-space-web/bin/rails" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/bin/rake" afterPath="$PROJECT_DIR$/../../web/parking-space-web/bin/rake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/rebel_project.xml" afterPath="$PROJECT_DIR$/.idea/rebel_project.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/register-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/register-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/register.html" afterPath="$PROJECT_DIR$/app/templates/register.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/registrations_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/registrations_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/review-bids-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/review-bids-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/review-bids.html" afterPath="$PROJECT_DIR$/app/templates/review-bids.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/review-post-help.html" afterPath="$PROJECT_DIR$/app/templates/review-post-help.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/environments/production.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/environments/production.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/review-post.html" afterPath="$PROJECT_DIR$/app/templates/review-post.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/routes.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/routes.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/stylesheets/scaffolds.css.scss" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/assets/stylesheets/scaffolds.css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/schema.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/schema.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/search-help.html" afterPath="$PROJECT_DIR$/app/templates/search-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/search-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/search-parking-space-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/search.html" afterPath="$PROJECT_DIR$/app/templates/search.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/secrets.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/secrets.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/db/seeds.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/db/seeds.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/sessions_controller.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/controllers/sessions_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/show.html.erb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/show.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/messages/show.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/messages/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/show.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parameters/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/show.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/parking_spaces/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/views/proposals/show.json.jbuilder" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/views/proposals/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/sns.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/sns.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/system-services.js" afterPath="$PROJECT_DIR$/app/scripts/services/system-services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/config/environments/test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/config/environments/test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/test_helper.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/test_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/thumbnail.html" afterPath="$PROJECT_DIR$/app/templates/thumbnail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/app/models/user.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/app/models/user.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/models/user_test.rb" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/models/user_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/users.yml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/test/fixtures/users.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../web/parking-space-web/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../web/parking-space-web/.idea/workspace.xml" />
     </list>
@@ -246,29 +85,59 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="data-services.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="data-services.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/scripts/services/data-services.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.36213017">
-              <caret line="316" column="37" selection-start-line="316" selection-start-column="37" selection-end-line="316" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="411" column="42" selection-start-line="411" selection-start-column="42" selection-end-line="411" selection-end-column="42" />
               <folding>
-                <element signature="e#156#4150#0" expanded="false" />
-                <element signature="e#4241#5294#0" expanded="false" />
-                <element signature="e#5464#6216#0" expanded="false" />
-                <element signature="e#6278#6942#0" expanded="false" />
-                <element signature="e#7004#7667#0" expanded="false" />
-                <element signature="e#7726#7933#0" expanded="false" />
-                <element signature="e#7998#11160#0" expanded="false" />
+                <element signature="e#156#4537#0" expanded="false" />
+                <element signature="e#235#984#0" expanded="false" />
+                <element signature="e#1030#1616#0" expanded="false" />
+                <element signature="e#1662#2247#0" expanded="false" />
+                <element signature="e#3562#4117#0" expanded="false" />
+                <element signature="e#4628#5681#0" expanded="false" />
+                <element signature="e#5851#6603#0" expanded="false" />
+                <element signature="e#6665#7329#0" expanded="false" />
+                <element signature="e#7391#8054#0" expanded="false" />
+                <element signature="e#8113#8320#0" expanded="false" />
+                <element signature="e#8385#11547#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="my-posts-ctrl.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/my-posts-ctrl.js">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/scripts/app.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <caret line="128" column="14" selection-start-line="128" selection-start-column="14" selection-end-line="128" selection-end-column="14" />
+              <folding>
+                <element signature="e#4532#4745#0" expanded="false" />
+                <element signature="e#4787#5018#0" expanded="false" />
+                <element signature="e#5062#5295#0" expanded="false" />
+                <element signature="e#6264#6996#0" expanded="false" />
+                <element signature="e#7020#7184#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="myposts.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/templates/myposts.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="review-offers.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/templates/review-offers.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.36497176">
+              <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -278,27 +147,17 @@
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/my-offers-ctrl.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="49" />
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="system-services.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/services/system-services.js">
+      <file leaf-file-name="my-posts-ctrl.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/my-posts-ctrl.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="81" selection-start-line="9" selection-start-column="81" selection-end-line="9" selection-end-column="81" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="register-ctrl.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/register-ctrl.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+              <caret line="51" column="43" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -308,71 +167,18 @@
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/main-ctrl.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="myoffers.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/myoffers.html">
+      <file leaf-file-name="review-offers-ctrl.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/review-offers-ctrl.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="672" column="15" selection-start-line="672" selection-start-column="15" selection-end-line="672" selection-end-column="15" />
-              <folding>
-                <element signature="e#1459#1477#0" expanded="false" />
-                <element signature="e#1492#1510#0" expanded="false" />
-                <element signature="e#1516#1568#0" expanded="false" />
-                <element signature="e#1581#1682#0" expanded="false" />
-                <element signature="e#1696#2221#0" expanded="false" />
-                <element signature="e#2243#2749#0" expanded="false" />
-                <element signature="e#2761#2994#0" expanded="false" />
-                <element signature="e#3167#5169#0" expanded="false" />
-                <element signature="e#3396#4699#0" expanded="false" />
-                <element signature="e#4718#5032#0" expanded="false" />
-                <element signature="e#5043#5167#0" expanded="false" />
-                <element signature="e#5188#5486#0" expanded="false" />
-                <element signature="e#5499#5908#0" expanded="false" />
-                <element signature="e#5963#6022#0" expanded="false" />
-                <element signature="e#6040#6489#0" expanded="false" />
-                <element signature="e#6509#6836#0" expanded="false" />
-                <element signature="e#6850#7102#0" expanded="false" />
-                <element signature="e#7122#7482#0" expanded="false" />
-                <element signature="e#7497#7788#0" expanded="false" />
-                <element signature="e#7810#7962#0" expanded="false" />
-                <element signature="e#7981#8078#0" expanded="false" />
-                <element signature="e#8094#8247#0" expanded="false" />
-                <element signature="e#8883#9349#0" expanded="false" />
-                <element signature="e#9365#9423#0" expanded="false" />
-                <element signature="e#10915#11709#0" expanded="false" />
-                <element signature="e#11726#11856#0" expanded="false" />
-                <element signature="e#12498#12766#0" expanded="false" />
-                <element signature="e#12551#12764#0" expanded="false" />
-                <element signature="e#12776#12801#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search-parking-space-ctrl.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/search-parking-space-ctrl.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
-              <folding>
-                <element signature="e#1925#2410#0" expanded="false" />
-                <element signature="e#4562#6091#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -381,7 +187,7 @@
         <entry file="file://$PROJECT_DIR$/app/templates/home.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="35" column="20" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
+              <caret line="31" column="18" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -409,21 +215,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/scripts/services/geo-services.js" />
-        <option value="$PROJECT_DIR$/app/scripts/services.js" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/bids-and-messages-ctrl.js" />
-        <option value="$PROJECT_DIR$/www/scripts/controllers/review-bids-ctrl.js" />
-        <option value="$PROJECT_DIR$/app/templates/messages.html" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/messages-ctrl.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/edit-parking-space-ctrl.js" />
         <option value="$PROJECT_DIR$/app/templates/thumbnail.html" />
         <option value="$PROJECT_DIR$/app/templates/review-bids.html" />
         <option value="$PROJECT_DIR$/www/scripts/controllers/delete-parking-space-ctrl.js" />
-        <option value="$PROJECT_DIR$/app/templates/review-post.html" />
         <option value="$PROJECT_DIR$/app/templates/review-post-help.html" />
         <option value="$PROJECT_DIR$/app/templates/post-help.html" />
         <option value="$PROJECT_DIR$/app/templates/place-offer-help.html" />
-        <option value="$PROJECT_DIR$/app/templates/myposts.html" />
         <option value="$PROJECT_DIR$/app/templates/search.html" />
         <option value="$PROJECT_DIR$/app/templates/post.html" />
         <option value="$PROJECT_DIR$/app/templates/myposts-help.html" />
@@ -433,33 +231,41 @@
         <option value="$PROJECT_DIR$/app/scripts/controllers/delete-parking-space-ctrl.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/review-bids-ctrl.js" />
         <option value="$PROJECT_DIR$/app/templates/place-offer.html" />
-        <option value="$PROJECT_DIR$/app/templates/myoffers.html" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/bower.json" />
         <option value="$PROJECT_DIR$/www/index.html" />
-        <option value="$PROJECT_DIR$/app/scripts/constants.js" />
-        <option value="$PROJECT_DIR$/config.xml" />
         <option value="$PROJECT_DIR$/app/index.html" />
         <option value="$PROJECT_DIR$/plugins/com.phonegap.plugins.PushPlugin/Example/www/index.html" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_16" />
         <option value="$PROJECT_DIR$/plugins/com.phonegap.plugins.PushPlugin/src/android/com/plugin/gcm/PushPlugin.java" />
         <option value="$PROJECT_DIR$/plugins/android.json" />
         <option value="$PROJECT_DIR$/app/vendor/google/api.js" />
-        <option value="$PROJECT_DIR$/app/scripts/app.js" />
         <option value="$PROJECT_DIR$/app/templates/register.html" />
-        <option value="$PROJECT_DIR$/Gruntfile.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/search-parking-space-ctrl.js" />
         <option value="$PROJECT_DIR$/app/templates/search-help.html" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/main-ctrl.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/map-ctrl.js" />
         <option value="$PROJECT_DIR$/app/scripts/directives.js" />
-        <option value="$PROJECT_DIR$/app/styles/main.scss" />
-        <option value="$PROJECT_DIR$/app/templates/home.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/register-ctrl.js" />
         <option value="$PROJECT_DIR$/app/scripts/services/system-services.js" />
+        <option value="$PROJECT_DIR$/app/scripts/constants.js" />
+        <option value="$PROJECT_DIR$/www/scripts/constants.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/my-offers-ctrl.js" />
+        <option value="$PROJECT_DIR$/config.xml" />
+        <option value="$PROJECT_DIR$/app/templates/review-post.html" />
+        <option value="$PROJECT_DIR$/app/templates/myoffers.html" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch" />
+        <option value="$PROJECT_DIR$/bower.json" />
+        <option value="$PROJECT_DIR$/app/styles/main.scss" />
+        <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/www/lib/ionic/release/js/ionic.bundle.js" />
+        <option value="$PROJECT_DIR$/app/scripts/app.js" />
+        <option value="$PROJECT_DIR$/app/templates/myposts.html" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/main-ctrl.js" />
+        <option value="$PROJECT_DIR$/app/templates/home.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/my-posts-ctrl.js" />
         <option value="$PROJECT_DIR$/app/scripts/services/data-services.js" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/review-offers-ctrl.js" />
+        <option value="$PROJECT_DIR$/app/templates/review-offers.html" />
       </list>
     </option>
   </component>
@@ -505,6 +311,16 @@
       <alias-task name="init_dev" info="Alias for &quot;clean&quot;, &quot;ngconstant:development&quot;, &quot;includeSource&quot;, &quot;wiredep&quot;, &quot;concurrent:server&quot;, &quot;autoprefixer&quot;, &quot;newer:copy:app&quot;, &quot;newer:copy:tmp&quot; tasks." file-path="$PROJECT_DIR$/Gruntfile.js">
         <dependency value="clean" />
         <dependency value="ngconstant:development" />
+        <dependency value="includeSource" />
+        <dependency value="wiredep" />
+        <dependency value="concurrent:server" />
+        <dependency value="autoprefixer" />
+        <dependency value="newer:copy:app" />
+        <dependency value="newer:copy:tmp" />
+      </alias-task>
+      <alias-task name="init_staging" info="Alias for &quot;clean&quot;, &quot;ngconstant:staging&quot;, &quot;includeSource&quot;, &quot;wiredep&quot;, &quot;concurrent:server&quot;, &quot;autoprefixer&quot;, &quot;newer:copy:app&quot;, &quot;newer:copy:tmp&quot; tasks." file-path="$PROJECT_DIR$/Gruntfile.js">
+        <dependency value="clean" />
+        <dependency value="ngconstant:staging" />
         <dependency value="includeSource" />
         <dependency value="wiredep" />
         <dependency value="concurrent:server" />
@@ -599,8 +415,10 @@
       <core-task name="ripple-emulator" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
       <core-task name="run" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
       <core-task name="run_dev" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
+      <core-task name="run_staging" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
       <core-task name="save" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
       <core-task name="serve" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
+      <core-task name="serve_dev" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
       <core-task name="trigger" info="Custom task." file-path="$PROJECT_DIR$/Gruntfile.js" multi="false" />
       <core-task name="uglify" info="Minify files with UglifyJS." file-path="$PROJECT_DIR$/node_modules/grunt-contrib-uglify/tasks/uglify.js" multi="true" />
       <core-task name="usemin" info="Replaces references to non-minified scripts / stylesheets" file-path="$PROJECT_DIR$/node_modules/grunt-usemin/tasks/usemin.js" multi="true">
@@ -849,9 +667,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="391" />
-    <option name="width" value="1620" />
-    <option name="height" value="1000" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1066" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -922,69 +741,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Production">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="scripts">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="Tests" />
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1014,6 +770,42 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="styles" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1067,12 +859,101 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".tmp" />
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-mobile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
         <option name="show-excluded-files" value="false" />
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Tests" />
+        <subPane subId="Production">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="scripts">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="parking-space-mobile">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane">
+        <subPane />
       </pane>
     </panes>
   </component>
@@ -1098,9 +979,16 @@
     <property name="editorconfig.notification" value="Applied .editorconfig settings" />
     <property name="com.intellij.ide.scratch.ScratchpadManager" value="CSS" />
     <property name="editor.config.accepted" value="true" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
-    <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="com.intellij.ide.scratch.NewScratchFileAction" value="HTML" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.JavaScript" />
+    <property name="settings.editor.splitter.proportion" value="0.22624877" />
+    <property name="com.intellij.ide.scratch.NewScratchFileAction" value="JavaScript&#10;HTML" />
+    <property name="js.buildTools.grunt.node_interpreter" value="C:\software\platforms\nodejs\node.exe" />
+    <property name="js.buildTools.grunt.grunt-cli.package" value="C:\Users\286868\AppData\Roaming\npm\node_modules\grunt-cli" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -1320,7 +1208,14 @@
       <workItem from="1435004426522" duration="2946000" />
       <workItem from="1435385012398" duration="25662000" />
       <workItem from="1438617797963" duration="398000" />
-      <workItem from="1438618330506" duration="149000" />
+      <workItem from="1438618330506" duration="1205000" />
+      <workItem from="1438622280482" duration="599000" />
+      <workItem from="1441547874080" duration="1453000" />
+      <workItem from="1441784074633" duration="621000" />
+      <workItem from="1442902858796" duration="6000" />
+      <workItem from="1444665108711" duration="1749000" />
+      <workItem from="1445088110348" duration="28611000" />
+      <workItem from="1445239080067" duration="77000" />
     </task>
     <task id="LOCAL-00001" summary="chat + additional screens">
       <created>1422189537636</created>
@@ -1338,37 +1233,38 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1000623000" />
+    <option name="totallyTimeSpent" value="1034795000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="391" y="0" width="1620" height="1000" extended-state="0" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Grunt " active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19654289" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.3295063" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="125" y="185" width="1427" height="481" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14285715" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20818071" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32596686" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23860812" sideWeight="0.5005624" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Grunt " active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18370607" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920963" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1696543" sideWeight="0.49943757" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23860812" sideWeight="0.5005624" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32596686" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32988507" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14696486" sideWeight="0.49943757" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5344828" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34961998" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" x="923" y="514" width="682" height="411" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32911393" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29946524" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26681367" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23263507" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39250275" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Copy/Paste" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32893825" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1379,8 +1275,8 @@
     <layout-to-restore>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5344828" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920963" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920963" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel Executor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32596686" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -1405,8 +1301,8 @@
       <window_info id="Grunt " active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16323166" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
@@ -1436,108 +1332,11 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/lib/ionic/release/js/ionic.js">
+    <entry file="file://$PROJECT_DIR$/app/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/lib/ionic/release/js/ionic-angular.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.20203735">
-          <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/lib/easy-markerwithlabel/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/lib/angular/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.bowerrc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/lib/ionic/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.7246892">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bower.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39253998">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ionic.project">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/grunt-ng-constant/Gruntfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/untitled/views/error.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/untitled/public/stylesheets/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/untitled/routes/users.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/untitled/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/untitled/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.tmp/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.653847">
-          <caret line="66" column="2" selection-start-line="46" selection-start-column="2" selection-end-line="64" selection-end-column="63" />
+          <caret line="31" column="18" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1573,14 +1372,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.020506635">
-          <caret line="1" column="38" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1627,24 +1418,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_16">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="150" column="66" selection-start-line="150" selection-start-column="4" selection-end-line="150" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/vendor/google/api.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.19870129">
           <caret line="9" column="54" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13246754">
-          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -1657,28 +1434,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="55" selection-start-line="36" selection-start-column="55" selection-end-line="36" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="28" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -1703,28 +1458,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/map.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19899665">
-          <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/directives.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="227" column="85" selection-start-line="227" selection-start-column="23" selection-end-line="227" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/search-parking-space-ctrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
-          <folding>
-            <element signature="e#1925#2410#0" expanded="false" />
-            <element signature="e#4562#6091#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1735,53 +1472,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/main-ctrl.js">
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/register-ctrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/system-services.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="131" selection-start-line="5" selection-start-column="131" selection-end-line="5" selection-end-column="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07981221">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/angular/angular.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="18910" column="43" selection-start-line="18910" selection-start-column="40" selection-end-line="18910" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9230769">
+          <caret line="6" column="97" selection-start-line="6" selection-start-column="97" selection-end-line="6" selection-end-column="97" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="672" column="15" selection-start-line="672" selection-start-column="15" selection-end-line="672" selection-end-column="15" />
-          <folding>
-            <element signature="e#1459#1477#0" expanded="false" />
-            <element signature="e#1492#1510#0" expanded="false" />
-            <element signature="e#1516#1568#0" expanded="false" />
-            <element signature="e#1581#1682#0" expanded="false" />
-            <element signature="e#1696#2221#0" expanded="false" />
-            <element signature="e#2243#2749#0" expanded="false" />
-            <element signature="e#2761#2994#0" expanded="false" />
-            <element signature="e#3167#5169#0" expanded="false" />
-            <element signature="e#3396#4699#0" expanded="false" />
-            <element signature="e#4718#5032#0" expanded="false" />
-            <element signature="e#5043#5167#0" expanded="false" />
-            <element signature="e#5188#5486#0" expanded="false" />
-            <element signature="e#5499#5908#0" expanded="false" />
-            <element signature="e#5963#6022#0" expanded="false" />
-            <element signature="e#6040#6489#0" expanded="false" />
-            <element signature="e#6509#6836#0" expanded="false" />
-            <element signature="e#6850#7102#0" expanded="false" />
-            <element signature="e#7122#7482#0" expanded="false" />
-            <element signature="e#7497#7788#0" expanded="false" />
-            <element signature="e#7810#7962#0" expanded="false" />
-            <element signature="e#7981#8078#0" expanded="false" />
-            <element signature="e#8094#8247#0" expanded="false" />
-            <element signature="e#8883#9349#0" expanded="false" />
-            <element signature="e#9365#9423#0" expanded="false" />
-            <element signature="e#10915#11709#0" expanded="false" />
-            <element signature="e#11726#11856#0" expanded="false" />
-            <element signature="e#12498#12766#0" expanded="false" />
-            <element signature="e#12551#12764#0" expanded="false" />
-            <element signature="e#12776#12801#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/myoffers.html">
+    <entry file="file://$PROJECT_DIR$/app/templates/post.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1789,34 +1516,169 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75555557">
+          <caret line="38" column="6" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/myoffers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-29.423077">
+          <caret line="48" column="14" selection-start-line="48" selection-start-column="14" selection-end-line="48" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/place-offer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="12" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/map.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.034068137">
+          <caret line="1" column="41" selection-start-line="1" selection-start-column="41" selection-end-line="1" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/fonts.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/forms.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.01988304">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23859648">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/directives.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2167991">
+          <caret line="144" column="63" selection-start-line="144" selection-start-column="63" selection-end-line="144" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.846153">
+          <caret line="686" column="16" selection-start-line="686" selection-start-column="16" selection-end-line="686" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/karma/node_modules/socket.io/node_modules/socket.io-client/lib/vendor/web-socket-js/sample.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34269005">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/factories.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/ionic/demos/old/app-intro-walkthrough/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="12" selection-start-line="39" selection-start-column="12" selection-end-line="39" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67602336">
+          <caret line="34" column="55" selection-start-line="34" selection-start-column="55" selection-end-line="34" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="85" selection-start-line="0" selection-start-column="85" selection-end-line="0" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="20" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
+          <caret line="31" column="18" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/register-ctrl.js">
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/main-ctrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+          <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/system-services.js">
+    <entry file="file://$PROJECT_DIR$/app/scripts/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="81" selection-start-line="9" selection-start-column="81" selection-end-line="9" selection-end-column="81" />
-          <folding />
+          <caret line="128" column="14" selection-start-line="128" selection-start-column="14" selection-end-line="128" selection-end-column="14" />
+          <folding>
+            <element signature="e#4532#4745#0" expanded="false" />
+            <element signature="e#4787#5018#0" expanded="false" />
+            <element signature="e#5062#5295#0" expanded="false" />
+            <element signature="e#6264#6996#0" expanded="false" />
+            <element signature="e#7020#7184#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/my-posts-ctrl.js">
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/data-services.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <caret line="411" column="42" selection-start-line="411" selection-start-column="42" selection-end-line="411" selection-end-column="42" />
+          <folding>
+            <element signature="e#156#4537#0" expanded="false" />
+            <element signature="e#235#984#0" expanded="false" />
+            <element signature="e#1030#1616#0" expanded="false" />
+            <element signature="e#1662#2247#0" expanded="false" />
+            <element signature="e#3562#4117#0" expanded="false" />
+            <element signature="e#4628#5681#0" expanded="false" />
+            <element signature="e#5851#6603#0" expanded="false" />
+            <element signature="e#6665#7329#0" expanded="false" />
+            <element signature="e#7391#8054#0" expanded="false" />
+            <element signature="e#8113#8320#0" expanded="false" />
+            <element signature="e#8385#11547#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/review-offers-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1824,24 +1686,40 @@
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/my-offers-ctrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="49" />
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/data-services.js">
+    <entry file="file://$PROJECT_DIR$/app/templates/review-post.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.36213017">
-          <caret line="316" column="37" selection-start-line="316" selection-start-column="37" selection-end-line="316" selection-end-column="37" />
-          <folding>
-            <element signature="e#156#4150#0" expanded="false" />
-            <element signature="e#4241#5294#0" expanded="false" />
-            <element signature="e#5464#6216#0" expanded="false" />
-            <element signature="e#6278#6942#0" expanded="false" />
-            <element signature="e#7004#7667#0" expanded="false" />
-            <element signature="e#7726#7933#0" expanded="false" />
-            <element signature="e#7998#11160#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.15906432">
+          <caret line="8" column="90" selection-start-line="8" selection-start-column="90" selection-end-line="8" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/my-posts-ctrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="51" column="43" selection-start-line="51" selection-start-column="43" selection-end-line="51" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/myposts.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/templates/review-offers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36497176">
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

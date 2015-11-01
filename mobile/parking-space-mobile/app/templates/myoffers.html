@@ -18,7 +18,7 @@
     <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You haven't placed any offers.</div>
 
     <div class="scroll">
-        <div class="bids-area padding" ng-repeat="space in spaces| orderBy: 'timestamp'">
+        <div class="bids-area padding no-height" ng-repeat="space in spaces| orderBy: 'timestamp'">
             <h4 class="bid-title">
                 {{space.title}} -
                  <span class="bid-amount">
@@ -46,6 +46,45 @@
 
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="ps-dialog" id="showPhoneNumber">
+        <div class="ps-dialog-content">
+            <div class="ps-question">
+                <div ng-hide="selOffer.approved">
+                    Your offer is not yet accepted!
+                    <br/>
+                    <br/>
+
+                    <div class="ps-text-xxbig">
+                        :(
+                    </div>
+                </div>
+                <div ng-show="selOffer.approved">
+                    Congratulations! <br/>
+                    Your offer has been accepted!
+                    <br/>
+                    <br/>
+
+                    <a ng-href="tel:{{selOffer.phone_number}}">
+                        <div class="ps-text-xbig">
+                            Call {{selOffer.owner_name}}
+                        </div>
+                        <br/>
+                        <div class="ps-text-xxbig">
+                            <i class="fa fa-phone"></i>
+                            {{selOffer.phone_number}}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="ps-control-buttons">
+                <div class="button-bar">
+                    <a class="button icon-center ion-checkmark-round" onclick="$('#showPhoneNumber').hide()"></a>
+                    <a class="button icon-center ion-close" onclick="$('#showPhoneNumber').hide()"></a>
+                </div>
+            </div>
+
         </div>
     </div>
     <ui-view name="help"></ui-view>

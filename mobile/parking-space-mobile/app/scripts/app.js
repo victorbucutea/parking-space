@@ -139,7 +139,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/bids/{parking_space_id}',
                 views: {
                     'edit-space': {
-                        templateUrl: "templates/review-bids.html"
+                        templateUrl: "templates/review-offers.html"
                     }
                 }
             })
@@ -175,7 +175,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.myoffers.help', {
+            .state('home.help', {
                 url: '/help',
                 views: {
                     'help': {
@@ -183,7 +183,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.myoffers.talk', {
+            .state('home.talk', {
                 url: '/talk?offer',
                 views: {
                     'messages': {
@@ -194,6 +194,10 @@ angular.module('ParkingSpaceMobile', [
 
         $urlRouterProvider.otherwise("/home/map/search");
 
+    })
+
+    .config(function($compileProvider){
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
     })
 
     .constant('currencies', [
