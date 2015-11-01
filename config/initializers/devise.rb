@@ -4,13 +4,13 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  # config.secret_key = '0cd0e9090a14d9462ce5d0206749b913691840053a291b9488c142ac12d8ebccf22fe4fe10148dab70c5598ec0bdf4c18655bd9acb035693eb4e95b945a1d8d9'
+  config.secret_key = 'ae7e3591816d539c2d2941bcd93a394f099c424bd3585b1365fe0475762fa91a2daef07250c8ee7f1f1d9b239795467f6e8f124d5e0284712168060481c16971'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'do-not-reply@parking-space.com'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -25,7 +25,7 @@ Devise.setup do |config|
   # Configure which keys are used when authenticating a user. The default is
   # just :email. You can configure it to use [:username, :subdomain], so for
   # authenticating a user, both parameters are required. Remember that those
-  # parameters are used only when authenticating and not when retrieving from
+  # parameters are used only when authenticating and not when retrieving eb from
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
