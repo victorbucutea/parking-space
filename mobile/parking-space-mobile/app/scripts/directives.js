@@ -2,21 +2,53 @@
 
 angular.module('ParkingSpaceMobile.directives', [])
 
-    .directive('map', function ($rootScope) {
+    .directive('map', function (geolocationService) {
         return {
             restrict: 'E',
             scope: {
                 onCreate: '&'
             },
             link: function ($scope, $element, $attr) {
+                function CenterControl(controlDiv, map) {
+
+                    // Set CSS for the control border.
+                    var controlUI = document.createElement('div');
+                    $(controlUI).addClass('center-btn');
+                    controlDiv.appendChild(controlUI);
+
+                    // Set CSS for the control interior.
+                    var controlText = document.createElement('div');
+                    controlText.innerHTML = '<i class="ion-android-locate fa-2x" ></i>';
+                    controlUI.appendChild(controlText);
+
+                    // Setup the click event listeners: simply set the map to Chicago.
+                    controlUI.addEventListener('click', function() {
+                        geolocationService.getCurrentLocation(function(position) {
+                            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                            map.setCenter(pos);
+                        });
+                    });
+
+                }
+
                 function initialize() {
                     var mapOptions = {
                         center: new google.maps.LatLng(43.07493, -89.381388),
                         zoom: 19,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        streetViewControl: false
+                        streetViewControl: false,
+                        zoomControl: true,
+                        zoomControlOptions: {
+                            position: google.maps.ControlPosition.RIGHT_CENTER
+                        },
+                        mapTypeControl: false
                     };
                     var map = new google.maps.Map($element[0], mapOptions);
+
+                    var centerControlDiv = document.createElement('div');
+                    var centerControl = new CenterControl(centerControlDiv, map);
+                    centerControlDiv.index = 1;
+                    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
                     var overlay = new google.maps.OverlayView();
                     overlay.setMap(map);
                     overlay.draw = function () {
@@ -33,63 +65,54 @@ angular.module('ParkingSpaceMobile.directives', [])
         };
     })
 
-    .directive('parkingAreaSymbol', function ($ionicGesture, $rootScope) {
+    .directive('searchCenterIcon', function () {
         return {
             restrict: 'E',
-            scope: {
-                'marker': '=',
-                'showPointer': '='
-            },
-            template: '<i class="parking-area-pointer fa fa-hand-o-right" ng-show="showPointer"></i>' +
-                '<div class="parking-area-wrapper">' +
-                '<div class="parking-area" ng-style="marker.markerStyle">' +
-                '<i class="fa fa-angle-left fa-rotate-45 top-left"></i>' +
-                '&nbsp; ' +
-                ' <i class="fa fa-angle-left fa-rotate-135 top-right"></i>' +
-                ' <span>P</span>' +
-                ' <i class="fa fa-angle-right fa-rotate-135 bottom-left"></i>' +
-                '&nbsp; ' +
-                ' <i class="fa fa-angle-right fa-rotate-45 bottom-right"></i>' +
-                '</div>' +
-                ' </div>',
-            link: function ($scope, $element) {
+            template: '<div id="searchCenterIcon" class="search-center-icon"></div>',
+            link: function ($scope, $element, $attr) {
+                var height = $element.height();
+                $element.find('.search-center-icon').css('margin-top', height / 2);
             }
         }
     })
 
-    .directive('parkingSpotMarker', function ($ionicGesture, $rootScope, $state) {
+    .directive('parkingAreaSymbol', function ($ionicGesture, $rootScope, $state) {
         return {
             restrict: 'E',
             scope: {
-                'marker': '=',
-                'showPointer': '='
+                'marker': '='
             },
-            template: '<parking-area-symbol marker="marker" ng-hide="searchCenterIcon" show-pointer="showPointer"></parking-area-symbol>' +
-                '<div ng-show="searchCenterIcon " class="search-center-icon"></div>',
+            template: '<div id="parkingAreaSymbol" >' +
+                        '<i class="parking-area-pointer fa fa-hand-o-right" id="handPointer"></i>' +
+                        '<div class="parking-area-wrapper" id="parkingAreaWrapper">' +
+                            '<div class="parking-area" id="parkingAreaRectangle">' +
+                                '<i class="fa fa-angle-left fa-rotate-45 top-left"></i>' +
+                                '&nbsp; ' +
+                                '<i class="fa fa-angle-left fa-rotate-135 top-right"></i>' +
+                                '<span>P</span>' +
+                                '<i class="fa fa-angle-right fa-rotate-135 bottom-left"></i>' +
+                                '&nbsp; ' +
+                                '<i class="fa fa-angle-right fa-rotate-45 bottom-right"></i>' +
+                            '</div>' +
+                        '</div>'+
+                      '</div>',
             link: function ($scope, $element, $attr) {
 
                 var marker = $scope.marker;
                 var height = $element.height();
                 marker.rotation |= 0;
 
-
-                $rootScope.$on('searchCenterIcon', function (event, value) {
-                    $scope.searchCenterIcon = value;
-                });
-
-
                 google.maps.event.addListener($rootScope.map, 'idle', function () {
                     var mapCenter = $rootScope.overlay.getProjection().fromLatLngToContainerPixel($rootScope.map.getCenter());
                     var markerTop = mapCenter.y - (height / 2);
                     $element.css('top', markerTop + 'px');
-                    $element.find('.search-center-icon').css('margin-top', height / 2 - 10);
                 });
 
 
-                $scope.$watch('marker.rotation', function (newVal) {
-                    var parkingArea = $element.find('.parking-area-wrapper');
+                var rotate = function (newVal) {
+                    var parkingArea = $element.find('#parkingAreaWrapper');
                     parkingArea.css('transform', 'rotate(' + Math.round(newVal) + 'deg)');
-                });
+                };
 
                 $ionicGesture.on('tap', function (e) {
                     if (marker.rotation >= -157.5) {
@@ -97,8 +120,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                     } else {
                         marker.rotation = 0;
                     }
-                    $scope.$apply();
-                    e.gesture.preventDefault();
+                    rotate(marker.rotation);
                 }, $element);
 
             }

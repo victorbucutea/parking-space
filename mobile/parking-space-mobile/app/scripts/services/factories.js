@@ -57,4 +57,6 @@ angular.module('ParkingSpaceMobile.services')
             });
             collection[idx] = item;
         };
-    });
+    })
+
+    ;

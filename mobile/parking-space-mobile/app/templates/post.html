@@ -1,4 +1,7 @@
 <div id="post-space" ng-controller="PostParkingSpaceCtrl">
+
+    <parking-area-symbol class="map-center-marker" marker="marker"></parking-area-symbol>
+
     <ul class="row select-pill">
         <li class="col" ng-click="space.short_term = false">
             <a  ng-class="{active: !space.short_term}"><i class="fa fa-calendar"></i> Long term</a>
@@ -7,9 +10,7 @@
             <a  ng-class="{active: space.short_term}"><i class="fa fa-clock-o"></i> Short term</a>
         </li>
     </ul>
-    <div class="center-map-to-location" ng-click="centerMapOnCurrentLocation()">
-        <i class="ion-android-locate fa-2x" ></i>
-    </div>
+
     <div id="tab1"  ng-hide="space.short_term" ng-click="review()">
         <parking-spot-info-box space="space" ></parking-spot-info-box>
     </div>

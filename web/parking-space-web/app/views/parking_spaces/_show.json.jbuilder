@@ -12,7 +12,7 @@ json.owner_is_current_user parking_space.deviceid == current_user.device_id
 json.expired parking_space.expired?
 
 json.offers do
-  # this call increases costs by 40%, replacing the partial call it with its raw content
+  # this call increases costs by 40%, replacing the partial call with its raw content
   # json.array! parking_space.proposals, partial: 'proposals/show', as: :proposal
   json.array! parking_space.proposals do |proposal|
     json.extract! proposal, :id, :title_message, :phone_number, :created_at

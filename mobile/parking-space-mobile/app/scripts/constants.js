@@ -2,6 +2,6 @@
 
  angular.module("config", [])
 
-.constant("ENV", "http://parking-space-web-dev.elasticbeanstalk.com//")
+.constant("ENV", "http://192.168.0.180:3000/")
 
 ;

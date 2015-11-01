@@ -1,7 +1,6 @@
 <div class="full-height">
         <div ng-controller="MapCtrl" id="map"  >
             <map on-create="mapCreated(map, overlay, geocoder)"></map>
-            <parking-spot-marker class="parking-spot-marker" marker="marker" show-pointer="showPointer"></parking-spot-marker>
         </div>
 
         <ui-view name="map-controls"></ui-view>
