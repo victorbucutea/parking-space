@@ -47,6 +47,10 @@ class ProposalsController < ApplicationController
   def create
     @proposal = Proposal.new(proposal_params)
 
+    @proposal.deviceid = current_user.device_id
+    @proposal.bidder_name = current_user.full_name
+
+
     respond_to do |format|
       if @proposal.save
         notify_space_owner @proposal

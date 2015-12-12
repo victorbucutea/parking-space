@@ -67,16 +67,6 @@ angular.module('ParkingSpaceMobile.services')
                 })
         };
 
-
-        _this.getUser = function () {
-            var item = localStorage.getItem('user');
-            if (item) {
-                return JSON.parse(item);
-            } else {
-                console.error('cannot initialize user. Not logged in?');
-            }
-        };
-
     })
 
     .service('errorHandlingService', function ($rootScope, $state) {

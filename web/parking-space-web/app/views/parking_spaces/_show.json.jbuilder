@@ -7,6 +7,8 @@ json.rotation_angle parking_space.rotation_angle.to_f
 json.timestamp parking_space.created_at
 json.short_term parking_space.short_term?
 json.price parking_space.target_price.to_f
+json.thumbnail_url parking_space.thumbnail_image_url
+json.image_url parking_space.standard_image_url
 json.currency parking_space.target_price_currency
 json.owner_is_current_user parking_space.deviceid == current_user.device_id
 json.expired parking_space.expired?

@@ -10,20 +10,32 @@ angular.module('ParkingSpaceMobile', [
 
     .run(function () {
 
+        function onKeyboardShow(e) {
+            var currentFocus = $( document.activeElement );
+            var currentFocusOfssetTop = currentFocus.offset().top;
+            if ( currentFocusOfssetTop > 250 ) {
+                // move modals with 100px towards the top
+                $('div.ps-modal').addClass('on-show-keyboard');
+            }
+        }
 
+        function onKeyboardHide() {
+            // move modals back in place
+            $('div.ps-modal').removeClass('on-show-keyboard');
+        }
 
         function onDeviceReady() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.disableScroll(false);
             }
-
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-
+            document.addEventListener("hidekeyboard", onKeyboardHide, false);
+            document.addEventListener("showkeyboard", onKeyboardShow, false);
         }
 
         document.addEventListener('deviceready', onDeviceReady, true);

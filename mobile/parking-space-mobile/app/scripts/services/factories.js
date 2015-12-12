@@ -4,23 +4,25 @@
 angular.module('ParkingSpaceMobile.services')
 
     .factory('imageResizeFactory', function () {
-        return function (base64img, newWidth, newHeight) {
-
+        return function (imgUrl, newWidth, newHeight) {
+            if (!imgUrl)
+                return;
             // create an off-screen canvas
             var canvas = document.createElement('canvas'),
                 ctx = canvas.getContext('2d');
 
             // set its dimension to target size
-            canvas.width = width;
-            canvas.height = height;
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            var img = document.createElement('img');
+            img.src = imgUrl;
 
             // draw source image into the off-screen canvas:
-            ctx.drawImage(base64img, 0, 0, newWidth, newHeight);
+            ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
             // encode image to data-uri with base64 version of compressed image
-            data = canvas.toDataURL();
-            canvas.parentNode.removeChild(canvas);
-            return data;
+            return canvas.toDataURL();
         }
     })
 
@@ -59,4 +61,4 @@ angular.module('ParkingSpaceMobile.services')
         };
     })
 
-    ;
+;

@@ -1,10 +1,10 @@
 {
   "name": "parking-space-mobile",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "cordova": "~3.5.0-0.2.6",
+    "cordova": "~4.3.1",
     "glob": "~4.0.5",
     "grunt": "~0.4.1",
     "grunt-autoprefixer": "~0.4.0",
@@ -52,14 +52,14 @@
     "https://github.com/driftyco/ionic-plugins-keyboard.git",
     "org.apache.cordova.statusbar",
     "org.apache.cordova.console",
-    "org.apache.cordova.camera",
     "https://github.com/raananw/PhoneGap-Image-Resizer.git",
     "org.apache.cordova.file",
     "https://github.com/hazemhagrass/phonegap-base64.git",
-    "nl.x-services.plugins.googleplus",
     "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
     "https://github.com/phonegap-build/PushPlugin.git",
-    "com.ionic.keyboard",
-    "https://github.com/apache/cordova-plugin-vibration"
+    "https://github.com/apache/cordova-plugin-vibration",
+    "https://github.com/driftyco/ionic-plugin-keyboard",
+    "https://github.com/cjpearson/cordova-plugin-keyboard",
+    "org.apache.cordova.geolocation"
   ]
 }

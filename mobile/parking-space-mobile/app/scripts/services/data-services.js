@@ -1,6 +1,6 @@
 angular.module('ParkingSpaceMobile.services', [])
 
-    .service('parkingSpaceService', function ($rootScope, $http, ENV, userService, errorHandlingService) {
+    .service('parkingSpaceService', function ($rootScope, $http, ENV, userService, imageResizeFactory, errorHandlingService) {
 
         this.getAvailableSpaces = function (lat, lng, range, clbk, errClbk) {
             $('.loading-spinner').show();
@@ -59,27 +59,30 @@ angular.module('ParkingSpaceMobile.services', [])
         this.saveSpace = function (space, clbk) {
 
             // massage space a to fit the back end model
+            var imageUrl = space.local_image_url;
             space.target_price = space.price;
             space.target_price_currency = space.currency;
-            space.phone_number = userService.getUser().phone_number;
-            space.deviceid = userService.getUser().device_id;
-            space.owner_name = userService.getUser().full_name;
+            space.image_data = imageResizeFactory(imageUrl, 480, 640);
+            space.thumbnail_data = imageResizeFactory(imageUrl, 89, 118);
+            if (imageUrl) {
+                space.image_file_name = imageUrl.substr(imageUrl.lastIndexOf("/") + 1);
+            }
+            space.image_content_type = 'image/jpeg';
             if (space.short_term)
                 space.interval = 1;
             else
                 space.interval = 0;
 
 
-            var loading = $('.loading-spinner');
-            loading.show();
+            var parking_space = {parking_space: space};
 
             var url = space.id ? ENV + 'parking_spaces/' + space.id + '.json' : ENV + 'parking_spaces.json';
-            var restCall = space.id ? $http.put(url, space) : $http.post(url, space);
+            var restCall = space.id ? $http.put(url, parking_space) : $http.post(url, parking_space);
 
             restCall.success(function (data) {
                 //TODO show mesage with direct dom manipulation
                 $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Parking space saved!'});
-                loading.hide();
+
                 if (clbk) {
                     clbk(data);
                 }
@@ -115,7 +118,6 @@ angular.module('ParkingSpaceMobile.services', [])
             });
 
         };
-
     })
 
     .service('messageService', function ($rootScope, $http, $timeout, ENV, userService) {
@@ -154,9 +156,6 @@ angular.module('ParkingSpaceMobile.services', [])
     .service('offerService', function ($http, $timeout, ENV, userService, $rootScope, errorHandlingService) {
 
         this.placeOffer = function (bid, spaceId, clbk) {
-            bid.phone_number = userService.getUser().phone_number;
-            bid.deviceid = userService.getUser().device_id;
-            bid.bidder_name = userService.getUser().full_name;
             bid.parking_space_id = spaceId;
 
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals.json', bid)

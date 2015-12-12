@@ -127,42 +127,11 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('parkingSign', function (ENV) {
-        return {
-            restrict: 'E',
-            template: '<span class="parking-sign" ng-class="{small: small}" ng-hide="space.thumbnail_image_url">' +
-                '<i class="fa {{icon}}"></i>' +
-                '<i class="text"></i>' +
-                '</span>' +
-                '<img ng-src="{{space.thumbnail_image_url ? ENV + space.thumbnail_image_url : space.thumbnail_image_url }}" ' +
-            '           class="parking-sign" ng-class="{small: small}" ng-show="space.thumbnail_image_url">',
-            scope: {
-                icon: '=',
-                space: '=',
-                small: '='
-            },
-            link: function ($scope, $element, $attr) {
-                $scope.ENV = ENV;
-                var text = $element.find('.text');
-                var icon = $element.find('.fa');
-                var img = $element.find('img');
-
-
-                if (!$scope.icon) {
-                    icon.remove();
-                    text.text('P');
-                } else {
-                    text.remove();
-                }
-            }
-        }
-    })
 
     .directive('parkingSpotInfoBox', function (ENV) {
         return {
             restrict: 'E',
             template: '<div class="item row parking-spot-details " >' +
-                        '    <parking-sign small="true" ng-hide="hideThumbnail" space="space"></parking-sign>' +
                         '    <div ng-hide="space.title">' +
                         '        <h2>Drag to select a spot </h2>' +
                         '    </div>' +

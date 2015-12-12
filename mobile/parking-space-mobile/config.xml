@@ -4,15 +4,37 @@
         xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Parking Space</name>
     <description>
-        Social tool for parking space sharing. Offers possibility to sell and buy parking spaces.
+        Social parking space sharing app. Offers possibility to sell and buy parking spaces.
     </description>
     <author email="victor.bucutea@gmail.com" href="http://softspot.ro">
         Victor Bucutea
     </author>
     <content src="index.html" />
+
     <access origin="*" />
     <access origin="tel:*" launch-external="yes"/>
     <access origin="mailto:*" launch-external="yes"/>
-    <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="ShowSplashScreenSpinner" value="true" />
+    <access origin="sms:*" launch-external="yes"/>
+
+    <preference name="SplashScreen" value="screen" />
+
+    <platform name="android">
+        <icon src="resources/android/drawable-mdpi/parking_sign.png" density="mdpi" />
+        <icon src="resources/android/drawable-hdpi/parking_sign.png" density="hdpi" />
+        <icon src="resources/android/drawable-xhdpi/parking_sign.png" density="xhdpi" />
+        <icon src="resources/android/drawable-xxhdpi/parking_sign.png" density="xxhdpi" />
+
+        <splash src="resources/android/drawable-land-hdpi/screen.png" density="land-hdpi"/>
+        <splash src="resources/android/drawable-land-ldpi/screen.png" density="land-ldpi"/>
+        <splash src="resources/android/drawable-land-mdpi/screen.png" density="land-mdpi"/>
+        <splash src="resources/android/drawable-land-xhdpi/screen.png" density="land-xhdpi"/>
+        <splash src="resources/android/drawable-land-xhdpi/screen.png" density="land-xhdpi"/>
+        <splash src="resources/android/drawable-land-xhdpi/screen.png" density="land-xhdpi"/>
+        <splash src="resources/android/drawable-port-hdpi/screen.png" density="port-hdpi"/>
+        <splash src="resources/android/drawable-port-ldpi/screen.png" density="port-ldpi"/>
+        <splash src="resources/android/drawable-port-mdpi/screen.png" density="port-mdpi"/>
+        <splash src="resources/android/drawable-port-xhdpi/screen.png" density="port-xhdpi"/>
+        <splash src="resources/android/drawable-port-xxhdpi/screen.png" density="port-xxhdpi"/>
+        <splash src="resources/android/drawable-port-xxxhdpi/screen.png" density="port-xxxhdpi"/>
+    </platform>
 </widget>

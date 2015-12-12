@@ -30,7 +30,11 @@
                 <div class="item upload-photo">
                     <div class="row">
                         <div class="col-34" on-tap="takePhoto()" on-hold="attachPhoto()">
-                            <parking-sign icon="'fa-camera'" space="spaceEdit"></parking-sign>
+                            <span class="parking-sign" ng-hide="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
+                               <i class="fa fa-camera"></i>
+                               <i class="text"></i>
+                            </span>
+                            <img ng-src="{{imageUrl(spaceEdit)}}" class="parking-sign" ng-show="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
                         </div>
                         <div class="col-66">
                             <label class="item item-input item-stacked-label desc-textarea">
@@ -58,7 +62,9 @@
                     <i class="fa fa-clock-o" ng-show="spaceEdit.short_term"> </i>
                     {{spaceEdit.short_term? 'Short Term': 'Long Term'}} space ? <br/><br/>
 
-                    Price : <b> {{spaceEdit.price}}<currency val="spaceEdit.currency"></currency></b><br/>
+                    Price : <b> {{spaceEdit.price}}
+                    <currency val="spaceEdit.currency"></currency>
+                </b><br/>
 
                     Title : <b> {{spaceEdit.title}}</b><br/>
 

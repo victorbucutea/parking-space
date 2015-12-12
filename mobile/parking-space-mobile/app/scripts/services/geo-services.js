@@ -20,7 +20,8 @@ angular.module('ParkingSpaceMobile.services')
                 }
 
             };
-            navigator.geolocation.getCurrentPosition(onSuccess, clbkErr || onError);
+            navigator.geolocation.getCurrentPosition(onSuccess, clbkErr || onError, {timeout: 5000, enableHighAccuracy: true});
+
         }
     })
 

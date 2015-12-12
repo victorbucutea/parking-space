@@ -1,7 +1,7 @@
 /**
  * Created by 286868 on 04.04.2015.
  */
-angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl', function ($scope, $state, imageResizeFactory, replaceById, parkingSpaceService) {
+angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl', function ($scope, $state, replaceById, parkingSpaceService, ENV) {
 
     var copiedSpaceEdit = false;
 
@@ -17,44 +17,47 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
         }
     });
 
+    $scope.imageUrl = function (spaceEdit) {
+        if (!spaceEdit) {
+            return '#';
+        }
+
+        if (spaceEdit.local_image_url) {
+            return spaceEdit.local_image_url;
+        }
+
+        if (spaceEdit.thumbnail_url) {
+            return ENV + spaceEdit.thumbnail_url;
+        }
+
+        if (spaceEdit.image_url) {
+            return ENV + spaceEdit.image_url;
+        }
+
+    };
+
+    var cameraSuccess = function (img) {
+        $scope.spaceEdit.local_image_url = img;
+        $scope.$apply();
+    };
+
+    var cameraError = function (img) {
+        console.log('error while taking :', img);
+    };
+
 
     $scope.takePhoto = function () {
-        var cameraSuccess = function (img) {
-            $scope.spaceEdit.image_data = img;
-            $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
-            $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
-            $scope.spaceEdit.image_content_type = 'image/jpeg';
-            $scope.$apply();
-        };
-
-        var cameraError = function (img) {
-            console.log('error while taking :', img);
-        };
 
         navigator.camera.getPicture(cameraSuccess, cameraError, {
             quality: 80,
             destinationType: navigator.camera.DestinationType.FILE_URI,
-            encodingType: Camera.EncodingType.JPEG,
-            targetWidth: 480,
-            targetHeight: 640
+            encodingType: Camera.EncodingType.JPEG
         });
     };
 
     $scope.attachPhoto = function () {
-        var cameraSuccess = function (img) {
-            $scope.spaceEdit.image_data = img;
-            $scope.spaceEdit.thumbnail_data = imageResizeFactory(img);
-            $scope.spaceEdit.image_file_name = img.substr(img.lastIndexOf("/") + 1);
-            $scope.spaceEdit.image_content_type = 'image/jpeg';
-            $scope.$apply();
-        };
-
-        var cameraError = function (img) {
-            console.log('error while taking :', img);
-        };
-
         navigator.camera.getPicture(cameraSuccess, cameraError, {
-            quality: 50,
+            quality: 80,
             destinationType: navigator.camera.DestinationType.FILE_URI,
             sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
         });
