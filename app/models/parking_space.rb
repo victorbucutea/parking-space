@@ -1,3 +1,6 @@
+require 'rack/mime'
+
+
 class ParkingSpace < DeviceRecord
   include ActiveModel::Dirty
 
@@ -36,14 +39,19 @@ class ParkingSpace < DeviceRecord
     if image_data.present?
       path = "#{Rails.root}/public/files/images/"
       FileUtils.mkdir_p(path) unless File.directory?(path)
-      standard_name = "#{deviceid}_standard_#{image_file_name}"
-      thumbnail_name = "#{deviceid}_thumbnail_#{image_file_name}"
+
+      extension = Rack::Mime::MIME_TYPES.invert[image_content_type]
+
+      light_deviceid = Time.now.to_i.to_s + "_" + self.deviceid[0..10]
+
+      standard_name = "#{light_deviceid}_standard#{extension}"
+      thumbnail_name = "#{light_deviceid}_thumbnail#{extension}"
       File.open(path + standard_name, 'wb') do |file|
-        file.write(Base64.decode64(self.image_data))
+        file.write(Base64.decode64(self.image_data[22..-1]))
       end
 
       File.open(path + thumbnail_name, 'wb') do |file|
-        file.write(Base64.decode64(self.thumbnail_data)) if thumbnail_data.present?
+        file.write(Base64.decode64(self.thumbnail_data[22..-1])) if thumbnail_data.present?
       end
 
       self.standard_image_url = "/files/images/#{standard_name}"

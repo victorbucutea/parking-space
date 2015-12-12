@@ -96,6 +96,7 @@ class ParkingSpacesController < ApplicationController
   def create
     @parking_space = ParkingSpace.new(parking_space_params)
     @parking_space.deviceid = current_user.device_id
+    @parking_space.owner_name = current_user.full_name
 
     respond_to do |format|
       if @parking_space.save
@@ -142,10 +143,10 @@ class ParkingSpacesController < ApplicationController
     params.require(:parking_space).permit(:location_lat, :location_long,
                                           :recorded_from_lat, :recorded_from_long,
                                           :deviceid, :target_price, :target_price_currency,
-                                          :interval, :phone_number,:owner_name, :image_file_name,
-                                          :image_content_type, :image_file_size, :title,
-                                          :address_line_1, :address_line_2, :image_data,
-                                          :thumbnail_image_url, :standard_image_url,
+                                          :interval, :phone_number,:owner_name,
+                                          :image_file_name, :image_content_type, :image_file_size, :title,
+                                          :image_data, :thumbnail_data, :thumbnail_image_url, :standard_image_url,
+                                          :address_line_1, :address_line_2,
                                           :rotation_angle, :description, :created_at)
   end
 end
