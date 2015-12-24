@@ -8,11 +8,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtr
 
     $scope.marker = {};
 
-    if ($rootScope.map) {
-        $rootScope.map.setZoom(19);
-    }
-
-
     $scope.review = function () {
         $scope.spaceEdit = {};
         angular.copy($scope.space, $scope.spaceEdit);
@@ -26,27 +21,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtr
     $scope.save = function () {
         $scope.space = $scope.spaceEdit;
         $state.go('^');
-    };
-
-    $scope.expirationDate = function () {
-        var stExp = parameterService.getShortTermExpiration();
-        var ltExp = parameterService.getLongTermExpiration();
-        var x = new Date();
-        if ($scope.spaceEdit) {
-            if ($scope.spaceEdit.short_term) {
-                var in5Min = new Date(x.getTime() + stExp * 60000);
-                var s = in5Min.toLocaleDateString() + " at " + in5Min.toLocaleTimeString();
-                s = s.substring(0, s.length - 3);
-                return s;
-            } else {
-                var in2Weeks = new Date(x.getTime() + ltExp * 60000 * 60 * 24 * 7);
-                var s1 = in2Weeks.toLocaleDateString() + " at " + in2Weeks.toLocaleTimeString();
-                s1 = s1.substring(0, s1.length - 3);
-                return s1;
-            }
-        }
-
-        return "";
     };
 
     $scope.zoomChangedClbk = function () {
@@ -108,7 +82,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtr
             $scope.space.location_long = mapCenter.lng();
             $scope.space.rotation_angle = $scope.marker.rotation || 0;
 
-
             if (!$scope.space.title) {
                 $scope.space.title = sublocality;
             }
@@ -122,8 +95,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtr
 
 
     $scope.$on('$stateChangeStart' , function (event, toState) {
-        google.maps.event.removeListener(zoomChangedHandler);
-        google.maps.event.removeListener(calcAddressHandler);
+        if( toState.name.indexOf('home.map.post') == -1 ) {
+            google.maps.event.removeListener(zoomChangedHandler);
+            google.maps.event.removeListener(calcAddressHandler);
+        }
     });
 
 });

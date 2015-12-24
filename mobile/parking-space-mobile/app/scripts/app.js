@@ -115,19 +115,11 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.place', {
-                url: '/place-offer',
+            .state('home.map.search.bids', {
+                url: '/place-bid',
                 views: {
                     'place-offer': {
-                        templateUrl: "templates/place-offer.html"
-                    }
-                }
-            })
-            .state('home.map.search.place.help', {
-                url: '/help',
-                views: {
-                    'help': {
-                        templateUrl: "templates/place-offer-help.html"
+                        templateUrl: "templates/review-bids.html"
                     }
                 }
             })
@@ -135,7 +127,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/myposts',
                 views: {
                     'content': {
-                        templateUrl: "templates/myposts.html"
+                        templateUrl: "templates/my-posts.html"
                     }
                 }
             })
@@ -143,7 +135,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/help',
                 views: {
                     'help': {
-                        templateUrl: "templates/myposts-help.html"
+                        templateUrl: "templates/my-posts-help.html"
                     }
                 }
             })
@@ -151,7 +143,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/bids/{parking_space_id}',
                 views: {
                     'edit-space': {
-                        templateUrl: "templates/review-offers.html"
+                        templateUrl: "templates/review-bids.html"
                     }
                 }
             })
@@ -183,7 +175,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/myoffers',
                 views: {
                     'content': {
-                        templateUrl: "templates/myoffers.html"
+                        templateUrl: "templates/my-bids.html"
                     }
                 }
             })
@@ -191,7 +183,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/help',
                 views: {
                     'help': {
-                        templateUrl: "templates/myoffers-help.html"
+                        templateUrl: "templates/my-bids-help.html"
                     }
                 }
             })

@@ -11,10 +11,7 @@
         </li>
     </ul>
 
-    <div id="tab1"  ng-hide="space.short_term" ng-click="review()">
-        <parking-spot-info-box space="space" ></parking-spot-info-box>
-    </div>
-    <div id="tab2"  ng-show="space.short_term" ng-click="review()">
+    <div id="tab1" ng-click="review()">
         <parking-spot-info-box space="space" ></parking-spot-info-box>
     </div>
     <div class="button-bar">

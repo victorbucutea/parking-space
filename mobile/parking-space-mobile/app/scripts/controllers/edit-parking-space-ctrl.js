@@ -1,21 +1,14 @@
 /**
  * Created by 286868 on 04.04.2015.
  */
-angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl', function ($scope, $state, replaceById, parkingSpaceService, ENV) {
+angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl', function ($scope, $state, $stateParams, replaceById, parkingSpaceService, ENV) {
 
-    var copiedSpaceEdit = false;
 
-    $scope.$watch('spaceEdit', function (newVal) {
-        if (!newVal) {
-            return;
-        }
-        // make a copy of this variable when the reference changes
-        // e.g. ajax loading or manually assigned in the parent
-        if (!copiedSpaceEdit) {
-            $scope.spaceEdit = angular.copy(newVal);
-            copiedSpaceEdit = true
-        }
-    });
+    if ( $stateParams.parking_space_id ) {
+        parkingSpaceService.getMySpace($stateParams.parking_space_id, function(data){
+            $scope.spaceEdit = data;
+        });
+    }
 
     $scope.imageUrl = function (spaceEdit) {
         if (!spaceEdit) {
@@ -69,6 +62,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
             replaceById(savedSpace, $scope.spaces);
         });
         $state.go('^');
+    };
+
+    $scope.confirmSave = function() {
+        var text = "Are you sure you want to place this space for "+ $scope.spaceEdit.price + " " +$scope.spaceEdit.currency + "?\n\n";
+        if (confirm(text)){
+            $scope.save();
+        }
     };
 
     $scope.close = function () {

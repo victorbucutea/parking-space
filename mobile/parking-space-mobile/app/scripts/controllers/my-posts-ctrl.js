@@ -64,34 +64,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
 
 
     $scope.show = function (space) {
-        $scope.spaceEdit = space;
-        $state.go('home.myposts.bids', {parking_space_id: space.id}).then(function () {
-            var unreadOffersExist;
-            space.offers.forEach(function (d) {
-                if (!d.read) {
-                    unreadOffersExist = true;
-                }
-            });
-
-            if (unreadOffersExist) {
-                setTimeout(function () {
-                    if ($state.current.name != 'home.myposts.bids') {
-                        // user navigated to a different state
-                        return;
-                    }
-
-                    parkingSpaceService.markOffersAsRead(space.id, function (space) {
-                        $scope.spaceEdit = space;
-                        replaceById(space, $scope.spaces);
-                    });
-                }, 3000);
-            }
-        });
+        $scope.selectedSpace = space;
+        $state.go('home.myposts.bids', {parking_space_id: space.id});
     };
 
 
     $scope.showMessages = function (space) {
-        $scope.spaceEdit = space;
+        $scope.selectedSpace = space;
         $state.go('home.myposts.bids.talk');
     };
 

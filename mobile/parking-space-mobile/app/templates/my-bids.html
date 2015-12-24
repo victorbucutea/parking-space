@@ -28,7 +28,7 @@
                 <i class="fa fa-refresh fa-spin loading-spinner"></i>
             </h4>
             <div class="bid-table no-margin" ng-show="space.offers.length">
-                <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in space.offers | orderBy: 'timestamp'"
+                <div class="offer" ng-click="selectOffer(offer, space)" ng-repeat="offer in space.offers | orderBy: 'timestamp'"
                      ng-class="{selected: selOffer == offer}">
                 <span class="offer-price">
                     {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
@@ -39,10 +39,10 @@
                     ( <i class="fa fa-envelope"></i> {{messagesForOffer(offer)}} )
                 </span>
 
-                    <div class="pull-right offer-accept">
-                        <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
-                        <i class="ion-checkmark-round" ng-show="!offer.approved"> Proposed </i>
-                    </div>
+                <div class="pull-right offer-accept">
+                    <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
+                    <i ng-show="!offer.approved"> Proposed </i>
+                </div>
 
                 </div>
             </div>
@@ -51,21 +51,18 @@
     <div class="ps-dialog" id="showPhoneNumber">
         <div class="ps-dialog-content">
             <div class="ps-question">
+                <parking-spot-info-box class="small" space="selectedSpace"></parking-spot-info-box>
                 <div ng-hide="selOffer.approved">
+                    <hr/>
                     Your offer is not yet accepted!
                     <br/>
                     <br/>
-
                     <div class="ps-text-xxbig">
                         :(
                     </div>
                 </div>
                 <div ng-show="selOffer.approved">
-                    Congratulations! <br/>
-                    Your offer has been accepted!
-                    <br/>
-                    <br/>
-
+                    <hr/>
                     <a ng-href="tel:{{selOffer.phone_number}}">
                         <div class="ps-text-xbig">
                             Call {{selOffer.owner_name}}

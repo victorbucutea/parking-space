@@ -4,7 +4,6 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('MessagesCtrl', function ($scope, $timeout, messageService, $stateParams) {
 
-    console.log($stateParams);
 
 
     $scope.scrollDown = function () {

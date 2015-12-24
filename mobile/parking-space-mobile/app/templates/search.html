@@ -1,28 +1,58 @@
-<div ng-controller="SearchParkingSpaceCtrl" class="map-controls scroll">
+<div ng-controller="SearchParkingSpaceCtrl" class="map-controls">
 
     <search-center-icon class="map-center-marker no-pointer-events"></search-center-icon>
 
     <div class="search-radius-controller">
         <a class="button button-icon icon ion-minus-circled" ng-click="decreaseRadius()"></a>
-        <div class="value"> {{circleOptions.radius}} <small>m</small></div>
+
+        <div class="value"> {{circleOptions.radius}}
+            <small>m</small>
+        </div>
         <a class="button button-icon icon ion-plus-circled pull-right" ng-click="increaseRadius()"></a>
     </div>
 
-    <div class="padding-horizontal">
-        <small>
-        {{noOfShortTerm.length || 0}}<img src="images/marker_orange.png" height="28"> short term,
-            {{noOfLongTerm.length || 0}}<img src="images/marker_blue.png" height="28"> long term
-        </small>
-    </div>
     <div id="search-space">
-        <div class="list open-spaces-list">
-            <span class="item " ng-click="showBid(space)" ng-repeat="space in spaces">
-                <parking-spot-info-box class="small" space="space"></parking-spot-info-box>
+        <div class="space-detail-title" ng-show="selectedSpace">
+            <h3 ng-hide="selectedSpace.owner_is_current_user">{{selectedSpace.owner_name}}
+                <i class="ion-android-share pull-right"></i>
+            </h3>
+
+            <h3 ng-show="selectedSpace.owner_is_current_user">Your post <i class="ion-android-share pull-right"></i></h3>
+
+            <span>
+                {{selectedSpace.created_at | date: 'EEE, MMM d, h:mm' }} {{ "( expires "+expireDuration()+")" }}
             </span>
-            <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
-            <div class="no-items-msg loading-finished" ng-hide="spaces.length"> No spaces found.</div>
         </div>
+
+        <div class="space-detail-content padding">
+            <div class="pull-left" ng-click="showFullImage = true" ng-show="selectedSpace.thumbnail_image_url">
+                <img ng-src="{{stdImageUrl(selectedSpace.thumbnail_image_url)}}" height="100"/>
+            </div>
+            <div class="pull-left" style="width:70%" ng-click="showPlaceOffer()">
+                <parking-spot-info-box space="selectedSpace" ></parking-spot-info-box>
+            </div>
+        </div>
+
+        <div class="no-items-msg loading-finished" ng-hide="selectedSpace">Please select a space !</div>
     </div>
-    <ui-view name="place-offer" ></ui-view>
+
+    <div class="ps-modal thumbnail-modal" ng-show="showFullImage" ng-click="showFullImage = false">
+        <br/>
+        <br/>
+        <h2 class="text-center" ng-hide="selectedSpace.standard_image_url">
+           <span class="fa-stack fa-lg">
+              <i class="fa fa-camera fa-stack-1x"></i>
+              <i class="fa fa-ban fa-stack-2x"></i>
+            </span>
+        </h2>
+        <img ng-src="{{stdImageUrl(selectedSpace.standard_image_url)}}" class="ps-std-thumbnail"
+             ng-show="selectedSpace.standard_image_url"/>
+        <span>{{selectedSpace.description}}</span>
+    </div>
+
+    <div class="post-space" ui-sref="home.map.post">
+        <i class="fa fa-dollar"></i> Sell
+    </div>
+    <ui-view name="place-offer"></ui-view>
     <ui-view name="help"></ui-view>
 </div>

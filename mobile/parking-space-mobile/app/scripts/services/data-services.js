@@ -40,6 +40,23 @@ angular.module('ParkingSpaceMobile.services', [])
                 });
         };
 
+        this.getMySpace = function (parkingSpaceId, clbk) {
+            $('.loading-spinner').show();
+            $('.loading-finished').hide();
+
+            $http.get(ENV + 'parking_spaces/'+parkingSpaceId+".json")
+                .success(function (data) {
+                    $('.loading-spinner').hide();
+                    $('.loading-finished').show();
+                    if (clbk)
+                        clbk(data);
+                })
+                .error(function (data, status, headers, config) {
+                    errorHandlingService.handle(data, status);
+                    $('.loading-finished').show();
+                });
+        };
+
         this.getMyOffers = function (clbk) {
             $('.loading-spinner').show();
             $('.loading-finished').hide();
@@ -157,7 +174,8 @@ angular.module('ParkingSpaceMobile.services', [])
 
         this.placeOffer = function (bid, spaceId, clbk) {
             bid.parking_space_id = spaceId;
-
+            bid.bid_amount = bid.bidAmount;
+            bid.bid_currency = bid.bidCurrency;
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals.json', bid)
                 .success(function (data) {
                     //TODO show message with direct dom manipulation

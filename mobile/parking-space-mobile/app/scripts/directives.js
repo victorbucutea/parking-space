@@ -132,10 +132,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         return {
             restrict: 'E',
             template: '<div class="item row parking-spot-details " >' +
-                        '    <div ng-hide="space.title">' +
-                        '        <h2>Drag to select a spot </h2>' +
-                        '    </div>' +
-                        '    <div  ng-show="space.title">' +
+                        '    <div ng-show="space.title">' +
                         '        <h2><i class="fa fa-car"></i> {{space.title}}</h2>' +
                         '        <p>{{space.address_line_1}} ' +
                         '               <br  />' +
@@ -146,8 +143,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                         '            <currency val="space.currency"></currency>' +
                         '        </h1>' +
                         '    </div>' +
-                        '</div>' +
-                '<i class="fa watermark" ng-class="{\'fa-clock-o\': space.short_term, \'fa-calendar\': !space.short_term}"></i>',
+                        '</div>',
             scope: {
                 space: '=',
                 hideThumbnail: '@'

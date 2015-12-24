@@ -33,10 +33,13 @@ $xxbig-measure-unit: $xbig-measure-unit * $golden-ratio;
 // 39 px
 $xxxbig-measure-unit: $xxbig-measure-unit * $golden-ratio;
 
-// 105 px ( $base-unit * ratio ^ 6 )
+// 54 px
+$xxxxbig-measure-unit: $xxxbig-measure-unit * $golden-ratio;
+
+// 76 px ( $base-unit * ratio ^ 6 )
 $jumbo-measure-unit: $xxxbig-measure-unit  * $golden-ratio * $golden-ratio;
 
-// 118 px ( $base-unit * ratio ^ 7 )
+// 106 px ( $base-unit * ratio ^ 7 )
 $lg-jumbo-measure-unit: $jumbo-measure-unit * $golden-ratio;
 
 // 7px
@@ -469,6 +472,37 @@ html, body {
   }
 }
 
+.post-space {
+  border-radius: 50%;
+  background-color: $dflt-font-color;
+  color: #ffffff;
+  position: absolute;
+  text-align: center;
+  bottom: $xxbig-measure-unit;
+  right: $xxbig-measure-unit;
+  font-size: $xbig-measure-unit;
+  box-shadow: 3px 3px 10px 3px $gray-lighter;
+  padding: $xxbig-measure-unit $big-measure-unit;
+  border: 1px solid $red;
+  z-index: 2;
+}
+
+
+.space-detail-title {
+  padding: 0 $measure-unit $measure-unit $measure-unit;
+
+  h3 {
+    margin-bottom: 0;
+    margin-top: 10px;
+  }
+}
+
+.space-detail-content {
+  img {
+    border-radius: 5px;
+  }
+}
+
 .bid-amount {
 
   a {
@@ -481,6 +515,7 @@ html, body {
     width: 48px;
     float: left;
     font-size: $xxbig-measure-unit;
+    border-bottom:  1px solid $dflt-font-color;
   }
 
   .currency {
@@ -814,11 +849,8 @@ parking-spot-info-box.small {
   overflow-y: scroll;
 }
 
-.bids-area {
 
-  .bid-amount {
-    color: $red;
-  }
+.bids-area {
 
   .bid-title {
     border-bottom: 1px solid $gray;
@@ -827,14 +859,29 @@ parking-spot-info-box.small {
     white-space: nowrap;
   }
 
+  .bid-amount {
+    color: $red;
+    padding-top: $big-measure-unit;
+  }
+
+  .submit-offer {
+    background-color: $red;
+    border-radius: 5px;
+    color: #fff;
+    font-size: $xbig-measure-unit;
+    font-weight: 100;
+    border: none;
+    padding: 6px $xbig-measure-unit;
+    margin-top: $big-measure-unit;
+  }
   .bid-table {
     max-height: 110px;
     margin-top: $xxbig-measure-unit;
-    margin-bottom: $xxbig-measure-unit;
     border-top: 1px solid #C7C7C7;
     border-bottom: 1px solid #c7c7c7;
 
     &.no-margin {
+      max-height: none;
       margin-top: 0;
       margin-bottom: 0;
     }
@@ -850,9 +897,7 @@ parking-spot-info-box.small {
 
     .offer {
       background-color: $gray-xxlight;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: 1.2em;
 
       &.selected {
         background-color: darken(#f0f0f0, 15%);
@@ -863,7 +908,12 @@ parking-spot-info-box.small {
       }
 
       .offer-desc {
-        font-size: 0.9em;
+        font-size: 0.8em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        max-width: 128px;
       }
 
       .offer-price {
@@ -878,6 +928,7 @@ parking-spot-info-box.small {
 
       .offer-accept {
         padding: 5px;
+        text-decoration: underline;
       }
 
       .accepted {
