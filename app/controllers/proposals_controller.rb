@@ -49,6 +49,7 @@ class ProposalsController < ApplicationController
 
     @proposal.deviceid = current_user.device_id
     @proposal.bidder_name = current_user.full_name
+    @proposal.phone_number = current_user.phone_number
 
 
     respond_to do |format|

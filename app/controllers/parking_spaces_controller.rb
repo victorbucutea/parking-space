@@ -80,11 +80,15 @@ class ParkingSpacesController < ApplicationController
 
   # GET /parking_spaces/1/mark_offers_as_read
   def mark_offers_as_read
-    @parking_space = ParkingSpace.find(params[:parking_space_id])
+    parking_space_id = params[:parking_space_id]
+    @parking_space = ParkingSpace.find(parking_space_id)
 
     if @parking_space.proposals
       @parking_space.proposals.update_all(read: true)
     end
+
+    @parking_space = ParkingSpace.includes(proposals: [:messages]).find(parking_space_id)
+
 
     respond_to do |format|
       format.json { render :show, status: :ok }
@@ -110,6 +114,12 @@ class ParkingSpacesController < ApplicationController
   # PATCH/PUT /parking_spaces/1
   # PATCH/PUT /parking_spaces/1.json
   def update
+
+    if current_user.device_id != @parking_space.deviceid
+      render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
+      return
+    end
+
     respond_to do |format|
       if @parking_space.update(parking_space_params)
         format.json { render :show, status: :ok, location: @parking_space }

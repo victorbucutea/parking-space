@@ -26,244 +26,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="715c58ec-7279-41a8-b369-1b81e5ffc5c8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/resources/android/drawable-hdpi/parking_sign.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/resources/android/drawable-mdpi/parking_sign.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/resources/android/drawable-xhdpi/parking_sign.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/resources/android/drawable-xxhdpi/parking_sign.png" />
-      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\resources\android\drawable-hdpi\icon.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\resources\android\drawable-ldpi\icon.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\resources\android\drawable-mdpi\icon.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\resources\android\drawable-xhdpi\icon.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\resources\android\drawable\icon.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Austria.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Austria.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Belarus.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Belarus.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Belgium.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Belgium.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Canada.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Canada.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Czech_Republic.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Czech_Republic.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Denmark.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Denmark.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Estonia.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Estonia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Finland.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Finland.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/France.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/France.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Germany.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Germany.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Greece.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Greece.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Hungary.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Hungary.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129231231_standard_xx1.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129231231_standard_xx1.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129231231_thumbnail_xx1.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129231231_thumbnail_xx1.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129331241_standard_xx2.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129331241_standard_xx2.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129331241_thumbnail_xx2.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129331241_thumbnail_xx2.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129431251_standard_xx3.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129431251_standard_xx3.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129431251_thumbnail_xx3.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129431251_thumbnail_xx3.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129531261_standard_xx4.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129531261_standard_xx4.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8129531261_thumbnail_xx4.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8129531261_thumbnail_xx4.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8139431251_standard_xx.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8139431251_standard_xx.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/files/images/IMEI8139431251_thumbnail_xx.jpg" afterPath="$PROJECT_DIR$/public/files/images/IMEI8139431251_thumbnail_xx.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/India.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/India.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Israel.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Israel.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Italy.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Italy.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Japan.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Japan.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Latvia.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Latvia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Lithuania.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Lithuania.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Luxembourg.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Luxembourg.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Netherlands.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Netherlands.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Poland.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Poland.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Portugal.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Portugal.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/flags/Romania-7548c7044d99b61b9ca65e3a1f91ab26.png" afterPath="$PROJECT_DIR$/public/assets/flags/Romania-7548c7044d99b61b9ca65e3a1f91ab26.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Romania.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Romania.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Russia.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Russia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/flags/Russian_Federation-c3afbd566ac21c05cb0f228b37cf29c5.png" afterPath="$PROJECT_DIR$/public/assets/flags/Russian_Federation-c3afbd566ac21c05cb0f228b37cf29c5.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Saudi_Arabia.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Saudi_Arabia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Slovakia.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Slovakia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Slovenia.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Slovenia.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/South_Africa.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/South_Africa.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/South_Korea.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/South_Korea.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Spain.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Spain.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Sweden.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Sweden.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Switzerland.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Switzerland.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Turkey.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Turkey.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/Ukraine.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/Ukraine.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/United_Arab_Emirates.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/United_Arab_Emirates.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/flags/United_Kingdom-87b526c01fd81c96e96ec8f8fbbcc4e3.png" afterPath="$PROJECT_DIR$/public/assets/flags/United_Kingdom-87b526c01fd81c96e96ec8f8fbbcc4e3.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/United_Kingdom.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/United_Kingdom.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/flags/United_States_of_America-04093d90d4f8266d91b0d3b2cfc0050f.png" afterPath="$PROJECT_DIR$/public/assets/flags/United_States_of_America-04093d90d4f8266d91b0d3b2cfc0050f.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/images/flags/United_States_of_America.png" afterPath="$PROJECT_DIR$/app/assets/images/flags/United_States_of_America.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js.gz" afterPath="$PROJECT_DIR$/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css.gz" afterPath="$PROJECT_DIR$/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/blue_lagoon.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/blue_lagoon.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/cellar_medium.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/cellar_medium.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/leopard.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/leopard.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/parrot.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/parrot.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/register_bg.png" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/register_bg.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/switzerland.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/switzerland.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/thumbnail_blue_lagoon.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/thumbnail_blue_lagoon.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/thumbnail_parrot.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/thumbnail_parrot.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/thumbnail_switzerland.jpg" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/images/thumbnail_switzerland.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.generators" afterPath="$PROJECT_DIR$/.idea/.generators" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.rakeTasks" afterPath="$PROJECT_DIR$/.idea/.rakeTasks" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20140818175749_create_parking_spaces.rb" afterPath="$PROJECT_DIR$/db/migrate/20140818175749_create_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20140818213127_drop_degree_to_meters.rb" afterPath="$PROJECT_DIR$/db/migrate/20140818213127_drop_degree_to_meters.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150201123803_add_addr_line1_addr_line2_title_desc_to_parking_space.rb" afterPath="$PROJECT_DIR$/db/migrate/20150201123803_add_addr_line1_addr_line2_title_desc_to_parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150206164157_add_target_price_currency_to_parking_space.rb" afterPath="$PROJECT_DIR$/db/migrate/20150206164157_add_target_price_currency_to_parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150207202435_add_telephone_no_read_to_proposal.rb" afterPath="$PROJECT_DIR$/db/migrate/20150207202435_add_telephone_no_read_to_proposal.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150208110411_add_attachment_image_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/db/migrate/20150208110411_add_attachment_image_to_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150208192113_add_image_url_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/db/migrate/20150208192113_add_image_url_to_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150221185527_add_rotation_angle_to_parking_space.rb" afterPath="$PROJECT_DIR$/db/migrate/20150221185527_add_rotation_angle_to_parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150224202336_add_index_to_parking_spaces.rb" afterPath="$PROJECT_DIR$/db/migrate/20150224202336_add_index_to_parking_spaces.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150225184631_create_parameters.rb" afterPath="$PROJECT_DIR$/db/migrate/20150225184631_create_parameters.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150225184655_create_parameter_values.rb" afterPath="$PROJECT_DIR$/db/migrate/20150225184655_create_parameter_values.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150308114129_add_phone_number_to_proposals.rb" afterPath="$PROJECT_DIR$/db/migrate/20150308114129_add_phone_number_to_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150308120325_remove_telephone_no_from_proposals.rb" afterPath="$PROJECT_DIR$/db/migrate/20150308120325_remove_telephone_no_from_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150308175701_add_messaged_from_device_id_to_proposals.rb" afterPath="$PROJECT_DIR$/db/migrate/20150308175701_add_messaged_from_device_id_to_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150308194620_add_device_id_index.rb" afterPath="$PROJECT_DIR$/db/migrate/20150308194620_add_device_id_index.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150310180615_drop_status_from_proposal.rb" afterPath="$PROJECT_DIR$/db/migrate/20150310180615_drop_status_from_proposal.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150313165034_add_index_to_price_in_proposals.rb" afterPath="$PROJECT_DIR$/db/migrate/20150313165034_add_index_to_price_in_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150315144817_change_bid_amount_to_decimal_in_proposals.rb" afterPath="$PROJECT_DIR$/db/migrate/20150315144817_change_bid_amount_to_decimal_in_proposals.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150413134415_add_value2_value3_to_parameter_values.rb" afterPath="$PROJECT_DIR$/db/migrate/20150413134415_add_value2_value3_to_parameter_values.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150419163825_add_value3_value4_to_paramater_values.rb" afterPath="$PROJECT_DIR$/db/migrate/20150419163825_add_value3_value4_to_paramater_values.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150522183203_devise_create_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150522183203_devise_create_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523075827_add_first_name_last_name_to_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523075827_add_first_name_last_name_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523081514_add_device_id_and_phone_number_to_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523081514_add_device_id_and_phone_number_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523085317_remove_last_name_from_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523085317_remove_last_name_from_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523085418_rename_first_name_from_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523085418_rename_first_name_from_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150523120235_add_country_to_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150523120235_add_country_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150530233440_make_device_id_unique.rb" afterPath="$PROJECT_DIR$/db/migrate/20150530233440_make_device_id_unique.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb" afterPath="$PROJECT_DIR$/db/migrate/20150621100933_add_notif_registration_id_to_users.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/Gruntfile.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/Gruntfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/_form.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/_form.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/terminals/_form.html.erb" afterPath="$PROJECT_DIR$/app/views/terminals/_form.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parking_spaces/_show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parking_spaces/_show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/proposals/_show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/proposals/_show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/vendor/google/api.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/vendor/google/api.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-bids.html" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\app\templates\place-offer-help.html" afterPath="" />
+      <change type="DELETED" beforePath="C:\projects\parking-space\repository\parking-space\mobile\parking-space-mobile\app\templates\place-offer.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/app.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js" afterPath="$PROJECT_DIR$/public/assets/application-961b6bbf4e5b1be0f5d98934b0050110.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css" afterPath="$PROJECT_DIR$/public/assets/application-c1f82b8b44720da4076f80c98b7b74cf.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/application_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/application_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/bower.json" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/bundle" afterPath="$PROJECT_DIR$/bin/bundle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/config.xml" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/config.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/config.yml" afterPath="$PROJECT_DIR$/config/config.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/constants.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/constants.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/data-services.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/data-services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/delete-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/delete-parking-space-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/delete-post.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/delete-post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/environments/development.rb" afterPath="$PROJECT_DIR$/config/environments/development.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/device_record.rb" afterPath="$PROJECT_DIR$/app/models/device_record.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/locales/devise.en.yml" afterPath="$PROJECT_DIR$/config/locales/devise.en.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/initializers/devise.rb" afterPath="$PROJECT_DIR$/config/initializers/devise.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/directives.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/directives.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/edit-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/edit-parking-space-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/edit.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/edit.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/terminals/edit.html.erb" afterPath="$PROJECT_DIR$/app/views/terminals/edit.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/factories.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/factories.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/fonts.scss" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/fonts.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/forms.scss" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/forms.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/geo-services.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/geo-services.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/home.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/integration/image_processing_test.rb" afterPath="$PROJECT_DIR$/test/integration/image_processing_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/index.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/terminals/index.html.erb" afterPath="$PROJECT_DIR$/app/views/terminals/index.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/index.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/index.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parameters/index.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parking_spaces/index.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parking_spaces/index.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/proposals/index.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/proposals/index.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/terminals/index.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/terminals/index.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/initializers/init_system_parameters.rb" afterPath="$PROJECT_DIR$/config/initializers/init_system_parameters.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/main-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/main-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/main.scss" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/styles/main.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assets/manifest-f5a585744e6cb0f54639bcabe185a73f.json" afterPath="$PROJECT_DIR$/public/assets/manifest-f5a585744e6cb0f54639bcabe185a73f.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/map-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/map-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/map.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/map.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/message.rb" afterPath="$PROJECT_DIR$/app/models/message.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/messages-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/messages-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/messages.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/messages.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/messages.yml" afterPath="$PROJECT_DIR$/test/fixtures/messages.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/messages_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/messages_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/messages_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/messages_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/misc.xml" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/modules.xml" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/my-offers-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/my-offers-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/my-posts-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/my-posts-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myoffers-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myoffers-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myoffers.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myoffers.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/myposts.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/new.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/new.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/terminals/new.html.erb" afterPath="$PROJECT_DIR$/app/views/terminals/new.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/notifications_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/notifications_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/package.json" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/parameter.rb" afterPath="$PROJECT_DIR$/app/models/parameter.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/models/parameter_test.rb" afterPath="$PROJECT_DIR$/test/models/parameter_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/parameter_value.rb" afterPath="$PROJECT_DIR$/app/models/parameter_value.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/models/parameter_value_test.rb" afterPath="$PROJECT_DIR$/test/models/parameter_value_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/parameter_values.yml" afterPath="$PROJECT_DIR$/test/fixtures/parameter_values.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/parameters.css.scss" afterPath="$PROJECT_DIR$/app/assets/stylesheets/parameters.css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/parameters.js.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/parameters.js.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/parameters.yml" afterPath="$PROJECT_DIR$/test/fixtures/parameters.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/parameters_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/parameters_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/parameters_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/parameters_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/helpers/parameters_helper.rb" afterPath="$PROJECT_DIR$/app/helpers/parameters_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/helpers/parameters_helper_test.rb" afterPath="$PROJECT_DIR$/test/helpers/parameters_helper_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/parking_space.rb" afterPath="$PROJECT_DIR$/app/models/parking_space.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/parking_spaces.yml" afterPath="$PROJECT_DIR$/test/fixtures/parking_spaces.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/parking_spaces_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/parking_spaces_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/passwords_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/passwords_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/place-offer-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/place-offer-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/place-offer.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/place-offer.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/post-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/post-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/post-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/post-parking-space-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/post.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/environments/production.rb" afterPath="$PROJECT_DIR$/config/environments/production.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/proposal.rb" afterPath="$PROJECT_DIR$/app/models/proposal.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/models/proposal_test.rb" afterPath="$PROJECT_DIR$/test/models/proposal_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/proposals.yml" afterPath="$PROJECT_DIR$/test/fixtures/proposals.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/proposals_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/proposals_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/proposals_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/proposals_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/rails" afterPath="$PROJECT_DIR$/bin/rails" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/rake" afterPath="$PROJECT_DIR$/bin/rake" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/rebel_project.xml" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/rebel_project.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/register-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/register-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/register.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/register.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/registrations_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/registrations_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/review-offers-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/review-offers-ctrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-offers.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-offers.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-post-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-post-help.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-post.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/routes.rb" afterPath="$PROJECT_DIR$/config/routes.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/scaffolds.css.scss" afterPath="$PROJECT_DIR$/app/assets/stylesheets/scaffolds.css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search-help.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search-help.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-bids.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/review-bids.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/search-parking-space-ctrl.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/controllers/search-parking-space-ctrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search.html" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/templates/search.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/secrets.yml" afterPath="$PROJECT_DIR$/config/secrets.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ebextensions/seed.config" afterPath="$PROJECT_DIR$/.ebextensions/seed.config" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/seeds.rb" afterPath="$PROJECT_DIR$/db/seeds.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/sessions_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/sessions_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/show.html.erb" afterPath="$PROJECT_DIR$/app/views/parameters/show.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/terminals/show.html.erb" afterPath="$PROJECT_DIR$/app/views/terminals/show.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/messages/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/messages/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parameters/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parameters/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/parking_spaces/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/parking_spaces/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/proposals/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/proposals/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/terminals/show.json.jbuilder" afterPath="$PROJECT_DIR$/app/views/terminals/show.json.jbuilder" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/system-services.js" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/app/scripts/services/system-services.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/terminal.rb" afterPath="$PROJECT_DIR$/app/models/terminal.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/models/terminal_test.rb" afterPath="$PROJECT_DIR$/test/models/terminal_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/terminals.css.scss" afterPath="$PROJECT_DIR$/app/assets/stylesheets/terminals.css.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/javascripts/terminals.js.coffee" afterPath="$PROJECT_DIR$/app/assets/javascripts/terminals.js.coffee" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/terminals.yml" afterPath="$PROJECT_DIR$/test/fixtures/terminals.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/terminals_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/terminals_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/terminals_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/terminals_controller_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/helpers/terminals_helper.rb" afterPath="$PROJECT_DIR$/app/helpers/terminals_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/helpers/terminals_helper_test.rb" afterPath="$PROJECT_DIR$/test/helpers/terminals_helper_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/environments/test.rb" afterPath="$PROJECT_DIR$/config/environments/test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_helper.rb" afterPath="$PROJECT_DIR$/test/test_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/user.rb" afterPath="$PROJECT_DIR$/app/models/user.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/models/user_test.rb" afterPath="$PROJECT_DIR$/test/models/user_test.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/fixtures/users.yml" afterPath="$PROJECT_DIR$/test/fixtures/users.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../mobile/parking-space-mobile/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -294,7 +67,7 @@
     <SUITE FILE_PATH="coverage/parking-space-web@Run_test__ParkingSpacesControllerTest___parking_space_web.coverage" NAME="Run test 'ParkingSpacesControllerTest': parking-space-web Coverage Results" MODIFIED="1427637019464" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
     <SUITE FILE_PATH="coverage/parking-space-web@test_should_create_proposal_for_parking_space__parking_space_web.coverage" NAME="test_should_create_proposal_for_parking_space: parking-space-web Coverage Results" MODIFIED="1427637880550" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
     <SUITE FILE_PATH="coverage/parking-space-web@pushGCM.coverage" NAME="pushGCM Coverage Results" MODIFIED="1435400046553" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
-    <SUITE FILE_PATH="coverage/parking-space-web@server.coverage" NAME="server Coverage Results" MODIFIED="1449940863774" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
+    <SUITE FILE_PATH="coverage/parking-space-web@server.coverage" NAME="server Coverage Results" MODIFIED="1450863625351" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
     <SUITE FILE_PATH="coverage/parking-space-web@Run_test__ProposalsControllerTest___parking_space_web.coverage" NAME="Run test 'ProposalsControllerTest': parking-space-web Coverage Results" MODIFIED="1427639553624" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="parking-space-web" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -344,7 +117,7 @@
         <entry file="file://$PROJECT_DIR$/app/models/proposal.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="43" selection-start-line="9" selection-start-column="43" selection-end-line="9" selection-end-column="43" />
+              <caret line="52" column="6" selection-start-line="52" selection-start-column="6" selection-end-line="52" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -354,7 +127,7 @@
         <entry file="file://$PROJECT_DIR$/app/models/device_record.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+              <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -364,30 +137,37 @@
         <entry file="file://$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="109" column="31" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
-              <folding>
-                <element signature="e#234#1605#0" expanded="false" />
-                <element signature="e#2488#2762#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="terminals_controller.rb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/terminals_controller.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+              <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show.json.jbuilder" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/terminals/show.json.jbuilder">
+      <file leaf-file-name="rescue.rb" pinned="false" current-in-tab="false">
+        <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/actionpack-4.2.3/lib/action_controller/metal/rescue.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="parking_space.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/parking_space.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_show.json.jbuilder" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/proposals/_show.json.jbuilder">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="7" column="23" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -396,24 +176,19 @@
       <file leaf-file-name="proposals_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/proposals_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42647058">
-              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.43933055">
+              <caret line="39" column="9" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="users" pinned="false" current-in-tab="false">
-        <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..users">
-          <provider editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+      <file leaf-file-name="console.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/console.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.9">
+              <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
               <folding />
-            </state>
-          </provider>
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
             </state>
           </provider>
         </entry>
@@ -491,7 +266,6 @@
         <option value="$PROJECT_DIR$/pushGCM.rb" />
         <option value="$PROJECT_DIR$/app/models/user.rb" />
         <option value="$PROJECT_DIR$/db/seeds.rb" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/console.sql" />
         <option value="$PROJECT_DIR$/.ebextensions/seed.config" />
         <option value="$PROJECT_DIR$/config/initializers/devise.rb" />
         <option value="$PROJECT_DIR$/.elasticbeanstalk/config.yml" />
@@ -502,9 +276,10 @@
         <option value="$PROJECT_DIR$/config/routes.rb" />
         <option value="$PROJECT_DIR$/app/views/parking_spaces/_show.json.jbuilder" />
         <option value="$PROJECT_DIR$/app/models/parking_space.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb" />
         <option value="$PROJECT_DIR$/app/models/proposal.rb" />
         <option value="$PROJECT_DIR$/app/controllers/proposals_controller.rb" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/console.sql" />
+        <option value="$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb" />
       </list>
     </option>
   </component>
@@ -561,6 +336,17 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parking-space-web" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -660,7 +446,6 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
-      <pane id="Scope" />
       <pane id="RailsProjectView">
         <subPane>
           <PATH>
@@ -683,30 +468,8 @@
               <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.RailsModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Public" />
-              <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.folders.PublicFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.RailsProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.RailsModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Public" />
-              <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.folders.PublicFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="files" />
-              <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.folders.FolderSubFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.folders.FolderSubFolderNode" />
+              <option name="myItemId" value="Assets" />
+              <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.folders.AssetsTopLevelFolderNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -721,16 +484,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="Controllers" />
               <option name="myItemType" value="org.jetbrains.plugins.ruby.rails.projectView.v2.nodes.folders.ControllersFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="parking-space-web" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1312,12 +1065,15 @@
       <workItem from="1448109890934" duration="4087000" />
       <workItem from="1448201828894" duration="2733000" />
       <workItem from="1448267588259" duration="194000" />
-      <workItem from="1449913813028" duration="15483000" />
+      <workItem from="1449913813028" duration="16019000" />
+      <workItem from="1450081689496" duration="67000" />
+      <workItem from="1450607158458" duration="1014000" />
+      <workItem from="1450860427005" duration="18682000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="554740000" />
+    <option name="totallyTimeSpent" value="575039000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1341,7 +1097,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1672" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32707182" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1352,13 +1108,14 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36580312" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" x="62" y="171" width="1471" height="812" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32928178" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" x="1767" y="67" width="1401" height="770" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3357513" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="1684" y="354" width="1874" height="544" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22151224" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19275825" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12779553" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11128861" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.40932643" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="59" y="369" width="1431" height="779" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4777202" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="59" y="369" width="1431" height="779" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1370,7 +1127,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284974" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3357513" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" x="1684" y="354" width="1874" height="544" />
       <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.51157665" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1398,7 +1154,7 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="322" />
+      <option name="time" value="327" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="RailsRunConfigurationType">
@@ -1407,13 +1163,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/messages/show.json.jbuilder">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..messages">
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1433,13 +1182,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/proposals/_show.json.jbuilder">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40823328">
-          <caret line="14" column="3" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/routes.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1447,25 +1189,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/actionpack-4.2.3/lib/action_controller/metal/rescue.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/activerecord-4.2.3/lib/active_record/persistence.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="246" column="8" selection-start-line="246" selection-start-column="8" selection-end-line="246" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/proposals/index.json.jbuilder">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1534,20 +1261,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="362" column="54" selection-start-line="362" selection-start-column="54" selection-end-line="362" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..proposals">
-      <provider editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
@@ -1565,7 +1278,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1573,7 +1285,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1581,7 +1292,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="197" column="0" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1589,7 +1299,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1597,15 +1306,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/activesupport-4.2.3/lib/active_support/callbacks.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1617,27 +1317,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/parking_spaces/show.json.jbuilder">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/parking_spaces/index.json.jbuilder">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/parking_spaces/_show.json.jbuilder">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1645,16 +1328,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33272058">
           <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/files/images/0e253a5f67602fb8c36e1977a2a3115c_standard_1449941491018.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/files/images/0e253a5f67602fb8c36e1977a2a3115c_thumbnail_1449940827839.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
@@ -1668,7 +1345,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="185" column="0" selection-start-line="185" selection-start-column="0" selection-end-line="185" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1676,15 +1352,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/parking_space.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1692,7 +1359,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1708,7 +1374,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.21875">
           <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1716,7 +1381,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.03125">
           <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1724,6 +1388,32 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/files/images/1449948149_WkgvV0llU2V_standard.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/files/images/0e253a5f67602fb8c36e1977a2a3115c_thumbnail_1449940827839.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/parking_spaces/show.json.jbuilder">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/parking_spaces/_show.json.jbuilder">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="27" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -1741,22 +1431,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/device_record.rb">
-      <provider selected="true" editor-type-id="text-editor">
+    <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..proposals">
+      <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/files/images/1449948057_WkgvV0llU2V_standard.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/files/images/1449948149_WkgvV0llU2V_standard.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
       </provider>
     </entry>
     <entry file="dbDummy://dbtable:/17ed961b/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/..parking_spaces">
@@ -1772,10 +1457,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/proposal.rb">
+    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/activerecord-4.2.3/lib/active_record/persistence.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="43" selection-start-line="9" selection-start-column="43" selection-end-line="9" selection-end-column="43" />
+          <caret line="246" column="8" selection-start-line="246" selection-start-column="8" selection-end-line="246" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/activesupport-4.2.3/lib/active_support/callbacks.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="202" column="32" selection-start-line="202" selection-start-column="32" selection-end-line="202" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/device_record.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/proposals/_show.json.jbuilder">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="23" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/parking_space.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/0dc2e50a-e2d7-40a7-a122-3b1fe98c07e4/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.9">
+          <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/actionpack-4.2.3/lib/action_controller/metal/rescue.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1783,18 +1516,31 @@
     <entry file="file://$PROJECT_DIR$/app/controllers/parking_spaces_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="109" column="31" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
-          <folding>
-            <element signature="e#234#1605#0" expanded="false" />
-            <element signature="e#2488#2762#0" expanded="false" />
-          </folding>
+          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/proposal.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="52" column="6" selection-start-line="52" selection-start-column="6" selection-end-line="52" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/software/platforms/ruby/Ruby2.1.0/lib/ruby/gems/2.1.0/gems/pushmeup-0.3.0/lib/pushmeup/gcm/core.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7866109">
+          <caret line="113" column="3" selection-start-line="113" selection-start-column="3" selection-end-line="113" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/proposals_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42647058">
-          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.43933055">
+          <caret line="39" column="9" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
           <folding />
         </state>
       </provider>
