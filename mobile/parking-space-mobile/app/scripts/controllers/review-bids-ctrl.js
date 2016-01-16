@@ -48,12 +48,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
         if (!$scope.selectedSpace) {
             return;
         }
-        var duration = moment.duration(parameterService.getShortTermExpiration(), 'minutes');
-        if (!$scope.selectedSpace.short_term) {
-            duration = moment.duration(parameterService.getLongTermExpiration(), 'weeks');
-        }
-        var expirationTimestamp = new Date($scope.selectedSpace.created_at).getTime() + duration.asMilliseconds();
-        return moment(expirationTimestamp).fromNow();
+        return moment($scope.selectedSpace.space_availability_stop).fromNow();
     };
 
     $scope.placeOffer = function () {

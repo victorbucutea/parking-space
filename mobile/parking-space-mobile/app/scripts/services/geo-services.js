@@ -4,25 +4,40 @@
 
 angular.module('ParkingSpaceMobile.services')
 
-    .service('geolocationService', function () {
+    .service('geolocationService', function ($q) {
+        var _this = this;
 
         function onError(error) {
-            console.error('code: ' + error.code + '\n' +
-            'message: ' + error.message + '\n', error);
+            console.error('code: ' + error.code + ', message: ' + error.message, error);
         }
+
+        this.initCurrentLocation = function (highAccuracy) {
+
+            var onSuccess = function (position) {
+                if (position) {
+                    _this.position = position;
+                }
+            };
+
+            navigator.geolocation.getCurrentPosition(onSuccess, onError, {timeout: 5000, enableHighAccuracy: highAccuracy});
+
+            // interogate every 20 seconds for the current position
+            setTimeout(function () {
+                _this.initCurrentLocation(true);
+            }, 20000);
+        };
 
         this.getCurrentLocation = function (clbkOk, clbkErr) {
-            var onSuccess = function (position) {
-                console.log('Latitude: ' + position.coords.latitude + '\n' +
-                'Longitude: ' + position.coords.longitude + '\n');
-                if (clbkOk) {
-                    clbkOk(position);
-                }
+            if (clbkOk && _this.position) {
+                clbkOk(_this.position);
+                return;
+            }
+            // if position is not cached, interrogate navigator
+            navigator.geolocation.getCurrentPosition(clbkOk, onError, {timeout: 5000, enableHighAccuracy: false});
+        };
 
-            };
-            navigator.geolocation.getCurrentPosition(onSuccess, clbkErr || onError, {timeout: 5000, enableHighAccuracy: true});
-
-        }
+        // attempt to find current location with low accuracy first
+        this.initCurrentLocation(false);
     })
 
 
@@ -32,8 +47,8 @@ angular.module('ParkingSpaceMobile.services')
                 'latLng': new google.maps.LatLng(lat, lng)
             };
 
-
             $rootScope.geocoder.geocode(latLng, function (result) {
+
                 if (!result)
                     return;
 

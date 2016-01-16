@@ -2,12 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *">
+    <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0, height=device-height, width=device-width"/>
     <title>ParkingSpaceMobile</title>
 
     <!-- build:css styles/vendor.css -->
+    <link rel="stylesheet" href="lib/ionic/release/css/ionic.min.css">
     <!-- bower:css -->
-    <link rel="stylesheet" href="lib/ionic/release/css/ionic.css" />
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -18,7 +19,7 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="ParkingSpaceMobile">
+<body ng-app="ParkingSpaceMobile" >
 
     <ui-view class="map-container"></ui-view>
 
@@ -28,11 +29,7 @@
     <!-- bower:js -->
     <script src="lib/jquery/dist/jquery.js"></script>
     <script src="lib/angular/angular.js"></script>
-    <script src="lib/angular-animate/angular-animate.js"></script>
-    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="lib/ionic/release/js/ionic.js"></script>
-    <script src="lib/ionic/release/js/ionic-angular.js"></script>
     <script src="lib/easy-markerwithlabel/src/markerwithlabel.js"></script>
     <script src="lib/moment/moment.js"></script>
     <!-- endbower -->
@@ -47,17 +44,17 @@
     <!-- include: "type": "js", "files": "scripts/**/*.js" -->
     <script src="scripts/app.js"></script>
     <script src="scripts/constants.js"></script>
-    <script src="scripts/controllers/delete-parking-space-ctrl.js"></script>
-    <script src="scripts/controllers/edit-parking-space-ctrl.js"></script>
+    <script src="scripts/controllers/delete-ctrl.js"></script>
+    <script src="scripts/controllers/edit-ctrl.js"></script>
     <script src="scripts/controllers/main-ctrl.js"></script>
     <script src="scripts/controllers/map-ctrl.js"></script>
     <script src="scripts/controllers/messages-ctrl.js"></script>
     <script src="scripts/controllers/my-bids-ctrl.js"></script>
     <script src="scripts/controllers/my-posts-ctrl.js"></script>
-    <script src="scripts/controllers/post-parking-space-ctrl.js"></script>
+    <script src="scripts/controllers/post-ctrl.js"></script>
     <script src="scripts/controllers/register-ctrl.js"></script>
     <script src="scripts/controllers/review-bids-ctrl.js"></script>
-    <script src="scripts/controllers/search-parking-space-ctrl.js"></script>
+    <script src="scripts/controllers/search-ctrl.js"></script>
     <script src="scripts/directives.js"></script>
     <script src="scripts/filters.js"></script>
     <script src="scripts/services/data-services.js"></script>

@@ -14,6 +14,9 @@ $lg-font-size: $base-font-size * $golden-ratio;
 // 28px
 $xlg-font-size: $lg-font-size * $golden-ratio;
 
+// 28px
+$xxlg-font-size: $xlg-font-size * $golden-ratio;
+
 // 20px
 $base-line-height: $base-font-size * $golden-ratio;
 
@@ -72,6 +75,7 @@ $darkgreen: darkgreen;
 // map controls
 #map {
   height: 60%;
+
 }
 
 .full-height {
@@ -100,56 +104,60 @@ map {
     cursor: pointer;
     text-align: center;
     background-color: #fff;
-    margin: $measure-unit;
-    width: 30px;
-    height: 28px;
-    padding: 1px;
+    margin: 4px $measure-unit;
+    width: 36px;
+    height: 36px;
+    padding: $xxsm-measure-unit;
     color: #656565;
+    font-size: 2.5em;
   }
 }
 
 html, body {
-  height: 100%;
   font-family: $font-family;
   color: $dflt-font-color;
   background-color: #fff;
 }
 
-.bar-header {
-  .row {
-    padding: 0 10px;
-    .col {
-      padding: 3px 0 0 0;
-      text-align: center;
-    }
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto $font-family;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 0 $big-measure-unit;
+  text-overflow: ellipsis;
+  width: 95%;
+  height: $xxxbig-measure-unit;
+  margin: $measure-unit;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 2px 0 0 2px;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+}
+
+.pac-item {
+  line-height: $xxxbig-measure-unit;
+  font-size: 1.1em;
+
+  .pac-item-query {
+    font-size: inherit;
   }
+}
 
-  .menu-underline {
-    span {
-      width: 75px;
-      display: inline-block;
-      position: absolute;
-      height: 5px;
-      background-color: #D46220;
-      top: -9px;
-      left: -18px;
-    }
-  }
+.pac-nav {
+  padding: 16px;
+  padding-left: 0;
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 3;
+}
 
-  &.bar-dark {
-    background-color: $gray-dark-transparent;
-    border: 0 none;
-
-    .button {
-      &.button-icon:before {
-        font-size: 38px;
-      }
-    }
-
-    &.bar-header {
-      height: 48px;
-    }
-  }
+.pac-nav-2 {
+  @extend .pac-nav;
+  right: 40px;
 }
 
 .ps-control-buttons {
@@ -163,22 +171,16 @@ html, body {
       border: 0;
       background-color: #fff;
       min-height: $xxxbig-measure-unit;
-      line-height: $xxxbig-measure-unit;
       font-size: 14px;
 
       &.icon-center {
         font-size: $xbig-measure-unit;
       }
 
-      &.activated {
-        background-color: #eee;
-      }
-      &:after {
-        line-height: 33px;
-      }
-
-      &:before {
-        line-height: 33px;
+      &:active {
+        background-color: $gray-lighter;
+        border-top: 2px solid $gray-xlight;
+        border-left: 2px solid $gray-xlight;
       }
     }
   }
@@ -186,8 +188,8 @@ html, body {
 
 .ps-modal {
   border-top: 4px solid $red;
-  position: fixed;
-  top: 48px;
+  position: absolute;
+  top: 0;
   background-color: $gray-dark-transparent;
   width: 100%;
   z-index: 3;
@@ -199,10 +201,6 @@ html, body {
   .list {
     overflow: hidden;
   }
-}
-
-.on-show-keyboard {
-  top: -100px;
 }
 
 .place-offer-modal {
@@ -398,11 +396,6 @@ html, body {
   text-align: center;
 }
 
-.ps-content {
-  padding-top: 48px;
-}
-
-
 .search-radius-controller {
   position: absolute;
   width: 120px;
@@ -414,7 +407,7 @@ html, body {
   margin-right: auto;
   right: 0;
   border-radius: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
 
   .value {
     width: 55px;
@@ -472,21 +465,24 @@ html, body {
   }
 }
 
-.post-space {
-  border-radius: 50%;
-  background-color: $dflt-font-color;
-  color: #ffffff;
+.post-space-container {
   position: absolute;
-  text-align: center;
-  bottom: $xxbig-measure-unit;
-  right: $xxbig-measure-unit;
-  font-size: $xbig-measure-unit;
-  box-shadow: 3px 3px 10px 3px $gray-lighter;
-  padding: $xxbig-measure-unit $big-measure-unit;
-  border: 1px solid $red;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
   z-index: 2;
-}
 
+  .post-space {
+    border-radius: 5px;
+    background-color: #333;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    padding: $sm-measure-unit;
+    border: 1px solid $red;
+    margin: $measure-unit;
+  }
+}
 
 .space-detail-title {
   padding: 0 $measure-unit $measure-unit $measure-unit;
@@ -515,7 +511,7 @@ html, body {
     width: 48px;
     float: left;
     font-size: $xxbig-measure-unit;
-    border-bottom:  1px solid $dflt-font-color;
+    border-bottom: 1px solid $dflt-font-color;
   }
 
   .currency {
@@ -568,8 +564,6 @@ html, body {
   }
 }
 
-
-
 .loading-spinner {
   display: none;
   color: $gray;
@@ -580,13 +574,24 @@ html, body {
 }
 
 .no-items-msg {
-  width: 51%;
+  width: 84%;
   margin-left: auto;
   margin-right: auto;
   margin-top: $xxxbig-measure-unit;
+  margin-bottom: $xxxbig-measure-unit;
   color: $gray;
   font-size: 20px;
   text-align: center;
+}
+
+.new-post-ribbon {
+    padding: 4px 20px;
+    font-weight: 200;
+    background-color: $blue;
+    color: $gray-xxlight;
+    font-size: $lg-font-size;
+    text-align: center;
+    margin: 0;
 }
 
 
@@ -610,7 +615,6 @@ html, body {
   font-family: sans-serif;
   margin-right: 10px;
   border: 1px solid #23467C;
-  //    box-shadow: 2px 2px 8px 1px #ddd;
   display: inline-block;
   font-size: $font-size;
 
@@ -623,17 +627,18 @@ html, body {
 parking-spot-info-box {
   position: relative;
   display: block;
-  .parking-sign {
-    @include parking-sign(110px);
+
+  &.big {
+    .parking-spot-details {
+      h1,h2 {
+        font-size: $xlg-font-size + 2;
+      }
+    }
   }
 
   .parking-spot-details {
     border: 0 none;
     padding: $measure-unit;
-
-    .col {
-      padding: 0;
-    }
 
     h1 {
       color: $red;
@@ -656,27 +661,14 @@ parking-spot-info-box {
     }
   }
 
-  .watermark {
-    position: absolute;
-    top: -10px;
-    color: #ddd;
-    right: -10px;
-    font-size: 7em;
-  }
-
 }
 
 parking-spot-info-box.small {
-
-  .parking-sign {
-    @include parking-sign(93px);
-  }
 
   .parking-spot-details {
     margin-top: 0;
     padding-top: $sm-measure-unit;
     padding-bottom: $sm-measure-unit;
-
   }
 
   h2 {
@@ -699,14 +691,22 @@ parking-spot-info-box.small {
 
 .notif-icon {
   position: absolute;
-  right: -3px;
+  right: 3px;
   border-radius: 50%;
-  background-color: rgb(212, 98, 32);
-  padding: 0px 5px;
-  line-height: 20px;
-  font-size: 13px;
-  top: 0;
+  background-color: $red;
+  padding: 0 7px;
+  line-height: 17px;
+  font-size: $big-measure-unit;
+  top: 29px;
   display: none;
+  z-index: 2;
+  color: #fff;
+
+  &.tab-menu-notif {
+    right: $xbig-measure-unit;
+    top: 12px;
+    display: inline-block;
+  }
 }
 
 .unread-item-notif {
@@ -849,7 +849,6 @@ parking-spot-info-box.small {
   overflow-y: scroll;
 }
 
-
 .bids-area {
 
   .bid-title {
@@ -967,6 +966,7 @@ parking-spot-info-box.small {
   }
 }
 
+// the overlay blanket for showing help
 .help-blanket {
   position: fixed;
   height: 100%;
@@ -991,6 +991,7 @@ parking-spot-info-box.small {
   border-radius: 4px;
 }
 
+// register screen
 .country-list {
   height: 110px;
   overflow-y: scroll;
@@ -1002,116 +1003,6 @@ parking-spot-info-box.small {
       background-color: $gray;
     }
   }
-}
-
-.register {
-  background: url('/images/register_bg.png') no-repeat;
-  h1 {
-    margin-bottom: 25px;
-  }
-  h2, h3 {
-    border-bottom: 1px solid $gray;
-  }
-
-  .parking-spot-watermark {
-    position: absolute;
-    top: 20px;
-    z-index: -1;
-  }
-
-  input {
-    &.phone-number {
-      width: 70%;
-    }
-    &.email {
-      width: 70%;
-    }
-    &.first-name {
-      width: 70%;
-    }
-    &.password-register {
-      width: 70%;
-    }
-    &.user-name {
-      width: 70%;
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
-    }
-    &.password {
-      width: 70%;
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
-    }
-
-    padding: $xsm-measure-unit;
-    margin-bottom: 2px;
-    border-bottom: 1px solid $gray;
-    display: inline-block;
-
-    &.ng-valid + i.fa {
-      &:before {
-        content: "\f00c";
-      }
-      font-size: 1.8em;
-      color: $darkgreen;
-    }
-
-    &.ng-invalid + i.fa {
-
-      &:before {
-        content: "\f00d";
-      }
-
-      font-size: 1.8em;
-      color: red;
-    }
-  }
-
-  .prefix {
-    background-color: $gray;
-    padding: $xxsm-measure-unit;
-  }
-
-  .invalid-field-list {
-    font-size: 0.9em;
-    list-style: disc;
-    margin-top: 10px;
-    margin-left: 14px;
-  }
-
-  .recover-pw-link {
-    text-decoration: underline;
-    display: block;
-    width: 70%;
-    margin: auto;
-    text-align: right;
-  }
-
-  .register-btn {
-    border: 0 none;
-    padding: $sm-measure-unit $measure-unit;
-    margin-top: $xxbig-measure-unit;
-    display: block;
-    width: 200px;
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 20;
-    background-color: $red;
-    color: #fff;
-    border-radius: 4px;
-
-    &.blue {
-      background-color: $blue;
-    }
-  }
-
-  .or-text {
-    text-align: center;
-    margin-top: $xbig-measure-unit;
-  }
-
 }
 
 .car-icon {

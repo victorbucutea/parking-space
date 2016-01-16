@@ -3,13 +3,15 @@ angular.module('ParkingSpaceMobile.services', [])
     .service('parkingSpaceService', function ($rootScope, $http, ENV, userService, imageResizeFactory, errorHandlingService) {
 
         this.getAvailableSpaces = function (lat, lng, range, clbk, errClbk) {
-            $('.loading-spinner').show();
-            $('.loading-finished').hide();
 
             $http.get(ENV + 'parking_spaces.json?lat=' + lat + '&lon=' + lng + '&range=' + range)
                 .success(function (data) {
-                    $('.loading-spinner').hide();
-                    $('.loading-finished').show();
+                    if(data) {
+                        data.forEach(function(p_space) {
+                            p_space.space_availability_start = new Date(p_space.space_availability_start);
+                            p_space.space_availability_stop = new Date(p_space.space_availability_stop);
+                        });
+                    }
                     if (clbk)
                         clbk(data);
                 })
@@ -31,6 +33,12 @@ angular.module('ParkingSpaceMobile.services', [])
                 .success(function (data) {
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
+                    if(data) {
+                        data.forEach(function(p_space) {
+                           p_space.space_availability_start = new Date(p_space.space_availability_start);
+                           p_space.space_availability_stop = new Date(p_space.space_availability_stop);
+                        });
+                    }
                     if (clbk)
                         clbk(data);
                 })
@@ -40,7 +48,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 });
         };
 
-        this.getMySpace = function (parkingSpaceId, clbk) {
+        this.getSpace = function (parkingSpaceId, clbk) {
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
@@ -48,6 +56,10 @@ angular.module('ParkingSpaceMobile.services', [])
                 .success(function (data) {
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
+                    if(data) {
+                        data.space_availability_start = new Date(data.space_availability_start);
+                        data.space_availability_stop = new Date(data.space_availability_stop);
+                    }
                     if (clbk)
                         clbk(data);
                 })
@@ -308,7 +320,7 @@ angular.module('ParkingSpaceMobile.services', [])
 
                     countries.map(function (item) {
                         var countryName = item.value4.replace(/ /g, "_") + ".png";
-                        item.url = ENV + '/assets/flags/' + countryName;
+                        item.url = 'images/flags/' + countryName;
                         item.prefix = item.value3;
                         item.name = item.value4;
                     });

@@ -5,12 +5,14 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtrl', function ($rootScope, $scope, $state, parameterService, geocoderService, geolocationService) {
 
-
     $scope.marker = {};
 
     $scope.review = function () {
         $scope.spaceEdit = {};
         angular.copy($scope.space, $scope.spaceEdit);
+        $scope.spaceEdit.title = "";
+        $scope.spaceEdit.space_availability_start = new Date();
+        $scope.spaceEdit.space_availability_stop = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
         geolocationService.getCurrentLocation(function (position) {
             $scope.spaceEdit.recorded_from_lat = position.coords.latitude;
             $scope.spaceEdit.recorded_from_long = position.coords.longitude;
@@ -81,21 +83,21 @@ angular.module('ParkingSpaceMobile.controllers').controller('PostParkingSpaceCtr
             $scope.space.location_lat = mapCenter.lat();
             $scope.space.location_long = mapCenter.lng();
             $scope.space.rotation_angle = $scope.marker.rotation || 0;
+            $scope.space.title = sublocality;
+            $scope.space.sublocality = sublocality;
 
-            if (!$scope.space.title) {
-                $scope.space.title = sublocality;
-            }
-
-            $scope.$apply();
+            $scope.$digest();
         });
     };
+
+    $scope.calculateAddress();
 
     var zoomChangedHandler = google.maps.event.addListener($rootScope.map, 'zoom_changed', $scope.zoomChangedClbk);
     var calcAddressHandler = google.maps.event.addListener($rootScope.map, 'idle', $scope.calculateAddress);
 
 
-    $scope.$on('$stateChangeStart' , function (event, toState) {
-        if( toState.name.indexOf('home.map.post') == -1 ) {
+    $scope.$on('$stateChangeStart', function (event, toState) {
+        if (toState.name.indexOf('home.map.post') == -1) {
             google.maps.event.removeListener(zoomChangedHandler);
             google.maps.event.removeListener(calcAddressHandler);
         }

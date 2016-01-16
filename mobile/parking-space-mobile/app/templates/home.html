@@ -15,25 +15,5 @@
     </div>
 
 
-    <div class="bar bar-header bar-dark">
-        <div class="row ">
-            <div class="col">
-                <button class="button button-icon ion-search button-clear" ui-sref-active="menu-underline" id="go.search" ui-sref="home.map.search">
-                    Find <span></span>
-                </button>
-            </div>
-            <div class="col">
-                <button class="button button-icon ion-person button-clear" ui-sref-active="menu-underline"  ui-sref="home.myposts">
-                    Home <span></span>
-                    <div class="notif-icon" id="notifmyposts"></div>
-                </button>
-            </div>
-            <div class="col">
-                <button menu-toggle="right" class="button button-icon ion-help button-clear" ng-click="showHelp()">
-                   Help <span></span>
-                </button>
-            </div>
-        </div>
-    </div>
     <ui-view name="content"></ui-view>
 </div>

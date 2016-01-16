@@ -40,6 +40,8 @@ class ParkingSpacesController < ApplicationController
     @parking_spaces = ParkingSpace.short_term.within_boundaries(query_attrs).includes(proposals: [:messages])
     # add long term
     @parking_spaces += ParkingSpace.long_term.within_boundaries(query_attrs).includes(proposals: [:messages])
+
+
   end
 
   # GET /parking_spaces/1
@@ -156,7 +158,8 @@ class ParkingSpacesController < ApplicationController
                                           :interval, :phone_number,:owner_name,
                                           :image_file_name, :image_content_type, :image_file_size, :title,
                                           :image_data, :thumbnail_data, :thumbnail_image_url, :standard_image_url,
-                                          :address_line_1, :address_line_2,
+                                          :address_line_1, :address_line_2, :availability_start , :availability_stop,
+                                          :space_availability_start , :space_availability_stop,
                                           :rotation_angle, :description, :created_at)
   end
 end

@@ -6,8 +6,6 @@ class ParkingSpace < DeviceRecord
 
   enum interval: [:long_term, :short_term]
 
-  scope :non_expired, -> { where(' parking_spaces.created_at >= ? ', SysParams.instance.get_i('long_term_expiration').weeks.ago) }
-
   scope :long_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:long_term], SysParams.instance.get_i('long_term_expiration').weeks.ago) }
   scope :short_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:short_term], SysParams.instance.get_i('short_term_expiration').minutes.ago) }
   scope :within_boundaries, ->(attrs) {
@@ -26,6 +24,8 @@ class ParkingSpace < DeviceRecord
   validates :title, :presence => true
   validates :target_price, :presence => true
   validates :target_price_currency, :presence => true
+  validates :space_availability_start, :presence => true
+  validates :space_availability_stop, :presence => true
 
   attr_accessor :image_data
   attr_accessor :thumbnail_data

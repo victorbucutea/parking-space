@@ -2,40 +2,38 @@
 angular.module('ParkingSpaceMobile.controllers', []);
 
 angular.module('ParkingSpaceMobile', [
-    'ionic', 'config',
+    'config', 'ui.router',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
     'ParkingSpaceMobile.services'])
 
-    .run(function () {
+    .run(function (ENV, $http) {
 
-        function onKeyboardShow(e) {
-            var currentFocus = $( document.activeElement );
-            var currentFocusOfssetTop = currentFocus.offset().top;
-            if ( currentFocusOfssetTop > 250 ) {
-                // move modals with 100px towards the top
-                $('div.ps-modal').addClass('on-show-keyboard');
-            }
-        }
 
-        function onKeyboardHide() {
-            // move modals back in place
-            $('div.ps-modal').removeClass('on-show-keyboard');
-        }
+        // set fixed height:
+        // 1. Keeps the screen from shrinking when keyboard open
+        // 2. Viewport will scroll to the focused when keyboard opens and hides respective input
+        $(document.body).css("height", $(document).height());
+
+
 
         function onDeviceReady() {
-            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
-            if (window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.disableScroll(false);
+            if ( navigator.onLine ) {
+                $http.get(ENV+'/parameters/1.json', {timeout: 3000}).then(function(){}, function() {
+                    alert( "Cannot contact server! \nPress OK to exit");
+                    navigator.app.exitApp();
+                });
+            } else {
+                alert( "Internet connection not available! \nPress OK to exit");
+                navigator.app.exitApp();
             }
+
+
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            document.addEventListener("hidekeyboard", onKeyboardHide, false);
-            document.addEventListener("showkeyboard", onKeyboardShow, false);
         }
 
         document.addEventListener('deviceready', onDeviceReady, true);
@@ -100,7 +98,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.map.search', {
-                url: '/search',
+                url: '/search/{parking_space_id}',
                 views: {
                     'map-controls': {
                         templateUrl: "templates/search.html"
@@ -196,11 +194,11 @@ angular.module('ParkingSpaceMobile', [
                 }
             });
 
-        $urlRouterProvider.otherwise("/home/map/search");
+        $urlRouterProvider.otherwise("/home/map/search/");
 
     })
 
-    .config(function($compileProvider){
+    .config(function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
     })
 

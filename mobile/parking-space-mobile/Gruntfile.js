@@ -46,7 +46,7 @@ module.exports = function (grunt) {
             },
             development: {
                 constants: {
-                    ENV: "http://parking-space-web-dev.elasticbeanstalk.com//"
+                    ENV: "http://parking-space-dev-y5b87xe9uk.elasticbeanstalk.com/"
                 }
             },
             staging: {

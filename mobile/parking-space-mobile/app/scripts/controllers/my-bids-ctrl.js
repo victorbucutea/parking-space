@@ -7,6 +7,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl', func
 
     notificationService.hideOfferNotifications();
 
+    $('#my-bids-list').height($(window).height() - 55);
+
+
     parkingSpaceService.getMyOffers(function (spaces) {
         if (!spaces) {
             return;

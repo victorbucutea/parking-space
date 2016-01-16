@@ -40,6 +40,8 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
 
+  ENV['SSL_CERT_FILE'] = 'c:\\projects\\parking-space\\playground\\ca-bundle.crt'
+
 end
 
 

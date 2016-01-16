@@ -1,4 +1,4 @@
-<div ng-controller="MyOffersCtrl" class="ps-content">
+<div ng-controller="MyOffersCtrl">
 
     <div style="position: relative">
         <ui-view name="messages"></ui-view>
@@ -7,9 +7,11 @@
     <ul class="row slider-tabs-menu">
         <li class="col" ui-sref="home.myposts" ui-sref-active="active">
             <a>My spaces</a>
+            <i class="notif-icon tab-menu-notif"></i>
         </li>
         <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
             <a>My offers</a>
+            <i class="notif-icon tab-menu-notif"></i>
         </li>
     </ul>
 
@@ -17,7 +19,7 @@
 
     <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You haven't placed any offers.</div>
 
-    <div class="scroll">
+    <div class="scroll" id="my-bids-list">
         <div class="bids-area padding no-height" ng-repeat="space in spaces| orderBy: 'timestamp'">
             <h4 class="bid-title">
                 {{space.title}} -
@@ -39,13 +41,18 @@
                     ( <i class="fa fa-envelope"></i> {{messagesForOffer(offer)}} )
                 </span>
 
-                <div class="pull-right offer-accept">
-                    <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
-                    <i ng-show="!offer.approved"> Proposed </i>
-                </div>
+                    <div class="pull-right offer-accept">
+                        <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
+                        <i ng-show="!offer.approved"> Proposed </i>
+                    </div>
 
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="post-space-container">
+        <div class="post-space" ui-sref="home.map.search">
+            <i class="fa fa-arrow-left "></i> Back to search
         </div>
     </div>
     <div class="ps-dialog" id="showPhoneNumber">
@@ -57,6 +64,7 @@
                     Your offer is not yet accepted!
                     <br/>
                     <br/>
+
                     <div class="ps-text-xxbig">
                         :(
                     </div>
@@ -68,6 +76,7 @@
                             Call {{selOffer.owner_name}}
                         </div>
                         <br/>
+
                         <div class="ps-text-xxbig">
                             <i class="fa fa-phone"></i>
                             {{selOffer.phone_number}}
@@ -81,7 +90,6 @@
                     <a class="button icon-center ion-close" onclick="$('#showPhoneNumber').hide()"></a>
                 </div>
             </div>
-
         </div>
     </div>
     <ui-view name="help"></ui-view>

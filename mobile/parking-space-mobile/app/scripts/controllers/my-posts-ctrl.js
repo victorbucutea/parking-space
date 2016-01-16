@@ -22,11 +22,30 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
         }
     });
 
-    $scope.unreadNotifications = function (space) {
+    $scope.unreadNotificationsForSpaces = function() {
         var count = 0;
-        if (!space.offers) {
+        if (!$scope.spaces) {
             return count;
         }
+
+        $scope.spaces.forEach( function (space) {
+            count += $scope.unreadNotifications(space);
+        });
+
+        return count;
+    };
+
+
+    $scope.unreadNotificationsForOffers = function() {
+
+    };
+
+    $scope.unreadNotifications = function (space) {
+        var count = 0;
+        if (!space || !space.offers) {
+            return count;
+        }
+
         space.offers.forEach(function (d) {
 
             if (!d.read) count++;

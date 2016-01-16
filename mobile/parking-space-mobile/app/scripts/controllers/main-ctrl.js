@@ -3,7 +3,6 @@
 angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, parameterService, $state) {
 
 
-
     $document.mousedown(function () {
         $scope.errMsg = null;
         $scope.notifMsg = null;
@@ -46,14 +45,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         }
 
         $state.go(currentState + '.help');
-    };
-
-    $scope.shortTermExp = function () {
-        return parameterService.getShortTermExpiration();
-    };
-
-    $scope.longTermExp = function () {
-        return parameterService.getLongTermExpiration();
     };
 
 });

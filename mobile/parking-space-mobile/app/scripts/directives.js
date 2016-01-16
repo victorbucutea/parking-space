@@ -18,12 +18,12 @@ angular.module('ParkingSpaceMobile.directives', [])
 
                     // Set CSS for the control interior.
                     var controlText = document.createElement('div');
-                    controlText.innerHTML = '<i class="ion-android-locate fa-2x" ></i>';
+                    controlText.innerHTML = '<i class="ion-android-locate" ></i>';
                     controlUI.appendChild(controlText);
 
                     // Setup the click event listeners: simply set the map to Chicago.
-                    controlUI.addEventListener('click', function() {
-                        geolocationService.getCurrentLocation(function(position) {
+                    controlUI.addEventListener('click', function () {
+                        geolocationService.getCurrentLocation(function (position) {
                             var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                             map.setCenter(pos);
                         });
@@ -34,14 +34,17 @@ angular.module('ParkingSpaceMobile.directives', [])
                 function initialize() {
                     var mapOptions = {
                         center: new google.maps.LatLng(43.07493, -89.381388),
-                        zoom: 19,
+                        zoom: 15,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         streetViewControl: false,
                         zoomControl: true,
                         zoomControlOptions: {
                             position: google.maps.ControlPosition.RIGHT_CENTER
                         },
-                        mapTypeControl: false
+                        mapTypeControl: false,
+                        scaleControl: false,
+                        rotateControl: false,
+                        disableDefaultUI: true
                     };
                     var map = new google.maps.Map($element[0], mapOptions);
 
@@ -57,7 +60,6 @@ angular.module('ParkingSpaceMobile.directives', [])
                     var geocoder = new google.maps.Geocoder();
 
                     $scope.onCreate({map: map, overlay: overlay, geocoder: geocoder});
-
                 }
 
                 initialize();
@@ -76,26 +78,26 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('parkingAreaSymbol', function ($ionicGesture, $rootScope, $state) {
+    .directive('parkingAreaSymbol', function ($rootScope, $state) {
         return {
             restrict: 'E',
             scope: {
                 'marker': '='
             },
             template: '<div id="parkingAreaSymbol" >' +
-                        '<i class="parking-area-pointer fa fa-hand-o-right" id="handPointer"></i>' +
-                        '<div class="parking-area-wrapper" id="parkingAreaWrapper">' +
-                            '<div class="parking-area" id="parkingAreaRectangle">' +
-                                '<i class="fa fa-angle-left fa-rotate-45 top-left"></i>' +
-                                '&nbsp; ' +
-                                '<i class="fa fa-angle-left fa-rotate-135 top-right"></i>' +
-                                '<span>P</span>' +
-                                '<i class="fa fa-angle-right fa-rotate-135 bottom-left"></i>' +
-                                '&nbsp; ' +
-                                '<i class="fa fa-angle-right fa-rotate-45 bottom-right"></i>' +
-                            '</div>' +
-                        '</div>'+
-                      '</div>',
+            '<i class="parking-area-pointer fa fa-hand-o-right" id="handPointer"></i>' +
+            '<div class="parking-area-wrapper" id="parkingAreaWrapper">' +
+            '<div class="parking-area" id="parkingAreaRectangle">' +
+            '<i class="fa fa-angle-left fa-rotate-45 top-left"></i>' +
+            '&nbsp; ' +
+            '<i class="fa fa-angle-left fa-rotate-135 top-right"></i>' +
+            '<span>P</span>' +
+            '<i class="fa fa-angle-right fa-rotate-135 bottom-left"></i>' +
+            '&nbsp; ' +
+            '<i class="fa fa-angle-right fa-rotate-45 bottom-right"></i>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
             link: function ($scope, $element, $attr) {
 
                 var marker = $scope.marker;
@@ -114,36 +116,34 @@ angular.module('ParkingSpaceMobile.directives', [])
                     parkingArea.css('transform', 'rotate(' + Math.round(newVal) + 'deg)');
                 };
 
-                $ionicGesture.on('tap', function (e) {
+                $element.click(function(e) {
                     if (marker.rotation >= -157.5) {
                         marker.rotation -= 22.5;
                     } else {
                         marker.rotation = 0;
                     }
                     rotate(marker.rotation);
-                }, $element);
-
+                });
             }
         }
     })
-
 
     .directive('parkingSpotInfoBox', function (ENV) {
         return {
             restrict: 'E',
             template: '<div class="item row parking-spot-details " >' +
-                        '    <div ng-show="space.title">' +
-                        '        <h2><i class="fa fa-car"></i> {{space.title}}</h2>' +
-                        '        <p>{{space.address_line_1}} ' +
-                        '               <br  />' +
-                        '           {{space.address_line_2}} ' +
-                        '        </p>' +
-                        '        <h1>' +
-                        '            {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
-                        '            <currency val="space.currency"></currency>' +
-                        '        </h1>' +
-                        '    </div>' +
-                        '</div>',
+            '    <div ng-show="space">' +
+            '        <h2><i class="fa fa-car"></i> {{space.title}}</h2>' +
+            '        <p>{{space.address_line_1}} ' +
+            '               <br  />' +
+            '           {{space.address_line_2}} ' +
+            '        </p>' +
+            '        <h1>' +
+            '            {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
+            '            <currency val="space.currency"></currency>' +
+            '        </h1>' +
+            '    </div>' +
+            '</div>',
             scope: {
                 space: '=',
                 hideThumbnail: '@'
@@ -159,15 +159,15 @@ angular.module('ParkingSpaceMobile.directives', [])
                 bidCurrency: '=currency'
             },
             template: ' <div class="bid-amount row">' +
-                '<div class="col">' +
-                '<a class="fa fa-caret-left fa-3x disable-user-behavior" ng-click="decrease()"></a>' +
-                '<input type="number" min="0" max="100" ng-model="bidAmount">' +
-                '<a class="fa fa-caret-right fa-3x disable-user-behavior" ng-click="increase()" style=""></a>' +
-                '</div>' +
-                '<div class="col">' +
-                '<select ng-model="bidCurrency" ng-options="currency.name as currency.name for currency in currencies" class="currency"> </select>' +
-                '</div>' +
-                '</div>',
+            '<div class="col">' +
+            '<a class="fa fa-caret-left fa-3x disable-user-behavior" ng-click="decrease()"></a>' +
+            '<input type="number" min="0" max="100" ng-model="bidAmount">' +
+            '<a class="fa fa-caret-right fa-3x disable-user-behavior" ng-click="increase()" style=""></a>' +
+            '</div>' +
+            '<div class="col">' +
+            '<select ng-model="bidCurrency" ng-options="currency.name as currency.name for currency in currencies" class="currency"> </select>' +
+            '</div>' +
+            '</div>',
             controller: function ($scope) {
                 $scope.currencies = currencies;
             },
@@ -206,24 +206,6 @@ angular.module('ParkingSpaceMobile.directives', [])
                     $scope.bidAmount--;
                 };
 
-            }
-        }
-    })
-
-    .directive('notificationIcon', function ($rootScope) {
-        return {
-            template: '<div class="notif-icon" ng-show="hasNotif">{{noOfNotif}}</div>',
-            restrict: 'E',
-            link: function ($scope, element, attrs) {
-
-                $rootScope.$on('notification', function (event, value) {
-                    if (value > 0) {
-                        $scope.hasNotif = true;
-                        $scope.noOfNotif = value;
-                    } else {
-                        $scope.hasNotif = false;
-                    }
-                });
             }
         }
     })
@@ -272,5 +254,4 @@ angular.module('ParkingSpaceMobile.directives', [])
                     scope[clbk]();
             }
         }
-    })
-;
+    });

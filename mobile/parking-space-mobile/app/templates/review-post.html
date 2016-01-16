@@ -2,11 +2,12 @@
     <div ng-controller="EditParkingSpaceCtrl">
 
         <form class="form-edit-details">
-            <div on-tap="close()">
-                <h3 class="ps-page-title">
-                    <i class="fa fa-calendar" ng-show="!spaceEdit.short_term"> </i>
-                    <i class="fa fa-clock-o" ng-show="spaceEdit.short_term"> </i>
-                    {{spaceEdit.short_term? 'Short Term (10 min)': 'Long Term (2 weeks)'}}
+            <div >
+                <h3 class="ps-page-title" ng-show="spaceEdit.id">
+                    Edit space
+                </h3>
+                <h3 class="ps-page-title" ng-hide="spaceEdit.id">
+                    New space in {{spaceEdit.sublocality}}
                 </h3>
             </div>
             <div>
@@ -16,20 +17,24 @@
                 </span>
                 <label class="item item-input">
                     <span class="input-label">Title</span>
-                    <input type="text" placeholder="Title" ng-model="spaceEdit.title" ng-required="true">
+                    <input type="text" placeholder="Title" ng-model="spaceEdit.title">
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Address</span>
-                    <input type="text" placeholder="Address line 1" ng-model="spaceEdit.address_line_1" ng-required="true">
+                    <input type="text" placeholder="Address line 1" ng-model="spaceEdit.address_line_1">
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">Address</span>
-                    <input type="text" placeholder="Address line 2" ng-model="spaceEdit.address_line_2">
+                    <span class="input-label">Valid From</span>
+                    <input type="date" placeholder="Valid from" ng-model="spaceEdit.space_availability_start">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Valid To</span>
+                    <input type="date" placeholder="Valid to" ng-model="spaceEdit.space_availability_stop">
                 </label>
 
                 <div class="item upload-photo">
                     <div class="row">
-                        <div class="col-34" on-tap="takePhoto()" on-hold="attachPhoto()">
+                        <div class="col-34" ng-click="takePhoto()" on-hold="attachPhoto()">
                             <span class="parking-sign" ng-hide="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
                                <i class="fa fa-camera"></i>
                                <i class="text"></i>
@@ -54,7 +59,7 @@
             </div>
         </form>
 
-        <div class="ps-dialog" id="confirmSpace">
+       <!-- <div class="ps-dialog" id="confirmSpace">
             <div class="ps-dialog-content confirm-space">
                 <div class="ps-question">
                     Are you sure you want to place this
@@ -90,7 +95,7 @@
                 </div>
 
             </div>
-        </div>
+        </div>-->
     </div>
     <ui-view name="help"></ui-view>
 </div>

@@ -68,19 +68,91 @@
     }
 }
 
-.form-edit-details-small {
-    @extend .form-edit-details;
 
-    padding-top: 0;
-
-    .item-input {
-        padding: 0 10px;
+.register {
+    background: url('/images/register_bg.png') no-repeat;
+    h1 {
+        margin-bottom: 25px;
+    }
+    h2, h3 {
+        border-bottom: 1px solid $gray;
     }
 
-    .upload-photo {
-        padding-top: 15px;
-        padding-bottom: 15px;
-        padding-left: 10px;
+    .parking-spot-watermark {
+        position: absolute;
+        top: 20px;
+        z-index: -1;
+    }
+
+    input {
+        width: 70%;
+        padding: $xsm-measure-unit;
+        margin-bottom: 2px;
+        border-bottom: 1px solid $gray;
+        display: inline-block;
+
+        &.ng-valid + i.fa {
+            &:before {
+                content: "\f00c";
+            }
+            font-size: 1.8em;
+            color: $darkgreen;
+        }
+
+        &.ng-invalid + i.fa {
+
+            &:before {
+                content: "\f00d";
+            }
+
+            font-size: 1.8em;
+            color: red;
+        }
+    }
+
+    .prefix {
+        background-color: $gray;
+        padding: $xxsm-measure-unit;
+    }
+
+    .invalid-field-list {
+        font-size: 0.9em;
+        list-style: disc;
+        margin-top: 10px;
+        margin-left: 14px;
+    }
+
+    .recover-pw-link {
+        text-decoration: underline;
+        display: block;
+        width: 70%;
+        margin: auto;
+        text-align: right;
+    }
+
+    .register-btn {
+        border: 0 none;
+        padding: $sm-measure-unit $measure-unit;
+        margin-top: $xxbig-measure-unit;
+        display: block;
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        z-index: 20;
+        background-color: $red;
+        color: #fff;
+        border-radius: 4px;
+
+        &.blue {
+            background-color: $blue;
+        }
+    }
+
+    .or-text {
+        text-align: center;
+        margin-top: $xbig-measure-unit;
     }
 
 }
+
+

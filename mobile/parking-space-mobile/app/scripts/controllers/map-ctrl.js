@@ -17,7 +17,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
             map.setCenter(pos);
         });
 
-        map.setZoom(19);
+        // Create the search box and link it to the UI element.
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+
+        searchBox.addListener('places_changed', function() {
+            $scope.selectNewPlace(searchBox.getPlaces());
+        });
+
+    };
+
+    $scope.selectNewPlace = function (places) {
+        if (!places || !places[0])
+            return;
+
+        $rootScope.map.setCenter(places[0].geometry.location);
+
     };
 
 });

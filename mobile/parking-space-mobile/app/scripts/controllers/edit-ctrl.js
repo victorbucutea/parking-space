@@ -5,7 +5,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
 
     if ( $stateParams.parking_space_id ) {
-        parkingSpaceService.getMySpace($stateParams.parking_space_id, function(data){
+        parkingSpaceService.getSpace($stateParams.parking_space_id, function(data){
             $scope.spaceEdit = data;
         });
     }
@@ -65,6 +65,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
     };
 
     $scope.confirmSave = function() {
+        if ( !$scope.spaceEdit.title ) {
+            alert("Please fill in the title!");
+            return;
+        }
+
         var text = "Are you sure you want to place this space for "+ $scope.spaceEdit.price + " " +$scope.spaceEdit.currency + "?\n\n";
         if (confirm(text)){
             $scope.save();

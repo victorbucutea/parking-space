@@ -1,7 +1,9 @@
 <div class="full-height">
         <div ng-controller="MapCtrl" id="map"  >
-            <map on-create="mapCreated(map, overlay, geocoder)"></map>
+            <input id="pac-input" class="places-search-input" type="text" placeholder="Search for location ...">
+            <map on-create="mapCreated(map, overlay, geocoder)" ></map>
         </div>
-
+        <i class="pac-nav fa fa-bars fa-2x" ui-sref="home.myposts"></i>
+        <i id="notifmyposts" class="notif-icon"></i>
         <ui-view name="map-controls"></ui-view>
 </div>

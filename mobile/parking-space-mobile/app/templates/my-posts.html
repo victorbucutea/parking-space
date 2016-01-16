@@ -1,11 +1,15 @@
-<div ng-controller="MyPostsCtrl" class="ps-content">
+<div ng-controller="MyPostsCtrl">
 
     <ul class="row slider-tabs-menu">
         <li class="col" ui-sref="home.myposts" ui-sref-active="active">
             <a>My spaces</a>
+            <i class="notif-icon tab-menu-notif" id="myposts-notif" ng-show="unreadNotificationsForSpaces()">
+                {{unreadNotificationsForSpaces()}}
+            </i>
         </li>
         <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
             <a>My offers</a>
+            <i class="notif-icon tab-menu-notif"></i>
         </li>
     </ul>
 
@@ -23,6 +27,15 @@
         <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
 
         <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You did not post any spaces.</div>
+    </div>
+
+    <div class="post-space-container">
+        <div class="post-space" ui-sref="home.map.post">
+            <i class="fa fa-dollar"></i> Post new parking space
+        </div>
+        <div class="post-space" ui-sref="home.map.search">
+            <i class="fa fa-arrow-left "></i> Back to search
+        </div>
     </div>
 
     <ui-view name="edit-space"></ui-view>

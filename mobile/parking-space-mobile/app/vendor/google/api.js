@@ -3,7 +3,7 @@ google.maps = google.maps || {};
 (function () {
 
     function getScript(src, key) {
-        var url = src + '?key=' + key+'&libraries=geometry&sensor=false';
+        var url = src + '?key=' + key+'&libraries=geometry,places&sensor=false';
         document.write('<script src="' + url + '" type="text/javascript"></script>');
     }
 

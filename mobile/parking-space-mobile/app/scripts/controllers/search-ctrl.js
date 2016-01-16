@@ -3,8 +3,7 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $filter) {
-
+angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $stateParams) {
     $rootScope.map.setZoom(15);
 
     $scope.circleOptions = {
@@ -16,6 +15,42 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         radius: parameterService.getDefaultSearchRadius()
     };
 
+    $scope.circleOptions.center = $rootScope.map.getCenter();
+    $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
+
+    var parkingSpaceListUpdated = function (spaces) {
+        if (!spaces && !$scope.spaces) {
+            return false;
+        }
+
+        if (!$scope.spaces && spaces) {
+            return true;
+        }
+
+        if ($scope.spaces && !spaces) {
+            return true;
+        }
+
+        if ($scope.spaces.length != spaces.length) {
+            return true;
+        }
+
+        // check whether last update of newer items is > than last update of old items
+        var lastUpdateNewItems;
+        var lastUpdateOldItems;
+        spaces.forEach(function (item) {
+            if (!lastUpdateNewItems || new Date(lastUpdateNewItems).getTime() <= new Date(item.updated_at).getTime())
+                lastUpdateNewItems = item.updated_at;
+        });
+
+        $scope.spaces.forEach(function (item) {
+            if (!lastUpdateOldItems || new Date(lastUpdateOldItems).getTime() <= new Date(item.updated_at).getTime())
+                lastUpdateOldItems = item.updated_at;
+        });
+
+        return (new Date(lastUpdateNewItems).getTime() > new Date(lastUpdateOldItems).getTime());
+    };
+
     var dragListenClbk = function () {
         if ($scope.searchRadiusCircle)
             $scope.searchRadiusCircle.setMap();
@@ -25,29 +60,28 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
         var latLng = $rootScope.map.getCenter();
         parkingSpaceService.getAvailableSpaces(latLng.lat(), latLng.lng(), $scope.circleOptions.radius, function (spaces) {
-            $scope.spaces = spaces;
             drawSpaces(spaces);
         });
     };
 
-
     var dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
 
-
-    if (!$scope.searchRadiusCircle || $scope.searchRadiusCircle.getMap() ) {
-        // user navigates on screen for first time
-        $scope.circleOptions.center = $rootScope.map.getCenter();
-        $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
-        $rootScope.searchRadiusCircle = $scope.searchRadiusCircle;
-    }
-
-
     var drawSpaces = function (newVal) {
-        if (!newVal)
+        if (!parkingSpaceListUpdated(newVal)) {
             return;
+        }
+        $scope.spaces = newVal;
+        if (!newVal || newVal.length == 0) {
+            $scope.selectedSpace = null;
+        }
 
         if (!$scope.markers)
             $scope.markers = [];
+
+
+        $scope.markers.forEach(function (d) {
+            d.setMap();//clear marker
+        });
 
         var replaceMarker = function (space) {
             var image = {
@@ -70,17 +104,20 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 labelStyle: {color: '#fff'}
             });
 
+            if(space.id == $stateParams.parking_space_id ) {
+                $scope.selectedSpace = space;
+                $scope.$digest();
+            }
+
+
             google.maps.event.addListener(markerWithLabel, "click", function (e) {
                 $scope.selectedSpace = space;
-                $scope.$apply();
+                $scope.$digest();
             });
 
             $scope.markers.push(markerWithLabel);
         };
 
-        $scope.markers.forEach(function (d) {
-            d.setMap();//clear marker
-        });
 
         newVal.forEach(replaceMarker)
     };
@@ -88,7 +125,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
     var center = $rootScope.map.getCenter();
 
     parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
-        $scope.spaces = spaces;
         drawSpaces(spaces);
     });
 
@@ -102,7 +138,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 searchRadiusCircle.setRadius(newVal);
                 var center = $rootScope.map.getCenter();
                 parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), newVal, function (spaces) {
-                    $scope.spaces = spaces;
                     drawSpaces(spaces);
                 });
             }
@@ -120,7 +155,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $scope.circleOptions.radius = newVal;
                 var center = $rootScope.map.getCenter();
                 parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), newVal, function (spaces) {
-                    $scope.spaces = spaces;
                     drawSpaces(spaces);
                 });
             }
@@ -131,12 +165,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         if (!$scope.selectedSpace) {
             return;
         }
-        var duration = moment.duration(parameterService.getShortTermExpiration(), 'minutes');
-        if (!$scope.selectedSpace.short_term) {
-            duration = moment.duration(parameterService.getLongTermExpiration(), 'weeks');
-        }
-        var expirationTimestamp = new Date($scope.selectedSpace.created_at).getTime() + duration.asMilliseconds();
-        return moment(expirationTimestamp).fromNow();
+        return moment($scope.selectedSpace.space_availability_stop).fromNow();
     };
 
     $scope.stdImageUrl = function (url) {
@@ -151,8 +180,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
     };
 
 
-    $scope.$on('$stateChangeStart' , function (event, toState) {
-        if( toState.name.indexOf('home.map.search') == -1 ) {
+    $scope.$on('$stateChangeStart', function (event, toState) {
+        if (toState.name.indexOf('home.map.search') == -1) {
             if ($scope.searchRadiusCircle)
                 $scope.searchRadiusCircle.setMap();
             google.maps.event.removeListener(dragListenHandle);
