@@ -1,6 +1,6 @@
 json.extract! parking_space, :id, :location_lat, :location_long, :title,
               :address_line_1, :address_line_2, :description, :recorded_from_lat,
-              :recorded_from_long, :phone_number,
+              :recorded_from_long, :phone_number, :availability_start, :availability_stop ,:space_availability_start , :space_availability_stop,
               :owner_name, :updated_at, :created_at, :thumbnail_image_url, :standard_image_url
 
 json.rotation_angle parking_space.rotation_angle.to_f
