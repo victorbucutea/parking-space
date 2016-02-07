@@ -9,13 +9,15 @@
         </li>
         <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
             <a>My offers</a>
-            <i class="notif-icon tab-menu-notif"></i>
+            <i class="notif-icon tab-menu-notif" id="myoffers-notif" ng-show="unreadNotificationsForOffers()">
+                {{unreadNotificationsForOffers()}}
+            </i>
         </li>
     </ul>
 
     <div class="list open-spaces-list scroll">
-        <span class="item "  ng-repeat="space in spaces" ng-click="show(space)">
-            <parking-spot-info-box class="small"  space="space" ></parking-spot-info-box>
+        <span class="item " ng-repeat="space in spaces" ng-click="show(space)">
+            <parking-spot-info-box class="small" space="space"></parking-spot-info-box>
             <span class="unread-item-notif" ng-show="unreadNotifications(space)"> {{unreadNotifications(space)}} </span>
             <i class="fa fa-money item-notifications">
                 <span> Offers ({{space.offers.length}})</span>
@@ -24,20 +26,29 @@
                 <span> Messages ({{unreadMessagesForSpace(space) }})</span>
             </i>
         </span>
-        <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
 
+        <div class="loading-spinner">
+            <i class="fa fa-5x fa-refresh"></i>
+        </div>
         <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You did not post any spaces.</div>
+
+        <div class="post-space-container inline">
+            <div class="post-space" ui-sref="home.map.post">
+                <i class="fa fa-dollar"></i> Post new parking space
+            </div>
+        </div>
     </div>
 
     <div class="post-space-container">
-        <div class="post-space" ui-sref="home.map.post">
-            <i class="fa fa-dollar"></i> Post new parking space
+        <div class="post-space" ui-sref="home.myposts.user">
+            <i class="fa fa-user"></i> &nbsp; Edit user details
         </div>
         <div class="post-space" ui-sref="home.map.search">
-            <i class="fa fa-arrow-left "></i> Back to search
+            <i class="fa fa-arrow-left "></i> &nbsp; Back to search
         </div>
     </div>
 
     <ui-view name="edit-space"></ui-view>
+    <ui-view name="edit-user"></ui-view>
     <ui-view name="help"></ui-view>
 </div>

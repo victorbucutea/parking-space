@@ -13,18 +13,21 @@
     </div>
 
 
+
     <div id="search-space">
+
         <div class="space-detail-title" ng-show="selectedSpace">
+            <i class="fa fa-question fa-3x pull-right" ui-sref=".help"></i>
             <h3 ng-hide="selectedSpace.owner_is_current_user">{{selectedSpace.owner_name}}
                 <i class="ion-android-share pull-right"></i>
             </h3>
 
-            <h3 ng-show="selectedSpace.owner_is_current_user">Your post <i class="ion-android-share pull-right"></i></h3>
-
+            <h3 ng-show="selectedSpace.owner_is_current_user">Your post </h3>
             <span>
                 {{selectedSpace.created_at | date: 'EEE, MMM d, h:mm' }} {{ "( expires "+expireDuration()+" )" }}
             </span>
         </div>
+
 
         <div class="space-detail-content padding-horizontal">
             <div class="pull-left" ng-click="showFullImage = true" ng-show="selectedSpace.thumbnail_image_url">
@@ -35,8 +38,15 @@
             </div>
         </div>
 
-        <div class="no-items-msg loading-finished" ng-show="spaces.length && !selectedSpace"><br/>Please select a space !</div>
-        <div class="no-items-msg loading-finished" ng-show="!spaces.length"><br/>No spaces found !</div>
+        <div class="loading-spinner" ng-show="!selectedSpace">
+            <i class="fa fa-5x fa-refresh"></i>
+        </div>
+
+        <div class="no-items-msg loading-finished" ng-show="spaces.length && !selectedSpace"><br/>Select space to view details.</div>
+        <div class="no-items-msg loading-finished" ng-show="!spaces.length">
+            <br/>No spaces found !<br/><br/>
+            <a ui-sref="home.map.post"><i class="fa fa-product-hunt fa-2x"></i>ost one !</a>
+        </div>
     </div>
 
     <div class="ps-modal thumbnail-modal" ng-show="showFullImage" ng-click="showFullImage = false">

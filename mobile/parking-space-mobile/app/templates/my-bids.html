@@ -15,8 +15,9 @@
         </li>
     </ul>
 
-    <i class="fa fa-5x fa-refresh fa-spin loading-spinner search"></i>
-
+    <div class="loading-spinner">
+        <i class="fa fa-5x fa-refresh "></i>
+    </div>
     <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You haven't placed any offers.</div>
 
     <div class="scroll" id="my-bids-list">
@@ -27,7 +28,6 @@
                      {{space.price | units  }}.<small>{{space.price | subunits}}</small>
                       <currency val="space.currency"></currency>
                  </span>
-                <i class="fa fa-refresh fa-spin loading-spinner"></i>
             </h4>
             <div class="bid-table no-margin" ng-show="space.offers.length">
                 <div class="offer" ng-click="selectOffer(offer, space)" ng-repeat="offer in space.offers | orderBy: 'timestamp'"

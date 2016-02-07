@@ -61,7 +61,7 @@ $gray: #ddd;
 
 $gray-lighter: #888;
 $gray-xlight: #e5e5e5;
-$gray-xxlight: #f0f0f0;
+$gray-xxlight: #f5f5f5;
 
 $gray-dark: #444;
 $gray-dark-transparent: transparentize($gray-dark, 0.5);
@@ -175,12 +175,6 @@ html, body {
 
       &.icon-center {
         font-size: $xbig-measure-unit;
-      }
-
-      &:active {
-        background-color: $gray-lighter;
-        border-top: 2px solid $gray-xlight;
-        border-left: 2px solid $gray-xlight;
       }
     }
   }
@@ -380,6 +374,11 @@ html, body {
       padding-bottom: $big-measure-unit;
     }
 
+    .save-spinner {
+      // just enough for the h3 margin to kick in
+      padding-bottom: 1px;
+    }
+
     .confirm-space {
       width: 78%;
     }
@@ -472,6 +471,17 @@ html, body {
   background-color: #fff;
   z-index: 2;
 
+  &.inline {
+    position: relative;
+    margin-top: $xxbig-measure-unit;
+
+    .post-space {
+      width: 81%;
+      margin: auto;
+      background-color: $blue;
+    }
+  }
+
   .post-space {
     border-radius: 5px;
     background-color: #333;
@@ -479,7 +489,6 @@ html, body {
     text-align: center;
     font-size: 16px;
     padding: $sm-measure-unit;
-    border: 1px solid $red;
     margin: $measure-unit;
   }
 }
@@ -567,10 +576,8 @@ html, body {
 .loading-spinner {
   display: none;
   color: $gray;
-  &.search {
-    margin-top: 30px;
-    margin-left: 41%;
-  }
+  width: 15%;
+  margin: $xxbig-measure-unit auto;
 }
 
 .no-items-msg {
@@ -579,21 +586,24 @@ html, body {
   margin-right: auto;
   margin-top: $xxxbig-measure-unit;
   margin-bottom: $xxxbig-measure-unit;
-  color: $gray;
+  color: $gray-lighter;
   font-size: 20px;
   text-align: center;
+
+  a {
+    color: $gray-lighter;
+  }
 }
 
 .new-post-ribbon {
-    padding: 4px 20px;
-    font-weight: 200;
-    background-color: $blue;
-    color: $gray-xxlight;
-    font-size: $lg-font-size;
-    text-align: center;
-    margin: 0;
+  padding: 4px 20px;
+  font-weight: 200;
+  background-color: $blue;
+  color: $gray-xxlight;
+  font-size: $lg-font-size;
+  text-align: center;
+  margin: 0;
 }
-
 
 @mixin parking-sign($size: $lg-jumbo-measure-unit, $icon: false) {
 
@@ -630,7 +640,7 @@ parking-spot-info-box {
 
   &.big {
     .parking-spot-details {
-      h1,h2 {
+      h1, h2 {
         font-size: $xlg-font-size + 2;
       }
     }
@@ -863,16 +873,6 @@ parking-spot-info-box.small {
     padding-top: $big-measure-unit;
   }
 
-  .submit-offer {
-    background-color: $red;
-    border-radius: 5px;
-    color: #fff;
-    font-size: $xbig-measure-unit;
-    font-weight: 100;
-    border: none;
-    padding: 6px $xbig-measure-unit;
-    margin-top: $big-measure-unit;
-  }
   .bid-table {
     max-height: 110px;
     margin-top: $xxbig-measure-unit;
@@ -966,11 +966,29 @@ parking-spot-info-box.small {
   }
 }
 
+// standard red button
+.btn-red {
+  background-color: $red;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 100;
+  border: none;
+  padding: 3px 14px;
+
+  .big {
+    font-size: $xbig-measure-unit;
+    padding: 6px $xbig-measure-unit;
+    margin-top: $big-measure-unit;
+  }
+
+}
+
+
 // the overlay blanket for showing help
 .help-blanket {
   position: fixed;
   height: 100%;
-  background-color: transparentize($gray-dark, 0.4);
+  background-color: transparentize($gray-dark, 0.25);
   top: 0;
   color: #ffffff;
   padding: $measure-unit;
@@ -979,6 +997,7 @@ parking-spot-info-box.small {
 
   h1, h2, h3, h4, h5, h6 {
     color: #ffffff;
+    font-family: 'Open Sans', 'Helvetica Neue';
   }
 }
 
@@ -991,27 +1010,7 @@ parking-spot-info-box.small {
   border-radius: 4px;
 }
 
-// register screen
-.country-list {
-  height: 110px;
-  overflow-y: scroll;
-  .flag {
-    font-size: 1.1em;
-    padding: $xxsm-measure-unit;
 
-    &.selected {
-      background-color: $gray;
-    }
-  }
-}
-
-.car-icon {
-  font-size: 10em;
-  color: $gray;
-  position: absolute;
-  bottom: 100px;
-  right: -100px;
-}
 
 // Social buttons
 

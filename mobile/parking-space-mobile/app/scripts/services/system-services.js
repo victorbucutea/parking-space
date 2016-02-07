@@ -6,6 +6,41 @@ angular.module('ParkingSpaceMobile.services')
     .service('userService', function ($http, ENV, errorHandlingService, $rootScope, parameterService, $state, notificationService) {
         var _this = this;
 
+
+        /* get current user details */
+        _this.getUser = function (clbk) {
+            $('.loading-spinner').show();
+            $('.loading-finished').hide();
+
+            $http.get(ENV + 'users/edit.json')
+                .success(function (data) {
+                    $('.loading-spinner').hide();
+                    $('.loading-finished').show();
+                    if (clbk)
+                        clbk(data);
+                })
+                .error(function (data, status, headers, config) {
+                    errorHandlingService.handle(data, status);
+                    $('.loading-finished').show();
+                });
+        };
+
+        /* save details */
+        _this.saveUser = function(user, clbk) {
+            $http.put(ENV + 'users.json',{user: user})
+                .success(function (data) {
+                    $('.loading-spinner').hide();
+                    $('.loading-finished').show();
+                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Profile update successful!'});
+                    if (clbk)
+                        clbk(data);
+                })
+                .error(function (data, status, headers, config) {
+                    errorHandlingService.handle(data, status);
+                    $('.loading-finished').show();
+                });
+        };
+
         _this.registerUser = function (user, clbk) {
             user.notif_registration_id = notificationService.notifRegistrationId;
             $http.post(ENV + 'users.json', {user: user})

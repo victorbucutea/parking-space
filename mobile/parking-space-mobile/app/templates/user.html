@@ -1,0 +1,58 @@
+<div class="ps-modal">
+    <div id="post-space" ng-controller="RegisterCtrl" class="register">
+        <form class="register reg-modal" name="registerForm">
+            <h3> Select your country </h3>
+
+            <div class="country-list">
+                <div class="flag" ng-repeat="country in countries" ng-click="selectCountry(country)"
+                     ng-class="{selected: selectedCountry == country}" >
+                    <img ng-src="{{country.url}}" height="13" width="27"/>
+                    &nbsp; {{country.name}} ({{country.prefix}})
+
+                </div>
+            </div>
+
+            <h3> Enter your details </h3>
+
+            <span class="prefix">{{ selectedCountry.prefix || '+XX'}}</span>
+
+            <input class="phone-number" type="text" id="phoneNo"
+                   placeholder="Phone Number" ng-model="user.phone_number" name="phoneNumber" required minlength="5" pattern="[0-9\. ]*"/>
+            <i class="fa "></i>
+
+            <input type="text" class="email" placeholder="Email" ng-model="user.email" name="email" required minlength="5"
+                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+            <i class="fa "></i>
+
+            <input type="text" class="first-name" placeholder="Full name" ng-model="user.full_name" name="firstName" required minlength="5"/>
+            <i class="fa "></i>
+
+
+            <div class="ps-dialog" id="requiredFieldsDialog">
+                <div class="ps-dialog-content">
+                    <div class="ps-question">
+                        Please select a country, and properly fill in all required fields!
+                        <ul class="invalid-field-list">
+                            <li ng-hide="registerForm.email.$valid"> Email (e.g. 'john@domain.com')</li>
+                            <li ng-hide="registerForm.phoneNumber.$valid"> Phone number (e.g. 723 xxx xxx)</li>
+                            <li ng-hide="registerForm.firstName.$valid"> First name (min 5 characters)</li>
+                        </ul>
+                    </div>
+                    <div class="ps-control-buttons">
+                        <div class="button-bar">
+                            <a class="button icon-center ion-checkmark-round" onclick="$('#requiredFieldsDialog').hide()"></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="ps-control-buttons">
+                <div class="button-bar">
+                    <a class="button icon-center ion-checkmark-round" ng-click="save()"></a>
+                    <a class="button icon-center ion-close" ui-sref="^"></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

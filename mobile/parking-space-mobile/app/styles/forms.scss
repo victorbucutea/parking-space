@@ -71,6 +71,24 @@
 
 .register {
     background: url('/images/register_bg.png') no-repeat;
+
+    &.reg-modal {
+        background: #fff;
+        padding: $measure-unit $measure-unit 0 $measure-unit ;
+
+        .country-list {
+            background-color: $gray-xxlight;
+        }
+
+        input {
+            width: 90%;
+
+            &.phone-number {
+                width: 70%;
+            }
+        }
+    }
+
     h1 {
         margin-bottom: 25px;
     }
@@ -82,6 +100,28 @@
         position: absolute;
         top: 20px;
         z-index: -1;
+    }
+
+    // register screen
+    .country-list {
+        height: 110px;
+        overflow-y: scroll;
+        .flag {
+            font-size: 1.1em;
+            padding: $xxsm-measure-unit;
+
+            &.selected {
+                background-color: $gray;
+            }
+        }
+    }
+
+    .car-icon {
+        font-size: 10em;
+        color: $gray;
+        position: absolute;
+        bottom: 100px;
+        right: -100px;
     }
 
     input {
@@ -142,6 +182,8 @@
         background-color: $red;
         color: #fff;
         border-radius: 4px;
+        font-size: $xbig-measure-unit;
+        font-weight: 300;
 
         &.blue {
             background-color: $blue;

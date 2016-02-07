@@ -64,15 +64,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
     $scope.unreadMessagesForSpace = function (space) {
         var count = 0;
 
-        if (!space.offers) {
-            return count;
-        }
+        if (!space.offers) return count;
 
         space.offers.forEach(function (d) {
-
-            if (d.messages) {
-                return;
-            }
+            if (d.messages) return;
 
             d.messages.forEach(function (d) {
                 if (!d.read)  count++;

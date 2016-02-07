@@ -3,11 +3,15 @@ angular.module('ParkingSpaceMobile.services', [])
     .service('parkingSpaceService', function ($rootScope, $http, ENV, userService, imageResizeFactory, errorHandlingService) {
 
         this.getAvailableSpaces = function (lat, lng, range, clbk, errClbk) {
+            $('.loading-spinner').show();
+            $('.loading-finished').hide();
 
             $http.get(ENV + 'parking_spaces.json?lat=' + lat + '&lon=' + lng + '&range=' + range)
                 .success(function (data) {
-                    if(data) {
-                        data.forEach(function(p_space) {
+                    $('.loading-spinner').hide();
+                    $('.loading-finished').show();
+                    if (data) {
+                        data.forEach(function (p_space) {
                             p_space.space_availability_start = new Date(p_space.space_availability_start);
                             p_space.space_availability_stop = new Date(p_space.space_availability_stop);
                         });
@@ -33,10 +37,10 @@ angular.module('ParkingSpaceMobile.services', [])
                 .success(function (data) {
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
-                    if(data) {
-                        data.forEach(function(p_space) {
-                           p_space.space_availability_start = new Date(p_space.space_availability_start);
-                           p_space.space_availability_stop = new Date(p_space.space_availability_stop);
+                    if (data) {
+                        data.forEach(function (p_space) {
+                            p_space.space_availability_start = new Date(p_space.space_availability_start);
+                            p_space.space_availability_stop = new Date(p_space.space_availability_stop);
                         });
                     }
                     if (clbk)
@@ -52,11 +56,11 @@ angular.module('ParkingSpaceMobile.services', [])
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
-            $http.get(ENV + 'parking_spaces/'+parkingSpaceId+".json")
+            $http.get(ENV + 'parking_spaces/' + parkingSpaceId + ".json")
                 .success(function (data) {
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
-                    if(data) {
+                    if (data) {
                         data.space_availability_start = new Date(data.space_availability_start);
                         data.space_availability_stop = new Date(data.space_availability_stop);
                     }
@@ -261,6 +265,13 @@ angular.module('ParkingSpaceMobile.services', [])
         _this.parameters = {};
 
         this.retrieveParameters = function (okClbk, errClbk) {
+            if (Object.keys(_this.parameters) > 0 ) {
+                if (okClbk) {
+                    okClbk(_this.parameters);
+                }
+                return;
+            }
+
             $http.get(ENV + 'parameters.json')
                 .success(function (data) {
                     _this.setParameters(data);
@@ -290,23 +301,15 @@ angular.module('ParkingSpaceMobile.services', [])
         };
 
         this.getDefaultSearchRadius = function () {
-            return parseInt(_this.parameters.default_range) || 500; // bkp for  no connectivity
-        };
-
-        this.getShortTermExpiration = function () {
-            return parseInt(_this.parameters.short_term_expiration) || 5;// bkp for  no connectivity
-        };
-
-        this.getLongTermExpiration = function () {
-            return parseInt(_this.parameters.long_term_expiration) || 2;// bkp for  no connectivity
+            return parseInt(_this.parameters.default_range) || 500; // default
         };
 
         this.getStartingCurrency = function () {
-            return _this.parameters.starting_currency || 'Eur';// bkp for  no connectivity
+            return _this.parameters.starting_currency || 'Eur';// default
         };
 
         this.getStartingAskingPrice = function () {
-            return parseInt(_this.parameters.starting_asking_price) || 5;// bkp for  no connectivity
+            return parseInt(_this.parameters.starting_asking_price) || 5;// default
         };
 
         this.getCountryList = function () {
@@ -314,30 +317,30 @@ angular.module('ParkingSpaceMobile.services', [])
         };
 
         this.getCountryListAsync = function (clbk) {
-            _this.retrieveParameters(
-                function (data) {
-                    var countries = _this.getCountryList();
+            _this.retrieveParameters(function (data) {
+                var countries = _this.getCountryList();
 
-                    countries.map(function (item) {
-                        var countryName = item.value4.replace(/ /g, "_") + ".png";
-                        item.url = 'images/flags/' + countryName;
-                        item.prefix = item.value3;
-                        item.name = item.value4;
-                    });
-
-                    countries.sort(function (item1, item2) {
-                        if (item1.name < item2.name)
-                            return -1;
-                        if (item1.name > item2.name)
-                            return 1;
-                        return 0;
-                    });
-
-                    if (clbk) {
-                        clbk(countries);
-                    }
-
+                countries.map(function (item) {
+                    var countryName = item.value4.replace(/ /g, "_") + ".png";
+                    item.url = 'images/flags/' + countryName;
+                    item.prefix = item.value3;
+                    item.name = item.value4;
+                    item.code = item.key;
                 });
+
+                countries.sort(function (item1, item2) {
+                    if (item1.name < item2.name)
+                        return -1;
+                    if (item1.name > item2.name)
+                        return 1;
+                    return 0;
+                });
+
+                if (clbk) {
+                    clbk(countries);
+                }
+
+            });
         };
     })
 

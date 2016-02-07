@@ -169,6 +169,14 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
+            .state('home.myposts.user', {
+                url: '/user/{user_id}',
+                views: {
+                    'edit-user': {
+                        templateUrl: "templates/user.html"
+                    }
+                }
+            })
             .state('home.myoffers', {
                 url: '/myoffers',
                 views: {

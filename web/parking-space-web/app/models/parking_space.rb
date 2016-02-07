@@ -5,9 +5,8 @@ class ParkingSpace < DeviceRecord
   include ActiveModel::Dirty
 
   enum interval: [:long_term, :short_term]
-
-  scope :long_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:long_term], SysParams.instance.get_i('long_term_expiration').weeks.ago) }
-  scope :short_term, -> { where('parking_spaces.interval = ? and parking_spaces.created_at >= ? ', ParkingSpace.intervals[:short_term], SysParams.instance.get_i('short_term_expiration').minutes.ago) }
+  scope :not_expired, -> { where('parking_spaces.space_availability_stop >= ? ', Time.now )}
+  scope :active, -> { where('parking_spaces.space_availability_start <= ? ', Time.now )}
   scope :within_boundaries, ->(attrs) {
     where('parking_spaces.location_lat >= :lat_min
            AND parking_spaces.location_lat <= :lat_max
@@ -26,6 +25,7 @@ class ParkingSpace < DeviceRecord
   validates :target_price_currency, :presence => true
   validates :space_availability_start, :presence => true
   validates :space_availability_stop, :presence => true
+  validate :availability_stops_after_start
 
   attr_accessor :image_data
   attr_accessor :thumbnail_data
@@ -69,10 +69,15 @@ class ParkingSpace < DeviceRecord
     File.delete(thumbnail) if File.exist?(thumbnail) && File.file?(thumbnail)
   end
 
+  def availability_stops_after_start
+    if self.space_availability_start > self.space_availability_stop
+        self.errors.add(:space_availability_start, 'should be lower than stop')
+    end
+  end
+
+
   def expired?
-    sysparams = SysParams.instance
-    expire_date = short_term? ? sysparams.get_i('short_term_expiration').minutes.ago : sysparams.get_i('long_term_expiration').weeks.ago
-    expire_date >= created_at
+    Time.now >= space_availability_stop
   end
 
   def init

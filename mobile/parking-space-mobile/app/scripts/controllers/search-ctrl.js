@@ -6,6 +6,8 @@
 angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $stateParams) {
     $rootScope.map.setZoom(15);
 
+    var center = $rootScope.map.getCenter();
+
     $scope.circleOptions = {
         strokeColor: '#111',
         strokeWeight: 0.5,
@@ -13,6 +15,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         fillOpacity: 0.1,
         map: $rootScope.map,
         radius: parameterService.getDefaultSearchRadius()
+    };
+
+    var blueIcon = {
+        url: 'images/marker_blue.png',
+        scaledSize: new google.maps.Size(53, 53)
+    };
+
+    var orangeIcon = {
+        url: 'images/marker_orange.png',
+        scaledSize: new google.maps.Size(58, 58)
     };
 
     $scope.circleOptions.center = $rootScope.map.getCenter();
@@ -64,65 +76,95 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         });
     };
 
+    var dragStartClbk = function(){
+        $('.loading-spinner').show();
+        $('.loading-finished').hide();
+    };
+
+    var dragStartHandle = google.maps.event.addListener($rootScope.map, 'drag', dragStartClbk);
+
     var dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
 
     var drawSpaces = function (newVal) {
+
+        var refreshSpacesInScope = function (newSpaces){
+            $scope.spaces = newSpaces;
+            if (newSpaces && newSpaces.length) {
+                newSpaces.forEach(function (item) {
+                    if (!$scope.selectedSpace) {
+                        return;
+                    }
+                    if (item.id == $scope.selectedSpace.id) {
+                        $scope.selectedSpace = item;
+                    }
+                });
+            }
+        };
+
         if (!parkingSpaceListUpdated(newVal)) {
+            // we still want to keep updates to offers and other non-critical info
+            refreshSpacesInScope(newVal);
             return;
         }
-        $scope.spaces = newVal;
+        refreshSpacesInScope(newVal);
+
         if (!newVal || newVal.length == 0) {
             $scope.selectedSpace = null;
         }
 
-        if (!$scope.markers)
-            $scope.markers = [];
+        if (!$rootScope.markers) {
+            $rootScope.markers = [];
+        }
 
-
-        $scope.markers.forEach(function (d) {
+        $rootScope.markers.forEach(function (d) {
             d.setMap();//clear marker
         });
 
         var replaceMarker = function (space) {
-            var image = {
-                url: space.short_term ? 'images/marker_orange.png' : 'images/marker_blue.png',
-                scaledSize: new google.maps.Size(53, 53)
-            };
-
             var currencyElm = $('<i class="fa" ></i>');
             var currency = currencyFactory.getCurrency(space.currency);
             currencyElm.addClass(currency);
             var currencyHtml = currencyElm.wrap('<p/>').parent().html();
             var price = space.price + "";
             var xCoord = price.length == 1 ? 8 : 15;
-            var markerWithLabel = new MarkerWithLabel({
+
+            var markerOptions = {
                 position: new google.maps.LatLng(space.location_lat, space.location_long),
                 map: $rootScope.map,
-                icon: image,
+                icon: blueIcon,
                 labelContent: space.price + ' ' + currencyHtml,
                 labelAnchor: new google.maps.Point(xCoord, 44),
                 labelStyle: {color: '#fff'}
-            });
+            };
 
-            if(space.id == $stateParams.parking_space_id ) {
+            var markerWithLabel = new MarkerWithLabel(markerOptions);
+
+            if (space.id == $stateParams.parking_space_id) {
                 $scope.selectedSpace = space;
-                $scope.$digest();
+                $scope.selectedMarker = markerWithLabel;
+                markerWithLabel.setIcon(orangeIcon);
+                if (!$scope.$$phase)
+                    $scope.$digest();
             }
 
 
-            google.maps.event.addListener(markerWithLabel, "click", function (e) {
+            markerWithLabel.listener = google.maps.event.addListener(markerWithLabel, "click", function (e) {
+                if ($scope.selectedMarker) {
+                    $scope.selectedMarker.setIcon(blueIcon);
+                }
+
+                $scope.selectedMarker = markerWithLabel;
+                markerWithLabel.setIcon(orangeIcon);
                 $scope.selectedSpace = space;
-                $scope.$digest();
+                if (!$scope.$$phase)
+                    $scope.$digest();
             });
 
-            $scope.markers.push(markerWithLabel);
+            $rootScope.markers.push(markerWithLabel);
         };
-
 
         newVal.forEach(replaceMarker)
     };
-
-    var center = $rootScope.map.getCenter();
 
     parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
         drawSpaces(spaces);
@@ -185,6 +227,14 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             if ($scope.searchRadiusCircle)
                 $scope.searchRadiusCircle.setMap();
             google.maps.event.removeListener(dragListenHandle);
+            google.maps.event.removeListener(dragStartHandle);
+            if ($rootScope.markers) {
+                $rootScope.markers.forEach(function (d) {
+                    d.setIcon(blueIcon);
+                    // remove click handler for markers
+                    google.maps.event.removeListener(d.listener);
+                });
+            }
         }
     });
 });

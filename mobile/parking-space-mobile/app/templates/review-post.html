@@ -2,10 +2,11 @@
     <div ng-controller="EditParkingSpaceCtrl">
 
         <form class="form-edit-details">
-            <div >
+            <div>
                 <h3 class="ps-page-title" ng-show="spaceEdit.id">
                     Edit space
                 </h3>
+
                 <h3 class="ps-page-title" ng-hide="spaceEdit.id">
                     New space in {{spaceEdit.sublocality}}
                 </h3>
@@ -39,7 +40,8 @@
                                <i class="fa fa-camera"></i>
                                <i class="text"></i>
                             </span>
-                            <img ng-src="{{imageUrl(spaceEdit)}}" class="parking-sign" ng-show="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
+                            <img ng-src="{{imageUrl(spaceEdit)}}" class="parking-sign"
+                                 ng-show="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
                         </div>
                         <div class="col-66">
                             <label class="item item-input item-stacked-label desc-textarea">
@@ -59,43 +61,50 @@
             </div>
         </form>
 
-       <!-- <div class="ps-dialog" id="confirmSpace">
-            <div class="ps-dialog-content confirm-space">
-                <div class="ps-question">
-                    Are you sure you want to place this
-                    <i class="fa fa-calendar" ng-show="!spaceEdit.short_term"> </i>
-                    <i class="fa fa-clock-o" ng-show="spaceEdit.short_term"> </i>
-                    {{spaceEdit.short_term? 'Short Term': 'Long Term'}} space ? <br/><br/>
-
-                    Price : <b> {{spaceEdit.price}}
-                    <currency val="spaceEdit.currency"></currency>
-                </b><br/>
-
-                    Title : <b> {{spaceEdit.title}}</b><br/>
-
-                    Address : <b> {{spaceEdit.address_line_1}}</b>
-
-                    <span ng-show="spaceEdit.address_line_2">
-                        Address : <b> {{spaceEdit.address_line_2}}</b>
-                    </span>
-                    <br/>
-                    <span ng-show="spaceEdit.description">
-                        Description: {{spaceEdit.description}} <br/>
-                    </span>
-                    <br/>
-                    Expires on :<b>{{ expirationDate() }}</b>
-                    <br/>
-                    <br/>
+        <div class="ps-dialog" id="saveSpinner">
+            <div class="ps-dialog-content ">
+                <div class="ps-question text-center save-spinner">
+                    <h3>Saving ...</h3>
                 </div>
-                <div class="ps-control-buttons">
-                    <div class="button-bar">
-                        <a class="button icon-center ion-checkmark-round" ng-click="save()"></a>
-                        <a class="button icon-center ion-close" onclick="$('#confirmSpace').hide()"></a>
-                    </div>
-                </div>
-
             </div>
-        </div>-->
+        </div>
+        <!-- <div class="ps-dialog" id="confirmSpace">
+             <div class="ps-dialog-content confirm-space">
+                 <div class="ps-question">
+                     Are you sure you want to place this
+                     <i class="fa fa-calendar" ng-show="!spaceEdit.short_term"> </i>
+                     <i class="fa fa-clock-o" ng-show="spaceEdit.short_term"> </i>
+                     {{spaceEdit.short_term? 'Short Term': 'Long Term'}} space ? <br/><br/>
+
+                     Price : <b> {{spaceEdit.price}}
+                     <currency val="spaceEdit.currency"></currency>
+                 </b><br/>
+
+                     Title : <b> {{spaceEdit.title}}</b><br/>
+
+                     Address : <b> {{spaceEdit.address_line_1}}</b>
+
+                     <span ng-show="spaceEdit.address_line_2">
+                         Address : <b> {{spaceEdit.address_line_2}}</b>
+                     </span>
+                     <br/>
+                     <span ng-show="spaceEdit.description">
+                         Description: {{spaceEdit.description}} <br/>
+                     </span>
+                     <br/>
+                     Expires on :<b>{{ expirationDate() }}</b>
+                     <br/>
+                     <br/>
+                 </div>
+                 <div class="ps-control-buttons">
+                     <div class="button-bar">
+                         <a class="button icon-center ion-checkmark-round" ng-click="save()"></a>
+                         <a class="button icon-center ion-close" onclick="$('#confirmSpace').hide()"></a>
+                     </div>
+                 </div>
+
+             </div>
+         </div>-->
     </div>
     <ui-view name="help"></ui-view>
 </div>

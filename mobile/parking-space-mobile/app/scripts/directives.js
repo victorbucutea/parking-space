@@ -161,7 +161,7 @@ angular.module('ParkingSpaceMobile.directives', [])
             template: ' <div class="bid-amount row">' +
             '<div class="col">' +
             '<a class="fa fa-caret-left fa-3x disable-user-behavior" ng-click="decrease()"></a>' +
-            '<input type="number" min="0" max="100" ng-model="bidAmount">' +
+            '<input type="number" ng-model="bidAmount">' +
             '<a class="fa fa-caret-right fa-3x disable-user-behavior" ng-click="increase()" style=""></a>' +
             '</div>' +
             '<div class="col">' +
@@ -190,7 +190,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                         $scope.bidAmount = 0;
                     }
 
-                    if (newVal > 100) {
+                    if (newVal >= 100) {
                         $scope.bidAmount = 100;
                     }
 

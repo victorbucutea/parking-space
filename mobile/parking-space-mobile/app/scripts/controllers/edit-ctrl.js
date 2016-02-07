@@ -58,19 +58,29 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
 
     $scope.save = function () {
+        setTimeout(function() {
+           $("#saveSpinner").show();
+        },1000);
         parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
             replaceById(savedSpace, $scope.spaces);
+            $("#saveSpinner").hide();
+            $state.go('home.map.search');
         });
-        $state.go('^');
     };
 
     $scope.confirmSave = function() {
-        if ( !$scope.spaceEdit.title ) {
+        var spaceEdit = $scope.spaceEdit;
+        if ( !spaceEdit.title ) {
             alert("Please fill in the title!");
             return;
         }
 
-        var text = "Are you sure you want to place this space for "+ $scope.spaceEdit.price + " " +$scope.spaceEdit.currency + "?\n\n";
+        if ( spaceEdit.space_availability_start.getTime() > spaceEdit.space_availability_stop.getTime() ) {
+            alert("Start date should be lower than stop date");
+            return;
+        }
+
+        var text = "Are you sure you want to place this space for "+ spaceEdit.price + " " +spaceEdit.currency + "?\n\n";
         if (confirm(text)){
             $scope.save();
         }
