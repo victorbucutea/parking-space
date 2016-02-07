@@ -40,30 +40,43 @@ div {
 }
 
 .field_with_errors {
-  padding: 2px;
-  background-color: red;
-  display: table;
+  input {
+    border-color: red;
+  }
+  display: inline;
 }
 
 #error_explanation {
-  width: 450px;
-  border: 2px solid red;
+  width: 100%;
+  max-width: 450px;
+  border: 1px solid #ddd;
   padding: 7px;
   padding-bottom: 0;
   margin-bottom: 20px;
   background-color: #f0f0f0;
   h2 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px;
-    margin-bottom: 0px;
-    background-color: #c00;
-    color: #fff;
+    display: none;
   }
   ul li {
     font-size: 12px;
     list-style: square;
   }
+}
+
+.btn {
+  border: 0 none;
+  padding: 6.8599999959px 9.7999999971px;
+  margin-top: 28.5714285886px;
+  background-color: #d46220;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 1.1em;
+}
+
+input {
+  color: rgb(17, 17, 17);
+  border: 1px solid rgb(221, 221, 221);
+  margin: 10px 0;
+  padding: 4px;
+  border-radius: 3px;
 }

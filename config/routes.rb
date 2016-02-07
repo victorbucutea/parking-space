@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
-  resources :terminals  do
-    get '/logout' => 'terminals#logout', :as => 'logout'
-  end
+
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}
+
+  #provide a screen to confirm the password reset
+  devise_scope :user do
+    get "/users/password/done" => "passwords#done", :as => "done_user_password"
+  end
 
   post '/notif' => 'notifications#notif', :as => 'notif'
 
@@ -38,7 +41,8 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+  #   get 'products/:i
+  # d/purchase' => 'catalog#purchase', as: :purchase
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
