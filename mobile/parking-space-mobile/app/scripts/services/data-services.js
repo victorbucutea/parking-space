@@ -265,7 +265,7 @@ angular.module('ParkingSpaceMobile.services', [])
         _this.parameters = {};
 
         this.retrieveParameters = function (okClbk, errClbk) {
-            if (Object.keys(_this.parameters) > 0 ) {
+            if (Object.keys(_this.parameters) > 0) {
                 if (okClbk) {
                     okClbk(_this.parameters);
                 }
@@ -464,7 +464,9 @@ angular.module('ParkingSpaceMobile.services', [])
             if (stateIsMyOffers || stateIsMyPosts) {
                 $state.reload();
             }
+
             navigator.vibrate(800);
+
             var notifmyposts = $('#notifmyposts');
             notifmyposts.show();
             var currentCount = Object.keys(current).length;
@@ -486,13 +488,18 @@ angular.module('ParkingSpaceMobile.services', [])
                         _this.showNotifications(e.payload);
                     } else {
                         // otherwise we were launched because the user touched a notification in the notification tray.
-                        if (e.coldstart)
+                        if (e.coldstart) {
                             console.log('--COLDSTART NOTIFICATION--');
-                        else
+                            _this.showNotifications(e.payload);
+                        }
+                        else {
                             console.log('--BACKGROUND NOTIFICATION--');
+                            _this.showNotifications(e.payload);
+                        }
                     }
                     break;
                 case 'error':
+                    console.log('-- ERROR --',e);
                     _this.deferred.resolve();
                     break;
                 default:

@@ -9,6 +9,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
     $('#register').hide();
     $('.fa-spin.fa-spinner').hide();
 
+    $scope.user = {};
+
     userService.getUser(function (user) {
         if (!user) return;
         $scope.user = user;

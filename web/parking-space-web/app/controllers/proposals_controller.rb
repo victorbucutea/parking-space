@@ -94,7 +94,9 @@ class ProposalsController < ApplicationController
     owner_device_id = proposal.parking_space.deviceid
     space_owner = User.find_by_device_id owner_device_id
 
-    data = {:area => :parking_space,
+    data = {:aps => {:alert => 'You have an offer for your parking space',:badge => 9 , :sound => 'bingbong.aiff'},
+            :message => 'You have an offer for your parking space',
+            :area => :parking_space,
             :parking_space => proposal.parking_space.id,
             :msgcnt => 1}
 
@@ -104,7 +106,9 @@ class ProposalsController < ApplicationController
   def notify_proposal_owner_approve(proposal)
     owner_device_id = proposal.deviceid
     proposal_owner = User.find_by_device_id owner_device_id
-    data = {:area => :offer,
+    data = {:aps => {:alert => 'Your parking space offer has been accepted',:badge => 9 , :sound => 'bingbong.aiff'},
+            :message => 'Your parking space offer has been accepted',
+            :area => :offer,
             :offer => proposal.id,
             :msgcnt => 1}
 
@@ -114,7 +118,9 @@ class ProposalsController < ApplicationController
   def notify_proposal_owner_reject(proposal)
     owner_device_id = proposal.deviceid
     proposal_owner = User.find_by_device_id owner_device_id
-    data = {:area => :offer,
+    data = {:aps => {:alert => 'Your parking space offer has been rejected',:badge => 9 , :sound => 'bingbong.aiff'},
+            :message => 'Your parking space offer has been rejected',
+            :area => :offer,
             :offer => proposal.id,
             :msgcnt => 1}
 
@@ -128,7 +134,6 @@ class ProposalsController < ApplicationController
       GCM.key = Rails.application.secrets.google_api_key
 
       destination = [destination_user.notif_registration_id]
-
 
       GCM.send_notification(destination, data)
     rescue => e

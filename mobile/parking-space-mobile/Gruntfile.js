@@ -40,23 +40,23 @@ module.exports = function (grunt) {
             },
             local_development: {
                 constants: {
-                    ENV: "http://192.168.0.180:3000/"
+                    ENV: "http://localhost:3000/"
 
                 }
             },
             development: {
                 constants: {
-                    ENV: "http://parking-space-dev-y5b87xe9uk.elasticbeanstalk.com/"
+                    ENV: "http://192.168.0.180:3000/"
                 }
             },
             staging: {
                 constants: {
-                    ENV: "http://parking-space-staging.elasticbeanstalk.com//"
+                    ENV: "http://prod.qmum3394vk.eu-west-1.elasticbeanstalk.com/"
                 }
             },
             production: {
                 constants: {
-                    ENV:  'http://api.yoursite.com/'
+                    ENV:  'http://prod.qmum3394vk.eu-west-1.elasticbeanstalk.com/'
                 }
             }
         },
@@ -211,6 +211,17 @@ module.exports = function (grunt) {
                         },
                         post: {}
                     }
+                }
+            }
+        },
+
+        uglify: {
+            options: {
+                mangle: false,
+                beautify: true,
+                compress: {
+                    sequences: false,
+                    hoist_funs : false
                 }
             }
         },

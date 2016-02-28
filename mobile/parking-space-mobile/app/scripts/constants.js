@@ -2,6 +2,6 @@
 
  angular.module("config", [])
 
-.constant("ENV", "http://192.168.0.180:3000/")
+.constant("ENV", "http://prod.qmum3394vk.eu-west-1.elasticbeanstalk.com/")
 
 ;
