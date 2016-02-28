@@ -7,7 +7,6 @@ class PasswordsController < Devise::PasswordsController
 
   # PUT /users/password/done
   def done
-
   end
 
 
