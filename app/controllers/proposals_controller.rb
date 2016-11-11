@@ -11,6 +11,10 @@ class ProposalsController < ApplicationController
   # GET /parking_spaces/:p_sp_id/proposals.json
   def index
     @proposals = Proposal.where parking_space_id: params[:parking_space_id]
+
+    @proposal = Proposal.with_messages (1)
+
+
   end
 
   def reject

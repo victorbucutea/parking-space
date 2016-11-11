@@ -27,4 +27,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
 
+  def cors_preflight_check
+      logger debug 'xxx'
+  end
 end
