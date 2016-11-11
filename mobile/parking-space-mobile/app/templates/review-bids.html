@@ -15,19 +15,17 @@
         <!-- table of offers when user == current user -->
         <div ng-show="selectedSpace.owner_is_current_user">
 
-            You have {{selectedSpace.offers.length || 0}} offers.
-
-            <span ng-show="selectedSpace.offers.length">
-                Tap &laquo;<i class="ion-checkmark-round"></i> Accept&raquo;to confirm
-            </span>
-            <br/>
 
             <div ng-hide="selectedSpace.offers.length" class="ps-text-xxbig">
                 <br/>
-                :(
+                <br/>
+                {{selectedSpace.offers.length || 0}} offers
             </div>
 
             <div class="bid-table scroll" ng-show="selectedSpace.offers.length ">
+                <span ng-show="selectedSpace.offers.length">
+                    Tap &laquo;<i class="ion-checkmark-round"></i> Accept&raquo;to confirm
+                </span>
                 <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in selectedSpace.offers | orderBy: 'timestamp'"
                      ng-class="{selected: selOffer == offer}">
 

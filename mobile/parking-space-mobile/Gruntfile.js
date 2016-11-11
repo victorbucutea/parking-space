@@ -51,12 +51,12 @@ module.exports = function (grunt) {
             },
             staging: {
                 constants: {
-                    ENV: "http://prod.qmum3394vk.eu-west-1.elasticbeanstalk.com/"
+                    ENV: "http://parking-space-web.qmum3394vk.eu-west-1.elasticbeanstalk.com/"
                 }
             },
             production: {
                 constants: {
-                    ENV:  'http://prod.qmum3394vk.eu-west-1.elasticbeanstalk.com/'
+                    ENV:  'http://parking-space-web.eu-west-1.elasticbeanstalk.com/'
                 }
             }
         },
@@ -217,12 +217,12 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                mangle: false,
-                beautify: true,
-                compress: {
-                    sequences: false,
-                    hoist_funs : false
-                }
+                //mangle: false,
+                //beautify: true,
+                //compress: {
+                //    sequences: false,
+                //    hoist_funs : false
+                //}
             }
         },
 

@@ -57,6 +57,7 @@
     "https://github.com/apache/cordova-plugin-vibration",
     "https://github.com/driftyco/ionic-plugin-keyboard",
     "cordova-plugin-geolocation",
-    "cordova-plugin-whitelist"
+    "cordova-plugin-whitelist",
+    "cordova-plugin-x-socialsharing"
   ]
 }

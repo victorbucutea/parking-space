@@ -37,7 +37,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                         zoom: 15,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         streetViewControl: false,
-                        zoomControl: true,
+                        zoomControl: false,
                         zoomControlOptions: {
                             position: google.maps.ControlPosition.RIGHT_CENTER
                         },

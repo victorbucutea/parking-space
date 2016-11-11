@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, parameterService, $state) {
+angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, parameterService, $state ) {
 
 
     $document.mousedown(function () {
@@ -46,5 +46,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
 
         $state.go(currentState + '.help');
     };
+
+    $document.on('click','.ps-modal', function(event){
+        if ($(event.target).hasClass('ps-modal'))
+            $state.go('^');
+    })
 
 });

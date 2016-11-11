@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  match "users*" => "registrations#cors_preflight_check", via: [:options ]
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}
 
