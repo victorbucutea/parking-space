@@ -1,6 +1,6 @@
 json.extract! parking_space, :id, :location_lat, :location_long, :title,
               :address_line_1, :address_line_2, :description, :recorded_from_lat,
-              :recorded_from_long, :phone_number, :availability_start, :availability_stop ,:space_availability_start , :space_availability_stop,
+              :recorded_from_long, :availability_start, :availability_stop ,:space_availability_start , :space_availability_stop,
               :owner_name, :updated_at, :created_at, :thumbnail_image_url, :standard_image_url
 
 json.rotation_angle parking_space.rotation_angle.to_f
@@ -12,6 +12,10 @@ json.image_url parking_space.standard_image_url
 json.currency parking_space.target_price_currency
 json.owner_is_current_user parking_space.deviceid == current_user.device_id
 json.expired parking_space.expired?
+if parking_space.owner.present?
+  json.owner_phone_number parking_space.owner.phone_number
+  json.owner_email parking_space.owner.email
+end
 
 json.offers do
   # this call increases costs by 40%, replacing the partial call with its raw content

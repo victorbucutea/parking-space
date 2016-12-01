@@ -14,30 +14,31 @@
 ActiveRecord::Schema.define(version: 20160117134100) do
 
   create_table "messages", force: :cascade do |t|
-    t.string   "deviceid",    limit: 255
-    t.string   "content",     limit: 255
+    t.string   "deviceid"
+    t.string   "content"
     t.integer  "proposal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "parameter_values", force: :cascade do |t|
-    t.string   "key",          limit: 255
-    t.string   "value",        limit: 255
+    t.string   "key"
+    t.string   "value"
     t.integer  "parameter_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "value1",       limit: 255
-    t.string   "value2",       limit: 255
-    t.string   "value3",       limit: 255
-    t.string   "value4",       limit: 255
+    t.string   "value1"
+    t.string   "value2"
+    t.string   "value3"
+    t.string   "value4"
   end
 
+  add_index "parameter_values", ["key"], name: "index_parameter_values_on_key"
   add_index "parameter_values", ["parameter_id"], name: "index_parameter_values_on_parameter_id"
 
   create_table "parameters", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.string   "default_value", limit: 255
+    t.string   "name"
+    t.string   "default_value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -49,23 +50,23 @@ ActiveRecord::Schema.define(version: 20160117134100) do
 #   undefined method `[]' for nil:NilClass
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "full_name",              limit: 255
-    t.string   "phone_number",           limit: 255
-    t.string   "device_id",              limit: 255
-    t.string   "country",                limit: 255
-    t.string   "notif_registration_id",  limit: 255
+    t.string   "full_name"
+    t.string   "phone_number"
+    t.string   "device_id"
+    t.string   "country"
+    t.string   "notif_registration_id"
   end
 
   add_index "users", ["device_id"], name: "index_users_on_device_id", unique: true

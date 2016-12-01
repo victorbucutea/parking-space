@@ -29,6 +29,7 @@ class ParkingSpace < DeviceRecord
 
   attr_accessor :image_data
   attr_accessor :thumbnail_data
+  attr_accessor :owner
 
   before_save :save_image_and_thumbnail
   after_destroy :delete_image
