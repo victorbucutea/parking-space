@@ -74,8 +74,12 @@ $darkgreen: darkgreen;
 
 // map controls
 #map {
-  height: 60%;
+  height: 100%;
 
+}
+
+a {
+  color: $dflt-font-color;
 }
 
 .full-height {
@@ -86,10 +90,6 @@ $darkgreen: darkgreen;
   display: block;
   height: 100%;
   position: relative;
-}
-
-.map-controls {
-  height: 40%;
 }
 
 map {
@@ -117,6 +117,28 @@ html, body {
   font-family: $font-family;
   color: $dflt-font-color;
   background-color: #fff;
+}
+
+.space-description-box {
+  background-color: #fff;
+  font-size: 26px;
+  padding: 5.0px;
+  margin: auto;
+  box-shadow: 1px 11px 33px rgba(0, 0, 0, 0.65);
+  border-radius: 10px;
+  position: absolute;
+  bottom: 14px;
+  z-index: 2;
+  right: 14px;
+  width: 56px;
+
+  .presentation-text {
+    color: $blue;
+  }
+
+  .address-text {
+    font-size: 0.9em;
+  }
 }
 
 #pac-input {
@@ -194,6 +216,13 @@ html, body {
   }
   .list {
     overflow: hidden;
+  }
+}
+
+.search-space-modal {
+
+  .space-detail-content {
+    overflow: auto;
   }
 }
 
@@ -541,13 +570,16 @@ html, body {
 
     &.active {
       background-color: #fff;
-      color: $dflt-font-color;
       position: relative;
+      > a {
+        color: $dflt-font-color;
+      }
     }
 
     > a {
       padding: $measure-unit;
       display: block;
+      color: #fff;
       &:hover {
         cursor: pointer;
       }
@@ -735,13 +767,11 @@ parking-spot-info-box.small {
   position: absolute;
   font-size: 2.5em;
   font-weight: bold;
-  top: 120px;
+  top: 48%;
   right: 0;
   left: 0;
   margin-left: auto;
   margin-right: auto;
-  width: 40px;
-  height: 74px;
 
   &.no-pointer-events {
     pointer-events: none;
@@ -897,6 +927,7 @@ parking-spot-info-box.small {
     .offer {
       background-color: $gray-xxlight;
       font-size: 1.2em;
+      white-space: nowrap;
 
       &.selected {
         background-color: darken(#f0f0f0, 15%);
@@ -910,8 +941,6 @@ parking-spot-info-box.small {
         font-size: 0.8em;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
-        display: inline-block;
         max-width: 128px;
       }
 
@@ -921,13 +950,13 @@ parking-spot-info-box.small {
         padding: 5px;
         display: inline-block;
         width: 80px;
-        white-space: nowrap;
         text-align: center;
       }
 
       .offer-accept {
         padding: 5px;
         text-decoration: underline;
+        float: right;
       }
 
       .accepted {
@@ -971,18 +1000,17 @@ parking-spot-info-box.small {
   background-color: $red;
   border-radius: 5px;
   color: #fff;
-  font-weight: 100;
+  font-weight: 200;
   border: none;
   padding: 3px 14px;
 
-  .big {
+  &.big {
     font-size: $xbig-measure-unit;
     padding: 6px $xbig-measure-unit;
     margin-top: $big-measure-unit;
   }
 
 }
-
 
 // the overlay blanket for showing help
 .help-blanket {
@@ -1009,8 +1037,6 @@ parking-spot-info-box.small {
   padding: 3px;
   border-radius: 4px;
 }
-
-
 
 // Social buttons
 

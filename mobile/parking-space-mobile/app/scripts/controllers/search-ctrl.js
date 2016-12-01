@@ -3,7 +3,7 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $stateParams) {
+angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $stateParams) {
     $rootScope.map.setZoom(15);
 
     var center = $rootScope.map.getCenter();
@@ -25,6 +25,14 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
     var orangeIcon = {
         url: 'images/marker_orange.png',
         scaledSize: new google.maps.Size(58, 58)
+    };
+
+
+    $scope.stdImageUrl = function (url) {
+        if (!url) {
+            return '#';
+        }
+        return ENV + url;
     };
 
     $scope.circleOptions.center = $rootScope.map.getCenter();
@@ -75,13 +83,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             drawSpaces(spaces);
         });
     };
-
-    var dragStartClbk = function(){
-        $('.loading-spinner').show();
-        $('.loading-finished').hide();
-    };
-
-    var dragStartHandle = google.maps.event.addListener($rootScope.map, 'drag', dragStartClbk);
 
     var dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
 
@@ -158,6 +159,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $scope.selectedSpace = space;
                 if (!$scope.$$phase)
                     $scope.$digest();
+
+                $state.go('.bids');
             });
 
             $rootScope.markers.push(markerWithLabel);
@@ -166,68 +169,72 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         newVal.forEach(replaceMarker)
     };
 
+    $scope.closeParkingSpaceInfo = function() {
+        $scope.selectedSpace = null;
+        if ($scope.selectedMarker) {
+            $scope.selectedMarker.setIcon(blueIcon);
+        }
+    };
+
     parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
-        drawSpaces(spaces);
+       drawSpaces(spaces);
     });
 
-    $scope.increaseRadius = function () {
-        var searchRadiusCircle = $scope.searchRadiusCircle;
-        if (searchRadiusCircle) {
-            var prevRad = searchRadiusCircle.getRadius();
-            if (prevRad <= 900) {
-                var newVal = prevRad + 50;
-                $scope.circleOptions.radius = newVal;
-                searchRadiusCircle.setRadius(newVal);
-                var center = $rootScope.map.getCenter();
-                parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), newVal, function (spaces) {
-                    drawSpaces(spaces);
-                });
-            }
 
-        }
+    $scope.showPostSpace = function() {
+        $scope.spaceEdit = {};
+        angular.copy($scope.space, $scope.spaceEdit);
+        $scope.spaceEdit.title = "";
+        $scope.spaceEdit.space_availability_start = new Date();
+        $scope.spaceEdit.space_availability_stop = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
+        geolocationService.getCurrentLocation(function (position) {
+            $scope.spaceEdit.recorded_from_lat = position.coords.latitude;
+            $scope.spaceEdit.recorded_from_long = position.coords.longitude;
+        });
+        $state.go('.post');
     };
 
-    $scope.decreaseRadius = function () {
-        var searchRadiusCircle = $scope.searchRadiusCircle;
-        if (searchRadiusCircle) {
-            var prevRad = searchRadiusCircle.getRadius();
-            if (prevRad >= 100) {
-                var newVal = prevRad - 50;
-                searchRadiusCircle.setRadius(newVal);
-                $scope.circleOptions.radius = newVal;
-                var center = $rootScope.map.getCenter();
-                parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), newVal, function (spaces) {
-                    drawSpaces(spaces);
-                });
-            }
-        }
+
+    $scope.calculateAddress = function () {
+        var mapCenter = $rootScope.map.getCenter();
+
+        geocoderService.getAddress(mapCenter.lat(), mapCenter.lng(), function (newAddr) {
+
+            var space = $scope.space;
+            if (!space)
+               space = $scope.space = {price: parameterService.getStartingAskingPrice(), currency: parameterService.getStartingCurrency()};
+
+            var street = newAddr.street || '';
+            var street_number = newAddr.street_number || '';
+            var sublocality = newAddr.sublocality ||
+                newAddr.administrative_area_level_2 ||
+                newAddr.administrative_area_level_1 || '';
+            var city = newAddr.city || '';
+
+            space.address_line_1 = street + ', ' + street_number;
+            space.address_line_2 = sublocality + ', ' + city;
+            space.location_lat = mapCenter.lat();
+            space.location_long = mapCenter.lng();
+            space.title = sublocality;
+            space.sublocality = sublocality;
+
+            // not used for now$('.address-text').text(space.address_line_1 + ", " + space.address_line_2);
+        });
     };
 
-    $scope.expireDuration = function () {
-        if (!$scope.selectedSpace) {
-            return;
-        }
-        return moment($scope.selectedSpace.space_availability_stop).fromNow();
-    };
+    $scope.calculateAddress();
 
-    $scope.stdImageUrl = function (url) {
-        if (!url) {
-            return '#';
-        }
-        return ENV + url;
-    };
-
-    $scope.showPlaceOffer = function () {
-        $state.go('.bids');
-    };
+    var calcAddressHandler = google.maps.event.addListener($rootScope.map, 'idle', $scope.calculateAddress);
 
 
     $scope.$on('$stateChangeStart', function (event, toState) {
         if (toState.name.indexOf('home.map.search') == -1) {
             if ($scope.searchRadiusCircle)
                 $scope.searchRadiusCircle.setMap();
+
             google.maps.event.removeListener(dragListenHandle);
-            google.maps.event.removeListener(dragStartHandle);
+            google.maps.event.removeListener(calcAddressHandler);
+
             if ($rootScope.markers) {
                 $rootScope.markers.forEach(function (d) {
                     d.setIcon(blueIcon);

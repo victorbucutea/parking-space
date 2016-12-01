@@ -1,41 +1,26 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="ro.sft.parkingspace.mobile" version="0.5.1"
-        xmlns="http://www.w3.org/ns/widgets"
-        xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Parking Space</name>
+<widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>HelloCordova</name>
     <description>
-        Social parking space sharing app. Offers possibility to sell and buy parking spaces.
+        A sample Apache Cordova application that responds to the deviceready event.
     </description>
-    <author email="victor.bucutea@gmail.com" href="http://softspot.ro">
-        Victor Bucutea
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
     </author>
     <content src="index.html" />
-
+    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
-    <access origin="tel:*" launch-external="yes"/>
-    <access origin="mailto:*" launch-external="yes"/>
-    <access origin="sms:*" launch-external="yes"/>
-
-    <preference name="SplashScreen" value="screen" />
-    <preference name="Orientation" value="portrait" />
-    <preference name="KeyboardShrinksView" value="false" />
-
-
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
     <platform name="android">
-        <icon src="resources/android/drawable-mdpi/parking_sign.png" density="mdpi" />
-        <icon src="resources/android/drawable-hdpi/parking_sign.png" density="hdpi" />
-        <icon src="resources/android/drawable-xhdpi/parking_sign.png" density="xhdpi" />
-        <icon src="resources/android/drawable-xxhdpi/parking_sign.png" density="xxhdpi" />
-
-        <splash src="resources/android/drawable-land-hdpi/screen.png" density="land-hdpi"/>
-        <splash src="resources/android/drawable-land-ldpi/screen.png" density="land-ldpi"/>
-        <splash src="resources/android/drawable-land-mdpi/screen.png" density="land-mdpi"/>
-        <splash src="resources/android/drawable-land-xhdpi/screen.png" density="land-xhdpi"/>
-        <splash src="resources/android/drawable-land-xhdpi/screen.png" density="land-xhdpi"/>
-        <splash src="resources/android/drawable-land-xhdpi/screen.png" density="land-xhdpi"/>
-        <splash src="resources/android/drawable-port-hdpi/screen.png" density="port-hdpi"/>
-        <splash src="resources/android/drawable-port-ldpi/screen.png" density="port-ldpi"/>
-        <splash src="resources/android/drawable-port-mdpi/screen.png" density="port-mdpi"/>
-        <splash src="resources/android/drawable-port-xhdpi/screen.png" density="port-xhdpi"/>
+        <allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
     </platform>
 </widget>

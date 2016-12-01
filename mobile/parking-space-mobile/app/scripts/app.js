@@ -65,38 +65,6 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.post', {
-                url: '/post',
-                views: {
-                    'map-controls': {
-                        templateUrl: "templates/post.html"
-                    }
-                }
-            })
-            .state('home.map.post.help', {
-                url: '/help',
-                views: {
-                    'help': {
-                        templateUrl: "templates/post-help.html"
-                    }
-                }
-            })
-            .state('home.map.post.review', {
-                url: '/review',
-                views: {
-                    'review': {
-                        templateUrl: "templates/review-post.html"
-                    }
-                }
-            })
-            .state('home.map.post.review.help', {
-                url: '/help',
-                views: {
-                    'help': {
-                        templateUrl: "templates/review-post-help.html"
-                    }
-                }
-            })
             .state('home.map.search', {
                 url: '/search/{parking_space_id}',
                 views: {
@@ -116,8 +84,16 @@ angular.module('ParkingSpaceMobile', [
             .state('home.map.search.bids', {
                 url: '/place-bid',
                 views: {
-                    'place-offer': {
+                    'place-bid': {
                         templateUrl: "templates/review-bids.html"
+                    }
+                }
+            })
+            .state('home.map.search.post', {
+                url: '/place-bid',
+                views: {
+                    'place-bid': {
+                        templateUrl: "templates/review-post.html"
                     }
                 }
             })

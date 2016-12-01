@@ -56,6 +56,10 @@ class ParkingSpacesController < ApplicationController
 
     @parking_spaces = ParkingSpace.includes(proposals: [:messages]).where({deviceid: deviceid})
 
+    @parking_spaces.each do |space|
+      space.owner = User.find_by_device_id deviceid
+    end
+
     respond_to do |format|
       format.json { render :index, status: :ok }
     end
@@ -70,6 +74,10 @@ class ParkingSpacesController < ApplicationController
     end
 
     @parking_spaces = ParkingSpace.includes(proposals: [:messages]).where(proposals: {deviceid: deviceid})
+
+    @parking_spaces.each do |space|
+      space.owner = User.find_by_device_id space.deviceid
+    end
 
     respond_to do |format|
       format.json { render :index, status: :ok }

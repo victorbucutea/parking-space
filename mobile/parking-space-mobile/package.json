@@ -10,7 +10,7 @@
     "grunt-autoprefixer": "~0.4.0",
     "grunt-concurrent": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-compass": "~0.6.0",
+    "grunt-contrib-compass": "^0.6.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-connect": "~0.5.0",
     "grunt-contrib-copy": "~0.4.1",
@@ -58,6 +58,7 @@
     "https://github.com/driftyco/ionic-plugin-keyboard",
     "cordova-plugin-geolocation",
     "cordova-plugin-whitelist",
-    "cordova-plugin-x-socialsharing"
+    "cordova-plugin-x-socialsharing",
+    "cordova-plugin-whitelist@1"
   ]
 }

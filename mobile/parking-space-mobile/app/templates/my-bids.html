@@ -71,15 +71,15 @@
                 </div>
                 <div ng-show="selOffer.approved">
                     <hr/>
-                    <a ng-href="tel:{{selOffer.phone_number}}">
+                    <a ng-href="tel:{{selectedSpace.owner_name}}">
                         <div class="ps-text-xbig">
-                            Call {{selOffer.owner_name}}
+                            Call {{selectedSpace.owner_name}}
                         </div>
                         <br/>
 
                         <div class="ps-text-xxbig">
                             <i class="fa fa-phone"></i>
-                            {{selOffer.phone_number}}
+                            {{selectedSpace.owner_phone_number}}
                         </div>
                     </a>
                 </div>

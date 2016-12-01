@@ -25,9 +25,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
             $scope.selectNewPlace(searchBox.getPlaces());
         });
 
-        //$($document).on('click', function() {
-        //   //if ($('.pac-input'))
-        //});
 
     };
 

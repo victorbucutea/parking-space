@@ -2,6 +2,6 @@
 
  angular.module("config", [])
 
-.constant("ENV", "http://localhost:3000/")
+.constant("ENV", "http://192.168.0.141:3000/")
 
 ;

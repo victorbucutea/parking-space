@@ -1,136 +1,122 @@
-<div class="ps-modal" ng-controller="ReviewBidsCtrl">
+<div id="search-space" class="ps-modal" ng-controller="ReviewBidsCtrl" >
+    <div class="search-space-modal">
 
+        <!-- Parking space info box , on top of offer number spinner -->
 
-    <div class="bids-area padding-left padding-right padding-top">
-        <h4 class="bid-title">
-            {{selectedSpace.title}} -
-                    <span class="bid-amount">
-                            {{selectedSpace.price | units  }}.
-                             <small>{{selectedSpace.price | subunits}}</small>
-                             <currency val="selectedSpace.currency"></currency>
-                    </span>
-        </h4>
-
-
-        <!-- table of offers when user == current user -->
-        <div ng-show="selectedSpace.owner_is_current_user">
-
-
-            <div ng-hide="selectedSpace.offers.length" class="ps-text-xxbig">
-                <br/>
-                <br/>
-                {{selectedSpace.offers.length || 0}} offers
+        <div class="space-detail-content padding-horizontal">
+            <div class="pull-left" ng-click="showFullImage = true" ng-show="selectedSpace.thumbnail_image_url">
+                <img ng-src="{{stdImageUrl(selectedSpace.thumbnail_image_url)}}" height="100"/>
             </div>
-
-            <div class="bid-table scroll" ng-show="selectedSpace.offers.length ">
-                <span ng-show="selectedSpace.offers.length">
-                    Tap &laquo;<i class="ion-checkmark-round"></i> Accept&raquo;to confirm
-                </span>
-                <div class="offer" ng-click="selectOffer(offer)" ng-repeat="offer in selectedSpace.offers | orderBy: 'timestamp'"
-                     ng-class="{selected: selOffer == offer}">
-
-                        <span class="offer-price">
-                            {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
-                            <currency val="offer.currency"></currency>
-                        </span>
-
-                        <span class="offer-desc">
-                            from {{offer.owner_name}}
-                        </span>
-
-                        <!--<span ng-hide="offer.read" class="offer-desc">-->
-                            <!--( <i class="fa fa-bell"></i> new )-->
-                        <!--</span>-->
-
-                    <div class="pull-right offer-accept" ng-click="confirmApproval(offer)">
-                        <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
-                        <i class="ion-checkmark-round" ng-show="!offer.approved"> Accept</i>
-                    </div>
-
-                </div>
-            </div>
-
-            <div ng-show="selOffer" class="offer-desc-area">
-                <div class="offer-desc-item">
-                    Placed on:
-                    <div class="value pull-right">{{selOffer.created_at | date: 'EEE, MMM d, h:mm'}}</div>
-                </div>
-
-                <div class="offer-desc-item">
-                    Placed by :
-                    <div class="value pull-right">{{selOffer.owner_name}}</div>
-                </div>
-                <div class="offer-desc-item phone-number">
-                    Tel No:
-                    <span class="value pull-right" ng-show="selOffer.approved"><i class="fa fa-phone"></i>{{selOffer.phone_number}}</span>
-                    <span class="value pull-right" ng-hide="selOffer.approved" ng-click="confirmApproval(selOffer)">
-                        &laquo;<i class="ion-checkmark-round"></i> Accept&raquo; offer first
-                    </span>
-                </div>
+            <div class="pull-left" style="width:70%" >
+                <parking-spot-info-box space="selectedSpace" class="small"></parking-spot-info-box>
             </div>
         </div>
 
-        <!-- table of offers when user != current user -->
-        <div ng-hide="selectedSpace.owner_is_current_user">
-            <div ng-show="selectedSpace.offers.length">
-                <div class="bids-area">
-                    <div class="bid-table narrow scroll">
-                        <div class="offer" ng-click="selectOffer(offer)"
-                             ng-repeat="offer in selectedSpace.offers | orderBy: '-price'"
-                             ng-class="{selected: selOffer == offer}">
-                        <span class="offer-price">
-                            {{offer.price | units  }}.<small>{{offer.price | subunits}}</small>
-                            <currency val="offer.currency"></currency>
-                        </span>
+
+        <div class="bids-area padding-left padding-right padding-top">
+
+            <h4>Active offers ({{selectedSpace.offers.length}})</h4>
+
+            <!-- table of offers when user == current user -->
+            <div ng-show="selectedSpace.owner_is_current_user">
+
+                <div ng-hide="selectedSpace.offers.length" class="ps-text-xxbig">
+                    <br/>
+                    <br/>
+                    {{selectedSpace.offers.length || 0}} offers
+                </div>
+
+                <div class="bid-table narrow scroll" ng-show="selectedSpace.offers.length ">
+
+                    <div class="offer" ng-click="selectOffer(offer)"
+                         ng-repeat="offer in selectedSpace.offers | orderBy: 'timestamp'"
+                         ng-class="{selected: selOffer == offer}">
+
+                            <span class="offer-price">
+                                {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
+                                <currency val="offer.currency"></currency>
+                            </span>
 
                         <span class="offer-desc">
-                            from {{offer.owner_name}}
-                        </span>
+                                ({{offer.owner_name}})
+                            </span>
 
+                        <span class="offer-accept" ng-click="confirmApproval(offer)">
+                                <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
+                                <i class="ion-checkmark-round" ng-show="!offer.approved"> Accept</i>
+                            </span>
+
+                    </div>
+                </div>
+                <span ng-show="selectedSpace.offers.length">
+                            Tap &laquo;<i class="ion-checkmark-round"></i> Accept&raquo;to confirm an offer
+                    </span>
+
+                <div ng-show="selOffer" class="offer-desc-area">
+                    <div class="offer-desc-item">
+                        Placed on:
+                        <div class="value pull-right">{{selOffer.created_at | date: 'EEE, MMM d, h:mm'}}</div>
+                    </div>
+
+                    <div class="offer-desc-item">
+                        Placed by :
+                        <div class="value pull-right">{{selOffer.owner_name}}</div>
+                    </div>
+                    <div class="offer-desc-item phone-number">
+                        Tel No:
+                        <span class="value pull-right" ng-show="selOffer.approved"><i class="fa fa-phone"></i>{{selOffer.phone_number}}</span>
+                        <span class="value pull-right" ng-hide="selOffer.approved"
+                              ng-click="confirmApproval(selOffer)">
+                        &laquo;<i class="ion-checkmark-round"></i> Accept&raquo; offer first
+                    </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- table of offers when user != current user -->
+            <div ng-hide="selectedSpace.owner_is_current_user">
+
+                <div ng-show="selectedSpace.offers.length">
+
+                    <div class="bids-area">
+                        <div class="bid-table narrow scroll">
+                            <div class="offer" ng-click="selectOffer(offer)"
+                                 ng-repeat="offer in selectedSpace.offers | orderBy: '-price'"
+                                 ng-class="{selected: selOffer == offer}">
+
+                                    <span class="offer-price">
+                                        {{offer.price | units  }}.<small>{{offer.price | subunits}}</small>
+                                        <currency val="offer.currency"></currency>
+                                    </span>
+                                <span class="offer-desc">from {{offer.owner_name}}</span>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <bid-amount amount="bid.bidAmount" currency="bid.bidCurrency"></bid-amount>
-            <div style="text-align: center;">
-                <button class="btn-red big" ng-click="placeOffer()">Place offer</button>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="btn-grp">
-        <h4>
-            <small> This parking spot will expire <b>{{expireDuration()}}</b>. Share :</small>
-        </h4>
-        <i class="fa fa-facebook-square fa-3x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
-        &nbsp;&nbsp;&nbsp;
-        <i class="fa fa-google-plus-square fa-3x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
-        &nbsp;&nbsp;&nbsp;
-        <i class="fa fa-twitter-square fa-3x" ng-click="window.plugins.socialsharing.share('Message only')"> </i>
-    </div>
-
-    <!--
-    HTML dialog. Replaced by js confirm() in $scope.confirmApproval()
-
-    <div class="ps-dialog" id="confirmOffer">
-        <div class="ps-dialog-content">
-            <div class="ps-question">
-                {{selOffer.approved ? 'Reject':'Accept'}} <b>{{selOffer.owner_name}}</b>'s offer for
-                        <span class="offer-price">
-                                    {{selOffer.price | units}}.<small>{{selOffer.price | subunits}}</small>
-                                    <currency val="selOffer.currency"></currency>
-                        </span>
-                ?
-            </div>
-            <div class="ps-control-buttons">
-                <div class="button-bar">
-                    <a class="button icon-center ion-checkmark-round" ng-click="accept(selectedSpace, selOffer)"></a>
-                    <a class="button icon-center ion-close" onclick="$('#confirmOffer').hide()"></a>
+                <bid-amount amount="bid.bidAmount" currency="bid.bidCurrency"></bid-amount>
+                <div style="text-align: center;">
+                    <button class="btn-red big" ng-click="placeOffer()">Place offer</button>
                 </div>
             </div>
         </div>
-    </div>-->
+
+
+        <div class="btn-grp">
+            <h4>
+                <small> This parking spot will expire <b>{{expireDuration()}}</b>.</small>
+            </h4>
+            <i class="fa fa-facebook-square fa-3x"
+               ng-click="window.plugins.socialsharing.share('Message only')"> </i>
+            &nbsp;&nbsp;&nbsp;
+            <i class="fa fa-google-plus-square fa-3x"
+               ng-click="window.plugins.socialsharing.share('Message only')"> </i>
+            &nbsp;&nbsp;&nbsp;
+            <i class="fa fa-twitter-square fa-3x"
+               ng-click="window.plugins.socialsharing.share('Message only')"> </i>
+        </div>
+
+    </div>
 
     <div class="ps-control-buttons">
         <div class="button-bar">
@@ -140,6 +126,4 @@
             <a class="button icon-center ion-close" ui-sref="^" ng-hide="selectedSpace.owner_is_current_user"></a>
         </div>
     </div>
-
-
 </div>

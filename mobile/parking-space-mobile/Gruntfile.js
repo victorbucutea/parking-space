@@ -40,13 +40,13 @@ module.exports = function (grunt) {
             },
             local_development: {
                 constants: {
-                    ENV: "http://localhost:3000/"
+                    ENV: "http://192.168.0.141:3000/"
 
                 }
             },
             development: {
                 constants: {
-                    ENV: "http://192.168.0.180:3000/"
+                    ENV: "http://192.168.0.141:3000/"
                 }
             },
             staging: {
@@ -534,7 +534,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('emulate', function () {
         grunt.config('concurrent.ionic.tasks', ['ionic:emulate:' + this.args.join(), 'watch']);
-        return grunt.task.run(['init', 'concurrent:ionic']);
+        return grunt.task.run(['init_dev', 'concurrent:ionic']);
     });
 
     grunt.registerTask('build', function () {

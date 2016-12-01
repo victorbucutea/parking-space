@@ -33,7 +33,7 @@ angular.module('ParkingSpaceMobile.directives', [])
 
                 function initialize() {
                     var mapOptions = {
-                        center: new google.maps.LatLng(43.07493, -89.381388),
+                        center: new google.maps.LatLng(44.412, 26.113),
                         zoom: 15,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         streetViewControl: false,
@@ -51,7 +51,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                     var centerControlDiv = document.createElement('div');
                     var centerControl = new CenterControl(centerControlDiv, map);
                     centerControlDiv.index = 1;
-                    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+                    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(centerControlDiv);
                     var overlay = new google.maps.OverlayView();
                     overlay.setMap(map);
                     overlay.draw = function () {
@@ -74,56 +74,6 @@ angular.module('ParkingSpaceMobile.directives', [])
             link: function ($scope, $element, $attr) {
                 var height = $element.height();
                 $element.find('.search-center-icon').css('margin-top', height / 2);
-            }
-        }
-    })
-
-    .directive('parkingAreaSymbol', function ($rootScope, $state) {
-        return {
-            restrict: 'E',
-            scope: {
-                'marker': '='
-            },
-            template: '<div id="parkingAreaSymbol" >' +
-            '<i class="parking-area-pointer fa fa-hand-o-right" id="handPointer"></i>' +
-            '<div class="parking-area-wrapper" id="parkingAreaWrapper">' +
-            '<div class="parking-area" id="parkingAreaRectangle">' +
-            '<i class="fa fa-angle-left fa-rotate-45 top-left"></i>' +
-            '&nbsp; ' +
-            '<i class="fa fa-angle-left fa-rotate-135 top-right"></i>' +
-            '<span>P</span>' +
-            '<i class="fa fa-angle-right fa-rotate-135 bottom-left"></i>' +
-            '&nbsp; ' +
-            '<i class="fa fa-angle-right fa-rotate-45 bottom-right"></i>' +
-            '</div>' +
-            '</div>' +
-            '</div>',
-            link: function ($scope, $element, $attr) {
-
-                var marker = $scope.marker;
-                var height = $element.height();
-                marker.rotation |= 0;
-
-                google.maps.event.addListener($rootScope.map, 'idle', function () {
-                    var mapCenter = $rootScope.overlay.getProjection().fromLatLngToContainerPixel($rootScope.map.getCenter());
-                    var markerTop = mapCenter.y - (height / 2);
-                    $element.css('top', markerTop + 'px');
-                });
-
-
-                var rotate = function (newVal) {
-                    var parkingArea = $element.find('#parkingAreaWrapper');
-                    parkingArea.css('transform', 'rotate(' + Math.round(newVal) + 'deg)');
-                };
-
-                $element.click(function(e) {
-                    if (marker.rotation >= -157.5) {
-                        marker.rotation -= 22.5;
-                    } else {
-                        marker.rotation = 0;
-                    }
-                    rotate(marker.rotation);
-                });
             }
         }
     })
