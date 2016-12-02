@@ -4,7 +4,7 @@
         <!-- Parking space info box , on top of offer number spinner -->
 
         <div class="space-detail-content padding-horizontal">
-            <div class="pull-left" ng-click="showFullImage = true" ng-show="selectedSpace.thumbnail_image_url">
+            <div class="pull-left space-detail-thumb" ng-click="showFullImage = true" ng-show="selectedSpace.thumbnail_image_url">
                 <img ng-src="{{stdImageUrl(selectedSpace.thumbnail_image_url)}}" height="100"/>
             </div>
             <div class="pull-left" style="width:70%" >
@@ -117,6 +117,22 @@
         </div>
 
     </div>
+
+    <div class="ps-modal thumbnail-modal" ng-show="showFullImage" ng-click="showFullImage = false">
+        <br/>
+        <br/>
+
+        <h2 class="text-center" ng-hide="selectedSpace.standard_image_url">
+           <span class="fa-stack fa-lg">
+              <i class="fa fa-camera fa-stack-1x"></i>
+              <i class="fa fa-ban fa-stack-2x"></i>
+            </span>
+        </h2>
+        <img ng-src="{{stdImageUrl(selectedSpace.standard_image_url)}}" class="ps-std-thumbnail"
+             ng-show="selectedSpace.standard_image_url"/>
+        <span>{{selectedSpace.description}}</span>
+    </div>
+
 
     <div class="ps-control-buttons">
         <div class="button-bar">

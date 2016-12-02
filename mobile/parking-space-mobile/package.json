@@ -59,6 +59,7 @@
     "cordova-plugin-geolocation",
     "cordova-plugin-whitelist",
     "cordova-plugin-x-socialsharing",
-    "cordova-plugin-whitelist@1"
+    "cordova-plugin-whitelist@1",
+    "cordova-plugin-camera"
   ]
 }

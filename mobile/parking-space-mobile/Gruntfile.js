@@ -51,12 +51,12 @@ module.exports = function (grunt) {
             },
             staging: {
                 constants: {
-                    ENV: "http://parking-space-web.qmum3394vk.eu-west-1.elasticbeanstalk.com/"
+                    ENV: "http://parking-space-dev.xtthdbdvpw.eu-central-1.elasticbeanstalk.com/"
                 }
             },
             production: {
                 constants: {
-                    ENV:  'http://parking-space-web.eu-west-1.elasticbeanstalk.com/'
+                    ENV:  'http://parking-space-dev.xtthdbdvpw.eu-central-1.elasticbeanstalk.com/'
                 }
             }
         },

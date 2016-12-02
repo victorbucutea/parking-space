@@ -221,8 +221,16 @@ html, body {
 
 .search-space-modal {
 
+  .space-detail-thumb {
+    padding-top: 10px;
+  }
+
   .space-detail-content {
     overflow: auto;
+
+    img {
+      border-radius: 5px;
+    }
   }
 }
 
@@ -531,11 +539,6 @@ html, body {
   }
 }
 
-.space-detail-content {
-  img {
-    border-radius: 5px;
-  }
-}
 
 .bid-amount {
 
