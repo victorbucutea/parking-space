@@ -1,5 +1,5 @@
 class FixApprovedProposalIdInParkingSpaces < ActiveRecord::Migration
   def change
-    change_column :parking_spaces, :approved_proposal_id, :long
+    change_column :parking_spaces, :approved_proposal_id, :numeric
   end
 end
