@@ -43,11 +43,61 @@ ActiveRecord::Schema.define(version: 20160117134100) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "parking_spaces" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "parking_spaces", force: :cascade do |t|
+    t.decimal  "location_lat"
+    t.decimal  "location_long"
+    t.decimal  "recorded_from_lat"
+    t.decimal  "recorded_from_long"
+    t.string   "deviceid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "target_price"
+    t.decimal  "approved_proposal_id"
+    t.string   "phone_number"
+    t.string   "owner_name"
+    t.integer  "interval"
+    t.string   "address_line_1"
+    t.string   "address_line_2"
+    t.string   "title"
+    t.string   "description"
+    t.text     "target_price_currency"
+    t.text     "image_file_name"
+    t.text     "image_content_type"
+    t.integer  "image_file_size"
+    t.text     "thumbnail_image_url"
+    t.text     "standard_image_url"
+    t.decimal  "rotation_angle"
+    t.date     "availability_start"
+    t.date     "availability_stop"
+    t.datetime "space_availability_start"
+    t.datetime "space_availability_stop"
+  end
 
-# Could not dump table "proposals" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  add_index "parking_spaces", ["created_at"], name: "index_parking_spaces_on_created_at"
+  add_index "parking_spaces", ["deviceid"], name: "index_parking_spaces_on_deviceid"
+  add_index "parking_spaces", ["interval"], name: "index_parking_spaces_on_interval"
+  add_index "parking_spaces", ["location_lat"], name: "index_parking_spaces_on_location_lat"
+  add_index "parking_spaces", ["location_long"], name: "index_parking_spaces_on_location_long"
+  add_index "parking_spaces", ["space_availability_start"], name: "index_parking_spaces_on_space_availability_start"
+  add_index "parking_spaces", ["space_availability_stop"], name: "index_parking_spaces_on_space_availability_stop"
+
+  create_table "proposals", force: :cascade do |t|
+    t.string   "deviceid"
+    t.string   "title_message"
+    t.integer  "parking_space_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "bid_amount"
+    t.string   "bid_currency"
+    t.string   "bidder_name"
+    t.integer  "approval_status"
+    t.boolean  "read"
+    t.string   "phone_number"
+    t.string   "message_from_device_id"
+  end
+
+  add_index "proposals", ["bid_amount"], name: "index_proposals_on_bid_amount"
+  add_index "proposals", ["deviceid"], name: "index_proposals_on_deviceid"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

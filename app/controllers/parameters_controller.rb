@@ -4,7 +4,7 @@ class ParametersController < ApplicationController
   # GET /parameters
   # GET /parameters.json
   def index
-    @parameters = SysParams.instance.all
+    @parameters =  Parameter.all.includes(:parameter_values)
   end
 
   # GET /parameters/1
