@@ -1,0 +1,13 @@
+defaults: &defaults
+  short_term_expiration: 10 # minutes
+  long_term_expiration: 2 # weeks
+  android_gcm_url: https://android.googleapis.com/gcm/send
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
