@@ -4,16 +4,7 @@
         <ui-view name="messages"></ui-view>
     </div>
 
-    <ul class="row slider-tabs-menu">
-        <li class="col" ui-sref="home.myposts" ui-sref-active="active">
-            <a>My spaces</a>
-            <i class="notif-icon tab-menu-notif"></i>
-        </li>
-        <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
-            <a>My offers</a>
-            <i class="notif-icon tab-menu-notif"></i>
-        </li>
-    </ul>
+    <ng-include src="my-menu.html"></ng-include>
 
     <div class="loading-spinner">
         <i class="fa fa-5x fa-refresh "></i>
@@ -30,7 +21,8 @@
                  </span>
             </h4>
             <div class="bid-table no-margin" ng-show="space.offers.length">
-                <div class="offer" ng-click="selectOffer(offer, space)" ng-repeat="offer in space.offers | orderBy: 'timestamp'"
+                <div class="offer" ng-click="selectOffer(offer, space)"
+                     ng-repeat="offer in space.offers | orderBy: 'timestamp'"
                      ng-class="{selected: selOffer == offer}">
                 <span class="offer-price">
                     {{offer.price | units}}.<small>{{offer.price | subunits}}</small>

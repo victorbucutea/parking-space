@@ -120,42 +120,64 @@ html, body {
 }
 
 .space-description-box {
-  background-color: #fff;
-  font-size: 26px;
-  padding: 5.0px;
-  margin: auto;
-  box-shadow: 1px 11px 33px rgba(0, 0, 0, 0.65);
-  border-radius: 10px;
+  background-color: #a73e01;
+  font-size: 20px;
+  padding: 0;
+  box-shadow: 2px 2px 6px 0 #333;
+  border-radius: 50%;
   position: absolute;
-  bottom: 14px;
+  bottom: 24px;
   z-index: 2;
-  right: 14px;
+  right: 24px;
+  outline: 0;
+  border: 0;
   width: 56px;
-
-  .presentation-text {
-    color: $blue;
-  }
+  height: 56px;
+  color: #fff;
 
   .address-text {
     font-size: 0.9em;
   }
 }
 
-#pac-input {
+#pac-container {
   background-color: #fff;
-  font-family: Roboto $font-family;
   font-size: 16px;
   font-weight: 300;
-  padding: 0 $big-measure-unit;
-  text-overflow: ellipsis;
   width: 95%;
-  height: $xxxbig-measure-unit;
-  margin: $measure-unit;
+  padding-left:4px;
+  margin: $big-measure-unit auto;
+  font-family: Roboto, "Open Sans";
+  height: 45px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 2px 0 0 2px;
+  border-radius: 4px;
   position: fixed;
   top: 0;
-  z-index: 2;
+  z-index: 1;
+  right: 0;
+  left: 0;
+
+  .pac-nav {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  span {
+    position: relative;
+    .notif-icon {
+      position: absolute;
+      right: -10px;
+      top: -10px;
+    }
+  }
+
+  input {
+    width: 87%;
+    height: 100%;
+    display: inline-block;
+    font-size: 1.1em;
+    padding: 14px 0 14px 14px;
+  }
 }
 
 .pac-item {
@@ -165,21 +187,6 @@ html, body {
   .pac-item-query {
     font-size: inherit;
   }
-}
-
-.pac-nav {
-  padding: 16px;
-  padding-left: 0;
-  display: inline-block;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 3;
-}
-
-.pac-nav-2 {
-  @extend .pac-nav;
-  right: 40px;
 }
 
 .ps-control-buttons {
@@ -213,6 +220,8 @@ html, body {
 
   > div {
     background-color: #fff;
+    max-width: 500px;
+    margin: auto;
   }
   .list {
     overflow: hidden;
@@ -539,7 +548,6 @@ html, body {
   }
 }
 
-
 .bid-amount {
 
   a {
@@ -735,23 +743,15 @@ parking-spot-info-box.small {
 }
 
 .notif-icon {
-  position: absolute;
-  right: 3px;
   border-radius: 50%;
-  background-color: $red;
+  background-color: #d46220;
   padding: 0 7px;
-  line-height: 17px;
-  font-size: $big-measure-unit;
-  top: 29px;
-  display: none;
+  font-size: 14px;
   z-index: 4;
   color: #fff;
-
-  &.tab-menu-notif {
-    right: $xbig-measure-unit;
-    top: 12px;
-    display: inline-block;
-  }
+  height: 15px;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 .unread-item-notif {
@@ -760,10 +760,11 @@ parking-spot-info-box.small {
   z-index: 3;
   font-size: 2em;
   border-radius: 50%;
-  padding: 10px;
   background-color: $red;
   color: #fff;
   top: 25%;
+  width: 30px;
+  height: 30px;
 }
 
 .map-center-marker {
@@ -1067,6 +1068,14 @@ parking-spot-info-box.small {
   -webkit-transform: rotate(135deg);
   -ms-transform: rotate(135deg);
   transform: rotate(135deg);
+}
+
+.ok-help-btn {
+  background-color: #333;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 7px;
+  font-size: 1.1em;
 }
 
 .pull-right {

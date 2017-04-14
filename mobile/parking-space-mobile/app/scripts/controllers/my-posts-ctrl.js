@@ -7,7 +7,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
 
     $('.open-spaces-list').height($(window).height() - 105);
 
-    notificationService.hideParkingSpaceNotifications();
 
     parkingSpaceService.getMySpaces(function (spaces) {
         $scope.spaces = spaces;
@@ -22,64 +21,27 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
         }
     });
 
-    $scope.unreadNotificationsForSpaces = function() {
-        var count = 0;
-        if (!$scope.spaces) {
-            return count;
-        }
-
-        $scope.spaces.forEach( function (space) {
-            count += $scope.unreadNotifications(space);
-        });
-
-        return count;
-    };
-
-
-    $scope.unreadNotificationsForOffers = function() {
-
-    };
 
     $scope.unreadNotifications = function (space) {
-        var count = 0;
-        if (!space || !space.offers) {
-            return count;
+        var spaceNotifications = notificationService.parkingSpaceNotifications;
+
+        if (!spaceNotifications) {
+            return false;
         }
 
-        space.offers.forEach(function (d) {
+        if (!space)
+            return false;
 
-            if (!d.read) count++;
-
-            if (d.messages) {
-                d.messages.forEach(function (d) {
-                    if (!d.read) count++;
-                });
-            }
+        return spaceNotifications.find(function(notif) {
+            return notif.parking_space == space.id
         });
-
-        return count;
-    };
-
-
-    $scope.unreadMessagesForSpace = function (space) {
-        var count = 0;
-
-        if (!space.offers) return count;
-
-        space.offers.forEach(function (d) {
-            if (d.messages) return;
-
-            d.messages.forEach(function (d) {
-                if (!d.read)  count++;
-            });
-        });
-        return count;
     };
 
 
     $scope.show = function (space) {
         $scope.selectedSpace = space;
         $state.go('home.myposts.bids', {parking_space_id: space.id});
+        notificationService.hideParkingSpaceNotifications();
     };
 
 

@@ -1,9 +1,13 @@
-<div class="full-height">
-        <div ng-controller="MapCtrl" id="map"  >
-            <input id="pac-input" class="places-search-input" type="text" placeholder="Search for location ...">
-            <map on-create="mapCreated(map, overlay, geocoder)" ></map>
+<div class="full-height" ng-controller="MapCtrl">
+    <div id="map">
+        <div id="pac-container">
+            <input type="text" id="pac-input" placeholder="Search for location ...">
+            <span>
+                <i class="pac-nav fa fa-bars fa-2x" ng-click="gotoOffersOrSpaces()"></i>
+                <i id="notifmyposts" class="notif-icon" ng-show="showNotif()" ng-click="gotoOffersOrSpaces()"></i>
+            </span>
         </div>
-        <i class="pac-nav fa fa-bars fa-2x" ui-sref="home.myposts"></i>
-        <i id="notifmyposts" class="notif-icon"></i>
-        <ui-view name="map-controls"></ui-view>
+        <map on-create="mapCreated(map, overlay, geocoder)"></map>
+    </div>
+    <ui-view name="map-controls"></ui-view>
 </div>

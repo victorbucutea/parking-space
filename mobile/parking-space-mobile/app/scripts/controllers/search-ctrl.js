@@ -68,7 +68,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 lastUpdateOldItems = item.updated_at;
         });
 
-        return (new Date(lastUpdateNewItems).getTime() > new Date(lastUpdateOldItems).getTime());
+        return (new Date(lastUpdateNewItems).getTime() >= new Date(lastUpdateOldItems).getTime());
     };
 
     var dragListenClbk = function () {

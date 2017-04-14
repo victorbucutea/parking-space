@@ -34,7 +34,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         }
     });
 
-    $scope.showHelp = function () {
+    if (localStorage.helpShown !== "1"){
         var currentState = $state.current.name;
         if (!currentState) {
             return;
@@ -45,11 +45,23 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         }
 
         $state.go(currentState + '.help');
-    };
+        localStorage.setItem("helpShown",1);
+    }
+
+
 
     $document.on('click','.ps-modal', function(event){
         if ($(event.target).hasClass('ps-modal'))
             $state.go('^');
+    });
+
+    // hide geographical location search menu when clicking outside its container
+    $('ui-view.map-container').on('click', function(event){
+        var pacInput = $('#pac-input');
+
+        if (event.target !== pacInput.get()[0]){
+            pacInput.blur();
+        }
     })
 
 });

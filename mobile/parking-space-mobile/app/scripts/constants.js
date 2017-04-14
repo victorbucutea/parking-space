@@ -2,6 +2,6 @@
 
  angular.module("config", [])
 
-.constant("ENV", "http://192.168.0.141:3000/")
+.constant("ENV", "https://nameless-cliffs-49822.herokuapp.com/")
 
 ;

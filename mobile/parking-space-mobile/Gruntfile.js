@@ -51,12 +51,12 @@ module.exports = function (grunt) {
             },
             staging: {
                 constants: {
-                    ENV: "http://parking-space-dev.xtthdbdvpw.eu-central-1.elasticbeanstalk.com/"
+                    ENV: "https://nameless-cliffs-49822.herokuapp.com/"
                 }
             },
             production: {
                 constants: {
-                    ENV:  'http://parking-space-dev.xtthdbdvpw.eu-central-1.elasticbeanstalk.com/'
+                    ENV:  'https://nameless-cliffs-49822.herokuapp.com/'
                 }
             }
         },
@@ -217,12 +217,8 @@ module.exports = function (grunt) {
 
         uglify: {
             options: {
-                //mangle: false,
-                //beautify: true,
-                //compress: {
-                //    sequences: false,
-                //    hoist_funs : false
-                //}
+                mangle: true,
+                compress: {}
             }
         },
 
@@ -389,7 +385,7 @@ module.exports = function (grunt) {
             },
             continuous: {
                 browsers: ['PhantomJS'],
-                singleRun: true,
+                singleRun: true
             }
         },
 
@@ -543,7 +539,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('init', [
         'clean',
-        'ngconstant:local_development',
+        'ngconstant:production',
         'includeSource',
         'wiredep',
         'concurrent:server',

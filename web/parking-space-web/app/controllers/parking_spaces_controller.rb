@@ -54,7 +54,7 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    @parking_spaces = ParkingSpace.includes(proposals: [:messages]).where({deviceid: deviceid})
+    @parking_spaces = ParkingSpace.not_expired.active.includes(proposals: [:messages]).where({deviceid: deviceid})
 
     @parking_spaces.each do |space|
       space.owner = User.find_by_device_id deviceid
@@ -73,7 +73,7 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    @parking_spaces = ParkingSpace.includes(proposals: [:messages]).where(proposals: {deviceid: deviceid})
+    @parking_spaces = ParkingSpace.not_expired.active.includes(proposals: [:messages]).where(proposals: {deviceid: deviceid})
 
     @parking_spaces.each do |space|
       space.owner = User.find_by_device_id space.deviceid

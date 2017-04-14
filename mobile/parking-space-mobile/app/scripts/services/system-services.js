@@ -119,7 +119,8 @@ angular.module('ParkingSpaceMobile.services')
                 return errMsgs;
             }
 
-            for (item in errors) {
+
+            for (var item in errors) {
                 var fieldName = item == 'general' ? '' : item;
                 var text = typeof errors[item] == 'string' ? errors[item] : errors[item][0];
                 errMsgs[i] = {fieldName: fieldName, text: text};

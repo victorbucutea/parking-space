@@ -3,20 +3,28 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function ($scope, $state, offerService, replaceById, parkingSpaceService, parameterService) {
+angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function (notificationService, $scope, $state, offerService, replaceById) {
 
     $scope.bid = {};
+
     if ($scope.selectedSpace) {
         $scope.bid.bidAmount = $scope.selectedSpace.price;
         $scope.bid.bidCurrency = $scope.selectedSpace.currency;
     }
 
+
     $scope.expireDuration = function () {
         if (!$scope.selectedSpace) {
             return;
         }
-        return moment($scope.selectedSpace.space_availability_stop).fromNow();
+
+        if (moment($scope.selectedSpace.space_availability_stop).isBefore(moment())) {
+            return " has expired";
+        }
+
+        return "will expire " + moment($scope.selectedSpace.space_availability_stop).fromNow();
     };
+
 
     $scope.placeOffer = function () {
         if (!$scope.selectedSpace.owner_is_current_user) {
@@ -28,6 +36,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
         }
     };
 
+    notificationService.hideParkingSpaceNotifications();
 
     $scope.confirmApproval = function (offer) {
         var acceptedOffers = $scope.selectedSpace.offers.filter(function (d) {
@@ -45,6 +54,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
         if (offer.approved) {
             message = "Refuse to accept the offer of " + offer.price + " " + offer.currency + " for this parking space?";
         }
+
+
         if (confirm(message)) {
             $scope.accept($scope.selectedSpace, offer);
         }
@@ -70,21 +81,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
             replaceById(result, space.offers);
             $scope.selOffer = result;
         })
-    };
-
-    $scope.messagesForSpace = function (space) {
-        var count = 0;
-        if (!space.offers) {
-            return count;
-        }
-        space.offers.forEach(function (d) {
-            if (d.messages) {
-                d.messages.forEach(function (d) {
-                    count++
-                });
-            }
-        });
-        return count;
     };
 
     $scope.selectOffer = function (offer) {

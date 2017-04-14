@@ -209,7 +209,10 @@ angular.module('ParkingSpaceMobile.services', [])
             loading.show();
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
                 .success(function (data) {
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Accepted offer for ' + offer.price + ' ' + offer.currency});
+                    $rootScope.$broadcast('http.notif', {
+                        fieldName: '',
+                        text: 'Accepted offer for ' + offer.price + ' ' + offer.currency
+                    });
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
@@ -225,7 +228,10 @@ angular.module('ParkingSpaceMobile.services', [])
             loading.show();
             $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
                 .success(function (data) {
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Rejected offer for ' + offer.price + ' ' + offer.currency});
+                    $rootScope.$broadcast('http.notif', {
+                        fieldName: '',
+                        text: 'Rejected offer for ' + offer.price + ' ' + offer.currency
+                    });
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
@@ -347,116 +353,87 @@ angular.module('ParkingSpaceMobile.services', [])
     .service('notificationService', function ($rootScope, $http, $q, ENV, $state) {
 
         var _this = this;
-
-        _this.deferred = $q.defer();
+        _this.offerNotifications = [];
+        _this.parkingSpaceNotifications = [];
 
         _this.registerForNotifications = function () {
-            var pushNotification = window.plugins.pushNotification;
-            var deviceId = window.cordova.platformId;
-            if (deviceId == 'android' || deviceId == 'Android') {
-                try {
-                    pushNotification.register(
-                        successHandler,
-                        errorHandler,
-                        {
-                            "senderID": "889259686632",
-                            "ecb": "onNotification"
-                        });
-                } catch (err) {
-                    var txt = "There was an error on this page.\n\n";
-                    txt += "Error description: " + err.message + "\n\n";
-                    console.error(txt, err);
-                }
-            }
 
-            function successHandler(result) {
-                console.log("Success", result);
-            }
-
-            function errorHandler(error) {
-                console.error("Error", error);
-
-            }
-
-            // fail with error if we didn't receive a registration id in 3 seconds
-            setTimeout(function () {
-                if (!_this.notifRegistrationId) {
-                    _this.deferred.resolve();
-                }
-            }, 3000);
-            return _this.deferred.promise;
-        };
-
-        _this.saveNotificationId = function (notifId) {
-            console.log("regID = " + notifId);
-            _this.notifRegistrationId = notifId;
-            $http.post(ENV + '/notif.json', {notif_registration_id: notifId}).then(
-                function (data) {
-                    _this.deferred.resolve(notifId);
+            var push = PushNotification.init({
+                android: {
+                    senderID: "1036383532323"
                 },
-                function () {
-                    _this.deferred.resolve();
-                })
-        };
+                browser: {},
+                ios: {},
+                windows: {}
+            });
 
-        _this.registerForMessages = function () {
+            push.on('registration', function (data) {
+                var notifId = data.registrationId;
+                console.log("Obtained notification id: " + notifId);
+                $http.post(ENV + '/notif.json', {notif_registration_id: notifId}).then(
+                    function (data) {
+                        console.log('Successfully saved notification id!')
+                    },
+                    function (err) {
+                        console.log('Problem while saving notification id!', err)
+                    });
+            });
 
+            push.on('notification', function (data) {
+                _this.showNotifications(data.additionalData);
+            });
+
+            push.on('error', function (e) {
+                // e.message
+                console.error("Error while registering/receiving notifications", e, e.message);
+                $rootScope.$broadcast('http.error', [{
+                    fieldName: '',
+                    text: 'Cannot register for notifications! You won\'t receive any notifications'
+                }])
+            });
         };
 
 
         document.addEventListener('deviceready', function () {
-            _this.registerForNotifications().then(
-                function (regid) {
-                    $http.post(ENV + '/notif.json', {notif_registration_id: regid}).then(
-                        function (data) {
-                        },
-                        function () {
-                            //TODO show message with direct dom manipulation
-                            $rootScope.$broadcast('http.error', [{
-                                fieldName: '',
-                                text: 'Cannot register for notifications! You won\'t receive any notifications'
-                            }])
-                        })
-                }
-            );
+            _this.registerForNotifications();
         });
-
-        _this.activeNotifications = {};
-        _this.offerNotifications = {};
-        _this.parkingSpaceNotifications = {};
 
 
         _this.hideOfferNotifications = function () {
-            _this.hideNotifications('offer');
+            // hide notifications in 2 seconds
+             setTimeout(function () {
+                _this.offerNotifications = [];
+                if (!$rootScope.$$phase)
+                    $rootScope.$apply();
+            }, 10000);
         };
 
         _this.hideParkingSpaceNotifications = function () {
-            _this.hideNotifications('parking_space');
+            // hide notifications in 2 seconds
+            setTimeout(function () {
+                _this.parkingSpaceNotifications = [];
+                if (!$rootScope.$$phase)
+                    $rootScope.$apply();
+            }, 10000);
         };
 
-        _this.hideNotifications = function (area) {
-            var keys = [];
-            for (prop in _this.activeNotifications) {
-                if (prop.indexOf(area) != -1) {
-                    keys.push(prop);
-                }
-            }
-            keys.forEach(function (item) {
-                delete _this.activeNotifications[item];
-            });
-            var notifmyposts = $('#notifmyposts');
-            var noOfNotifs = Object.keys(_this.activeNotifications).length;
-            if (noOfNotifs) {
-                notifmyposts.text(noOfNotifs);
-            } else {
-                notifmyposts.hide();
-            }
-        };
 
         _this.showNotifications = function (msg) {
-            var current = _this.activeNotifications;
-            var key = msg.area + "_" + (msg[msg.area]);
-            current[key] = {};
+            if (!msg) {
+                return;
+            }
+
+            msg.active = true;
+
+            if (msg.area == 'offer') {
+                _this.offerNotifications.push(msg);
+            } else if (msg.area == 'parking_space') {
+                _this.parkingSpaceNotifications.push(msg);
+            }
+
+
+            navigator.vibrate(800);
+
 
             var state = $state.current.name;
             var stateIsMyPosts = state.indexOf('home.myposts') != -1;
@@ -465,46 +442,11 @@ angular.module('ParkingSpaceMobile.services', [])
                 $state.reload();
             }
 
-            navigator.vibrate(800);
+            // current state is 'search', we just show the notif baloon
+            if(!$rootScope.$$phase)
+                $rootScope.$apply();
 
-            var notifmyposts = $('#notifmyposts');
-            notifmyposts.show();
-            var currentCount = Object.keys(current).length;
-            notifmyposts.text(currentCount);
+
         };
 
-        // register callback has to receive a string as an argument
-        // in the register callback call context it's not possible to get a service reference
-        // therefore we refer to the notification clbk as "onNotification"
-        window.onNotification = function (e) {
-            switch (e.event) {
-                case 'registered':
-                    _this.saveNotificationId(e.regid);
-                    break;
-                case 'message':
-                    if (e.foreground) {
-                        console.log('--INLINE NOTIFICATION--');
-                        console.log('MESSAGE -> MSG: ' + e.payload.message);
-                        _this.showNotifications(e.payload);
-                    } else {
-                        // otherwise we were launched because the user touched a notification in the notification tray.
-                        if (e.coldstart) {
-                            console.log('--COLDSTART NOTIFICATION--');
-                            _this.showNotifications(e.payload);
-                        }
-                        else {
-                            console.log('--BACKGROUND NOTIFICATION--');
-                            _this.showNotifications(e.payload);
-                        }
-                    }
-                    break;
-                case 'error':
-                    console.log('-- ERROR --',e);
-                    _this.deferred.resolve();
-                    break;
-                default:
-                    _this.deferred.resolve();
-                    break;
-            }
-        }
     });

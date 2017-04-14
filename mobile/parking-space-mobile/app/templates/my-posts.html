@@ -1,29 +1,14 @@
 <div ng-controller="MyPostsCtrl">
 
-    <ul class="row slider-tabs-menu">
-        <li class="col" ui-sref="home.myposts" ui-sref-active="active">
-            <a>My spaces</a>
-            <i class="notif-icon tab-menu-notif" id="myposts-notif" ng-show="unreadNotificationsForSpaces()">
-                {{unreadNotificationsForSpaces()}}
-            </i>
-        </li>
-        <li class="col" ui-sref="home.myoffers" ui-sref-active="active">
-            <a>My offers</a>
-            <i class="notif-icon tab-menu-notif" id="myoffers-notif" ng-show="unreadNotificationsForOffers()">
-                {{unreadNotificationsForOffers()}}
-            </i>
-        </li>
-    </ul>
-
     <div class="list open-spaces-list scroll">
         <span class="item " ng-repeat="space in spaces" ng-click="show(space)">
             <parking-spot-info-box class="small" space="space"></parking-spot-info-box>
-            <span class="unread-item-notif" ng-show="unreadNotifications(space)"> {{unreadNotifications(space)}} </span>
+            <span class="unread-item-notif" ng-show="unreadNotifications(space)">&nbsp;</span>
             <i class="fa fa-money item-notifications">
                 <span> Offers ({{space.offers.length}})</span>
             </i>
             <i class="fa fa-envelope item-notifications">
-                <span> Messages ({{unreadMessagesForSpace(space) }})</span>
+                <span> Messages (0)</span>
             </i>
         </span>
 

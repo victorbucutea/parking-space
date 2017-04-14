@@ -13,7 +13,7 @@ angular.module('ParkingSpaceMobile', [
 
         // set fixed height:
         // 1. Keeps the screen from shrinking when keyboard open
-        // 2. Viewport will scroll to the focused when keyboard opens and hides respective input
+        // 2. Viewport will scroll to the focused elm when keyboard opens and hides respective input
         $(document.body).css("height", $(document).height());
 
 
@@ -35,6 +35,27 @@ angular.module('ParkingSpaceMobile', [
                 StatusBar.styleDefault();
             }
         }
+
+        if (!Array.prototype.find) {
+           Array.prototype.find= function(predicate) {
+                    var list = Object(this);
+                    var length = list.length >>> 0;
+                    var thisArg = arguments[1];
+                    var value;
+
+                    for (var i = 0; i < length; i++) {
+                        if (i in list) {
+                            value = list[i];
+                            if (predicate.call(thisArg, value, i, list)) {
+                                return value;
+                            }
+                        }
+                    }
+                    return undefined;
+                }
+        }
+
+
 
         document.addEventListener('deviceready', onDeviceReady, true);
     })
@@ -102,6 +123,9 @@ angular.module('ParkingSpaceMobile', [
                 views: {
                     'content': {
                         templateUrl: "templates/my-posts.html"
+                    },
+                    'my-menu': {
+                        templateUrl: "templates/my-menu.html"
                     }
                 }
             })
@@ -157,7 +181,10 @@ angular.module('ParkingSpaceMobile', [
                 url: '/myoffers',
                 views: {
                     'content': {
-                        templateUrl: "templates/my-bids.html"
+                        templateUrl: "templates/my-offers.html"
+                    },
+                    'my-menu': {
+                        templateUrl: "templates/my-menu.html"
                     }
                 }
             })
@@ -165,7 +192,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/help',
                 views: {
                     'help': {
-                        templateUrl: "templates/my-bids-help.html"
+                        templateUrl: "templates/my-offers-help.html"
                     }
                 }
             })

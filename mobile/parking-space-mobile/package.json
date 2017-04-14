@@ -49,17 +49,20 @@
     "test": "grunt test"
   },
   "cordovaPlugins": [
-    "https://github.com/driftyco/ionic-plugins-keyboard.git",
     "org.apache.cordova.statusbar",
     "org.apache.cordova.console",
-    "https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git",
-    "https://github.com/phonegap-build/PushPlugin.git",
-    "https://github.com/apache/cordova-plugin-vibration",
-    "https://github.com/driftyco/ionic-plugin-keyboard",
     "cordova-plugin-geolocation",
     "cordova-plugin-whitelist",
     "cordova-plugin-x-socialsharing",
-    "cordova-plugin-whitelist@1",
-    "cordova-plugin-camera"
+    "cordova-plugin-camera",
+    "cordova-plugin-vibration",
+    "ionic-plugin-keyboard",
+    {
+      "variables": {
+        "SENDER_ID": "1036383532323"
+      },
+      "locator": "phonegap-plugin-push"
+    },
+    "phonegap-plugin-push"
   ]
 }
