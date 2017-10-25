@@ -2,9 +2,10 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.3'
+gem 'rails', '4.2.8'
+
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', '1.3.10' , group: :development
+gem 'sqlite3', '1.3.13' , group: :development
 gem 'pg', group: :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -44,4 +45,6 @@ gem 'pushmeup'
 # gem 'debugger', group: [:development, :test]
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin]
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+
+gem "bower-rails", "~> 0.11.0"

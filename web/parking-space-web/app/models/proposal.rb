@@ -1,5 +1,5 @@
 class Proposal < DeviceRecord
-  scope :with_messages, ->(prop_id) { includes(:messages).find(prop_id) }
+  scope :with_messages, -> (prop_id) { includes(:messages).find(prop_id) }
 
   enum approval_status: [:pending, :rejected, :approved]
 

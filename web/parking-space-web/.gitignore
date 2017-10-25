@@ -12,6 +12,10 @@
 /db/*.sqlite3-journal
 /config/config.yml
 
+# Ignore assets
+/public/assets
+/vendor/assets/bower_components
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
