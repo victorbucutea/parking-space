@@ -10,6 +10,11 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require font-awesome/css/font-awesome
+ *= require bootstrap/dist/css/bootstrap
+ *= require animate-css/animate
+ *= require eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker
  *= require_tree .
  *= require_self
  */
+
