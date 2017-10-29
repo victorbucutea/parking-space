@@ -26,8 +26,8 @@ angular.module('ParkingSpaceMobile.services')
         };
 
         /* save details */
-        _this.saveUser = function(user, clbk) {
-            $http.put(ENV + 'users.json',{user: user})
+        _this.saveUser = function (user, clbk) {
+            $http.put(ENV + 'users.json', {user: user})
                 .success(function (data) {
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
@@ -41,7 +41,7 @@ angular.module('ParkingSpaceMobile.services')
                 });
         };
 
-        _this.registerUser = function (user, clbk) {
+        _this.registerUser = function (user, clbk, errClbk) {
             user.notif_registration_id = notificationService.notifRegistrationId;
             $http.post(ENV + 'users.json', {user: user})
                 .success(function (data) {
@@ -52,7 +52,11 @@ angular.module('ParkingSpaceMobile.services')
                         clbk(data);
                 })
                 .error(function (data, status) {
-                    errorHandlingService.handle(data, status);
+                    if (!errClbk) {
+                        errorHandlingService.handle(data, status);
+                    } else {
+                        errClbk(data,status);
+                    }
                 })
         };
 
@@ -60,7 +64,10 @@ angular.module('ParkingSpaceMobile.services')
             $http.post(ENV + 'users/password.json', {user: {email: email}})
                 .success(function (data) {
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Password recovery link sent to ' + email + '.'});
+                    $rootScope.$broadcast('http.notif', {
+                        fieldName: '',
+                        text: 'Password recovery link sent to ' + email + '.'
+                    });
                     if (clbk)
                         clbk(data);
                 })
@@ -88,7 +95,7 @@ angular.module('ParkingSpaceMobile.services')
                 })
         };
 
-        _this.logout = function() {
+        _this.logout = function () {
             $http['delete'](ENV + '/users/sign_out.json', {})
                 .success(function (data) {
                     localStorage.removeItem('user');

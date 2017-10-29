@@ -8,7 +8,6 @@
         Victor Bucutea
     </author>
     <content src="index.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -16,7 +15,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <icon src="resources/android/mipmap-mdpi/icon.png"/>
+    <icon src="resources/android/mipmap-mdpi/icon.png" />
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
@@ -24,4 +23,5 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <plugin name="cordova-plugin-whitelist" spec="1" />
 </widget>

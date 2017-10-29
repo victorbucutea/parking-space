@@ -856,16 +856,14 @@ parking-spot-info-box.small {
     display: none;
     margin-top: $xsm-measure-unit;
     box-shadow: 1px 1px 12px 1px #525252;
-    border: 1px solid rgb(168, 11, 11);
 
     &.error {
-      background-color: #CB3A3A;
+      background-color: #9c0101;
       display: block;
     }
 
     &.notification {
-      background-color: #346e24;
-      border: 1px solid #23471f;
+      background-color: #274f18;
       display: block;
     }
   }
@@ -1090,4 +1088,13 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+
+#register {
+  display: none;
+}
+
+#register-fb {
+  display: none;
 }

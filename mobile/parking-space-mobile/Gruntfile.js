@@ -40,7 +40,7 @@ module.exports = function (grunt) {
             },
             local_development: {
                 constants: {
-                    ENV: "http://192.168.0.141:3000/"
+                    ENV: "http://localhost:3000/"
 
                 }
             },
@@ -51,12 +51,12 @@ module.exports = function (grunt) {
             },
             staging: {
                 constants: {
-                    ENV: "https://nameless-cliffs-49822.herokuapp.com/"
+                    ENV: "http://localhost:3000/"
                 }
             },
             production: {
                 constants: {
-                    ENV:  'https://nameless-cliffs-49822.herokuapp.com/'
+                    ENV:  'http://localhost:3000/'
                 }
             }
         },

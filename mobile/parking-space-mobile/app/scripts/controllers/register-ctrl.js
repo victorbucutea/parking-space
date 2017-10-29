@@ -3,11 +3,39 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', function ($rootScope, $stateParams, $scope, parameterService, ENV, userService, $state) {
+angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', function ($rootScope, $stateParams, $scope, parameterService, ENV, userService, ezfb, $state) {
 
     $('.bar.bar-header').hide();
-    $('#register').hide();
     $('.fa-spin.fa-spinner').hide();
+
+
+    $scope.loginWithFb = function () {
+        ezfb.login(function (res) {
+            if (res.authResponse) {
+                ezfb.api('/me?fields=email,location{location},name', function (res) {
+                    $('#register-fb').show();
+                    $('#login').hide();
+                    $scope.email = res.email;
+                    $scope.firstName = res.name;
+                    if (res.location) {
+                        $scope.countries.forEach(function (ctry) {
+                            var location = res.location.location;
+                            if (ctry.value4.toLocaleLowerCase() === location.country.toLocaleLowerCase()) {
+                                $scope.selectedCountry = ctry;
+                            }
+                        });
+                    }
+
+                })
+            } else {
+                $rootScope.$broadcast('http.error', [{
+                    fieldName: '',
+                    text: 'Error while logging into facebook. Please try again.'
+                }]);
+            }
+        }, {scope: 'public_profile,email,user_location'})
+    };
+
 
     $scope.user = {};
 
@@ -21,31 +49,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
     function selectUserCountry(countries) {
         if ($scope.user && countries) {
             countries.forEach(function (item) {
-                if (item.key == $scope.user.country) {
+                if (item.key === $scope.user.country) {
                     $scope.selectedCountry = item;
                 }
             });
         }
     }
-
-/*
-    Enable this with ng-repeat-finish="scroll" , to scroll the country list down to user country
-    ng-repeat-finish seems to be triggered before all child repeat elements have been calculated in the dom
-    $scope.scroll = function(){
-        var countryList = $('.country-list');
-        var countryDivs = countryList.children().toArray();
-        var selectedCountryKey = $scope.selectedCountry ? $scope.selectedCountry.key : "selected";
-        var selectedItem = countryList.find("."+selectedCountryKey);
-        // scroll down to selectedItem
-        var selItemHeight = selectedItem.height();
-        var scrollSize = 0;
-        for (var x = 0; x < countryDivs.length; x++) {
-            // we got to the scroll point where selectedItem is located
-            if (countryDivs[x] == selectedItem) break;
-            scrollSize += selItemHeight;
-        }
-        countryList.scrollTop(scrollSize);
-    };*/
 
     parameterService.getCountryListAsync(function (countries) {
         $scope.countries = countries;
@@ -86,6 +95,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
         });
     };
 
+    $scope.registerWithFb = function () {
+        if (!$scope.registerForm.phoneNumber.$valid) {
+            $('#requiredFieldsFbDialog').show();
+            return;
+        }
+
+
+        backEndRegister(hashCode($scope.email));
+    };
+
 
     $scope.register = function () {
         if (!$scope.registerForm.$valid || !$scope.selectedCountry) {
@@ -93,20 +112,40 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
             return;
         }
 
+        backEndRegister($scope.password);
+    };
+
+    var backEndRegister = function (password) {
         var backEndUser = {};
         backEndUser.full_name = $scope.firstName;
         backEndUser.phone_number = $scope.selectedCountry.prefix + $scope.phoneNumber;
         backEndUser.country = $scope.selectedCountry.key;
         backEndUser.email = $scope.email;
-        backEndUser.password = $scope.password;
-        backEndUser.password_confirmation = $scope.password;
+        backEndUser.password = password;
+        backEndUser.password_confirmation = password;
 
 
         $('.fa-spin.fa-spinner').show();
 
         userService.registerUser(backEndUser, function () {
             $state.go('home.map.search');
+        }, function (errData, status) {
+            if (status === 422) {
+                userService.login(backEndUser.email, hashCode(backEndUser.email), function (data) {
+                    console.log(data);
+                })
+            }
         });
+    };
 
-    }
+    var hashCode = function (string) {
+        var hash = 0, i, chr;
+        if (string.length === 0) return hash;
+        for (i = 0; i < string.length; i++) {
+            chr = string.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    };
 });

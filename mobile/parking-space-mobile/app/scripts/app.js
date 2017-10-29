@@ -2,7 +2,9 @@
 angular.module('ParkingSpaceMobile.controllers', []);
 
 angular.module('ParkingSpaceMobile', [
-    'config', 'ui.router',
+    'config',
+    'ezfb',
+    'ui.router',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
@@ -211,6 +213,17 @@ angular.module('ParkingSpaceMobile', [
 
     .config(function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
+    })
+
+    .config(function (ezfbProvider) {
+        var myInitFunction = function ($window, $rootScope) {
+            $window.FB.init({
+                appId: '1725456304415807',
+                version: 'v2.6'
+            });
+        };
+
+        ezfbProvider.setInitFunction(myInitFunction);
     })
 
     .constant('currencies', [
