@@ -1,0 +1,14 @@
+{
+  "name": "dsl-generated-dependencies",
+  "dependencies": {
+    "font-awesome": "latest",
+    "angular": "latest",
+    "jquery": "latest",
+    "angular-ui-router": "latest",
+    "moment": "2.11.2",
+    "markerwithlabel-v3": "latest",
+    "bootstrap": "4.0.0-beta",
+    "eonasdan-bootstrap-datetimepicker": "latest",
+    "animate-css": "latest"
+  }
+}
