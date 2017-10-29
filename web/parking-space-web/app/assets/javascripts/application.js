@@ -11,6 +11,9 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
-//= require turbolinks
+//= require moment/min/moment.min
+//= require angular/angular
+//= require popper.js/dist/umd/popper
+//= require bootstrap/dist/js/bootstrap
+//= require eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker
 //= require_tree .
