@@ -4,6 +4,9 @@ class RegistrationsController < Devise::RegistrationsController
 
   before_filter :configure_permitted_parameters
 
+  def reauthenticate_with_fb
+
+  end
 
   protected
 
