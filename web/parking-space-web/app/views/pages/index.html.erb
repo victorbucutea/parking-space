@@ -1,327 +1,548 @@
-<!-- Main container -->
-<div class="page-container">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Go Park</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700&amp;subset=latin-ext" rel="stylesheet">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=places&language=ro"></script>
+  <!--<link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,600,700&amp;subset=latin-ext" rel="stylesheet">-->
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body ng-app="ParkingSpace" ng-controller="MainCtrl">
 
-    <!-- Navigation Bloc -->
-    <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#">Go Park</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a  href="#faq" class="nav-link">How does this work?</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#rent" class="nav-link">Rent personal space</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#login" class="nav-link">Sign in</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <!-- Navigation Bloc END -->
+<!-- Navigation Block -->
+<nav id="navbar" class="navbar navbar-dark navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img width="100" src="<%= image_path 'logo_dark_sm.png' %>"/>
 
-    <!-- Search -->
-    <div class="find-block" id="find">
-        <div class="container bloc-xl">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="text-center display-4"> Where do you want to go? </h3>
+    </a>
 
-                    <p class="text-center animated fadeInUp animDelay02">
-                        Let us help you find the perfect space for you.
-                    </p>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group input-group-lg">
-                        <input type="text" class="form-control" placeholder="Type in an address...">
-                    </div>
-                </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-                <div class="col-sm-6">
-                    <div class="input-group" id="fromDate">
-                        <input type="text" class="form-control">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="input-group" id="toDate">
-                        <input type="text" class="form-control">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <div class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a ng-click="scrollTo('faq')" class="nav-link">Cum funcționează?</a>
+        </li>
+        <li class="nav-item">
+          <a ng-click="scrollTo('rent')" class="nav-link">Închiriază loc personal</a>
+        </li>
+        <li class="nav-item">
+          <a ui-sref="business" class="nav-link">Soluții parcări publice </a>
+        </li>
+        <li class="nav-item">
+          <a href="/app" class="nav-link">Autentificare</a>
+        </li>
+      </ul>
     </div>
-    <!-- Search END -->
+  </div>
+</nav>
+<!-- Navigation Bloc END -->
 
-    <!-- services -->
-    <div class="bloc l-bloc bgc-white" id="services">
-        <div class="container bloc-lg">
+<ui-view>
+  <div>
+    <!-- Search Block-->
+    <div class="find-block py-2" ng-controller="SearchAddressCtrl">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-sm-12 mt-4">
+            <h3 class="text-center display-3 d-none d-lg-block animated fadeInUp"> Unde ai dori să parchezi? </h3>
+            <h3 class="text-center display-4 d-lg-none animated fadeInUp"> Unde ai dori să parchezi? </h3>
+
+            <p class="text-center animated fadeInUp">
+              Alege zona și perioada care te interesează
+            </p>
+          </div>
+          <!-- Address Search -->
+          <div class="col-sm-12 col-md-8 col-lg-7 mt-3 mt-md-4">
+            <div class="form-group search-form">
+
+              <!-- Seach box -->
+              <input type="text" class="form-control" id="mainSearch" ng-model="searchString" placeholder="Tastează un loc sau o adresă ...">
+              <i class="fa fa-question-circle-o search-icon" data-toggle="modal" data-target="#howToModal"></i>
+
+              <!-- Suggestion menu -->
+              <div class="dropdown-menu address-suggestion animated fadeIn " ng-show="shouldSuggest(searchString)">
+                <div ng-show="currentAddress != null">
+                  <a class="dropdown-item" href="#" ng-click="selectCurrentAddr()">
+                    <small>
+                      <b>
+                        Caută la adresa curentă:
+                      </b>
+                    </small>
+                    <br/>
+                    <span ng-bind="currentAddress"></span>
+                  </a>
+                  <div role="separator" class="dropdown-divider"></div>
+                </div>
+
+                <a class="dropdown-item py-2" ng-repeat="address in addresses" ng-click="selectAddr(address)">
+                  <i class="fa fa-map-marker res-marker"></i>
+                  <span ng-bind-html="address.addrMatch"></span>
+                </a>
+                <a class="dropdown-item no-item" ng-hide="addresses.length">( nici un rezultat ) </a>
+                <img class="dropdown-item pull-right" style="width:auto" src="<%= image_path 'powered_by_google.png' %>">
+              </div>
+              <!-- End suggestion menu -->
+
+
+            </div>
+          </div>
+
+          <!-- Date range search -->
+          <div class="col-sm-12 col-md-8 col-lg-7 form-group">
+            <div class=" date-range-container ">
+              <date-range start-date="startDate" end-date="endDate" err="err" class="d-flex justify-content-center"></date-range>
+            </div>
+
+            <div class="date-err mt-2 p-2" ng-class="{active: err}">
+              &nbsp;
+              <span ng-show="err">
+              Data de stop nu poate fi înaintea celei de start.
+                </span>
+            </div>
+          </div>
+          <!-- End Date range search -->
+
+          <div class="col-sm-12 col-md-8 col-lg-7 mt-3 mt-md-4">
+            <button class="btn btn-primary btn-block btn-lg btn-search">Caută</button>
+          </div>
+
+          <div class="mt-5 pt-5 col-12  d-flex">
             <div class="row">
-                <div class="col-sm-4">
-                    <div class="text-center">
-                        <span class="et-icon-picture icon-xl icon-carmine-pink animated zoomIn animDelay02"></span>
-                    </div>
-                    <h3 class="text-center mg-md ">
-                        Web Design
-                    </h3>
-
-                    <p class="text-center">
-                        A little feature description could go here. A little feature description.
-                    </p>
-                </div>
-                <div class="col-sm-4">
-                    <div class="text-center">
-                        <span class="et-icon-gears icon-xl icon-carmine-pink animated zoomIn"></span>
-                    </div>
-                    <h3 class="text-center mg-md ">
-                        Web Development
-                    </h3>
-
-                    <p class="text-center">
-                        A little feature description could go here. A little feature description.
-                    </p>
-                </div>
-                <div class="col-sm-4">
-                    <div class="text-center">
-                        <span class="et-icon-linegraph icon-xl icon-carmine-pink animated zoomIn animDelay02"></span>
-                    </div>
-                    <h3 class="text-center mg-md ">
-                        Promotion
-                    </h3>
-
-                    <p class="text-center">
-                        A little feature description could go here. A little feature description.
-                    </p>
-                </div>
+              <div class="col-4 col-md-8 "></div>
+              <div class="col-4 col-md-2  ios pr-2 pt-2">
+                <a class="img-fluid" href="https://itunes.apple.com/" style=""></a>
+              </div>
+              <div class="col-4 col-md-2 pl-2 pr-0 appstore" style="
+              /* margin-top: -10px; */
+              ">
+                <a href="https://play.google.com/store/apps/details?id=ro.sft.parkingspace.mobile">
+                  <img class="img-fluid" src="/assets/google-play-badge-82c846c07d28766314f5cc0e8fe3821795348c1bec92b6ceb58c88a68e0882f6.png">
+                </a>
+              </div>
             </div>
+          </div>
+
         </div>
-    </div>
-    <!-- services END -->
 
-    <!-- clients -->
-    <div class="bloc bgc-platinum l-bloc" id="bloc-3">
-        <div class="container bloc-lg">
-            <div class="row">
-                <div class="col-sm-3 text-center">
-                    <%= image_tag "ny-times.png" %>
-                </div>
-                <div class="col-sm-3 text-center">
-                    <%= image_tag "forbes.png" %>
-                </div>
-                <div class="col-sm-3 text-center">
-                    <%= image_tag "wired.png" %>
-                </div>
-                <div class="col-sm-3 text-center">
-                    <%= image_tag "guardian.png" %>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- clients END -->
-
-    <!-- testimonials -->
-    <div class="bloc bgc-white l-bloc" id="bloc-6">
-        <div class="container bloc-md">
-            <!--<div class="col-sm-2 col-sm-offset-5 col-xs-6 col-xs-offset-3">-->
-            <!--<img src="img/bramk.jpg" class="img-responsive img-circle center-block img-frame-rd-md"/>-->
-            <!--</div>-->
-            <!--<div class="col-xs-12 col-md-8 col-md-offset-2">-->
-            <!--<h3 class="text-center ">-->
-            <!--<i>"Eventually everything connects - people, ideas, objects. The quality of the connections is the-->
-            <!--key to quality per se."</i>-->
-            <!--</h3>-->
-
-            <!--<p class="text-center">-->
-            <!--<strong>Charles Eames</strong>-->
-            <!--</p>-->
-            <!--</div>-->
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="quote"><i class="fa fa-quote-left fa-4x"></i></div>
-                    <div class="carousel slide" id="fade-quote-carousel" data-ride="carousel" data-interval="3000">
-                        <!-- Carousel indicators -->
-                        <ol class="carousel-indicators">
-                            <li data-target="#fade-quote-carousel" data-slide-to="0" class="active"></li>
-                            <li data-target="#fade-quote-carousel" data-slide-to="1"></li>
-                            <li data-target="#fade-quote-carousel" data-slide-to="2"></li>
-                        </ol>
-                        <!-- Carousel items -->
-                        <div class="carousel-inner">
-                            <div class="item">
-                                <div class="profile-circle">
-                                    <img src="img/bramk.jpg"
-                                         class="img-responsive img-circle center-block img-frame-rd-md" alt="member"/>
-                                </div>
-                                <blockquote>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla
-                                        eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque
-                                        molestias odio aut eius animi. Impedit temporibus nisi accusamus.</p>
-                                </blockquote>
-                            </div>
-                            <div class="item">
-                                <div class="profile-circle">
-                                    <img src="img/bramk.jpg"
-                                         class="img-responsive img-circle center-block img-frame-rd-md" alt="member"/>
-                                </div>
-                                <blockquote>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla
-                                        eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque
-                                        molestias odio aut eius animi. Impedit temporibus nisi accusamus.</p>
-                                </blockquote>
-                            </div>
-                            <div class="active item">
-                                <div class="profile-circle">
-                                    <img src="img/bramk.jpg"
-                                         class="img-responsive img-circle center-block img-frame-rd-md" alt="member"/>
-                                </div>
-                                <blockquote>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla
-                                        eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque
-                                        molestias odio aut eius animi. Impedit temporibus nisi accusamus.</p>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- testimonials END -->
-
-    <!-- Footer - quote -->
-    <div class="bloc bgc-carmine-pink d-bloc" id="quote">
-        <div class="container bloc-md">
-            <div class="row">
-                <div class="col-sm-9">
-                    <h3 class="mg-md animated zoomIn">
-                        Don&rsquo;t hesitate to contact us now...
-                    </h3>
-                </div>
-                <div class="col-sm-3 text-center">
-                    <a href="index.html" class="btn btn-lg wire-btn-white btn-wire animated zoomIn">GET A QUOTE NOW</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer - quote END -->
-
-    <div class="bloc l-bloc" id="faq">
-        <div class="container bloc-lg">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h2 class="text-center mg-md ">
-                        FAQ
-                    </h2>
-
-                    <p class="sub-heading text-center">
-                        Get Answers: Frequently Asked Questions
-                    </p>
-                </div>
-            </div>
-            <div class="row voffset-mg">
-                <div class="col-md-12">
-                    <div class="panel-group" id="accordion" role="tablist">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab">
-                                <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse"
-                                       data-parent="#accordion"
-                                       href="#collapseOne" aria-expanded="false">This is a question #1</a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-expanded="false"
-                                 style="height: 0px;">
-                                <div class="panel-body">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla
-                                    eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque molestias
-                                    odio aut eius animi. Impedit temporibus nisi accusamus.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab">
-                                <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse"
-                                       data-parent="#accordion"
-                                       href="#collapseTwo" aria-expanded="false">This is a question #2</a>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-expanded="false">
-                                <div class="panel-body">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla
-                                    eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque molestias
-                                    odio aut eius animi. Impedit temporibus nisi accusamus.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading" role="tab">
-                                <h4 class="panel-title">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse"
-                                       data-parent="#accordion"
-                                       href="#collapseThree" aria-expanded="false">This is a question #3</a>
-                                </h4>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-expanded="false">
-                                <div class="panel-body">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, veritatis nulla
-                                    eum laudantium totam tempore optio doloremque laboriosam quas, quos eaque molestias
-                                    odio aut eius animi. Impedit temporibus nisi accusamus.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!-- ScrollToTop Button -->
-    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span
-            class="fa fa-chevron-up"></span></a>
-    <!-- ScrollToTop Button END-->
+    <!-- Search address modal how-to -->
+    <div id="howToModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
 
-    <!-- Footer - bloc-8 -->
-    <div class="bloc bgc-platinum l-bloc" id="bloc-8">
-        <div class="container bloc-sm">
-            <div class="row">
-                <div class="col-xs-12 col-md-8 col-md-offset-2">
-                    <div class="col-sm-3 text-center">
-                        <a class="social-lg" href="http://www.twitter.com/BootstrapOcean" target="_blank"><span
-                                class="fa fa-twitter icon-md icon-carmine-pink"></span></a>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                        <a class="social-lg" href="https://www.facebook.com/BootstrapOcean" target="_blank"><span
-                                class="fa fa-facebook icon-md icon-carmine-pink"></span></a>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                        <a class="social-lg"
-                           href="https://plus.google.com/b/116513433102470788789/116513433102470788789/posts"
-                           target="_blank"><span class="fa fa-google-plus icon-md icon-carmine-pink"></span></a>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                        <a class="social-lg" href="#"><span class="fa fa-dribbble icon-md icon-carmine-pink"></span></a>
-                    </div>
-                </div>
-            </div>
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Cum funcționează ?</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p>Pe scurt, la fel cum AirBnb pune la dispoziție locuințe, Go Park pune la dispoziție
+              <b>locuri de parcare</b>.</p>
+            <p> Tastează in căsuța de căutare zona de interes și vei fi direcționat către o
+              pagină cu harta zonei, cum e cea de mai jos:</p>
+
+            <img class="rounded mx-auto d-block img-thumbnail" src="<%= image_path ('map_screenshot.png') %>" alt="<%= image_alt('map_screenshot.png') %>">
+
+            <p class="mt-3"> Fiecare indicator de pe hartă reprezintă un loc de parcare disponibil in perioada
+              selectată. </p>
+
+            <p class="mt-3"> Pentru mai multe informații, verificați
+              <a onclick="$('#howToModal').modal('hide')" href="#faq">secțiunea de FAQ</a>.</p>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
         </div>
+
+      </div>
+      <!-- End search how-to modal -->
     </div>
-    <div class="row">
-                <div class="col-xs-12 col-md-8 col-md-offset-2 text-center mg-md">Created by <a
-                        href="http://www.softspot.ro" target="_blank">Softspot</a></div>
+    <!-- Search Block END -->
+
+    <!-- Rent products -->
+    <div class="mt-3 mt-md-4 rent" id="rent">
+      <div class="container">
+        <div class="row no-gutters">
+
+
+          <div class="col-12">
+            <h1 class="my-3 my-md-4 text-center animated fadeInUp">
+              Închiriază loc personal
+            </h1>
+            <hr>
+          </div>
+
+
+          <div class="row no-gutters mt-3 owl-carousel owl-theme">
+            <!-- Start Free offering -->
+            <div class=" col-md-4 item mt-3 mt-md-5 p-1 p-md-0">
+              <div class="pricing-box-1">
+                <div class="pricing-title">Gratuit</div>
+                <div class="mt-3 pricing-icon">
+                  <img src="<%= image_path 'marker_on_map_mdpi.png' %>">
+                </div>
+
+                <hr/>
+                <span> Postare manuală în aplicație</span>
+                <hr/>
+
+                <ul class="pricing-list mt-3">
+                  <li> Poți publica orice loc de parcare disponibil: mall,
+                    aeroport, cinema si de ce nu locul din fața blocului
+                  </li>
+                  <li
+                  data-toggle="popover"
+                  tabindex="0"
+                  data-html="true"
+                  data-placement="top"
+                  data-content="Nimic mai simplu. Instalează și valorifică locul tău.
+                <br/>
+                 Pentru alte intrebări, te rugăm să verifici secțiunea de
+                 <a href='#faq'>FAQ</a>. "
+                  title="Încearcă">
+                    Publicați disponibilitatea locului de parcare
+                    prin intermediul aplicației.
+                    <br/>
+                    Șoferii vor vedea și vor licita pentru acel loc.
+                    <i class="fa fa-info-circle"></i>
+                  </li>
+                </ul>
+                <hr>
+
+                <div class="price-wrap">
+                  <span class="price">0 Ron</span>
+                  <span>pe lună</span>
+                </div>
+                <a class="btn btn-primary px-5" ui-sref="app" href="#">Încearcă</a>
+              </div>
             </div>
-    <!-- Footer - bloc-8 END -->
+            <!-- End Free Offering -->
+
+            <!-- Start T bar offering -->
+            <div class=" col-md-4 item mt-3 t-bar p-1 p-md-0">
+              <div class="pricing-box-1">
+                <div class="pricing-title">Barieră</div>
+                <div class="mt-3 pricing-icon">
+                  <img class="mb-5" src="<%= image_path 't-barxhdpi.png' %>">
+                  <hr/>
+                </div>
+
+                <hr/>
+                <span> Permite controlul de pe telefon al accesului.</span>
+                <hr/>
+                <span><u>Avantaje</u></span>
+
+                <ul class="pricing-list mt-3">
+                  <li
+                  data-toggle="popover"
+                  tabindex="0"
+                  data-placement="top"
+                  data-content="Pe lângă detectarea prezenței, acest dispozitiv permite controlarea de la distanță a barierei."
+                  title="Status prezență + Control al accesului">
+                    Controlul accesului prin manipularea barierei.
+                    <i class="fa fa-info-circle"></i></li>
+
+                  <li
+                  data-toggle="popover"
+                  tabindex="0"
+                  data-placement="top"
+                  data-content="Prezența mașinii este detectată de dispozitiv iar statusul poate fi verificat din aplicație"
+                  title="Status prezență"
+                  > Verificarea prezenței unui autoturism pe locul respectiv
+                    <i class="fa fa-info-circle"></i></li>
+
+                  <li
+                  data-toggle="popover"
+                  tabindex="0"
+                  data-placement="top"
+                  data-html="true"
+                  data-content="Odată ce autoturismul a părăsit locul de parcare, dispozitivul va posta din nou locul ca fiind liber.
+                    <br> <br> N.b. Activarea funcției si perioada de disponibilitate este configurată de dvs. "
+                  title="Re-postare"
+                  > Re-postarea automată a disponibilității locului
+                    după ce acesta a fost eliberat. <i class="fa fa-info-circle"></i></li>
+
+                </ul>
+                <hr/>
+
+                <div class="price-wrap">
+                  <span class="price">259 Ron</span>
+                  <span>+ 39 Ron pe lună</span>
+                </div>
+
+
+                <a class="btn btn-primary px-5" ui-sref="buy">Cumpără</a>
+              </div>
+            </div>
+            <!-- end T-Bar offering -->
+
+            <!-- Sensor offering -->
+            <div class=" col-md-4  item mt-3 mt-md-5 p-1 p-md-0">
+              <div class="pricing-box-1">
+                <div class="pricing-title">Senzor</div>
+                <div class="mt-3 pricing-icon">
+                  <img class="mb-4" src="<%= image_path 'sensorxhdpi.png' %>">
+                  <hr/>
+                </div>
+
+                <hr/>
+                <span> Senzor ce detectează prezenta mașinii pe spațiul oferit.</span>
+                <hr/>
+                <span><u>Avantaje</u></span>
+
+                <ul class="pricing-list mt-3">
+                  <li
+                  data-toggle="popover"
+                  tabindex="0"
+                  data-placement="top"
+                  data-content="Prezența mașinii este detectată de dispozitiv iar statusul poate fi verificat din aplicație"
+                  title="Status prezență"
+                  > Verificarea prezenței unui autoturism pe locul respectiv
+                    <i class="fa fa-info-circle"></i></li>
+
+                  <li
+                  data-toggle="popover"
+                  tabindex="0"
+                  data-html="true"
+                  data-placement="top"
+                  data-content="Odată ce autoturismul a părăsit locul de parcare, dispozitivul va posta din nou locul ca fiind liber.
+                    <br> <br> N.b. Perioada de disponibilitate este configurată de dvs. "
+                  title="Re-postare"
+                  > Re-postarea automată a disponibilității locului
+                    după ce acesta a fost eliberat. <i class="fa fa-info-circle"></i></li>
+
+                </ul>
+                <hr/>
+
+                <div class="price-wrap">
+                  <span class="price">139 Ron</span>
+                  <span>+ 39 Ron pe lună</span>
+                </div>
+
+
+                <a class="btn btn-primary px-5" ui-sref="buy-sensor">Cumpără</a>
+              </div>
+            </div>
+            <!-- End Sensor Offering -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Rent products END -->
+
+
+    <!-- faq -->
+    <div class=" mt-4 mt-md-5 faq" id="faq">
+      <div class="container">
+        <div class="row no-gutters">
+          <div class="col-12">
+            <h1 class="my-3 my-md-4 text-center animated fadeInUp">
+              Cum funcționează?
+            </h1>
+            <hr>
+          </div>
+          <div class="col-12 col-sm-4  ">
+            <div class="faq-box p-3  m-2">
+              <div class="my-3 pricing-icon">
+                <img src="<%= image_path 'marker_on_map_mdpi.png' %>">
+              </div>
+              <div>
+                <h4>Postezi locul de parcare</h4>
+                <hr/>
+                <span>
+                  Nimic mai simplu. Instalezi aplicația și postezi.
+                  Poți posta orice loc de parcare pentru care poți garanta accesul.
+                                    <br/>
+
+                                    <br/>
+
+                  Pentru a monetiza cât mai ușor, poți cumpăra un dispozitiv de automatizare.
+                  Detalii <a href="" ng-click="scrollTo('rent')">aici</a>.
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 ">
+            <div class="faq-box p-3  m-2">
+              <div class="my-3  pricing-icon disp">
+                <i class="fa fa-money fa-3x"></i>
+                <hr style="width: 100%"/>
+                <i class="fa fa-calendar fa-3x"></i>
+              </div>
+
+              <h4>Setezi prețul și disponibilitatea </h4>
+
+              <hr/>
+              <span>
+                Alegi perioada de timp si stabilești prețul pe oră.
+                Vei fi notificat in momentul când locul tău a primit o ofertă.
+
+              </span>
+            </div>
+          </div>
+          <div class="col-12 col-sm-4 ">
+            <div class="faq-box p-3  m-2">
+              <div class="my-3  pricing-icon disp">
+                <i class="fa fa-usd fa-4x"></i>
+              </div>
+
+              <h4>Încasezi banii </h4>
+
+              <hr/>
+              <span>
+                Banii vor fi virați automat in contul tău bancar sau în contul
+                de pay-pal la sfârșitul fiecarei luni.
+
+                Poți vedea lista de tranzacții din contul online.
+
+              </span>
+            </div>
+          </div>
+
+          <div class="col-12 mt-5 ">
+            <div class="panel my-3">
+              <h5 class="panel-title" ng-click="show('one')">
+                <a>Ce tipuri de locuri găsesc in aplicație?</a>
+              </h5>
+              <div class="panel-body" id="one">
+                Aplicația oferă 2 tipuri:
+                <ol>
+                  <li>
+                    <b>Locuri cu contract</b> - Aceste locuri sunt parcări publice sau private păzite.
+                    Parcarea vehicului pe aceste locuri este taxată conform prețului afișat.
+                  </li>
+                  <li>
+                    <b>Locuri ad-hoc</b> - Acestea sunt locuri postate de utilizatori, pentru a reutiliza
+                    si pentru a oferi o mai buna gestionare a locurilor disponibile fără plată ( trotuar, locuri
+                    publice,etc.).
+                    Cel care posteaza poate cere bani pentru a-l accesa (spre exemplu are chiar el parcată mașina pe
+                    acel loc).
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div class="panel my-3">
+              <h5 class="panel-title" ng-click="show('two')">
+                <a>Cum închiriez un loc de parcare? </a>
+              </h5>
+              <div class="panel-body" id="two">
+                Foarte simplu. Odată ce ai gasit locul dorit, îl vei rezerva direct din aplicație.
+                Plata se va face prin card bancar sau prin pay-pal.
+
+                <ol>
+                  <li>
+                    Pentru locurile de tip 'ad-hoc' (acestea sunt locuri postate de utilizatori fără perioada de
+                    disponibilitate),
+                    plata se va face prin card bancar în momentul cand ați ocupat locul de parcare. Puteți staționa
+                    oricât
+                    va permite respectivul loc, perioada de parcare nefiind garantată in nici un fel
+                  </li>
+                  <li>
+                    Pentru locurile cu contract, veți fi taxat automat la părăsirea locului de parcare ( acest lucru
+                    este semnalat
+                    de recunoașterea numarului de înmatriculare la intrarea și ieșirea din parcare )
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div class="panel my-3">
+              <h5 class="panel-title" ng-click="show('three')">
+                <a aria-expanded="false">De ce detalii bancare e nevoie pentru a închiria?</a>
+              </h5>
+              <div class="panel-body" id="three">
+                Banii se vor aduna in contul tău din aplicație. În setările utilizatorului va trebui să
+                configurezi un cont bancar sau un cont de paypal.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ui-view>
+
+
+<!-- ScrollToTop Button -->
+<a class="scroll-to-top" ng-click="scrollTo('navbar')">
+  <i class="fa fa-chevron-up"></i>
+</a>
+<!-- ScrollToTop Button END-->
+
+<!-- Footer - bloc-8 -->
+<div class="footer mt-5" id="footer">
+  <div class="row no-gutters align-items-center justify-content-center">
+    <div class="col-md-2 py-4 text-center">
+      <a href="#">
+        <img width="140" src="<%= image_path 'logo_dark_sm.png' %>">
+      </a>
+    </div>
+    <div class="col-md-5 p-4">
+      <h5>Contact</h5>
+      <ul>
+        <li>
+          <i class="fa fa-phone fa-2x"></i>
+          <a href="tel:+40727.456.250">&nbsp;&nbsp;
+            +40727.456.250
+          </a>
+        </li>
+        <li>
+          <i class="fa fa-envelope fa-2x"></i>
+          <a href="mailto:office@go-park.ro">&nbsp;&nbsp;
+            office@go-park.ro
+          </a>
+        </li>
+      </ul>
+      <hr/>
+      <div class="text-center">
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-facebook "></span>
+        </a>
+        <a class="social-lg" href="http://www.twitter.com/go-park" target="_blank">
+          <span class="fa fa-instagram icon-md icon-carmine-pink"></span>
+        </a>
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-google-plus"></span>
+        </a>
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-twitter"></span>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-5 p-3 contact-form">
+      <form method="POST" action="http://formspree.io/office@go-park.ro">
+        <div class="form-group">
+          <input required type="email" name="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <textarea required class="form-control" name="message" placeholder="Spune-ne cum te putem ajuta..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-sm btn-danger">Trimite</button>
+      </form>
+    </div>
+  </div>
 </div>
-<!-- Main container END -->
-<!--</body>-->
+<div class="ending row">
+  <div class="col-12 col-md-8 col-md-offset-2 text-center mg-md">
+    &copy; <a href="mailto:office@go-park.ro" target="_blank">Softspot</a> 2017.
+    All rights reserved
+  </div>
+</div>
+<!-- Footer - bloc-8 END -->
+
 
 <!-- Google Analytics -->
 
 <!-- Google Analytics END -->
 
-<!--</html>-->
+</body>
+</html>

@@ -1,0 +1,73 @@
+<div class="ps-modal">
+    <div ng-controller="EditParkingSpaceCtrl">
+
+        <form class="form-edit-details">
+            <div>
+                <h3 class="ps-page-title" ng-show="spaceEdit.id">
+                    Edit space
+                </h3>
+
+                <h3 class="ps-page-title" ng-hide="spaceEdit.id">
+                    New space in {{spaceEdit.sublocality}}
+                </h3>
+            </div>
+            <div>
+                <span class="item item-input important">
+                    <span class="input-label">Price</span>
+                    <bid-amount amount="spaceEdit.price" currency="spaceEdit.currency"></bid-amount>
+                </span>
+                <label class="item item-input">
+                    <span class="input-label">Title</span>
+                    <input type="text" placeholder="Title" ng-model="spaceEdit.title">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Address</span>
+                    <input type="text" placeholder="Address line 1" ng-model="spaceEdit.address_line_1">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Valid From</span>
+                    <input type="date" placeholder="Valid from" ng-model="spaceEdit.space_availability_start">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Valid To</span>
+                    <input type="date" placeholder="Valid to" ng-model="spaceEdit.space_availability_stop">
+                </label>
+
+                <div class="item upload-photo">
+                    <div class="row">
+                        <div class="col-34" ng-click="takePhoto()" on-hold="attachPhoto()">
+                            <span class="parking-sign" ng-hide="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
+                               <i class="fa fa-camera"></i>
+                               <i class="text"></i>
+                            </span>
+                            <img ng-src="{{imageUrl(spaceEdit)}}" class="parking-sign"
+                                 ng-show="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
+                        </div>
+                        <div class="col-66">
+                            <label class="item item-input item-stacked-label desc-textarea">
+                                <span class="input-label">Description</span>
+                                <textarea placeholder="Description" maxlength="165" ng-model="spaceEdit.description"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ps-control-buttons">
+                <div class="button-bar">
+                    <a class="button icon-center ion-checkmark-round" ng-click="confirmSave()"></a>
+                    <a class="button icon-center ion-close" ng-click="close()"></a>
+                </div>
+            </div>
+        </form>
+
+        <div class="ps-dialog" id="saveSpinner">
+            <div class="ps-dialog-content ">
+                <div class="ps-question text-center save-spinner">
+                    <h3>Saving ...</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ui-view name="help"></ui-view>
+</div>

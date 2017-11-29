@@ -1,0 +1,58 @@
+
+.business {
+  min-height: 40vh;
+  background: url("/assets/bg_business.png");
+}
+
+@include media-breakpoint-down(md) {
+  .business {
+    background: url("/assets/bg_business_sm.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .business {
+    background: url("/assets/bg_business_xs.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .business {
+    background: url("/assets/bg_business.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+.offer-desc {
+  background-color: transparentize($gray-900, .5);
+  color: $white;
+}
+
+.delay-1 {
+  animation-delay: .25s;
+}
+
+.delay-2 {
+  animation-delay: .5s;
+}
+
+.delay-3 {
+  animation-delay: .75s;
+}
+
+.delay-4 {
+  animation-delay: 1s;
+}
+
+.solutions {
+  form {
+    textarea {
+      height: 150px;
+    }
+  }
+}

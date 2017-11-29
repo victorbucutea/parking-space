@@ -11,9 +11,16 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.scrollto/jquery.scrollTo
 //= require moment/min/moment.min
+//= require moment/locale/ro
 //= require angular/angular
+//= require angular-sanitize/angular-sanitize
 //= require popper.js/dist/umd/popper
 //= require bootstrap/dist/js/bootstrap
-//= require eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker
+//= require bootstrap-daterangepicker/daterangepicker
+//= require owl.carousel/dist/owl.carousel
+//= require angular-ui-router/release/angular-ui-router
+//= require main
 //= require_tree .
+
