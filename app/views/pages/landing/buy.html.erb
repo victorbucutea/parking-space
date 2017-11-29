@@ -1,0 +1,274 @@
+<div class="container mt-5" ng-controller="BuyCtrl">
+
+
+  <!-- Product header -->
+  <div class="row product">
+    <div class="col-md-4 p-0">
+      <div>
+        <img id="mainImg"
+             data-toggle="modal" data-target="#thumbnailModal"
+             class="mb-4 img-fluid img-thumbnail"
+             ng-click="selectMain()" src="<%= image_path 't-bar-physical.jpg' %>">
+      </div>
+      <div class="row thumbnails">
+        <div class="col-4" ng-click="selectThumbnail('imgA')">
+          <img id="imgA" class="img-fluid img-thumbnail" src="<%= image_path 't-bar-physical' %>">
+        </div>
+        <div class="col-4" ng-click="selectThumbnail('imgB')">
+          <img id="imgB" class="img-fluid img-thumbnail" src="<%= image_path 't-bar-remote' %>">
+        </div>
+        <div class="col-4" ng-click="selectThumbnail('imgC')">
+          <img id="imgC" class="img-fluid img-thumbnail" src="<%= image_path 't-bar-installation' %>">
+        </div>
+      </div>
+
+      <!-- Image thumbnail -->
+      <!-- Modal -->
+      <div id="thumbnailModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-body">
+              <img class="img-thumbnail" id="modalImg" src="">
+            </div>
+          </div>
+
+        </div>
+        <!-- End search how-to modal -->
+      </div>
+    </div>
+
+    <div class="col-md-8 ">
+
+      <h1 class="mt-4 mt-md-0 animated fadeInUp product-title">
+        Barieră control acces
+      </h1>
+      <small class="product-subtitle animated fadeInUp"> Cod produs : BR-101</small>
+
+      <div class="col-12 pt-3 mt-3 product-desc">
+        <ul class="mt-2">
+          <li> Control acces prin aplicația de mobil si prin telecomandă</li>
+          <li> Sub-închiriere automată a locului de parcare ( configurabil )</li>
+          <li> Instalare și configurare ușoară</li>
+          <li> Rezistență la presiune până la 500kg</li>
+        </ul>
+        <div class="stock p-3 ">
+          Stoc: <a href="mailto: office@go-park.ro">Întrebați aici</a>
+        </div>
+        <div class="delivery p-3">
+          <i class="fa fa-truck"></i> Livrare în: 24h
+        </div>
+        <div class="delivery p-1 pl-3">
+          <h3>{{unitPrice}}
+            <small>.00</small>
+            Ron
+          </h3>
+        </div>
+
+        <div class="p-2">
+          <button class="btn btn-primary" ng-click="tryBuy()"><i class="fa fa-shopping-cart"></i> Cumpără</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- description tabs -->
+  <div class="row mt-5 mt-md-3 desc-tabs">
+    <a title="Description" ng-click="scrollTo('desc')" ng-class="getClass('desc')" class="desc-tab-item">Descriere</a>
+    <a title="Specs" ng-click="scrollTo('spec')" ng-class="getClass('spec')" class="desc-tab-item">Specificații</a>
+    <a title="faq" ng-click="scrollTo('faq')" ng-class="getClass('faq')" class="desc-tab-item">Întrebări</a>
+  </div>
+  <hr class="row ">
+
+  <div class="p-3 desc-content">
+
+    <h3> O soluție inteligentă</h3>
+    Bariera se poate deschide sau închide la comanda celui care inchiriază.
+    În alte cuvinte, tu ca proprietar nu trebuie să iți faci vreo grijă.
+    Bariera comandată este cea mai sigură soluție pentru sub-închirierea
+    spațiilor de parcare.
+    <br/>
+    De menționat este faptul ca această barieră poate fi folosită ca o simplă
+    barieră controlata de pe mobil sau telecomandă. Controlul postării locului spre sub-închiriere se face
+    de către utilizator.
+
+    <br/>
+    <br/>
+    <h3> O soluție durabilă</h3>
+    Bariera a fost proiectată să fie durabilă, rezistentă la 500 kgf aplicate vertical.
+    În alte cuvinte dispozitivul nu poate fi afectat de trecerea cu mașina peste acesta.
+
+
+    <br/>
+    <br/>
+    <i class="fa fa-exclamation-triangle"></i> <span>Atenție! Montați bariera în zone
+  unde există acoperire a retelelor de telefonie. Dacă aceasta nu e disponibilă,
+  dispozitivul nu va putea fi comandat din aplicația de mobil  </span>
+
+  </div>
+
+
+  <!-- specificatii -->
+
+  <h2 id="spec" class="mt-4 "> Specificații </h2>
+  <hr class="row ">
+  <div class="row p-4 desc-content">
+    <table class="table table-hover table-sm table-striped">
+      <tbody>
+      <tr>
+        <td>Inalțime</td>
+        <td>390 mm ( 60 mm cu bariera orizontală )</td>
+      </tr>
+      <tr>
+        <td>Lațime</td>
+        <td>460 mm</td>
+      </tr>
+      <tr>
+        <td>Lungime</td>
+        <td>495 mm</td>
+      </tr>
+      <tr>
+        <td>Garanție</td>
+        <td>2 ani</td>
+      </tr>
+      <tr>
+        <td>Durata deschidere/închidere</td>
+        <td>5-6s</td>
+      </tr>
+      <tr>
+        <td>Greutate</td>
+        <td>12,5 kg</td>
+      </tr>
+      <tr>
+        <td>Temperatură operare</td>
+        <td>-30&deg;C .. +40&deg;C</td>
+      </tr>
+      <tr>
+        <td>Alimentare</td>
+        <td>4 x baterii de <a href="https://en.wikipedia.org/wiki/D_battery">tip D</a></td>
+      </tr>
+      <tr>
+        <td>Durată medie baterii</td>
+        <td>3 luni</td>
+      </tr>
+      <tr>
+        <td>Diametru diblu ancorare</td>
+        <td>12 mm</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- end specificatii -->
+
+
+  <!-- FAQ  -->
+  <h2 id="faq" class="mt-4 "> Întrebări </h2>
+  <hr class="row ">
+  <div class="p-4 faq">
+    Ne straduim sa răspundem tuturor întrebarilor pe care le-ați putea avea.
+    Dacă ne-a scapat ceva, nu ezitați sa ne contactați pe formularul de mai jos.
+
+
+    <div class="panel my-3">
+      <h5 ng-click="show($event)">De ce anume am nevoie pentru a monta dispozitivul pe locul de parcare ?</h5>
+      <div class="panel-body">
+        În pachet veți găsi absolut tot ceea ce aveți nevoie pentru a-l monta (dibluri tip ancoră,
+        șuruburi, instrucțiuni) mai puțin instrumentele pentru găurire.
+      </div>
+    </div>
+    <div class="panel my-3">
+      <h5 ng-click="show($event)">Cum asociez dispozitivul cu telefonul meu?</h5>
+      <div class="panel-body">
+        În interiorul carcasei veți gasi un cod de bare. Odată ce ați instalat aplicația,
+        veti avea in meniu opțiunea de a scana acel cod de bare. Odată scanat,
+        aplicația va putea controla dispozitivul.
+      </div>
+    </div>
+    <div class="panel my-3">
+      <h5 ng-click="show($event)">Cum asociez mai multe telefoane cu dispozitivul?</h5>
+      <div class="panel-body">
+        Simplu, instalați aplicația pe un nou telefon si scanați inca o data codul cu noul telefon
+      </div>
+    </div>
+    <div class="panel my-3">
+      <h5 ng-click="show($event)">Exista pericolul ca o persoana necunoscuta cu acces la dispozitiv sa 'copieze' acel cod de bare? </h5>
+      <div class="panel-body">
+        Codul de bare se afla în interiorul carcasei, iar aceasta se poate deschide doar cu cheia livrată în pachet.
+      </div>
+    </div>
+  </div>
+
+
+  <h2 id="buy" class="mt-4 "> Cumpără </h2>
+  <!-- Pricing table -->
+  <div class="row mt-4" id="priceTable">
+    <div class="col-md-12 d-flex justify-content-center">
+      <table class="table table-hover price-table">
+        <thead>
+        <tr>
+          <th>Produs</th>
+          <th>#</th>
+          <th class="text-right">Preț / Unit.</th>
+          <th class="text-right">Total ( incl. TVA )</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class=""><em>Barieră BR-101 </em></td>
+          <td class="" style="text-align: center"><input ng-model="qty" type="number" min="0" class="form-control"></td>
+          <td class=" text-right">{{unitPrice}} Ron</td>
+          <td class=" text-right">{{priceWVat}} Ron</td>
+        </tr>
+        <tr>
+          <td class=""><em>Abonament serviciu 1 lună </em></td>
+          <td class="" style="text-align: center"> {{qty}}</td>
+          <td class=" text-right">{{subscrPrice}} Ron</td>
+          <td class=" text-right">{{subscrTotalPriceWVat}} Ron</td>
+        </tr>
+        <tr>
+          <td>  </td>
+          <td>  </td>
+          <td class="text-right"><h4><strong>Total: </strong></h4></td>
+          <td class="text-right text-danger"><h4><strong>{{overallTotal}} Ron</strong></h4></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Buy buttons -->
+  <div class="row buy-form">
+    <div class="col-12 d-flex justify-content-end ">
+      <img class="img-thumbnail" src="<%= image_path 'credit_cards2.jpg' %>">
+      <button class="btn btn-primary m-3" data-toggle="modal" data-target="#stockModal">
+        <i class="fa fa-shopping-cart"></i>
+        Plătește online
+      </button>
+    </div>
+  </div>
+
+  <!-- Stocks modal -->
+  <div id="stockModal" class="modal fade in" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Stoc indisponibil!</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">Ne pare rău, acest dispozitiv nu mai este in stoc.</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
