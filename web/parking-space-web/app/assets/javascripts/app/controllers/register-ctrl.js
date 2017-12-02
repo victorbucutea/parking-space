@@ -7,85 +7,53 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
 
     $('.bar.bar-header').hide();
     $('.fa-spin.fa-spinner').hide();
+    $('[data-toggle="tooltip"]').tooltip();
 
 
-    $scope.loginWithFb = function () {
-        ezfb.login(function (res) {
-            if (res.authResponse) {
-                ezfb.api('/me?fields=email,location{location},name', function (res) {
-                    $('#register-fb').show();
-                    $('#login').hide();
-                    $scope.email = res.email;
-                    $scope.firstName = res.name;
-                    if (res.location) {
-                        $scope.countries.forEach(function (ctry) {
-                            var location = res.location.location;
-                            if (ctry.value4.toLocaleLowerCase() === location.country.toLocaleLowerCase()) {
-                                $scope.selectedCountry = ctry;
-                            }
-                        });
-                    }
-
-                })
-            } else {
-                $rootScope.$broadcast('http.error', [{
-                    fieldName: '',
-                    text: 'Error while logging into facebook. Please try again.'
-                }]);
-            }
-        }, {scope: 'public_profile,email,user_location'})
-    };
-
-
-    $scope.user = {};
-
-    userService.getUser(function (user) {
-        if (!user) return;
-        $scope.user = user;
-        $scope.user.phone_number = $scope.user.phone_number.replace("+", "");
-    });
-
-    // get the list of countries
-    function selectUserCountry(countries) {
-        if ($scope.user && countries) {
-            countries.forEach(function (item) {
-                if (item.key === $scope.user.country) {
-                    $scope.selectedCountry = item;
-                }
-            });
-        }
+    if ($stateParams.inside) {
+        userService.getUser(function (user) {
+            if (!user) return;
+            $scope.user = user;
+            $scope.user.phone_number = $scope.user.phone_number.replace("+", "");
+        });
+    } else {
+        $scope.user = {country: 'ro'};
+        $scope.prefix = '+40';
     }
 
-    parameterService.getCountryListAsync(function (countries) {
-        $scope.countries = countries;
-        selectUserCountry(countries);
+    $scope.dialogOk = function () {
+        $('#requiredFieldsDialog').hide();
+        $('#registerForm').addClass('was-validated');
+    };
+
+    $scope.fromFb = $stateParams.fromFb;
+    $scope.email = $stateParams.email;
+    $scope.fbId = $stateParams.fbId;
+    $scope.firstName = $stateParams.firstName;
+    $scope.token = $stateParams.token;
+
+    $scope.$watch('registerForm.licensePlate.$valid', function (newVal) {
+        if (!newVal) return;
+        let init = $scope.licensePlate;
+        if (!init) return;
+
+        let no = /(\d)+/g.exec(init)[0];
+        let county = /([a-zA-Z])+/g.exec(init)[0];
+        let code = /([a-zA-Z])+$/g.exec(init)[0];
+        $scope.licensePlate = county.toLocaleUpperCase() + '-' + no + '-' + code.toLocaleUpperCase();
     });
 
-
-    $scope.selectCountry = function (ctry) {
-        $scope.selectedCountry = ctry;
-        $scope.user.country = ctry.key;
+    $scope.options = {
+        phoneNumber: {
+            delimiters: ['.', '.'],
+            blocks: [3, 3, 3],
+            numericOnly: true
+        }
     };
 
-
-    $scope.recoverPassword = function () {
-        $('#recoverPassword').hide();
-        userService.recoverPassword($scope.recoveryEmail, function () {
-        });
-    };
-
-
-    $scope.login = function () {
-        var user = $scope.userName;
-        var password = $scope.password;
-
-        userService.login(user, password, function () {
-            $state.go('home.map.search');
-        })
-    };
 
     $scope.save = function () {
-        if (!$scope.registerForm.$valid || !$scope.selectedCountry) {
+        if (!$scope.registerForm.$valid) {
             $('#requiredFieldsDialog').show();
             return;
         }
@@ -95,57 +63,36 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
         });
     };
 
-    $scope.registerWithFb = function () {
-        if (!$scope.registerForm.phoneNumber.$valid) {
-            $('#requiredFieldsFbDialog').show();
-            return;
-        }
-
-
-        backEndRegister(hashCode($scope.email));
-    };
-
 
     $scope.register = function () {
-        if (!$scope.registerForm.$valid || !$scope.selectedCountry) {
+
+        if (!$scope.registerForm.$valid) {
             $('#requiredFieldsDialog').show();
             return;
         }
 
-        backEndRegister($scope.password);
-    };
-
-    var backEndRegister = function (password) {
-        var backEndUser = {};
+        let backEndUser = {};
         backEndUser.full_name = $scope.firstName;
-        backEndUser.phone_number = $scope.selectedCountry.prefix + $scope.phoneNumber;
-        backEndUser.country = $scope.selectedCountry.key;
+        backEndUser.phone_number = $scope.prefix + $scope.phoneNumber;
+        backEndUser.country = $scope.user.country;
         backEndUser.email = $scope.email;
-        backEndUser.password = password;
-        backEndUser.password_confirmation = password;
+        backEndUser.password = $scope.password;
+        backEndUser.license = $scope.licensePlate;
+        backEndUser.password_confirmation = $scope.password;
 
 
         $('.fa-spin.fa-spinner').show();
 
-        userService.registerUser(backEndUser, function () {
-            $state.go('home.map.search');
-        }, function (errData, status) {
-            if (status === 422) {
-                userService.login(backEndUser.email, hashCode(backEndUser.email), function (data) {
-                    console.log(data);
-                })
-            }
-        });
-    };
+        if (!$scope.fromFb) {
+            userService.registerUser(backEndUser, function () {
+                $state.go('home.map.search');
+            });
+        } else {
+            userService.registerUserFb(backEndUser, $scope.fbId, $scope.token,
+                function () {
+                    $state.go('home.map.search');
+                });
 
-    var hashCode = function (string) {
-        var hash = 0, i, chr;
-        if (string.length === 0) return hash;
-        for (i = 0; i < string.length; i++) {
-            chr = string.charCodeAt(i);
-            hash = ((hash << 5) - hash) + chr;
-            hash |= 0; // Convert to 32bit integer
         }
-        return hash;
     };
 });

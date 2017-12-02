@@ -4,6 +4,7 @@ angular.module('ParkingSpaceMobile.controllers', []);
 angular.module('ParkingSpaceMobile', [
     'config',
     'ezfb',
+    'cleave.js',
     'ui.router',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
@@ -11,15 +12,6 @@ angular.module('ParkingSpaceMobile', [
     'ParkingSpaceMobile.services'])
 
     .run(function (ENV, $http) {
-
-
-        // set fixed height:
-        // 1. Keeps the screen from shrinking when keyboard open
-        // 2. Viewport will scroll to the focused elm when keyboard opens and hides respective input
-        $(document.body).css("height", $(document).height());
-
-
-
         function onDeviceReady() {
             if ( navigator.onLine ) {
                 $http.get(ENV+'/parameters/1.json', {timeout: 3000}).then(function(){}, function() {
@@ -38,27 +30,6 @@ angular.module('ParkingSpaceMobile', [
             }
         }
 
-        if (!Array.prototype.find) {
-           Array.prototype.find= function(predicate) {
-                    var list = Object(this);
-                    var length = list.length >>> 0;
-                    var thisArg = arguments[1];
-                    var value;
-
-                    for (var i = 0; i < length; i++) {
-                        if (i in list) {
-                            value = list[i];
-                            if (predicate.call(thisArg, value, i, list)) {
-                                return value;
-                            }
-                        }
-                    }
-                    return undefined;
-                }
-        }
-
-
-
         document.addEventListener('deviceready', onDeviceReady, true);
     })
 
@@ -69,6 +40,17 @@ angular.module('ParkingSpaceMobile', [
                 abstract: true,
                 templateUrl: 'templates/home.html'
             })
+            .state('home.login', {
+                url: '/login',
+                views: {
+                    'content': {
+                        templateUrl: "templates/login.html"
+                    }
+                },
+                params: {
+                    hide_blanket: false
+                }
+            })
             .state('home.register', {
                 url: '/register',
                 views: {
@@ -77,7 +59,12 @@ angular.module('ParkingSpaceMobile', [
                     }
                 },
                 params: {
-                    hide_blanket: false
+                    hide_blanket: false,
+                    fromFb: false,
+                    email: null,
+                    firstName: null,
+                    fbId: null,
+                    token: null
                 }
             })
             .state('home.map', {

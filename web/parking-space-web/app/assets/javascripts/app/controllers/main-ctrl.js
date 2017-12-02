@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, parameterService, $state ) {
+angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, parameterService, $state, userService ) {
 
 
     $document.mousedown(function () {
@@ -17,7 +17,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         if (data instanceof Array) {
             $scope.errMsg = $scope.errMsg.concat(data);
         } else {
-            if ($scope.errMsg.indexOf(data) == -1)
+            if ($scope.errMsg.indexOf(data) === -1)
                 $scope.errMsg.push(data);
         }
     });
@@ -29,13 +29,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         if (data instanceof Array) {
             $scope.notifMsg = $scope.notifMsg.concat(data);
         } else {
-            if ($scope.notifMsg.indexOf(data) == -1)
+            if ($scope.notifMsg.indexOf(data) === -1)
                 $scope.notifMsg.push(data);
         }
     });
 
     if (localStorage.helpShown !== "1"){
-        var currentState = $state.current.name;
+        let currentState = $state.current.name;
         if (!currentState) {
             return;
         }
@@ -48,6 +48,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         localStorage.setItem("helpShown",1);
     }
 
+
+    $scope.logout = function(){
+        userService.logout();
+        $state.go('home.login');
+    };
 
 
     $document.on('click','.ps-modal', function(event){
