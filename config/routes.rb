@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   #provide a screen to confirm the password reset
   devise_scope :user do
     get "/users/password/done" => "passwords#done", :as => "done_user_password"
+    post "/users/sign_in_fb" => "sessions#sign_in_fb", :as => "sign_in_fb"
   end
 
   post '/notif' => 'notifications#notif', :as => 'notif'

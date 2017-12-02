@@ -54,28 +54,12 @@ $xsm-measure-unit: $sm-measure-unit / $golden-ratio;
 // 3px
 $xxsm-measure-unit: $xsm-measure-unit / $golden-ratio;
 
-$font-family: 'Open Sans';
 
-$dflt-font-color: #333;
-$gray: #ddd;
-
-$gray-lighter: #888;
-$gray-xlight: #e5e5e5;
-$gray-xxlight: #f5f5f5;
-
-$gray-dark: #444;
-$gray-dark-transparent: transparentize($gray-dark, 0.5);
-$blue: #7A93BA;
-$red: #d46220;
-$darkgreen: darkgreen;
-
-@import "fonts";
 @import "forms";
 
 // map controls
 #map {
   height: 100%;
-
 }
 
 a {
@@ -111,12 +95,6 @@ map {
     color: #656565;
     font-size: 2.5em;
   }
-}
-
-html, body {
-  font-family: $font-family;
-  color: $dflt-font-color;
-  background-color: #fff;
 }
 
 .space-description-box {
@@ -393,27 +371,23 @@ html, body {
 
 .ps-dialog {
   display: none;
-  height: 100%;
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
   z-index: 4;
+  width: 100%;
+
+  .form-control {
+    box-shadow: none;
+  }
 
   .ps-dialog-content {
     background-color: white;
     position: relative;
-    top: 30%;
-    left: 10%;
+    margin: auto;
     width: 74%;
     box-shadow: 1px 1px 3px;
     border-top: 4px solid $red;
-
-    a {
-      color: $dflt-font-color;
-      text-decoration: none;
-    }
 
     .ps-question {
       padding: $sm-measure-unit;
@@ -850,20 +824,28 @@ parking-spot-info-box.small {
 
   .notification-message {
     text-align: center;
-    border-radius: $measure-unit;
-    color: white;
-    padding: $xsm-measure-unit;
+    border-radius: $border-radius;
+    color: $white;
+    padding: $sm-measure-unit;
     display: none;
     margin-top: $xsm-measure-unit;
-    box-shadow: 1px 1px 12px 1px #525252;
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      li {
+        font-weight: bold;
+      }
+    }
 
     &.error {
-      background-color: #9c0101;
+      background-color: $red;
       display: block;
     }
 
     &.notification {
-      background-color: #274f18;
+      background-color: $green;
       display: block;
     }
   }
@@ -962,16 +944,16 @@ parking-spot-info-box.small {
       }
 
       .accepted {
-        color: $darkgreen;
+        color: $green;
       }
 
       .accept-confirm {
         padding: 5px;
         .ion-checkmark-round {
-          color: $darkgreen;
+          color: $green;
         }
         .ion-close-round {
-          color: darkred;
+          color: $red;
         }
       }
     }
@@ -1088,13 +1070,4 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-
-#register {
-  display: none;
-}
-
-#register-fb {
-  display: none;
 }

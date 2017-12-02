@@ -21,6 +21,8 @@
 //= require bootstrap-daterangepicker/daterangepicker
 //= require owl.carousel/dist/owl.carousel
 //= require angular-ui-router/release/angular-ui-router
+//= require angular-easyfb/build/angular-easyfb
+//= require cleave.js/dist/cleave-angular
 //= require main
 //= require_tree .
 

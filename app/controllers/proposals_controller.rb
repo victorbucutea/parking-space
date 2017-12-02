@@ -14,7 +14,6 @@ class ProposalsController < ApplicationController
 
     @proposal = Proposal.with_messages (1)
 
-
   end
 
   def reject

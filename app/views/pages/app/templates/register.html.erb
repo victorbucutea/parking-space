@@ -1,0 +1,117 @@
+<div class="register" ng-controller="RegisterCtrl">
+  <div class="container">
+    <div class="text-center p-4 p-md-5">
+      <img width="200" src="<%= image_path 'logo_xs.png' %>">
+    </div>
+
+    <div id="register" class="row pt-4 pt-md-5 justify-content-center">
+      <div class="col-11 col-sm-7 col-md-6 col-lg-4">
+        <form id="registerForm" name="registerForm">
+
+          <h3 ng-hide="fromFb" class="text-center"> Avem nevoie de câteva detalii </h3>
+          <h3 ng-show="fromFb" class="text-center"> Doar câteva detalii {{firstName}} </h3>
+
+
+          <div class="form-group">
+            <div class="input-group mt-3 input-group-lg">
+            <span class="input-group-addon">
+              <img width="25" src="<%= image_path 'app/flags/Romania.png' %>">
+              &nbsp;
+              {{ selectedCountry.prefix || '+40'}}
+            </span>
+              <input class="phone-number form-control" type="text" id="phoneNo"
+                     placeholder="Nr. mobil" ng-model="phoneNumber" name="phoneNumber"
+                     required minlength="5"
+                     cleave="options.phoneNumber"
+                     pattern="[0-9]{3}[\. ]*[0-9]{3}[\. ]*[0-9]{3}"
+                     data-toggle="tooltip"
+                     data-placement="bottom"
+                     title="(e.g. 727 333 444)"/>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+
+            <input type="text" class="form-control form-control-lg"
+                   placeholder="Nr. înmatriculare"
+                   ng-model="licensePlate" name="licensePlate"
+                   required minlength="6"
+                   pattern="^[A-Za-z]{1,2}[\- ]*[0-9]{1,3}[\- ]*[A-Za-z]{3}$"
+                   ng-blur="repairLicenseFormat()"
+                   data-toggle="tooltip"
+                   data-placement="bottom"
+                   title="e.g. B-10-INM (Delimitat cu cratimă)"/>
+
+          </div>
+
+          <div ng-hide="fromFb">
+            <div class="form-group">
+              <input type="text" class="form-control form-control-lg"
+                     placeholder="Email" ng-model="email" name="email" required minlength="5"
+                     pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"/>
+            </div>
+
+            <div class="form-group">
+              <input type="text" class="form-control form-control-lg" placeholder="Nume și prenume"
+                     ng-model="firstName" name="firstName" required
+                     minlength="5"/>
+            </div>
+
+            <div class="form-group">
+              <input type="password" class="form-control form-control-lg" placeholder="Parolă"
+                     ng-model="password" name="password"
+                     ng-required="!fromFb"
+                     minlength="8"/>
+            </div>
+
+          </div>
+
+          <div class="text-center d-flex justify-content-around">
+            <button class="btn btn-primary btn-lg" ng-click="register()">
+              <i class="fa fa-spinner loading-spinner fa-spin"></i>
+              Înregistrare
+            </button>
+
+            <button class="btn btn-lg btn-secondary" ui-sref="home.login">
+              <i class="fa fa-spinner loading-spinner fa-spin"></i>
+              Înapoi
+            </button>
+          </div>
+
+          <div ng-show="fromFb" class="py-3 p-md-4 small">
+            P.S. Numărul de înmatriculare și nr. de telefon
+            sunt necesare pentru a rezerva parcari publice sau private. Dacă s-ar
+            putea mai simplu, am face-o.
+          </div>
+
+          <div class="ps-dialog animated fadeIn"
+               id="requiredFieldsDialog">
+            <div class="ps-dialog-content">
+              <div class="ps-question">
+                Te rugăm să verifici încă odată datele introduse!
+                <ul class="invalid-field-list">
+                  <li ng-hide="registerForm.email.$valid"> Email (e.g. 'john@domeniu.com')</li>
+                  <li ng-hide="registerForm.phoneNumber.$valid"> Nr. telefon (e.g. 723 xxx xxx)</li>
+                  <li ng-hide="registerForm.licensePlate.$valid"> Nr. inmatriculare (e.g. B 10 INM)</li>
+                  <li ng-hide="registerForm.firstName.$valid"> Nume + Prenume (min 5 caractere)</li>
+                  <li ng-hide="registerForm.password.$valid"> Parolă (min 8 caractere)</li>
+                </ul>
+              </div>
+              <div class="ps-control-buttons">
+                <div class="text-center p-2">
+                  <a tabindex class="btn btn-secondary " ng-click="dialogOk()">
+                    <i class="fa fa-check"></i>OK
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+</div>
