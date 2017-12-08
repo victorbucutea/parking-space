@@ -5,5 +5,5 @@ json.array!(@parameters) do |parameter|
       json.extract! value, :key, :value, :value2, :value3, :value4
     end
   end
-  # json.url parameter_url(parameter, format: :json)
+  #json.starting_currency (parameter.parameter_values.select{|s| s.key == parameter.default_value})
 end

@@ -14,6 +14,7 @@
 //= require jquery.scrollto/jquery.scrollTo
 //= require moment/min/moment.min
 //= require moment/locale/ro
+//= require moment-duration-format/lib/moment-duration-format
 //= require angular/angular
 //= require angular-sanitize/angular-sanitize
 //= require popper.js/dist/umd/popper
@@ -23,6 +24,7 @@
 //= require angular-ui-router/release/angular-ui-router
 //= require angular-easyfb/build/angular-easyfb
 //= require cleave.js/dist/cleave-angular
+//= require google-maps-utility-library-v3-markerwithlabel/dist/markerwithlabel
 //= require main
 //= require_tree .
 

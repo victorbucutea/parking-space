@@ -1,0 +1,221 @@
+<div id="search-space" class="ps-modal" ng-controller="ReviewBidsCtrl">
+  <div class="search-space-modal container mt-md-4">
+
+
+    <div ng-show="selectedSpace.public" class="row my-3 pb-3 align-items-center space-type ">
+      <div class="col-3 offset-1">
+        <img src="<%= image_path 'app/P_logo_sm.png' %>">
+      </div>
+      <div class="col-8">
+        <h2>Parcare publică</h2>
+      </div>
+    </div>
+
+    <div ng-hide="selectedSpace.public" class="row my-2 pb-3 align-items-center space-type ">
+      <div class="col-3 offset-1 rapid-icon">
+        <i class="fa fa-flash fa-4x"></i>
+      </div>
+      <div class="col-8">
+        <h2>Parcare personală</h2>
+        <small>
+          Postată de <u>{{selectedSpace.owner_name}}</u>
+        </small>
+      </div>
+    </div>
+
+    <!-- Parking space info box -->
+    <div class="space-detail-content mb-3 d-none d-sm-block" ng-click="showFullImage = true">
+      <div class="pull-left space-detail-thumb" ng-show="selectedSpace.thumbnail_image_url">
+        <img ng-src="{{stdImageUrl(selectedSpace.thumbnail_image_url)}}" height="100"/>
+      </div>
+      <div class="pull-left">
+        <parking-spot-info-box space="selectedSpace"></parking-spot-info-box>
+      </div>
+    </div>
+
+
+    <div class="bids-area">
+      <!-- table of offers when parking space owner != current user -->
+      <div ng-hide="selectedSpace.public">
+        <div class="space-summary-content d-flex d-sm-none justify-content-around align-items-baseline" ng-click="showFullImage = true">
+          <h4>{{selectedSpace.price | units }}.
+            <small>{{selectedSpace.price | subunits}}</small>
+            {{selectedSpace.currency}}/h
+          </h4>
+          <p>{{selectedSpace.address_line_1}}</p>
+          <u> Info ...</u>
+        </div>
+
+
+        <div class="existing-offers mt-3 panel p-3" ng-show="offerPresent">
+          <div class="row" ng-click="show('offerDetails')">
+            <div class="col-12 mb-2 text-center">
+              <h5 class="mb-0">Ofertă existentă</h5>
+              <small>Propusa cu {{timeFromCreation(bid)}}</small>
+            </div>
+            <div class="col-6">
+              Pret total
+              <h5>{{calculatePrice(bid)}}</h5>
+            </div>
+            <div class="col-6">
+              Perioada
+              <h5>{{calculatePeriod(bid)}}</h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">Telefon</div>
+            <div class="col-8">
+              <h4 ng-show="bid.approved" class="green">
+                <i class="fa fa-phone"></i>
+                <button ng-hide="phoneNumber" class="btn btn-sm btn-bare" ng-click="showPhoneNo()"> Arată nr. tel
+                </button>
+                <a ng-href="tel:{{phoneNumber}}" ng-show="phoneNumber">{{phoneNumber}}</a>
+              </h4>
+              <span ng-hide="bid.approved">
+                ( indisponibil )
+              </span>
+            </div>
+          </div>
+          <div class="panel-body p-0 pt-2 " id="offerDetails">
+            <div class="row">
+              <div class="col-4">Dată start</div>
+              <div class="col-8">
+                {{bid.start_date | moment: 'ddd, D MMM, h:mm'}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">Dată stop</div>
+              <div class="col-8">
+                {{bid.end_date | moment: 'ddd, D MMM, h:mm'}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                Taxare
+              </div>
+              <div class="col-8">
+                La 15 min
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4 ">Status</div>
+              <div class="col-8">
+                <span ng-show="bid.approved" class="green">Acceptată</span>
+                <span ng-hide="bid.approved || bid.rejected">In așteptare</span>
+                <span ng-show="bid.rejected" class="red">Respinsă</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4 ">Preț /h</div>
+              <div class="col-8">
+                {{bid.bid_price | units}}.
+                <small>{{bid.bid_price | subunits}}</small>
+                {{bid.bid_currency}} / h
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 mt-3 text-center" ng-show="offerPresent">
+          <button class="btn btn-primary" ng-click="offerPresent = false;">Trimite o oferta nouă</button>
+        </div>
+      </div>
+
+      <form>
+        <div class="row mt-3 mt-md-5" ng-hide="offerPresent">
+          <div class="col-6 col-lg-6">
+            <label for="dateStart">Închiriere start:</label>
+            <input id="dateStart" type="text" date-time class="form-control-lg form-control"
+                   ng-date-model="bid.s_start_date" ng-model="start" required>
+
+          </div>
+          <div class="col-6 col-lg-6">
+            <label for="dateStop">Închiriere stop:</label>
+            <input id="dateStop" type="text" date-time class="form-control-lg form-control"
+                   ng-date-model="bid.s_end_date" ng-model="stop" required>
+            <div class="invalid-feedback">
+              Perioada minimă e de 15 min
+            </div>
+          </div>
+          <div class="col-12  mt-2">
+            <u ng-click="showPrice = !showPrice">Propune un alt preț/h </u>
+            <div class="row justify-content-center  mt-2" id="amount" ng-show="showPrice">
+              <div class="col-10 col-md-8 col-lg-6">
+                <bid-amount bid-amount="bid.bid_price" bid-currency="bid.bid_currency"></bid-amount>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div class="text-center mt-4">
+        <div ng-hide="offerPresent">
+          <button class="btn btn-danger btn-lg" ng-click="placeOffer()">Ofertează</button>
+        </div>
+        <h4 class="my-4">
+          <small> Acest loc va expira <b>{{expireDuration()}}</b>.</small>
+        </h4>
+      </div>
+    </div>
+
+    <div ng-show="selectedSpace.public">
+      <div class="panel my-3">
+        <h5 class="panel-title" ng-click="show('one')">
+          <a>Termeni și condiții parcare</a>
+        </h5>
+        <div class="panel-body" id="one">
+
+          <ol>
+            <li>
+              <b>Bariera se deschide automat</b> - Folosind aplicația numarul dvs de
+              înmatriculare va fi recunoscut in momentul când sunteți in fața barierei.
+              <u>Puteți opta sa nu se deschidă automat</u> configurând acest lucru in setările
+              utilizatorului.
+            </li>
+            <li>
+              <b>Plata parcării</b> - se face exclusiv prin intermediul aplicației. Veți
+              fi înregistrat la intrare și la ieșire iar dvs puteți consulta această listă
+              din contul dvs.
+            </li>
+            <li>
+              <b>Taxarea</b> - Se face la fiecare jum. de oră ( poate diferi in funcție de
+              parcare. Vă rugăm consultați condițiile afișate la intrare ).
+            </li>
+            <li>
+              <b>În cazul în care folosiți alt nr de înmatriculare sau in caz de eroare</b> -
+              Dacă întâmpinați erori, puteți folosi
+              butonul 'Deschide Barieră'. Acesta va fi disponibil in momentul în
+              care va aflați pe o rază de 5 metrii de la bariera ( GPS-ul trebuie sa fie
+              pornit )
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="text-center my-4">
+        <button class="btn btn-lg btn-danger" disabled ng-click="openGate()">Deschide barieră</button>
+        <div>
+          <small>Butonul va fi disponibil când veți fi la 5m de intrare</small>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row flex-nowrap ps-control-buttons">
+      <button class="btn btn-lg btn-secondary" ui-sref="^">
+        Înapoi
+      </button>
+    </div>
+  </div>
+  <div class="ps-modal thumbnail-modal" ng-show="showFullImage" ng-click="showFullImage = false">
+    <h2 class="mt-5 pt-5 text-center" ng-hide="selectedSpace.standard_image_url">
+           <span class="fa-stack fa-lg">
+              <i class="fa fa-camera fa-stack-1x"></i>
+              <i class="fa fa-ban fa-stack-2x"></i>
+            </span>
+    </h2>
+    <img ng-src="{{stdImageUrl(selectedSpace.standard_image_url)}}" class="ps-std-thumbnail"
+         ng-show="selectedSpace.standard_image_url"/>
+    <span>{{selectedSpace.description}}</span>
+  </div>
+</div>
+

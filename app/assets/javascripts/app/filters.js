@@ -19,4 +19,13 @@ angular.module("ParkingSpaceMobile.filters", [])
             var number = input.toFixed(2);
             return number.split(/[,\.]/)[1];
         }
+    })
+    .filter('moment', function(){
+        return function( input, params ) {
+            if (!input) {
+                return;
+            }
+            let date = moment(input);
+            return date.format(params);
+        }
     });

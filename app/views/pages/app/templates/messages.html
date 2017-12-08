@@ -9,7 +9,7 @@
                      ng-class="{left :message.owner_is_current_user , right:!message.owner_is_current_user}"
                      ng-repeat-finish="scrollDown">
                     <div class="desc">
-                        <span class="message-meta"> {{message.created_at | date : 'dd MMM yyyy  HH:mm'}} </span>
+                        <span class="message-meta"> {{message.created_at | moment : 'ddd MMM yyyy  h:mm'}} </span>
                     </div>
                     <span ng-class="{orange: !message.read}">
                         {{message.content}}

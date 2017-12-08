@@ -27,12 +27,12 @@ angular.module('ParkingSpaceMobile.services')
 
         /* save details */
         _this.saveUser = function (user, clbk) {
-            $http.put(ENV + 'users.json', {user: user})
+            $http.put(ENV + '/users.json', {user: user})
                 .then(function (res) {
                     let data = res.data;
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Profile update successful!'});
+                    $rootScope.$broadcast('http.notif', 'Profil salvat cu succes!');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -43,11 +43,11 @@ angular.module('ParkingSpaceMobile.services')
 
         _this.registerUser = function (user, clbk, errClbk) {
             user.notif_registration_id = notificationService.notifRegistrationId;
-            $http.post(ENV + 'users.json', {user: user})
+            $http.post(ENV + '/users.json', {user: user})
                 .then(function (res) {
                     let data = res.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Logged in as ' + user.email + '!'});
+                    $rootScope.$broadcast('http.notif', 'Bine ai venit ' + user.email + '!');
                     localStorage.setItem('user', JSON.stringify(data));
                     if (clbk)
                         clbk(data);
@@ -61,14 +61,11 @@ angular.module('ParkingSpaceMobile.services')
         };
 
         _this.recoverPassword = function (email, clbk) {
-            $http.post(ENV + 'users/password.json', {user: {email: email}})
+            $http.post(ENV + '/users/password.json', {user: {email: email}})
                 .then(function (res) {
                     let data = res.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', {
-                        fieldName: '',
-                        text: 'Password recovery link sent to ' + email + '.'
-                    });
+                    $rootScope.$broadcast('http.notif', 'Link pt. recuperare parolă trimis la ' + email + '.');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -81,7 +78,7 @@ angular.module('ParkingSpaceMobile.services')
                 .then(function (rs) {
                     let data = rs.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Hello ' + user + '!'});
+                    $rootScope.$broadcast('http.notif', 'Bine ai venit ' + user + '!');
                     localStorage.setItem('user', JSON.stringify(data));
                     if (clbk) {
                         clbk(data);
@@ -100,7 +97,7 @@ angular.module('ParkingSpaceMobile.services')
                 .then(function (rs) {
                     let user = rs.data.user;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Bine ai venit ' + user.full_name + '!'});
+                    $rootScope.$broadcast('http.notif', 'Bine ai venit ' + user.full_name + '!');
                     localStorage.setItem('user', JSON.stringify(user));
                     if (clbk) {
                         clbk(user);
@@ -140,7 +137,7 @@ angular.module('ParkingSpaceMobile.services')
             let errors = data.Error || data.errors || data.error;
 
             if (typeof errors === "string") {
-                errMsgs[i] = {fieldName: '', text: errors};
+                errMsgs[i] =  errors;
                 return errMsgs;
             }
 
@@ -148,7 +145,7 @@ angular.module('ParkingSpaceMobile.services')
             for (let item in errors) {
                 let fieldName = item === 'general' ? '' : item;
                 let text = typeof errors[item] === 'string' ? errors[item] : errors[item][0];
-                errMsgs[i] = {fieldName: fieldName, text: text};
+                errMsgs[i] =  text;
                 i++;
             }
             return errMsgs;
@@ -165,7 +162,7 @@ angular.module('ParkingSpaceMobile.services')
                 $rootScope.$broadcast('http.error', errorMessages);
                 $state.go('home.login', {'hide_blanket': true});//hide blanket
             } else {
-                $rootScope.$broadcast('http.error', [{fieldName: '', text: 'Connectivity error.'}]);
+                $rootScope.$broadcast('http.error', 'Connectivity error.');
             }
             $('.loading-spinner').hide();
         }

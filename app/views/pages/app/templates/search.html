@@ -4,21 +4,6 @@
 
     <ui-view name="place-bid"></ui-view>
 
-    <div class="ps-modal thumbnail-modal" ng-show="showFullImage" ng-click="showFullImage = false">
-        <br/>
-        <br/>
-
-        <h2 class="text-center" ng-hide="selectedSpace.standard_image_url">
-           <span class="fa-stack fa-lg">
-              <i class="fa fa-camera fa-stack-1x"></i>
-              <i class="fa fa-ban fa-stack-2x"></i>
-            </span>
-        </h2>
-        <img ng-src="{{stdImageUrl(selectedSpace.standard_image_url)}}" class="ps-std-thumbnail"
-             ng-show="selectedSpace.standard_image_url"/>
-        <span>{{selectedSpace.description}}</span>
-    </div>
-
     <ui-view name="help"></ui-view>
 
     <button class="space-description-box" ng-click="showPostSpace()">

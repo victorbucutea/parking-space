@@ -2,11 +2,26 @@ angular.module('ParkingSpaceMobile.services', [])
 
     .service('parkingSpaceService', function ($rootScope, $http, ENV, userService, imageResizeFactory, errorHandlingService) {
 
+
+        this.getPhoneNumber = function(spaceId, clbk,errClbk) {
+            $http.get(ENV + '/parking_spaces/' + spaceId + '/phone_number.json')
+                .then(function (response) {
+                    let data = response.data;
+                    if (clbk)
+                        clbk(data);
+                }, function (errorResponse) {
+                    if (!errClbk) {
+                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                    } else {
+                        errClbk(errorResponse.data, errorResponse.status);
+                    }
+                });
+        }
         this.getAvailableSpaces = function (lat, lng, range, clbk, errClbk) {
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
-            $http.get(ENV + 'parking_spaces.json?lat=' + lat + '&lon=' + lng + '&range=' + range)
+            $http.get(ENV + '/parking_spaces.json?lat=' + lat + '&lon=' + lng + '&range=' + range)
                 .then(function (response) {
                     let data = response.data;
                     $('.loading-spinner').hide();
@@ -19,12 +34,12 @@ angular.module('ParkingSpaceMobile.services', [])
                     }
                     if (clbk)
                         clbk(data);
-                },function (errorResponse) {
+                }, function (errorResponse) {
                     if (!errClbk) {
                         errorHandlingService.handle(errorResponse.data, errorResponse.status);
                         $('.loading-finished').show();
                     } else {
-                        errClbk(data, status);
+                        errClbk(errorResponse.data, errorResponse.status);
                     }
                 });
         };
@@ -33,7 +48,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
-            $http.get(ENV + 'parking_spaces/myspaces.json')
+            $http.get(ENV + '/parking_spaces/myspaces.json')
                 .then(function (response) {
                     let data = response.data;
                     $('.loading-spinner').hide();
@@ -56,7 +71,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $('.loading-spinner').show();
             $('.loading-finished').hide();
 
-            $http.get(ENV + 'parking_spaces/' + parkingSpaceId + ".json")
+            $http.get(ENV + '/parking_spaces/' + parkingSpaceId + ".json")
                 .then(function (data) {
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
@@ -66,7 +81,7 @@ angular.module('ParkingSpaceMobile.services', [])
                     }
                     if (clbk)
                         clbk(data);
-                },function (errorResponse) {
+                }, function (errorResponse) {
                     errorHandlingService.handle(errorResponse.data, errorResponse.status);
                     $('.loading-finished').show();
                 });
@@ -75,14 +90,14 @@ angular.module('ParkingSpaceMobile.services', [])
         this.getMyOffers = function (clbk) {
             $('.loading-spinner').show();
             $('.loading-finished').hide();
-            $http.get(ENV + 'parking_spaces/myoffers.json')
+            $http.get(ENV + '/parking_spaces/myoffers.json')
                 .then(function (response) {
                     let data = response.data;
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
                     if (clbk)
                         clbk(data);
-                },function (errorResponse) {
+                }, function (errorResponse) {
                     errorHandlingService.handle(errorResponse.data, errorResponse.status);
                     $('.loading-finished').show();
                 });
@@ -100,49 +115,45 @@ angular.module('ParkingSpaceMobile.services', [])
                 space.image_file_name = imageUrl.substr(imageUrl.lastIndexOf("/") + 1);
             }
             space.image_content_type = 'image/jpeg';
-            if (space.short_term)
-                space.interval = 1;
-            else
-                space.interval = 0;
 
 
             let parking_space = {parking_space: space};
 
-            let url = space.id ? ENV + 'parking_spaces/' + space.id + '.json' : ENV + 'parking_spaces.json';
+            let url = space.id ? ENV + '/parking_spaces/' + space.id + '.json' : ENV + '/parking_spaces.json';
             let restCall = space.id ? $http.put(url, parking_space) : $http.post(url, parking_space);
 
             restCall.then(function (response) {
                 //TODO show mesage with direct dom manipulation
-                $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Parking space saved!'});
+                $rootScope.$broadcast('http.notif', 'Locul de parcare a fost postat!');
 
                 if (clbk) {
-                    clbk(data);
+                    clbk(response.data);
                 }
-            },function (error) {
+            }, function (error) {
                 errorHandlingService.handle(error.data, error.status);
             })
         };
 
         this.deleteSpace = function (spaceId, clbk) {
             $('.loading-spinner').show();
-            $http.delete(ENV + 'parking_spaces/' + spaceId + '.json')
+            $http.delete(ENV + '/parking_spaces/' + spaceId + '.json')
                 .then(function (res) {
-                    let data =res.data;
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Parking space deleted!'});
+                    let data = res.data;
+                    $rootScope.$broadcast('http.notif', 'Locul de parcare a fost șters!');
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
                     }
-                },function (err) {
+                }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
                 })
 
         };
 
         this.markOffersAsRead = function (spaceId, clbk) {
-            let url = ENV + 'parking_spaces/' + spaceId + '/mark_offers_as_read.json';
+            let url = ENV + '/parking_spaces/' + spaceId + '/mark_offers_as_read.json';
             $http.get(url).then(function (res) {
-                let data =res.data;
+                let data = res.data;
                 if (clbk) {
                     clbk(data);
                 }
@@ -175,11 +186,11 @@ angular.module('ParkingSpaceMobile.services', [])
         this.sendMessage = function (pSpaceId, proposalId, msg, clbk) {
             msg.deviceid = deviceAndUserInfoService.deviceId;
             msg.proposal_id = proposalId;
-            $http.post(ENV + 'parking_spaces/' + pSpaceId + '/proposals/' + proposalId + '/messages.json', msg)
+            $http.post(ENV + '/parking_spaces/' + pSpaceId + '/proposals/' + proposalId + '/messages.json', msg)
                 .then(function (data) {
                     if (clbk)
                         clbk(data)
-                },function (err) {
+                }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
                 });
         }
@@ -189,16 +200,28 @@ angular.module('ParkingSpaceMobile.services', [])
 
         this.placeOffer = function (bid, spaceId, clbk) {
             bid.parking_space_id = spaceId;
-            bid.bid_amount = bid.bidAmount;
-            bid.bid_currency = bid.bidCurrency;
-            $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals.json', bid)
+            $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals.json', bid)
                 .then(function (resp) {
                     let data = resp.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', {fieldName: '', text: 'Bid placed!'});
+                    $rootScope.$broadcast('http.notif', 'Ofertă trimisă!');
                     if (clbk)
                         clbk(data);
-                },function (err) {
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
+                })
+        };
+
+        this.updateOffer = function (bid, spaceId, clbk) {
+            bid.parking_space_id = spaceId;
+            $http.put(ENV + '/parking_spaces/' + spaceId + '/proposals/'+bid.id+'.json', bid)
+                .then(function (resp) {
+                    let data = resp.data;
+                    //TODO show message with direct dom manipulation
+                    $rootScope.$broadcast('http.notif', 'Ofertă trimisă!');
+                    if (clbk)
+                        clbk(data);
+                }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
                 })
         };
@@ -206,18 +229,16 @@ angular.module('ParkingSpaceMobile.services', [])
         this.acceptOffer = function (spaceId, offer, clbk) {
             let loading = $('.loading-spinner');
             loading.show();
-            $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
+            $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
                 .then(function (res) {
                     let data = res.data;
-                    $rootScope.$broadcast('http.notif', {
-                        fieldName: '',
-                        text: 'Accepted offer for ' + offer.price + ' ' + offer.currency
-                    });
+                    $rootScope.$broadcast('http.notif',
+                        'Ai acceptat oferta de ' + offer.bid_price + ' ' + offer.bid_currency +'. Proprietarul a fost notificat!');
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
                     }
-                },function (err) {
+                }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
                 })
         };
@@ -225,19 +246,18 @@ angular.module('ParkingSpaceMobile.services', [])
         this.rejectOffer = function (spaceId, offer, clbk) {
             let loading = $('.loading-spinner');
             loading.show();
-            $http.post(ENV + 'parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
+            $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
                 .then(function (res) {
                     let data = res.data;
-                    $rootScope.$broadcast('http.notif', {
-                        fieldName: '',
-                        text: 'Rejected offer for ' + offer.price + ' ' + offer.currency
-                    });
+                    $rootScope.$broadcast('http.notif',
+                        'Ai respins oferta de ' + offer.bid_price + ' ' + offer.bid_currency +'. Proprietarul a fost notificat'
+                    );
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
                     }
-                },function (err) {
-                    errorHandlingService.handle(err.data,err.status);
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
                 })
         };
 
@@ -277,20 +297,22 @@ angular.module('ParkingSpaceMobile.services', [])
                 return;
             }
 
-            $http.get(ENV + 'parameters.json')
+            $http.get(ENV + '/parameters.json')
                 .then(function (res) {
-                    let data =res.data;
+                    let data = res.data;
                     _this.setParameters(data);
                     if (okClbk) {
                         okClbk(data);
                     }
-                },function (err) {
+                }, function (err) {
                     if (errClbk) {
                         errClbk(err.data, err.status);
                     }
                 })
 
         };
+
+        this.retrieveParameters();
 
         this.setParameters = function (params) {
             params.forEach(function (item) {
@@ -299,6 +321,14 @@ angular.module('ParkingSpaceMobile.services', [])
                     _this.parameters[item.name + '_values'] = item.values
                 }
             });
+            // look for the country which has the default value
+            let srvParams = _this.parameters;
+            srvParams.starting_ctry = srvParams.country_values.find((item) => {
+                return item.key === srvParams.country;
+            });
+
+            srvParams.starting_asking_price = srvParams.starting_ctry.value;
+            srvParams.starting_currency = srvParams.starting_ctry.value2;
         };
 
         this.getParameters = function () {
@@ -385,10 +415,9 @@ angular.module('ParkingSpaceMobile.services', [])
             push.on('error', function (e) {
                 // e.message
                 console.error("Error while registering/receiving notifications", e, e.message);
-                $rootScope.$broadcast('http.error', [{
-                    fieldName: '',
-                    text: 'Cannot register for notifications! You won\'t receive any notifications'
-                }])
+                $rootScope.$broadcast('http.error',
+                    'Cannot register for notifications! You won\'t receive any notifications'
+                )
             });
         };
 
@@ -400,7 +429,7 @@ angular.module('ParkingSpaceMobile.services', [])
 
         _this.hideOfferNotifications = function () {
             // hide notifications in 2 seconds
-             setTimeout(function () {
+            setTimeout(function () {
                 _this.offerNotifications = [];
                 if (!$rootScope.$$phase)
                     $rootScope.$apply();
@@ -442,7 +471,7 @@ angular.module('ParkingSpaceMobile.services', [])
             }
 
             // current state is 'search', we just show the notif baloon
-            if(!$rootScope.$$phase)
+            if (!$rootScope.$$phase)
                 $rootScope.$apply();
 
 

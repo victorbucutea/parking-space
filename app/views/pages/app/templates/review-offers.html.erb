@@ -1,0 +1,126 @@
+<div id="search-space" class="ps-modal" ng-controller="ReviewBidsCtrl">
+  <div class="search-space-modal container mt-md-4">
+
+    <div ng-hide="selectedSpace.public" class="row my-2 pb-3 align-items-center space-type ">
+      <div class="col-3 offset-1 rapid-icon">
+        <i class="fa fa-flash fa-4x"></i>
+      </div>
+      <div class="col-8">
+        <h2>
+          {{selectedSpace.offers.length}} Oferte
+        </h2>
+        Aceasta e locul postat de dvs.!
+      </div>
+    </div>
+
+
+    <!-- table of offers when parking space owner == current user -->
+    <div class="bids-area">
+      <div ng-hide="selectedSpace.offers.length" class="text-center my-5">
+        <h1>:-( </h1>
+      </div>
+
+
+      <div class="bid-table m-0 scroll" ng-show="selectedSpace.offers.length ">
+
+        <div class="offer offer-head">
+          <span> Pret/h</span>
+          <span> Perioada</span>
+          <span> </span>
+        </div>
+
+        <div class="offer" ng-click="selectOffer(offer)"
+             ng-repeat="offer in selectedSpace.offers | orderBy: 'timestamp'"
+             ng-class="{selected: selOffer == offer}">
+
+             <span class="offer-price">
+                 {{offer.bid_price | units}}.<small>{{offer.bid_price | subunits}}</small>
+                 {{offer.bid_currency}}
+             </span>
+
+          <span class="offer-desc">
+
+              {{offerDuration(offer)}}
+            </span>
+
+          <span class="offer-accept" ng-click="confirmApproval(offer)">
+              <i class="accepted" ng-show="offer.approved">Acceptat</i>
+              <i class="" ng-show="!offer.approved"> Accept</i>
+            </span>
+
+        </div>
+      </div>
+      <span ng-show="selectedSpace.offers.length" class="mb-2">
+          <small>Click &laquo;Accept&raquo; pentru a confirma</small>
+        </span>
+
+      <div ng-show="selOffer" class="offer-desc-area py-3">
+        <div class="offer-desc-item">
+          Data start:
+          <div class="value pull-right">{{selOffer.start_date | moment: 'ddd, D MMM, h:mm'}}</div>
+        </div>
+
+        <div class="offer-desc-item">
+          Data stop:
+          <div class="value pull-right">{{selOffer.end_date | moment: 'ddd, D MMM, h:mm'}}</div>
+        </div>
+
+        <div class="offer-desc-item">
+          Propusă de:
+          <div class="value pull-right">{{selOffer.owner_name}}</div>
+        </div>
+        <div class="offer-desc-item phone-number">
+          Nr. Tel.:
+          <span class="value pull-right" ng-show="selOffer.approved">
+              <i class="fa fa-phone"></i>{{selOffer.phone_number}}
+            </span>
+          <span class="value pull-right" ng-hide="selOffer.approved"
+                ng-click="confirmApproval(selOffer)">
+              &laquo;<i class="ion-checkmark-round"></i>Acceptă&raquo; oferta
+            </span>
+        </div>
+      </div>
+
+      <div class="text-center my-3">
+        Promoveaza locul ! <br/>
+        <i class="fa fa-facebook-square fa-3x" ng-click="shareFb('Message only')"> </i>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fa fa-google-plus-square fa-3x" ng-click="shareFb('Message only')"> </i>
+        &nbsp;&nbsp;&nbsp;
+        <i class="fa fa-twitter-square fa-3x" ng-click="shareFb('Message only')"> </i>
+      </div>
+    </div>
+
+    <div class="current-offer text-center" ng-show="offerPresent">
+      <div class="bid-table">
+        <div class="offer">
+             <span class="offer-price">
+                 {{bid.bid_price | units}}.<small>{{bid.bid_price | subunits}}</small>
+                 {{bid.bid_currency}}
+             </span>
+
+          <span class="offer-desc">{{offerDuration(bid)}}</span>
+
+          <span class="offer-accept">
+                <i class="accepted" ng-show="bid.approved">Acceptat</i>
+                <i class="" ng-show="!bid.approved"> Asteptare</i>
+               </span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" ng-click="forceShow= !forceShow">Oferteaza din nou</button>
+    </div>
+
+    <div class="row flex-nowrap ps-control-buttons">
+      <button class="btn btn-lg btn-secondary" ng-click="showEdit(selectedSpace)">
+        <i class="fa fa-pencil"></i> Editează
+      </button>
+      <button class="btn btn-lg btn-danger" ng-click="showDelete(selectedSpace)">
+        <i class="fa fa-trash"></i> Șterge
+      </button>
+      <button class="btn btn-lg btn-secondary" ui-sref="^">
+        Anulează
+      </button>
+    </div>
+  </div>
+</div>

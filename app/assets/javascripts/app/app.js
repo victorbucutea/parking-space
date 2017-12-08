@@ -11,26 +11,53 @@ angular.module('ParkingSpaceMobile', [
     'ParkingSpaceMobile.filters',
     'ParkingSpaceMobile.services'])
 
-    .run(function (ENV, $http) {
-        function onDeviceReady() {
-            if ( navigator.onLine ) {
-                $http.get(ENV+'/parameters/1.json', {timeout: 3000}).then(function(){}, function() {
-                    alert( "Cannot contact server! \nPress OK to exit");
-                    navigator.app.exitApp();
-                });
-            } else {
-                alert( "Internet connection not available! \nPress OK to exit");
-                navigator.app.exitApp();
-            }
+    .run(function (ENV, $http, $rootScope) {
 
-
-            if (window.StatusBar) {
-                // org.apache.cordova.statusbar required
-                StatusBar.styleDefault();
-            }
+        function HtmlMarker(space, scope) {
+            this.price = space.price;
+            this.space = space;
+            this.currency = space.currency;
+            this.noOfPlaces = 1;
+            this.scope = scope;
+            this.pos = new google.maps.LatLng(space.location_lat, space.location_long);
+            this.setMap($rootScope.map);
         }
 
-        document.addEventListener('deviceready', onDeviceReady, true);
+        HtmlMarker.prototype = new google.maps.OverlayView();
+
+        HtmlMarker.prototype.onRemove = function () {
+            this._div.parentNode.removeChild(this._div);
+            this._div = null;
+        };
+
+        //init your html element here
+        HtmlMarker.prototype.onAdd = function () {
+            let _this = this;
+            let div = document.createElement('DIV');
+            div.className = "html-marker";
+            if ( !this.space.public ) {
+                div.className = "html-marker private";
+            }
+            $(div).on('click', function (evt) {
+                _this.scope.markerClick({elm: _this});
+                evt.preventDefault();
+                evt.stopPropagation();
+            });
+            div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' </div>';
+            let panes = this.getPanes();
+            panes.overlayImage.appendChild(div);
+            this._div = div;
+        };
+
+        HtmlMarker.prototype.draw = function () {
+            let overlayProjection = this.getProjection();
+            let position = overlayProjection.fromLatLngToDivPixel(this.pos);
+            this._div.style.left = position.x - 20 + 'px';
+            this._div.style.top = position.y - 45 + 'px';
+        };
+        window.HtmlMarker = HtmlMarker;
+
+
     })
 
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -76,7 +103,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.map.search', {
-                url: '/search/{parking_space_id}',
+                url: '/search',
                 views: {
                     'map-controls': {
                         templateUrl: "templates/search.html"
@@ -91,19 +118,27 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.bids', {
-                url: '/place-bid',
+            .state('home.map.search.post-bids', {
+                url: '/post-bid',
                 views: {
                     'place-bid': {
-                        templateUrl: "templates/review-bids.html"
+                        templateUrl: "templates/post-offer.html"
+                    }
+                }
+            })
+            .state('home.map.search.review-bids', {
+                url: '/review-bid',
+                views: {
+                    'place-bid': {
+                        templateUrl: "templates/review-offers.html"
                     }
                 }
             })
             .state('home.map.search.post', {
-                url: '/place-bid',
+                url: '/post',
                 views: {
                     'place-bid': {
-                        templateUrl: "templates/review-post.html"
+                        templateUrl: "templates/post-space.html"
                     }
                 }
             })
@@ -216,42 +251,52 @@ angular.module('ParkingSpaceMobile', [
     .constant('currencies', [
         {
             name: 'Usd',
+            label: "Usd / h",
             icon: 'fa-usd'
         },
         {
             name: 'Eur',
+            label: "Eur / h",
             icon: 'fa-eur'
         },
         {
             name: 'Ron',
+            label: "Ron / h",
             icon: null
         },
         {
             name: 'Rur',
+            label: "Rur / h",
             icon: 'fa-rub'
         },
         {
             name: 'Gbp',
+            label: "Gbp / h",
             icon: 'fa-gbp'
         },
         {
             name: 'Yen',
+            label: "Yen / h",
             icon: 'fa-jpy'
         },
         {
             name: 'Inr',
+            label: "Inr / h",
             icon: 'fa-inr'
         },
         {
             name: 'Ils',
+            label: "Ils / h",
             icon: 'fa-ils'
         },
         {
             name: 'Try',
+            label: "Try / h",
             icon: 'fa-try'
         },
         {
             name: 'Krw',
+            label: "Krw / h",
             icon: 'fa-krw'
         }
     ])

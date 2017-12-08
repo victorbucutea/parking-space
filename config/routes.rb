@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
     get 'mark_offers_as_read'
 
+    get 'phone_number'
+
     collection do
       get 'myspaces'
     end
