@@ -54,7 +54,6 @@ $xsm-measure-unit: $sm-measure-unit / $golden-ratio;
 // 3px
 $xxsm-measure-unit: $xsm-measure-unit / $golden-ratio;
 
-
 @import "forms";
 
 // map controls
@@ -82,12 +81,12 @@ map {
   height: 100%;
 
   .center-btn {
-    border: 2px solid #fff;
+    border: 2px solid $white;
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.298039) 0 2px 6px;
     cursor: pointer;
     text-align: center;
-    background-color: #fff;
+    background-color: $white;
     margin: 4px $measure-unit;
     width: 36px;
     height: 36px;
@@ -111,7 +110,7 @@ map {
   border: 0;
   width: 56px;
   height: 56px;
-  color: #fff;
+  color: $white;
 
   .address-text {
     font-size: 0.9em;
@@ -119,11 +118,11 @@ map {
 }
 
 #pac-container {
-  background-color: #fff;
+  background-color: $white;
   font-size: 16px;
   font-weight: 300;
   width: 95%;
-  padding-left:4px;
+  padding-left: 4px;
   margin: $big-measure-unit auto;
   font-family: Roboto, "Open Sans";
   height: 45px;
@@ -168,27 +167,17 @@ map {
 }
 
 .ps-control-buttons {
-  border: 0;
-  background-color: transparent;
-  padding: 0;
-  height: auto;
+  display: flex;
+  justify-content: space-around;
+  padding: $measure-unit;
+  background-color: $white;
 
-  .button-bar {
-    .button {
-      border: 0;
-      background-color: #fff;
-      min-height: $xxxbig-measure-unit;
-      font-size: 14px;
-
-      &.icon-center {
-        font-size: $xbig-measure-unit;
-      }
-    }
+  .btn {
+    color: $white
   }
 }
 
 .ps-modal {
-  border-top: 4px solid $red;
   position: absolute;
   top: 0;
   background-color: $gray-dark-transparent;
@@ -196,10 +185,12 @@ map {
   z-index: 3;
   height: 100%;
 
-  > div {
-    background-color: #fff;
+  > div:first-child {
+    border-top: 4px solid $red;
+    background-color: $white;
     max-width: 500px;
     margin: auto;
+    box-shadow: 1px 1px 3px;
   }
   .list {
     overflow: hidden;
@@ -208,15 +199,37 @@ map {
 
 .search-space-modal {
 
+  .rapid-icon {
+    color: $yellow;
+  }
+
+  .space-type {
+    border-bottom: 1px solid $gray-500;
+  }
   .space-detail-thumb {
     padding-top: 10px;
   }
 
   .space-detail-content {
     overflow: auto;
+    border-bottom: 1px solid $gray-500;
 
     img {
       border-radius: 5px;
+    }
+  }
+
+  .space-summary-content {
+    overflow: auto;
+    border-bottom: 1px solid $gray-600;
+
+    p {
+      color: $gray-600;
+      margin-bottom: 0;
+    }
+
+    h4 {
+      color: $red;
     }
   }
 }
@@ -260,7 +273,7 @@ map {
     border-radius: 7px;
     position: relative;
     line-height: 1.4em;
-    background-color: #fff;
+    background-color: $white;
 
     .message-meta {
       font-size: 0.8em;
@@ -275,7 +288,7 @@ map {
       float: right;
       margin-left: 40px;
       background-color: $blue;
-      color: #fff;
+      color: $white;
 
       &:after {
         content: ' ';
@@ -303,7 +316,7 @@ map {
 
       &:after {
         content: ' ';
-        background-color: #fff;
+        background-color: $white;
         border-right: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
         transform: rotate(135deg);
@@ -329,7 +342,7 @@ map {
     }
 
     div.col-10 {
-      background-color: #fff;
+      background-color: $white;
 
       .ion-android-send {
         display: inline-block;
@@ -363,7 +376,7 @@ map {
   }
 
   span {
-    color: #fff;
+    color: $white;
     padding: $measure-unit;
     display: inline-block;
   }
@@ -418,7 +431,7 @@ map {
 .search-radius-controller {
   position: absolute;
   width: 120px;
-  background-color: #fff;
+  background-color: $white;
   z-index: 1;
   top: 51.5%;
   left: 0;
@@ -455,7 +468,7 @@ map {
   width: 15px;
   height: 15px;
   background-color: $red;
-  border: 2px solid #fff;
+  border: 2px solid $white;
   margin-left: auto;
   margin-right: auto;
   pointer-events: none;
@@ -488,7 +501,7 @@ map {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: #fff;
+  background-color: $white;
   z-index: 2;
 
   &.inline {
@@ -505,7 +518,7 @@ map {
   .post-space {
     border-radius: 5px;
     background-color: #333;
-    color: #ffffff;
+    color: $white;
     text-align: center;
     font-size: 16px;
     padding: $sm-measure-unit;
@@ -522,26 +535,19 @@ map {
   }
 }
 
-.bid-amount {
+bid-amount {
+  input.form-control {
+    font-size: 3em;
+  }
 
   a {
-    float: left;
-    line-height: 0.9em;
+    padding: 0 7px;
   }
 
-  input {
-    margin: 0 10px;
-    width: 48px;
-    float: left;
-    font-size: $xxbig-measure-unit;
-    border-bottom: 1px solid $dflt-font-color;
+  select.form-control {
+    padding: 0;
   }
 
-  .currency {
-    border: 0 none;
-    width: 100%;
-    font-size: $xxbig-measure-unit;
-  }
 }
 
 .slider-tabs-menu {
@@ -551,10 +557,10 @@ map {
     border: 0 none;
     padding: 0;
     background-color: #555;
-    color: #fff;
+    color: $white;
 
     &.active {
-      background-color: #fff;
+      background-color: $white;
       position: relative;
       > a {
         color: $dflt-font-color;
@@ -564,7 +570,7 @@ map {
     > a {
       padding: $measure-unit;
       display: block;
-      color: #fff;
+      color: $white;
       &:hover {
         cursor: pointer;
       }
@@ -575,7 +581,7 @@ map {
 .select-pill {
   @extend .slider-tabs-menu;
   > li {
-    background-color: #fff;
+    background-color: $white;
     padding: $xsm-measure-unit;
 
     a {
@@ -583,7 +589,7 @@ map {
       padding: $sm-measure-unit;
       &.active {
         background-color: #555;
-        color: #fff;
+        color: $white;
         border-radius: 11px;
       }
     }
@@ -655,65 +661,25 @@ parking-spot-info-box {
   position: relative;
   display: block;
 
-  &.big {
-    .parking-spot-details {
-      h1, h2 {
-        font-size: $xlg-font-size + 2;
-      }
-    }
-  }
-
   .parking-spot-details {
-    border: 0 none;
-    padding: $measure-unit;
+    padding: $measure-unit 0;
 
     h1 {
       color: $red;
       font-size: $xlg-font-size;
-      margin-top: $measure-unit;
+      margin-top: $xsm-measure-unit;
     }
 
     p {
-      margin-bottom: $measure-unit;
+      margin-bottom: 0;
+      color: $gray-700;
     }
 
     h2 {
       font-size: $lg-font-size;
-      position: relative;
-      z-index: 2;
-    }
-
-    .currency {
-      font-size: $lg-font-size;
     }
   }
 
-}
-
-parking-spot-info-box.small {
-
-  .parking-spot-details {
-    margin-top: 0;
-    padding-top: $sm-measure-unit;
-    padding-bottom: $sm-measure-unit;
-  }
-
-  h2 {
-    margin-bottom: 0;
-    font-size: $lg-font-size * 0.8;
-  }
-
-  h1 {
-    margin-top: 0;
-  }
-
-  p {
-    margin-bottom: 0;
-  }
-
-  .currency {
-    font-size: $lg-font-size * 0.8;
-  }
 }
 
 .notif-icon {
@@ -722,7 +688,7 @@ parking-spot-info-box.small {
   padding: 0 7px;
   font-size: 14px;
   z-index: 4;
-  color: #fff;
+  color: $white;
   height: 15px;
   vertical-align: middle;
   display: inline-block;
@@ -735,7 +701,7 @@ parking-spot-info-box.small {
   font-size: 2em;
   border-radius: 50%;
   background-color: $red;
-  color: #fff;
+  color: $white;
   top: 25%;
   width: 30px;
   height: 30px;
@@ -750,69 +716,12 @@ parking-spot-info-box.small {
   left: 0;
   margin-left: auto;
   margin-right: auto;
-
-  &.no-pointer-events {
-    pointer-events: none;
-  }
-
-  .parking-area-pointer {
-    position: absolute;
-    left: -40px;
-    top: 23px;
-    font-size: 1em;
-  }
-
-  .parking-area {
-    background-color: rgba($blue, 0.34);
-    border-radius: 3px;
-    color: #333;
-  }
-
-  i {
-    font-size: 0.75em;
-    position: relative;
-
-    &.top-right {
-      top: -10px;
-      right: -4px;
-    }
-
-    &.top-left {
-      top: -11px;
-      left: -1px;
-    }
-
-    &.bottom-right {
-      bottom: -10px;
-      right: -5px;
-    }
-
-    &.bottom-left {
-      bottom: -10px;
-      left: -1px;
-    }
-  }
-
-  span {
-    font-size: 1.5em;
-    display: block;
-    width: 80%;
-    margin: auto;
-  }
-
 }
 
 .ps-page-title {
   border-bottom: 1px solid #aaa;
   padding: 14px 14px 5px 10px;
-  margin-bottom: 0;
-  margin-top: 0;
-  background-color: #fff;
-}
-
-.item {
-  background-color: inherit;
-  width: 100%;
+  background-color: $white;
 }
 
 .notification-area {
@@ -852,7 +761,6 @@ parking-spot-info-box.small {
 }
 
 .offer-desc-area {
-  padding: 10px 10px 20px 10px;
   .offer-desc-item {
     font-size: 1.1em;
     padding-bottom: 5px;
@@ -873,6 +781,25 @@ parking-spot-info-box.small {
   overflow-y: scroll;
 }
 
+.existing-offers {
+  div.row:nth-child(n+2) {
+    padding-bottom: 5px;
+    padding-top: 5px;
+  }
+
+  div.row:nth-child(2n+3){
+    background-color: $blue-90;
+  }
+
+  .green {
+    color: $green;
+  }
+
+  .red {
+    color: $red;
+  }
+}
+
 .bids-area {
 
   .bid-title {
@@ -889,111 +816,52 @@ parking-spot-info-box.small {
 
   .bid-table {
     max-height: 110px;
-    margin-top: $xxbig-measure-unit;
-    border-top: 1px solid #C7C7C7;
-    border-bottom: 1px solid #c7c7c7;
-
-    &.no-margin {
-      max-height: none;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-
-    &.no-height {
-      max-height: none;
-    }
-
-    &.narrow {
-      margin-top: 0;
-      margin-bottom: $big-measure-unit;
-    }
+    border-top: 1px solid $gray-500;
+    border-bottom: 1px solid $gray-500;
 
     .offer {
-      background-color: $gray-xxlight;
-      font-size: 1.2em;
+      background-color: $blue-90;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-right: 5px;
+      font-size: 1.4em;
       white-space: nowrap;
 
+      &.offer-head {
+        border-bottom: 1px solid $gray-500;
+        font-size: 1.2em;
+      }
       &.selected {
-        background-color: darken(#f0f0f0, 15%);
+        background-color: darken($blue-90, 10%);
         .offer-price {
-          $light-blue: darken($blue, 15%);
-          background-color: $light-blue;
+          background-color: darken($blue-600, 10%);
         }
       }
 
       .offer-desc {
-        font-size: 0.8em;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 128px;
+        font-size: 0.8em;
       }
 
       .offer-price {
-        background-color: $blue;
-        color: white;
+        background-color: $blue-600;
+        color: $white;
         padding: 5px;
-        display: inline-block;
-        width: 80px;
-        text-align: center;
       }
 
       .offer-accept {
-        padding: 5px;
         text-decoration: underline;
-        float: right;
       }
 
       .accepted {
         color: $green;
       }
-
-      .accept-confirm {
-        padding: 5px;
-        .ion-checkmark-round {
-          color: $green;
-        }
-        .ion-close-round {
-          color: $red;
-        }
-      }
     }
 
   }
-}
-
-// default buttons
-
-.btn-grp {
-  padding: $measure-unit 0;
-  text-align: center;
-  .btn {
-    border: 1px solid $gray;
-    padding: ($measure-unit/$golden-ratio) 18px;
-    background-color: $gray-xxlight;
-    color: $dflt-font-color;
-    display: inline-block;
-
-    span {
-      text-decoration: underline;
-    }
-  }
-}
-
-// standard red button
-.btn-red {
-  background-color: $red;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: 200;
-  border: none;
-  padding: 3px 14px;
-
-  &.big {
-    font-size: $xbig-measure-unit;
-    padding: 6px $xbig-measure-unit;
-    margin-top: $big-measure-unit;
-  }
-
 }
 
 // the overlay blanket for showing help
@@ -1002,14 +870,13 @@ parking-spot-info-box.small {
   height: 100%;
   background-color: transparentize($gray-dark, 0.25);
   top: 0;
-  color: #ffffff;
+  color: $white;
   padding: $measure-unit;
   text-align: center;
   z-index: 10;
 
   h1, h2, h3, h4, h5, h6 {
-    color: #ffffff;
-    font-family: 'Open Sans', 'Helvetica Neue';
+    color: $white;
   }
 }
 
@@ -1036,34 +903,61 @@ parking-spot-info-box.small {
   color: #5EA9DD;
 }
 
-.fa-rotate-45 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
+.html-marker {
+  background: #fff;
+  border-radius: 4px;
+  font-size: 1.5em;
+  display: flex;
+  padding: 7px 5px;
+  position: absolute;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+  align-items: center;
 
-.fa-rotate-135 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-  -webkit-transform: rotate(135deg);
-  -ms-transform: rotate(135deg);
-  transform: rotate(135deg);
-}
+  > div {
+    border-left: 1px solid $gray-400;
+    margin-left: 5px;
+    padding-left: 5px;
+  }
 
-.ok-help-btn {
-  background-color: #333;
-  padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 7px;
-  font-size: 1.1em;
-}
+  &:after {
+    content: ' ';
+    background-color: #fff;
+    width: 7px;
+    height: 7px;
+    display: block;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 91%;
+    left: 16px;
+  }
 
-.pull-right {
-  float: right !important;
-}
+  &:before {
+    content: '';
+    background-image: url('/assets/app/p_logo_icon.png');
+    display: inline-block;
+    width: 17px;
+    height: 23px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin: 2px;
+  }
 
-.pull-left {
-  float: left !important;
+  &.private:before {
+    content: '\f0e7';
+    background-image: none;
+    width: auto;
+    height: auto;
+    margin: 2px;
+    font-family: 'fontawesome';
+    color: $yellow;
+    font-size: 20px;
+  }
+
+  &:hover {
+    background-color: $blue-200;
+    cursor: pointer;
+    z-index: 2;
+  }
 }
 
 input::-webkit-outer-spin-button,

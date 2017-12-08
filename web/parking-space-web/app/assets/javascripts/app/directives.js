@@ -81,7 +81,7 @@ angular.module('ParkingSpaceMobile.directives', [])
     .directive('parkingSpotInfoBox', function (ENV) {
         return {
             restrict: 'E',
-            template: '<div class="item row parking-spot-details " >' +
+            template: '<div class="parking-spot-details p-0 p-md-2" >' +
             '    <div ng-show="space">' +
             '        <h2><i class="fa fa-car"></i> {{space.title}}</h2>' +
             '        <p>{{space.address_line_1}} ' +
@@ -91,6 +91,7 @@ angular.module('ParkingSpaceMobile.directives', [])
             '        <h1>' +
             '            {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
             '            <currency val="space.currency"></currency>' +
+            '               / h' +
             '        </h1>' +
             '    </div>' +
             '</div>',
@@ -105,24 +106,31 @@ angular.module('ParkingSpaceMobile.directives', [])
         return {
             restrict: 'E',
             scope: {
-                bidAmount: '=amount',
-                bidCurrency: '=currency'
+                bidAmount: '=',
+                bidCurrency: '='
             },
-            template: ' <div class="bid-amount row">' +
-            '<div class="col">' +
-            '<a class="fa fa-caret-left fa-3x disable-user-behavior" ng-click="decrease()"></a>' +
-            '<input type="number" ng-model="bidAmount">' +
-            '<a class="fa fa-caret-right fa-3x disable-user-behavior" ng-click="increase()" style=""></a>' +
-            '</div>' +
-            '<div class="col">' +
-            '<select ng-model="bidCurrency" ng-options="currency.name as currency.name for currency in currencies" class="currency"> </select>' +
-            '</div>' +
+            template:
+            ' <div class="row no-gutters align-items-center">' +
+                '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
+                    '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
+                    '<input type="number" ng-model="bidAmount" class="form-control ">' +
+                    '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
+                '</div>' +
+                '<div class="col-4 col-sm-5 col-md-5">' +
+                    '<select ng-model="bidCurrency" ' +
+                'ng-options="bidCurrency.name as bidCurrency.label for bidCurrency in currencies" ' +
+                'class="form-control form-control-lg"> </select>' +
+                '</div>' +
             '</div>',
             controller: function ($scope) {
                 $scope.currencies = currencies;
             },
 
             link: function ($scope, element, attrs) {
+
+                $(element).on('focus', (evt) => {
+                    console.log('focus', evt);
+                });
 
                 $scope.increase = function () {
                     if (!$scope.bidAmount) {
@@ -163,7 +171,7 @@ angular.module('ParkingSpaceMobile.directives', [])
     .directive('currency', function (currencies) {
         return {
             restrict: 'E',
-            template: '<i class="fa" ng-class="currSym"></i> {{currName}} ',
+            template: '<span> <i class="fa" ng-class="currSym"></i> {{currName}} </span>',
             scope: {
                 val: '='
             },
@@ -174,7 +182,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                         return;
 
                     var currency = $.grep(currencies, function (cur) {
-                        return newVal == cur.name;
+                        return newVal === cur.name;
                     });
 
 
@@ -204,4 +212,94 @@ angular.module('ParkingSpaceMobile.directives', [])
                     scope[clbk]();
             }
         }
+    })
+
+    .directive('dateTime', function () {
+        return function ($scope, element, attrs) {
+            let elm = $(element);
+            let model = attrs.ngDateModel.split(".");
+
+            let moment2 = moment();
+            let rangePicker = elm.daterangepicker({
+                "singleDatePicker": true,
+                "minDate": moment2,
+                "autoApply": true,
+                "timePicker": true,
+                "timePicker24Hour": true,
+                "timePickerIncrement": 15,
+                "applyClass": "apply",
+                "cancelClass": "cancel",
+                "locale": {
+                    "format": "DD MMM [(h)] HH:mm",
+                    "separator": " până la ",
+                    "applyLabel": "Ok",
+                    "cancelLabel": "Anulează",
+                    "fromLabel": "De la",
+                    "toLabel": "Până la",
+                    "customRangeLabel": "Custom",
+                    "weekLabel": "S",
+                    "daysOfWeek": [
+                        "Du",
+                        "Lu",
+                        "Ma",
+                        "Mi",
+                        "Jo",
+                        "Vi",
+                        "Sâ"
+                    ],
+                    "monthNames": [
+                        "Ianuarie",
+                        "Februarie",
+                        "Martie",
+                        "Aprilie",
+                        "Mai",
+                        "Iunie",
+                        "Iulie",
+                        "August",
+                        "Septembrie",
+                        "Octombrie",
+                        "Noiembrie",
+                        "Decembrie"
+                    ]
+                },
+
+            }, function (start, end, label) {
+                if (model.length === 1) {
+                    $scope[model[0]] = start;
+                } else {
+                    $scope[model[0]][model[1]] = start.toDate();
+                }
+                elm.removeClass('is-invalid');
+
+            });
+
+            elm.on('show.daterangepicker', function (ev, picker) {
+                let winHeight = $(window).height();
+                let pickerHeight = picker.container.height();
+                let pickerOffset = picker.container.offset().top;
+                let alreadyScrolled = $(window).scrollTop();
+                let scrollAmount = pickerOffset + pickerHeight - winHeight;
+
+                if (scrollAmount - alreadyScrolled > 0) {
+                    $('html, body').animate({
+                        scrollTop: scrollAmount + 10
+                    }, 200);
+                }
+            });
+
+            if (attrs.day !== undefined) {
+                moment2 = moment2.add(1, 'd');
+            }
+
+            elm.data('daterangepicker').setStartDate(moment2);
+            elm.data('daterangepicker').setEndDate(moment2);
+
+            if (model.length === 1) {
+                $scope[model[0]] = moment2.toDate();
+            } else {
+                $scope[model[0]][model[1]] = moment2.toDate();
+            }
+
+        }
+
     });

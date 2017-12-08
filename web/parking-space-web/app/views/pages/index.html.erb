@@ -223,7 +223,7 @@
                   <span class="price">0 Ron</span>
                   <span>pe lună</span>
                 </div>
-                <a class="btn btn-primary px-5" ui-sref="app" href="#">Încearcă</a>
+                <a class="btn btn-primary px-5" href="/app/index.html">Încearcă</a>
               </div>
             </div>
             <!-- End Free Offering -->
@@ -423,8 +423,8 @@
                   </li>
                   <li>
                     <b>Locuri ad-hoc</b> - Acestea sunt locuri postate de utilizatori, pentru a reutiliza
-                    si pentru a oferi o mai buna gestionare a locurilor disponibile fără plată ( trotuar, locuri
-                    publice,etc.).
+                    si pentru a oferi o mai buna gestionare a locurilor disponibile private (parcari
+                    rezidentiale, ale institutiilor,  etc.).
                     Cel care posteaza poate cere bani pentru a-l accesa (spre exemplu are chiar el parcată mașina pe
                     acel loc).
                   </li>
@@ -441,16 +441,13 @@
 
                 <ol>
                   <li>
-                    Pentru locurile de tip 'ad-hoc' (acestea sunt locuri postate de utilizatori fără perioada de
-                    disponibilitate),
+                    Pentru locurile de tip 'ad-hoc' (acestea sunt locuri postate de utilizatori),
                     plata se va face prin card bancar în momentul cand ați ocupat locul de parcare. Puteți staționa
-                    oricât
-                    va permite respectivul loc, perioada de parcare nefiind garantată in nici un fel
+                    în limitele facute publice de de proprietar.
                   </li>
                   <li>
                     Pentru locurile cu contract, veți fi taxat automat la părăsirea locului de parcare ( acest lucru
-                    este semnalat
-                    de recunoașterea numarului de înmatriculare la intrarea și ieșirea din parcare )
+                    se face prin recunoașterea numarului de înmatriculare la intrarea și ieșirea din parcare )
                   </li>
                 </ol>
               </div>
@@ -462,6 +459,26 @@
               <div class="panel-body" id="three">
                 Banii se vor aduna in contul tău din aplicație. În setările utilizatorului va trebui să
                 configurezi un cont bancar sau un cont de paypal.
+              </div>
+            </div>
+            <div class="panel my-3">
+              <h5 class="panel-title" ng-click="show('four')">
+                <a aria-expanded="false">Cum pot valorifica un loc de parcare?</a>
+              </h5>
+              <div class="panel-body" id="four">
+                Dacă dispui de un loc de parcare, îl poți publica in aplicație și poți cere
+                o sumă de bani pe oră. În momentul când cineva dorește să închirieze, vei
+                fi notificat pe telefon de oferta clientului.
+              </div>
+            </div>
+
+            <div class="panel my-3">
+              <h5 class="panel-title" ng-click="show('five')">
+                <a aria-expanded="false">Cum contactez persoana care închiriază?</a>
+              </h5>
+              <div class="panel-body" id="five">
+                Foarte simplu. Odata ce oferta a fost acceptată vei avea datele de contact ale clientului.
+                Iar el la rândul lui va avea datele tale de contact.
               </div>
             </div>
           </div>

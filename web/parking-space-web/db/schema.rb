@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130133335) do
+ActiveRecord::Schema.define(version: 20171207160036) do
 
   create_table "messages", force: :cascade do |t|
     t.string "deviceid"
@@ -42,10 +42,10 @@ ActiveRecord::Schema.define(version: 20171130133335) do
   end
 
 # Could not dump table "parking_spaces" because of following StandardError
-#   Unknown type 'long' for column 'approved_proposal_id'
+#   Unknown type '' for column 'approved_proposal_id'
 
 # Could not dump table "proposals" because of following StandardError
-#   Unknown type 'fl' for column 'bid_amount'
+#   Unknown type '' for column 'bid_amount'
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false

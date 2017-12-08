@@ -1,6 +1,6 @@
 class ParkingSpacesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_parking_space, only: [:show, :update, :destroy]
+  before_action :set_parking_space, only: [:phone_number, :show, :update, :destroy]
   respond_to :json
 
   # GET /parking_spaces
@@ -37,7 +37,13 @@ class ParkingSpacesController < ApplicationController
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
     # add long term
-    @parking_spaces = ParkingSpace.not_expired.active.within_boundaries(query_attrs).includes(proposals: [:messages])
+    @parking_spaces = ParkingSpace.not_expired.active.within_boundaries(query_attrs).includes(:proposals)
+  end
+
+
+  # GET /parking_spaces/1/phone_number
+  def phone_number
+    render json: {number: User.find_by_device_id(@parking_space.deviceid).phone_number }, status: :ok
   end
 
   # GET /parking_spaces/1
@@ -151,7 +157,7 @@ class ParkingSpacesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_parking_space
-    @parking_space = ParkingSpace.find(params[:id])
+    @parking_space = ParkingSpace.find(params[:parking_space_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -159,7 +165,7 @@ class ParkingSpacesController < ApplicationController
     params.require(:parking_space).permit(:location_lat, :location_long,
                                           :recorded_from_lat, :recorded_from_long,
                                           :deviceid, :target_price, :target_price_currency,
-                                          :interval, :phone_number,:owner_name,
+                                           :phone_number,:owner_name,
                                           :image_file_name, :image_content_type, :image_file_size, :title,
                                           :image_data, :thumbnail_data, :thumbnail_image_url, :standard_image_url,
                                           :address_line_1, :address_line_2, :availability_start , :availability_stop,

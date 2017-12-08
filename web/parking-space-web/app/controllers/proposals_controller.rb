@@ -54,6 +54,10 @@ class ProposalsController < ApplicationController
     @proposal.bidder_name = current_user.full_name
     @proposal.phone_number = current_user.phone_number
 
+    @proposal.auto_approve
+    if @proposal.approved?
+      notify_proposal_owner_approve(@proposal)
+    end
 
     respond_to do |format|
       if @proposal.save
@@ -74,6 +78,12 @@ class ProposalsController < ApplicationController
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
+    @proposal.pending!
+    @proposal.auto_approve
+
+    if @proposal.approved?
+      notify_proposal_owner_approve(@proposal)
+    end
 
     respond_to do |format|
       if @proposal.update(proposal_params)
@@ -88,7 +98,8 @@ class ProposalsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def proposal_params
-    params.require(:proposal).permit(:deviceid, :phone_number, :title_message, :bid_amount, :bid_currency, :bidder_name, :approval_status, :parking_space_id)
+    params.require(:proposal).permit(:deviceid, :phone_number, :title_message, :bid_amount, :bid_currency, :bidder_name,
+                                     :start_date, :end_date, :approval_status, :parking_space_id, :created_at)
   end
 
 
@@ -97,7 +108,7 @@ class ProposalsController < ApplicationController
     owner_device_id = proposal.parking_space.deviceid
     space_owner = User.find_by_device_id owner_device_id
 
-    data = {:message => 'You have an offer for your parking space',
+    data = {:message => 'Ai o ofertă pentru locul tău!',
             :area => :parking_space,
             :parking_space => proposal.parking_space.id,
             :msgcnt => 1}
@@ -108,7 +119,7 @@ class ProposalsController < ApplicationController
   def notify_proposal_owner_approve(proposal)
     owner_device_id = proposal.deviceid
     proposal_owner = User.find_by_device_id owner_device_id
-    data = {:message => 'Your parking space offer has been accepted',
+    data = {:message => 'Oferta pt. locul de parcare a fost acceptată!',
             :area => :offer,
             :offer => proposal.id,
             :msgcnt => 1}
@@ -119,7 +130,7 @@ class ProposalsController < ApplicationController
   def notify_proposal_owner_reject(proposal)
     owner_device_id = proposal.deviceid
     proposal_owner = User.find_by_device_id owner_device_id
-    data = {:message => 'Your parking space offer has been rejected',
+    data = {:message => 'Oferta pt. locul de parcare a fost respinsă!',
             :area => :offer,
             :offer => proposal.id,
             :msgcnt => 1}

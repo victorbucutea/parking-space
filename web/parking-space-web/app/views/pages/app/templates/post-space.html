@@ -1,0 +1,82 @@
+<div class="ps-modal ">
+    <div class="mt-md-4" ng-controller="EditParkingSpaceCtrl">
+
+        <form class="form-edit-details">
+            <div>
+                <h3 class="ps-page-title" ng-show="spaceEdit.id">
+                    Editează
+                </h3>
+
+                <h3 class="ps-page-title" ng-hide="spaceEdit.id">
+                    Spațiu nou în {{spaceEdit.sublocality}}
+                </h3>
+            </div>
+            <div class="container">
+                <div class="form-group row align-items-center">
+                    <label for="bidAmount" class="col-form-label col-form-label-lg col-3">Preț:</label>
+                    <bid-amount class="col-9" id="bidAmount" bid-amount="spaceEdit.price"
+                                bid-currency="spaceEdit.currency"></bid-amount>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-form-label-lg col-3">Titlu: </label>
+                    <div class="col-9">
+                        <input type="text" placeholder="Titlu" class="form-control form-control-lg" ng-model="spaceEdit.title">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-form-label-lg col-3">Adresă:</label>
+                    <div class="col-9">
+                        <input type="text" placeholder="Adresă" class="form-control form-control-lg"
+                               ng-model="spaceEdit.address_line_1">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-4">Disp. din: </label>
+                    <div class="col-8">
+                        <input type="text" placeholder="Data start" date-time class="datetime form-control"
+                               ng-date-model="spaceEdit.space_availability_start">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-4">Disp. până la:</label>
+                    <div class="col-8">
+                        <input type="text" placeholder="Data stop" date-time day class="form-control"
+                               ng-date-model="spaceEdit.space_availability_stop">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4" ng-click="takePhoto()" on-hold="attachPhoto()">
+                            <span class="parking-sign" ng-hide="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
+                               <i class="fa fa-camera"></i>
+                               <i class="text"></i>
+                            </span>
+                        <img ng-src="{{imageUrl(spaceEdit)}}" class="parking-sign"
+                             ng-show="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
+                    </div>
+                    <div class="col-8">
+                        <textarea placeholder="Descriere" maxlength="165"
+                                      ng-model="spaceEdit.description" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3 ps-control-buttons">
+                <button class="btn btn-primary btn-lg" ng-click="confirmSave()">Salvează</button>
+                <button class="btn btn-secondary btn-lg" ng-click="close()">Anulare</button>
+            </div>
+
+            <div class="ps-dialog" id="saveSpinner">
+                <div class="ps-dialog-content ">
+                    <div class="ps-question text-center save-spinner">
+                        <h3>Saving ...</h3>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+    <ui-view name="help"></ui-view>
+</div>

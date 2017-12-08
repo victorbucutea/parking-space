@@ -4,7 +4,7 @@ require 'rack/mime'
 class ParkingSpace < DeviceRecord
   include ActiveModel::Dirty
 
-  enum interval: [:long_term, :short_term]
+  enum legal_type: [:public_parking, :private_parking]
   scope :not_expired, -> { where('parking_spaces.space_availability_stop >= ? ', Time.now )}
   scope :active, -> { where('parking_spaces.space_availability_start <= ? ', Time.now )}
   scope :within_boundaries, ->(attrs) {
@@ -77,12 +77,12 @@ class ParkingSpace < DeviceRecord
   end
 
 
-  def expired?
-    Time.now >= space_availability_stop
+  def init
+    self.legal_type ||= :private_parking
   end
 
-  def init
-    self.interval ||= :short_term
+  def expired?
+    Time.now >= space_availability_stop
   end
 
 end

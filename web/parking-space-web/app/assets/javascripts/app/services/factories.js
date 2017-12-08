@@ -29,8 +29,8 @@ angular.module('ParkingSpaceMobile.services')
     .factory('currencyFactory', function (currencies) {
 
         this.getCurrency = function (curName) {
-            var currency = $.grep(currencies, function (cur) {
-                return curName == cur.name;
+            let currency = $.grep(currencies, function (cur) {
+                return curName === cur.name;
             });
 
 
@@ -60,5 +60,4 @@ angular.module('ParkingSpaceMobile.services')
             collection[idx] = item;
         };
     })
-
 ;
