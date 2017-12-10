@@ -124,7 +124,7 @@ angular.module('ParkingSpaceMobile.services', [])
 
             restCall.then(function (response) {
                 //TODO show mesage with direct dom manipulation
-                $rootScope.$broadcast('http.notif', 'Locul de parcare a fost postat!');
+                $rootScope.$emit('http.notif', 'Locul de parcare a fost postat!');
 
                 if (clbk) {
                     clbk(response.data);
@@ -139,7 +139,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $http.delete(ENV + '/parking_spaces/' + spaceId + '.json')
                 .then(function (res) {
                     let data = res.data;
-                    $rootScope.$broadcast('http.notif', 'Locul de parcare a fost șters!');
+                    $rootScope.$emit('http.notif', 'Locul de parcare a fost șters!');
                     $('.loading-spinner').hide();
                     if (clbk) {
                         clbk(data);
@@ -204,7 +204,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 .then(function (resp) {
                     let data = resp.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Ofertă trimisă!');
+                    $rootScope.$emit('http.notif', 'Ofertă trimisă!');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -218,7 +218,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 .then(function (resp) {
                     let data = resp.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Ofertă trimisă!');
+                    $rootScope.$emit('http.notif', 'Ofertă trimisă!');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -232,7 +232,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
                 .then(function (res) {
                     let data = res.data;
-                    $rootScope.$broadcast('http.notif',
+                    $rootScope.$emit('http.notif',
                         'Ai acceptat oferta de ' + offer.bid_price + ' ' + offer.bid_currency +'. Proprietarul a fost notificat!');
                     $('.loading-spinner').hide();
                     if (clbk) {
@@ -249,7 +249,7 @@ angular.module('ParkingSpaceMobile.services', [])
             $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
                 .then(function (res) {
                     let data = res.data;
-                    $rootScope.$broadcast('http.notif',
+                    $rootScope.$emit('http.notif',
                         'Ai respins oferta de ' + offer.bid_price + ' ' + offer.bid_currency +'. Proprietarul a fost notificat'
                     );
                     $('.loading-spinner').hide();
@@ -415,7 +415,7 @@ angular.module('ParkingSpaceMobile.services', [])
             push.on('error', function (e) {
                 // e.message
                 console.error("Error while registering/receiving notifications", e, e.message);
-                $rootScope.$broadcast('http.error',
+                $rootScope.$emit('http.error',
                     'Cannot register for notifications! You won\'t receive any notifications'
                 )
             });

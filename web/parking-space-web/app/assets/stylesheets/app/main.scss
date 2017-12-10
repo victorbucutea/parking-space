@@ -120,19 +120,36 @@ map {
 #pac-container {
   background-color: $white;
   font-size: 16px;
-  font-weight: 300;
   width: 95%;
-  padding-left: 4px;
   margin: $big-measure-unit auto;
-  font-family: Roboto, "Open Sans";
-  height: 45px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
+  box-shadow: 0 2px 20px 2px #828282;
+  border-radius: 5px;
   position: fixed;
   top: 0;
   z-index: 1;
   right: 0;
   left: 0;
+
+  #pac-input {
+    padding-left: 44px;
+  }
+
+  .input-group, .form-control {
+    padding: 7px;
+    box-shadow: none;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .addon {
+    position: absolute;
+    top: 10px;
+    right: 0;
+  }
+
+  hr {
+    margin: 0;
+  }
 
   .pac-nav {
     display: inline-block;
@@ -140,7 +157,11 @@ map {
   }
 
   span {
-    position: relative;
+    position: absolute;
+    top: -10px;
+    font-size: 1.5em;
+    padding: 10px;
+
     .notif-icon {
       position: absolute;
       right: -10px;
@@ -148,18 +169,18 @@ map {
     }
   }
 
-  input {
-    width: 87%;
-    height: 100%;
-    display: inline-block;
-    font-size: 1.1em;
-    padding: 14px 0 14px 14px;
+  .clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 13px;
   }
 }
 
 .pac-item {
   line-height: $xxxbig-measure-unit;
-  font-size: 1.1em;
+  font-size: 1.2em;
+  font-family: $font-family;
+  border: none;
 
   .pac-item-query {
     font-size: inherit;
@@ -407,6 +428,15 @@ map {
       padding-bottom: $big-measure-unit;
     }
 
+    .ps-row:nth-child(2n+1){
+      background-color: $blue-90;
+    }
+    .ps-row {
+      margin: 0;
+      padding: 5px 0;
+    }
+
+
     .save-spinner {
       // just enough for the h3 margin to kick in
       padding-bottom: 1px;
@@ -475,26 +505,27 @@ map {
 }
 
 .open-spaces-list {
-  > .item:first-child {
-    border-top: 0;
-  }
+  margin-top: $lg-jumbo-measure-unit;
 
-  > span.item {
-    padding: 0;
-    &:active {
-      background-color: $gray-xlight;
-    }
+  h1,h2,h3 {
+    margin: 0;
   }
 
   .item-notifications {
-    padding: 0 $measure-unit $big-measure-unit $measure-unit;
     font-size: 0.9em;
-    color: #666;
-
-    span {
-      font-family: $font-family;
-    }
+    color: $blue-700;
+    text-decoration: underline;
   }
+
+  .offer {
+    border-bottom: 1px solid $gray-400;
+    padding-top: $measure-unit;
+  }
+}
+
+.open-offers-list {
+  margin-top: $jumbo-measure-unit;
+
 }
 
 .post-space-container {
@@ -787,7 +818,7 @@ parking-spot-info-box {
     padding-top: 5px;
   }
 
-  div.row:nth-child(2n+3){
+  div.row:nth-child(2n+3) {
     background-color: $blue-90;
   }
 
@@ -825,7 +856,7 @@ parking-spot-info-box {
       align-items: center;
       justify-content: space-between;
       padding-right: 5px;
-      font-size: 1.4em;
+      font-size: 1.3em;
       white-space: nowrap;
 
       &.offer-head {
@@ -861,6 +892,54 @@ parking-spot-info-box {
       }
     }
 
+  }
+}
+
+.drawer {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(51, 51, 51, 0.37);
+  z-index: 2;
+  top: 0;
+
+  .menu {
+    width: 60%;
+    position: fixed;
+    z-index: 3;
+    left: -100%;
+    background: $blue-90;
+    color: $blue-800;
+    height: 100%;
+    box-shadow: 1px 1px 27px 1px $gray-800;
+    transition: left ease-in-out .3s;
+
+    .logo {
+      border-bottom: 1px solid $blue-700;
+      background-color: $blue-800;
+
+      img {
+        width: 100%;
+        max-width: 200px;
+      }
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+
+      li {
+        padding: 10px 20px;
+        font-size: 1.1em;
+
+        &.selected {
+          background-color: $blue-700;
+          color: $blue-100;
+          text-shadow: 2px 2px $blue-800;
+        }
+      }
+    }
   }
 }
 

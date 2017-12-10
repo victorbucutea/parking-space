@@ -1,34 +1,69 @@
 <div ng-controller="MyPostsCtrl">
 
-    <div class="list open-spaces-list scroll">
-        <span class="item " ng-repeat="space in spaces" ng-click="show(space)">
-            <parking-spot-info-box class="small" space="space"></parking-spot-info-box>
+    <div class="list open-spaces-list scroll container">
+        <div class="item panel mb-3 mb-md-4" ng-repeat="space in spaces">
+            <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space"></parking-spot-info-box>
             <span class="unread-item-notif" ng-show="unreadNotifications(space)">&nbsp;</span>
-            <i class="fa fa-money item-notifications">
-                <span> Offers ({{space.offers.length}})</span>
-            </i>
-            <i class="fa fa-envelope item-notifications">
-                <span> Messages (0)</span>
-            </i>
-        </span>
+            <span class="item-notifications">
+                <i class="fa fa-money"></i>
+                <span> Ai {{space.offers.length}} oferte.</span>
+                <span ng-show="space.offers.length">Click pt detalii.</span>
+            </span>
+            <div class="panel-body" id="item-{{$index}}">
+                <div ng-repeat="offer in space.offers" class="offer pb-3 row">
+                    <h5 class="col-12"> {{offer.owner_name}}
+                    </h5>
+
+                    <div class="col-6">
+                        Pret total
+                        <h5> {{offer | totalPrice}}</h5>
+                    </div>
+                    <div class="col-6">
+                        Perioada
+                        <h5>{{offer | totalPeriod }}</h5>
+                    </div>
+                    <div class="col-6">
+                        Start
+                        <div>{{offer.start_date |moment: 'ddd, D MMM, h:mm'}}</div>
+                    </div>
+                    <div class="col-6">
+                        Stop
+                        <div>{{offer.end_date | moment: 'ddd, D MMM, h:mm'}}</div>
+                    </div>
+
+                    <div class="col-12 mt-3 text-center">
+                        <h5> Neachitat
+                            <br/>
+                            <small class="font-weight-light"> (Se achită cash proprietarului)</small>
+                        </h5>
+                    </div>
+                    <div class="col-12 mt-3 text-center">
+                        <button ng-hide="offer.approved" ng-click="acceptOffer(space,offer)"
+                                class="btn btn-primary btn-sm">
+                            Accepta oferta
+                        </button>
+                        <button ng-show="offer.approved && !phoneShow" ng-click="phoneShow = true"
+                                class="btn btn-info btn-sm">
+                            <i class="fa fa-phone"></i> Arata nr tel
+                        </button>
+                        <a ng-href="tel:{{offer.phone_number}}" class="btn btn-lg btn-link" ng-show="phoneShow"> <i
+                                class="fa fa-phone"></i> {{offer.phone_number}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="loading-spinner">
             <i class="fa fa-5x fa-refresh"></i>
         </div>
-        <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You did not post any spaces.</div>
+        <div class="no-items-msg loading-finished" ng-hide="spaces.length">
+            Nu ai postat un loc, sau acestea au expirat.
+            Rotunjește-ți veniturile
+            <a ui-sref="home.map.search.post">
+                postând un loc.
+            </a>
+        </div>
 
-    </div>
-
-    <div class="post-space-container">
-        <div class="post-space" ui-sref="home.myposts.user">
-            <i class="fa fa-user"></i> &nbsp; Edit my details
-        </div>
-        <div class="post-space" ng-click="logout()">
-            <i class="fa fa-user"></i> &nbsp; Logout
-        </div>
-        <div class="post-space" ui-sref="home.map.search">
-            <i class="fa fa-arrow-left "></i> &nbsp; Back to search
-        </div>
     </div>
 
     <ui-view name="edit-space"></ui-view>

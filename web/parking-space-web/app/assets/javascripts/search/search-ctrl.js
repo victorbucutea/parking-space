@@ -20,7 +20,6 @@ angular.module('ParkingSpace.controllers')
             $scope.err = args;
         });
 
-
         $scope.$watch('searchString', (newVal, oldVal) => {
             if (!( newVal && newVal.length > 3)) return;
 

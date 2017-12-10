@@ -18,7 +18,7 @@ angular.module('ParkingSpaceMobile.directives', [])
 
                     // Set CSS for the control interior.
                     var controlText = document.createElement('div');
-                    controlText.innerHTML = '<i class="ion-android-locate" ></i>';
+                    controlText.innerHTML = '<i class="fa fa-locate" ></i>';
                     controlUI.appendChild(controlText);
 
                     // Setup the click event listeners: simply set the map to Chicago.
@@ -65,6 +65,32 @@ angular.module('ParkingSpaceMobile.directives', [])
                 initialize();
             }
         };
+    })
+
+    .directive('placesAutocomplete', function (geolocationService) {
+        return {
+            restrict: 'A',
+            scope: {
+                selectPlace: '&'
+            },
+            link: function($scope, input, attr){
+                let searchBox = new google.maps.places.Autocomplete(input[0]);
+
+                // Bias the autocomplete object to bucharest for now
+                let bnds = new google.maps.Circle({
+                    center: {
+                        lat: 44.4115726,
+                        lng: 26.11414
+                    },
+                    radius: 35000 //35 km
+                });
+                searchBox.setBounds(bnds.getBounds());
+
+                searchBox.addListener('place_changed', function () {
+                    $scope.selectPlace({place: searchBox.getPlace()});
+                });
+            }
+        }
     })
 
     .directive('searchCenterIcon', function () {

@@ -54,12 +54,12 @@
               <small>Propusa cu {{timeFromCreation(bid)}}</small>
             </div>
             <div class="col-6">
-              Pret total
-              <h5>{{calculatePrice(bid)}}</h5>
+              Cost total
+              <h5>{{bid | totalPrice }}</h5>
             </div>
             <div class="col-6">
               Perioada
-              <h5>{{calculatePeriod(bid)}}</h5>
+              <h5>{{bid | totalPeriod}}</h5>
             </div>
           </div>
           <div class="row">
@@ -106,7 +106,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-4 ">Preț /h</div>
+              <div class="col-4 ">Preț/h ofertat</div>
               <div class="col-8">
                 {{bid.bid_price | units}}.
                 <small>{{bid.bid_price | subunits}}</small>
@@ -123,13 +123,13 @@
 
       <form>
         <div class="row mt-3 mt-md-5" ng-hide="offerPresent">
-          <div class="col-6 col-lg-6">
+          <div class="col-12 col-xsm-6 ">
             <label for="dateStart">Închiriere start:</label>
             <input id="dateStart" type="text" date-time class="form-control-lg form-control"
                    ng-date-model="bid.s_start_date" ng-model="start" required>
 
           </div>
-          <div class="col-6 col-lg-6">
+          <div class="col-12 col-xsm-6  ">
             <label for="dateStop">Închiriere stop:</label>
             <input id="dateStop" type="text" date-time class="form-control-lg form-control"
                    ng-date-model="bid.s_end_date" ng-model="stop" required>

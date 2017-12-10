@@ -19,12 +19,11 @@ angular.module('ParkingSpaceMobile.services')
                 }
             };
 
-            navigator.geolocation.getCurrentPosition(onSuccess, onError, {timeout: 5000, enableHighAccuracy: highAccuracy});
+            navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+                timeout: 5000,
+                enableHighAccuracy: highAccuracy
+            });
 
-            // interogate every 20 seconds for the current position
-            setTimeout(function () {
-                _this.initCurrentLocation(true);
-            }, 20000);
         };
 
         this.getCurrentLocation = function (clbkOk, clbkErr) {

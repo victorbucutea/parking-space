@@ -99,6 +99,9 @@ angular.module('ParkingSpaceMobile', [
                 views: {
                     'content': {
                         templateUrl: "templates/map.html"
+                    },
+                    "my-menu": {
+                        templateUrl: "templates/nav-bar.html"
                     }
                 }
             })
@@ -148,8 +151,8 @@ angular.module('ParkingSpaceMobile', [
                     'content': {
                         templateUrl: "templates/my-posts.html"
                     },
-                    'my-menu': {
-                        templateUrl: "templates/my-menu.html"
+                    "my-menu": {
+                        templateUrl: "templates/nav-bar.html"
                     }
                 }
             })
@@ -166,14 +169,6 @@ angular.module('ParkingSpaceMobile', [
                 views: {
                     'edit-space': {
                         templateUrl: "templates/review-bids.html"
-                    }
-                }
-            })
-            .state('home.myposts.bids.talk', {
-                url: '/talk?offer',
-                views: {
-                    'messages': {
-                        templateUrl: "templates/messages.html"
                     }
                 }
             })
@@ -208,7 +203,7 @@ angular.module('ParkingSpaceMobile', [
                         templateUrl: "templates/my-offers.html"
                     },
                     'my-menu': {
-                        templateUrl: "templates/my-menu.html"
+                        templateUrl: "templates/nav-bar.html"
                     }
                 }
             })
@@ -217,14 +212,6 @@ angular.module('ParkingSpaceMobile', [
                 views: {
                     'help': {
                         templateUrl: "templates/my-offers-help.html"
-                    }
-                }
-            })
-            .state('home.talk', {
-                url: '/talk?offer',
-                views: {
-                    'messages': {
-                        templateUrl: "templates/messages.html"
                     }
                 }
             });

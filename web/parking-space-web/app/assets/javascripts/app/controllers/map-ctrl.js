@@ -13,18 +13,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
         $rootScope.geocoder = geocoder;
 
         geolocationService.getCurrentLocation(function (position) {
-            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             map.setCenter(pos);
         });
 
         // Create the search box and link it to the UI element.
-        var input = document.getElementById('pac-input');
-        var searchBox = new google.maps.places.SearchBox(input);
-
-        searchBox.addListener('places_changed', function () {
-            $scope.selectNewPlace(searchBox.getPlaces());
-        });
-
 
     };
 
@@ -43,19 +36,19 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
 
 
     $scope.showNotif = function () {
-        var offerNotifs = notificationService.offerNotifications;
-        var parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
+        let offerNotifs = notificationService.offerNotifications;
+        let parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
 
         if (!offerNotifs && !parkingSpaceNotifs) {
             return false;
         }
 
 
-        var activeOfferNotif = offerNotifs.find(function (offer) {
+        let activeOfferNotif = offerNotifs.find(function (offer) {
             return offer.active;
         });
 
-        var activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
+        let activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
             return pspaceMsg.active;
         });
 
@@ -66,8 +59,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
     };
 
     $scope.gotoOffersOrSpaces = function () {
-        var offerNotifs = notificationService.offerNotifications;
-        var parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
+        let offerNotifs = notificationService.offerNotifications;
+        let parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
 
         if (!offerNotifs && !parkingSpaceNotifs) {
             $state.go("home.myposts");
@@ -75,16 +68,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
         }
 
 
-        var activeOfferNotif = offerNotifs.find(function (offer) {
+        let activeOfferNotif = offerNotifs.find(function (offer) {
             return offer.active;
         });
 
-        var activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
+        let activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
             return pspaceMsg.active;
         });
 
-        var bothActive = activeOfferNotif && activeParkingSpaceNotif;
-        var bothNotActive = !activeOfferNotif && !activeParkingSpaceNotif;
+        let bothActive = activeOfferNotif && activeParkingSpaceNotif;
+        let bothNotActive = !activeOfferNotif && !activeParkingSpaceNotif;
 
 
         if (bothActive || bothNotActive) {
