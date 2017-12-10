@@ -1,85 +1,98 @@
 <div ng-controller="MyOffersCtrl">
 
-    <div style="position: relative">
-        <ui-view name="messages"></ui-view>
-    </div>
-
-    <ng-include src="my-menu.html"></ng-include>
-
     <div class="loading-spinner">
         <i class="fa fa-5x fa-refresh "></i>
     </div>
-    <div class="no-items-msg loading-finished" ng-hide="spaces.length"> You haven't placed any offers.</div>
+    <div class="no-items-msg loading-finished" ng-hide="spaces.length"> Nu ai ofertat nici un loc.</div>
 
-    <div class="scroll" id="my-bids-list">
-        <div class="bids-area padding no-height" ng-repeat="space in spaces| orderBy: 'timestamp'">
-            <h4 class="bid-title">
-                {{space.title}} -
-                 <span class="bid-amount">
+    <div class="container open-offers-list">
+        <div class="scroll" id="my-bids-list">
+            <div class="bids-area mt-4 mt-md-5 pb-3 " ng-repeat="space in spaces| orderBy: 'timestamp'">
+                <h4 class="bid-title">
+                    {{space.title}} -
+                    <span class="bid-amount">
                      {{space.price | units  }}.<small>{{space.price | subunits}}</small>
-                      <currency val="space.currency"></currency>
+                      {{space.currency}} / h
                  </span>
-            </h4>
-            <div class="bid-table no-margin" ng-show="space.offers.length">
-                <div class="offer" ng-click="selectOffer(offer, space)"
-                     ng-repeat="offer in space.offers | orderBy: 'timestamp'"
-                     ng-class="{selected: selOffer == offer}">
-                <span class="offer-price">
-                    {{offer.price | units}}.<small>{{offer.price | subunits}}</small>
-                    <currency val="offer.currency"></currency>
-                </span>
+                </h4>
+                <div class="bid-table " ng-show="space.offers.length">
+                    <div class="offer d-flex justify-content-between" ng-click="selectOffer(offer, space)"
+                         ng-repeat="offer in space.offers | orderBy: 'timestamp'"
+                         ng-class="{selected: selOffer == offer}">
+                        <span class="offer-price">
+                            {{offer | totalPrice}}
+                        </span>
 
-                <span ui-sref="home.myoffers.talk">
-                    ( <i class="fa fa-envelope"></i> {{messagesForOffer(offer)}} )
-                </span>
+                        <span>
+                                {{offer | totalPeriod}}
+                        </span>
+                        <span class="pull-right offer-accept">
+                            <i class="accepted" ng-show="offer.approved">Acceptat</i>
+                            <i ng-show="!offer.approved"> În așteptare </i>
+                        </span>
 
-                    <div class="pull-right offer-accept">
-                        <i class="ion-checkmark-round accepted" ng-show="offer.approved">Accepted</i>
-                        <i ng-show="!offer.approved"> Proposed </i>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="post-space-container">
-        <div class="post-space" ui-sref="home.map.search">
-            <i class="fa fa-arrow-left "></i> Back to search
-        </div>
-    </div>
-    <div class="ps-dialog" id="showPhoneNumber">
-        <div class="ps-dialog-content">
-            <div class="ps-question">
-                <parking-spot-info-box class="small" space="selectedSpace"></parking-spot-info-box>
-                <div ng-hide="selOffer.approved">
-                    <hr/>
-                    Your offer is not yet accepted!
-                    <br/>
-                    <br/>
-
-                    <div class="ps-text-xxbig">
-                        :(
                     </div>
                 </div>
-                <div ng-show="selOffer.approved">
-                    <hr/>
-                    <a ng-href="tel:{{selectedSpace.owner_name}}">
-                        <div class="ps-text-xbig">
-                            Call {{selectedSpace.owner_name}}
-                        </div>
-                        <br/>
-
-                        <div class="ps-text-xxbig">
-                            <i class="fa fa-phone"></i>
-                            {{selectedSpace.owner_phone_number}}
-                        </div>
+                <div class="mt-3 ">
+                    <button class="btn btn-primary ">
+                        <i class="fa fa-credit-card"></i> Plătește online
+                    </button>
+                    <a tabindex ng-href="tel:{{space.owner_phone_number}}" class="btn btn-secondary ">
+                        <i class="fa fa-phone"></i> Apelează proprietar
                     </a>
                 </div>
             </div>
-            <div class="ps-control-buttons">
-                <div class="button-bar">
-                    <a class="button icon-center ion-checkmark-round" onclick="$('#showPhoneNumber').hide()"></a>
-                    <a class="button icon-center ion-close" onclick="$('#showPhoneNumber').hide()"></a>
+        </div>
+
+        <div class="ps-dialog mt-5" id="showPhoneNumber">
+            <div class="ps-dialog-content">
+                <div class="ps-question">
+                    <parking-spot-info-box space="selectedSpace"></parking-spot-info-box>
+                    <hr/>
+                    <div class="row ps-row">
+                        <div class="col-4">Perioada</div>
+                        <div class="col-8">
+                            {{selOffer | totalPeriod}}
+                        </div>
+                    </div>
+                    <div class="row ps-row">
+                        <div class="col-4">Start</div>
+                        <div class="col-8">
+                            {{selOffer.start_date | moment: 'ddd, D MMM, h:mm'}}
+                        </div>
+                    </div>
+                    <div class="row ps-row">
+                        <div class="col-4">Stop</div>
+                        <div class="col-8">
+                            {{selOffer.end_date | moment: 'ddd, D MMM, h:mm'}}
+                        </div>
+                    </div>
+                    <div class="row ps-row">
+                        <div class="col-4">
+                            Taxare
+                        </div>
+                        <div class="col-8">
+                            La 15 min
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 text-center" ng-hide="selOffer.approved">
+                        <h5>Oferta nu a fost încă acceptată</h5>
+                        <div class="ps-text-xxbig">
+                            :(
+                        </div>
+                    </div>
+                    <div  class="mt-3 pt-3 text-center"  ng-show="selOffer.approved">
+                        <h5>Apelează <br/> {{selectedSpace.owner_name}} </h5>
+                        <div class="ps-text-xbig">
+                            <a ng-href="tel:{{selectedSpace.owner_phone_number}}">
+                                <i class="fa fa-phone"></i>
+                                {{selectedSpace.owner_phone_number}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ps-control-buttons">
+                    <button class="btn  btn-secondary" onclick="$('#showPhoneNumber').hide()">Înapoi</button>
                 </div>
             </div>
         </div>

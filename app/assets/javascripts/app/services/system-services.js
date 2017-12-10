@@ -32,7 +32,7 @@ angular.module('ParkingSpaceMobile.services')
                     let data = res.data;
                     $('.loading-spinner').hide();
                     $('.loading-finished').show();
-                    $rootScope.$broadcast('http.notif', 'Profil salvat cu succes!');
+                    $rootScope.$emit('http.notif', 'Profil salvat cu succes!');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -47,7 +47,7 @@ angular.module('ParkingSpaceMobile.services')
                 .then(function (res) {
                     let data = res.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Bine ai venit ' + user.email + '!');
+                    $rootScope.$emit('http.notif', 'Bine ai venit ' + user.email + '!');
                     localStorage.setItem('user', JSON.stringify(data));
                     if (clbk)
                         clbk(data);
@@ -65,7 +65,7 @@ angular.module('ParkingSpaceMobile.services')
                 .then(function (res) {
                     let data = res.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Link pt. recuperare parolă trimis la ' + email + '.');
+                    $rootScope.$emit('http.notif', 'Link pt. recuperare parolă trimis la ' + email + '.');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -78,7 +78,7 @@ angular.module('ParkingSpaceMobile.services')
                 .then(function (rs) {
                     let data = rs.data;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Bine ai venit ' + user + '!');
+                    $rootScope.$emit('http.notif', 'Bine ai venit ' + user + '!');
                     localStorage.setItem('user', JSON.stringify(data));
                     if (clbk) {
                         clbk(data);
@@ -97,7 +97,7 @@ angular.module('ParkingSpaceMobile.services')
                 .then(function (rs) {
                     let user = rs.data.user;
                     //TODO show message with direct dom manipulation
-                    $rootScope.$broadcast('http.notif', 'Bine ai venit ' + user.full_name + '!');
+                    $rootScope.$emit('http.notif', 'Bine ai venit ' + user.full_name + '!');
                     localStorage.setItem('user', JSON.stringify(user));
                     if (clbk) {
                         clbk(user);
@@ -155,14 +155,14 @@ angular.module('ParkingSpaceMobile.services')
             if (status === 420 || status === 422) { // 420  || 422 is an error status with business message
                 // transform error response into a manageable obj
                 let errorMessages = _this.buildErrorMessages(data);
-                $rootScope.$broadcast('http.error', errorMessages);
+                $rootScope.$emit('http.error', errorMessages);
             } else if (status === 401) {
                 //if unauthorized, go to login
                 errorMessages = _this.buildErrorMessages(data);
-                $rootScope.$broadcast('http.error', errorMessages);
+                $rootScope.$emit('http.error', errorMessages);
                 $state.go('home.login', {'hide_blanket': true});//hide blanket
             } else {
-                $rootScope.$broadcast('http.error', 'Connectivity error.');
+                $rootScope.$emit('http.error', 'Connectivity error.');
             }
             $('.loading-spinner').hide();
         }

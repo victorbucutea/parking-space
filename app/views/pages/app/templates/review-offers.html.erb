@@ -24,9 +24,10 @@
       <div class="bid-table m-0 scroll" ng-show="selectedSpace.offers.length ">
 
         <div class="offer offer-head">
-          <span> Pret/h</span>
+          <span> Preț total</span>
           <span> Perioada</span>
-          <span> </span>
+          <span> Status </span>
+          <span> Plata </span>
         </div>
 
         <div class="offer" ng-click="selectOffer(offer)"
@@ -34,12 +35,10 @@
              ng-class="{selected: selOffer == offer}">
 
              <span class="offer-price">
-                 {{offer.bid_price | units}}.<small>{{offer.bid_price | subunits}}</small>
-                 {{offer.bid_currency}}
+                 {{offer | totalPrice }}
              </span>
 
           <span class="offer-desc">
-
               {{offerDuration(offer)}}
             </span>
 
@@ -48,6 +47,10 @@
               <i class="" ng-show="!offer.approved"> Accept</i>
             </span>
 
+          <span class="offer-accept" ng-click="confirmApproval(offer)">
+              Neachitat
+          </span>
+
         </div>
       </div>
       <span ng-show="selectedSpace.offers.length" class="mb-2">
@@ -55,6 +58,11 @@
         </span>
 
       <div ng-show="selOffer" class="offer-desc-area py-3">
+        <h5 class="text-center font-weight-bold">
+          Neachitat <br/>
+          <small class="font-weight-light"> (Se achită cash proprietarului) </small>
+        </h5>
+
         <div class="offer-desc-item">
           Data start:
           <div class="value pull-right">{{selOffer.start_date | moment: 'ddd, D MMM, h:mm'}}</div>
@@ -76,7 +84,7 @@
             </span>
           <span class="value pull-right" ng-hide="selOffer.approved"
                 ng-click="confirmApproval(selOffer)">
-              &laquo;<i class="ion-checkmark-round"></i>Acceptă&raquo; oferta
+              &laquo;Acceptă&raquo; oferta
             </span>
         </div>
       </div>

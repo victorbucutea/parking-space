@@ -3,17 +3,12 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', function ($scope, parkingSpaceService, $state, $stateParams, notificationService, replaceById) {
-
-    $('.open-spaces-list').height($(window).height() - 105);
-
+angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', function ($scope, offerService, parkingSpaceService, $state, $stateParams, notificationService, replaceById) {
 
     parkingSpaceService.getMySpaces(function (spaces) {
         $scope.spaces = spaces;
-        var selectedSpace = spaces.filter(function (item) {
-            if (item.id == $stateParams.parking_space_id) {
-                return true;
-            }
+        let selectedSpace = spaces.find(function (item) {
+            return (item.id === $stateParams.parking_space_id);
         });
 
         if (selectedSpace && selectedSpace[0]) {
@@ -21,9 +16,17 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
         }
     });
 
+    $scope.acceptOffer = function (space, offer) {
+        if (confirm("Accepti oferta lui " + offer.owner_name + " de " + offer.bid_price + " " + offer.bid_currency + " ?s")) {
+            offerService.acceptOffer(space.id, offer, function (result) {
+                replaceById(result, space.offers);
+            });
+        }
+    }
+
 
     $scope.unreadNotifications = function (space) {
-        var spaceNotifications = notificationService.parkingSpaceNotifications;
+        let spaceNotifications = notificationService.parkingSpaceNotifications;
 
         if (!spaceNotifications) {
             return false;
@@ -32,16 +35,17 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
         if (!space)
             return false;
 
-        return spaceNotifications.find(function(notif) {
+        return spaceNotifications.find(function (notif) {
             return notif.parking_space == space.id
         });
     };
 
 
-    $scope.show = function (space) {
+    $scope.show = function (space, item) {
         $scope.selectedSpace = space;
-        $state.go('home.myposts.bids', {parking_space_id: space.id});
         notificationService.hideParkingSpaceNotifications();
+        $('#' + item).slideToggle(200);
+
     };
 
 

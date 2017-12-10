@@ -105,6 +105,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             google.maps.event.removeListener(dragListenHandle);
 
         } else if (toState.name === 'home.map.search') {
+            let center = $rootScope.map.getCenter()
             parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
                 drawSpaces(spaces);
             });

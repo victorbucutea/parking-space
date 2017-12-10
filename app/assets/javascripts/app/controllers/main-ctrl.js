@@ -9,6 +9,21 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         $scope.$apply();
     });
 
+
+    $scope.openMenu = function() {
+        $('.drawer').fadeIn(200);
+        $('#drawer').css('left','0');
+    };
+
+    $scope.closeMenu = function(){
+        $('#drawer').css('left','-100%');
+        $('.drawer').fadeOut(200);
+    };
+
+    $scope.selectPlace = function(evt){
+        $scope.selectedAddr = evt.address_components;
+    };
+
     let addMsg = function (type, msg) {
         if (msg instanceof Array) {
             msg.forEach((text) => {

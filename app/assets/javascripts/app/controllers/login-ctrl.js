@@ -47,7 +47,7 @@ angular.module('ParkingSpaceMobile.controllers')
 
                                     } else {
                                         // display error message
-                                        $rootScope.$broadcast('http.error',
+                                        $rootScope.$emit('http.error',
                                             'Error while logging in with facebook. Please try again.');
                                         $state.go("home.login", {fromFb: true});
                                     }
@@ -55,7 +55,7 @@ angular.module('ParkingSpaceMobile.controllers')
                         });
 
                     } else {
-                        $rootScope.$broadcast('http.error',
+                        $rootScope.$emit('http.error',
                             'Error while logging into facebook. Please try again.');
                     }
                 }, {scope: 'public_profile,email,user_location'})

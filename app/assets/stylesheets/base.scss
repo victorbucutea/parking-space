@@ -59,6 +59,14 @@ $xxsm-measure-unit: $xsm-measure-unit / $golden-ratio;
 
 $font-family:  "Open Sans", sans-serif;
 
+$grid-breakpoints: (
+        xs: 0,
+        xsm: 350px,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+) ;
 
 // base colors
 $blue:    #1d426c;

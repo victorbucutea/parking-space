@@ -23,11 +23,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
             });
 
             if (offerPresent && offerAccepted) {
-                $rootScope.$broadcast('http.notif', 'Aveți deja o ofertă acceptată pentru acest loc');
+                $rootScope.$emit('http.notif', 'Aveți deja o ofertă acceptată pentru acest loc');
             }
 
             if (offerPresent && !offerAccepted) {
-                $rootScope.$broadcast('http.notif', 'Aveți deja o ofertă propusă pentru acest loc');
+                $rootScope.$emit('http.notif', 'Aveți deja o ofertă propusă pentru acest loc');
             }
 
             if (offerPresent) {
@@ -70,22 +70,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
             })
         };
 
-        $scope.calculatePrice = function(bid) {
-            let start = new Date(bid.start_date).getTime();
-            let stop = new Date(bid.end_date).getTime();
-            let interval = stop - start;
-            let pricePer15m = Math.floor(bid.bid_price / 4);
-            let noOfUnits = Math.ceil(interval / ( 1000 * 60 * 15 /*15m*/));
-            return noOfUnits * pricePer15m + " " + bid.bid_currency;
-        };
-
-        $scope.calculatePeriod = function(bid){
-            let start = new Date(bid.start_date).getTime();
-            let stop = new Date(bid.end_date).getTime();
-            let interval = stop - start;
-            return moment.duration(interval).format('d[d] h[h] m[m]');
-        };
-
 
         $scope.placeOffer = function () {
             if (!$scope.selectedSpace.owner_is_current_user) {
@@ -97,7 +81,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
                 let stop = new Date(bid.end_date).getTime();
                 let interval = stop - start;
 
-                if (moment.duration(interval).minutes() < 15 ){
+                if (moment.duration(interval).asMinutes() < 15 ){
                     $('#dateStop').addClass('is-invalid');
                     return;
                 }

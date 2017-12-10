@@ -5,8 +5,6 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl', function ($scope, $state, parkingSpaceService, notificationService) {
 
-    $('#my-bids-list').height($(window).height() - 55);
-
 
     parkingSpaceService.getMyOffers(function (spaces) {
         if (!spaces) {
@@ -16,16 +14,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl', func
     });
 
 
-
     $scope.selectOffer = function (offer,space) {
         $scope.selOffer = offer;
         $scope.selectedSpace = space;
         $('#showPhoneNumber').show();
-    };
-
-
-    $scope.showMessages = function (offer) {
-        $state.go('home.myoffers.talk', {offer: JSON.stringify(offer)});
     };
 
 });
