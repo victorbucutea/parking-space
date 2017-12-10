@@ -17,24 +17,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         radius: parameterService.getDefaultSearchRadius()
     };
 
-    let blueIcon = {
-        url: '/assets/app/marker_blue.png',
-        scaledSize: new google.maps.Size(53, 53)
-    };
-
-    let orangeIcon = {
-        url: '/assets/app/marker_orange.png',
-        scaledSize: new google.maps.Size(58, 58)
-    };
-
-
-    $scope.stdImageUrl = function (url) {
-        if (!url) {
-            return '#';
-        }
-        return ENV + url;
-    };
-
     $scope.circleOptions.center = $rootScope.map.getCenter();
     $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
 
@@ -73,6 +55,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         })
     };
 
+    $scope.$watch('selectedLocation',newVal => {
+        if (!newVal) return;
+
+        $rootScope.map.setCenter(newVal);
+    });
+
 
     $scope.markerClick = function (data) {
         $scope.selectedSpace = data.elm.space;
@@ -105,10 +93,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             google.maps.event.removeListener(dragListenHandle);
 
         } else if (toState.name === 'home.map.search') {
-            let center = $rootScope.map.getCenter()
-            parkingSpaceService.getAvailableSpaces(center.lat(), center.lng(), $scope.circleOptions.radius, function (spaces) {
-                drawSpaces(spaces);
-            });
+            dragListenClbk();
+            // this is dom cleanup, daterange picker does not reuse divs
             $('div.daterangepicker').remove();
         }
     });

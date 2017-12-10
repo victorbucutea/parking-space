@@ -20,9 +20,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         $('.drawer').fadeOut(200);
     };
 
-    $scope.selectPlace = function(evt){
-        $scope.selectedAddr = evt.address_components;
+    $scope.selectPlace = function(newAddr, newLocation){
+        $scope.selectedAddress = newAddr;
+        if (!$scope.$$phase) {
+            $scope.$apply();
+        }
+        $scope.selectedLocation = newLocation;
     };
+
+    $scope.dateFilter = {};
+
 
     let addMsg = function (type, msg) {
         if (msg instanceof Array) {

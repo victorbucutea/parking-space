@@ -1,9 +1,5 @@
 <div id="pac-container">
-  <input type="text" id="pac-input" class="form-control form-control-lg"
-         ng-model="address"
-         places-autocomplete select-place="selectPlace(place)"
-         placeholder="Caută adresa si ora ...">
-  <i class="fa fa-close clear-btn" ng-click="address=''" ng-show="address.length > 3"></i>
+  <places-autocomplete selected-place="selectPlace(place,location)" place-holder="'Caută adresa si ora ...'"></places-autocomplete>
   <span>
     <i class="pac-nav fa fa-bars " ng-click="openMenu()"></i>
     <i id="notifmyposts" class="notif-icon" ng-show="showNotif()" ng-click="gotoOffersOrSpaces()"></i>
@@ -11,11 +7,11 @@
   <hr/>
   <div class="row no-gutters">
     <div class="col-6">
-      <input type="text" date-time ng-date-model="start" title="start" class="form-control">
+      <input type="text" date-time ng-date-model="dateFilter.start" title="start" class="form-control">
       <i class="fa fa-arrows-h addon"></i>
     </div>
     <div class="col-6">
-      <input type="text" date-time ng-date-model="stop" title="start time" class="form-control">
+      <input type="text" date-time ng-date-model="dateFilter.stop" title="stop" class="form-control">
     </div>
   </div>
 </div>

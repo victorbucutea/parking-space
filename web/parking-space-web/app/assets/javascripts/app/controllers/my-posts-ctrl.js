@@ -3,7 +3,7 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', function ($scope, offerService, parkingSpaceService, $state, $stateParams, notificationService, replaceById) {
+angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams, notificationService, replaceById) {
 
     parkingSpaceService.getMySpaces(function (spaces) {
         $scope.spaces = spaces;
@@ -22,7 +22,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
                 replaceById(result, space.offers);
             });
         }
-    }
+    };
 
 
     $scope.unreadNotifications = function (space) {
@@ -36,7 +36,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
             return false;
 
         return spaceNotifications.find(function (notif) {
-            return notif.parking_space == space.id
+            return notif.parking_space === space.id
         });
     };
 
