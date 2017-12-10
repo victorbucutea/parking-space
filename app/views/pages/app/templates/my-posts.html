@@ -1,7 +1,7 @@
 <div ng-controller="MyPostsCtrl">
 
     <div class="list open-spaces-list scroll container">
-        <div class="item panel mb-3 mb-md-4" ng-repeat="space in spaces">
+        <div class="item panel mb-3 mb-md-4" ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
             <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space"></parking-spot-info-box>
             <span class="unread-item-notif" ng-show="unreadNotifications(space)">&nbsp;</span>
             <span class="item-notifications">
@@ -9,6 +9,7 @@
                 <span> Ai {{space.offers.length}} oferte.</span>
                 <span ng-show="space.offers.length">Click pt detalii.</span>
             </span>
+
             <div class="panel-body" id="item-{{$index}}">
                 <div ng-repeat="offer in space.offers" class="offer pb-3 row">
                     <h5 class="col-12"> {{offer.owner_name}}

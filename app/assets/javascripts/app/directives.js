@@ -69,12 +69,24 @@ angular.module('ParkingSpaceMobile.directives', [])
 
     .directive('placesAutocomplete', function (geolocationService) {
         return {
-            restrict: 'A',
+            restrict: 'E',
             scope: {
-                selectPlace: '&'
+                selectedPlace: '&',
+                placeHolder: '='
             },
-            link: function($scope, input, attr){
-                let searchBox = new google.maps.places.Autocomplete(input[0]);
+            template: '' +
+            '<input type="text" ' +
+            '        id="pac-input" ' +
+            '        class="form-control form-control-lg"' +
+            '        ng-model="address"' +
+            '        ng-keyup="cancel($event)"' +
+            '        placeholder="{{placeHolder}}">' +
+            '  <i class="fa fa-close clear-btn" ' +
+            '       ng-click="address=\'\'" ' +
+            '       ng-show="address.length > 3"></i>\n',
+            link: function ($scope, elm, attr) {
+                let input = $(elm).find('#pac-input')[0];
+                let searchBox = new google.maps.places.Autocomplete(input);
 
                 // Bias the autocomplete object to bucharest for now
                 let bnds = new google.maps.Circle({
@@ -87,8 +99,22 @@ angular.module('ParkingSpaceMobile.directives', [])
                 searchBox.setBounds(bnds.getBounds());
 
                 searchBox.addListener('place_changed', function () {
-                    $scope.selectPlace({place: searchBox.getPlace()});
+                    let place = searchBox.getPlace();
+                    $scope.selectedPlace(
+                        {
+                            place: place.address_components,
+                            location: place.geometry.location
+                        }
+                    );
+                    $scope.$apply();
                 });
+
+                $scope.$watch('address', function (newVal, oldVal) {
+                    // address will change on blur
+                    if (!newVal) {
+                        $scope.selectedPlace({place: null});
+                    }
+                })
             }
         }
     })
@@ -137,16 +163,16 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
             template:
             ' <div class="row no-gutters align-items-center">' +
-                '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
-                    '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
-                    '<input type="number" ng-model="bidAmount" class="form-control ">' +
-                    '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
-                '</div>' +
-                '<div class="col-4 col-sm-5 col-md-5">' +
-                    '<select ng-model="bidCurrency" ' +
-                'ng-options="bidCurrency.name as bidCurrency.label for bidCurrency in currencies" ' +
-                'class="form-control form-control-lg"> </select>' +
-                '</div>' +
+            '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
+            '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
+            '<input type="number" ng-model="bidAmount" class="form-control ">' +
+            '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
+            '</div>' +
+            '<div class="col-4 col-sm-5 col-md-5">' +
+            '<select ng-model="bidCurrency" ' +
+            'ng-options="bidCurrency.name as bidCurrency.label for bidCurrency in currencies" ' +
+            'class="form-control form-control-lg"> </select>' +
+            '</div>' +
             '</div>',
             controller: function ($scope) {
                 $scope.currencies = currencies;
@@ -296,6 +322,8 @@ angular.module('ParkingSpaceMobile.directives', [])
                     $scope[model[0]][model[1]] = start.toDate();
                 }
                 elm.removeClass('is-invalid');
+                if (!$scope.$$phase)
+                    $scope.$apply();
 
             });
 
@@ -325,6 +353,9 @@ angular.module('ParkingSpaceMobile.directives', [])
             } else {
                 $scope[model[0]][model[1]] = moment2.toDate();
             }
+            if (!$scope.$$phase)
+                $scope.$apply();
+
 
         }
 
