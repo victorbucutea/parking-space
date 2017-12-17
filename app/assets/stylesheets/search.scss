@@ -79,28 +79,36 @@ div.daterangepicker {
   box-shadow: 1px 2px 7px 0 $blue-900;
 
   &:after {
-    border-bottom-color: $blue-90;
+    border-bottom-color: $blue-700;
   }
 
   .daterangepicker_input {
-    background-color: $blue-90;
+    background-color: $blue-700;
     margin-top: 0;
     padding: 4px;
+    color: $blue-90;
 
     i {
-      font-size: 1.4em;
+      font-size: 1.6em;
+      top: 5px;
     }
 
     select {
 
       &.hourselect {
         font-size: 1.4em;
-        background-color: $blue-90;
+        background-color: $blue-700;
+        color: $blue-90;
+        border: 0;
+        border-bottom: 1px solid $blue-90;
       }
 
       &.minuteselect {
         font-size: 1.4em;
-        background-color: $blue-90;
+        background-color: $blue-700;
+        color: $blue-90;
+        border: 0;
+        border-bottom: 1px solid $blue-90;
       }
 
     }
@@ -112,10 +120,13 @@ div.daterangepicker {
   }
 
   .apply {
-    width: 100%;
-    padding: 10px;
+    width: 95%;
+    padding: 8px;
     background-color: $gray-500;
     border: 1px solid $gray-600;
+    color: #fff;
+    font-size: 1.4em;
+    margin: 7px;
   }
 
   .ranges {

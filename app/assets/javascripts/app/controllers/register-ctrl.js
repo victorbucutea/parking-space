@@ -5,8 +5,6 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', function ($rootScope, $stateParams, $scope, parameterService, ENV, userService, ezfb, $state) {
 
-    $('.bar.bar-header').hide();
-    $('.fa-spin.fa-spinner').hide();
     $('[data-toggle="tooltip"]').tooltip();
 
 
@@ -81,18 +79,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
         backEndUser.password_confirmation = $scope.password;
 
 
-        $('.fa-spin.fa-spinner').show();
+        userService.registerUser(backEndUser, function () {
+            $state.go('home.map.search');
+        });
 
-        if (!$scope.fromFb) {
-            userService.registerUser(backEndUser, function () {
-                $state.go('home.map.search');
-            });
-        } else {
-            userService.registerUserFb(backEndUser, $scope.fbId, $scope.token,
-                function () {
-                    $state.go('home.map.search');
-                });
-
-        }
     };
 });

@@ -24,7 +24,6 @@
 //= require angular-ui-router/release/angular-ui-router
 //= require angular-easyfb/build/angular-easyfb
 //= require cleave.js/dist/cleave-angular
-//= require google-maps-utility-library-v3-markerwithlabel/dist/markerwithlabel
 //= require main
 //= require_tree .
 

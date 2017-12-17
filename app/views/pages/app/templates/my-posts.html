@@ -1,7 +1,8 @@
 <div ng-controller="MyPostsCtrl">
 
     <div class="list open-spaces-list scroll container">
-        <div class="item panel mb-3 mb-md-4" ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
+        <div class="item panel mb-3 mb-md-4"
+             ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
             <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space"></parking-spot-info-box>
             <span class="unread-item-notif" ng-show="unreadNotifications(space)">&nbsp;</span>
             <span class="item-notifications">
@@ -60,9 +61,11 @@
         <div class="no-items-msg loading-finished" ng-hide="spaces.length">
             Nu ai postat un loc, sau acestea au expirat.
             Rotunjește-ți veniturile
-            <a ui-sref="home.map.search.post">
-                postând un loc.
-            </a>
+            <u>
+                <a ui-sref="home.map.search">
+                    postând un loc.
+                </a>
+            </u>
         </div>
 
     </div>

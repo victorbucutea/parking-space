@@ -3,7 +3,7 @@
   <div class="drawer" ng-click="closeMenu()">
     <div id="drawer" class="menu ">
       <div class="logo p-5 text-center" ui-sref="home.map.search">
-        <img src="<%= image_path 'logo_dark_sm.png' %>">
+        <img src="<%= image_path 'logo_sm_dark.png' %>">
       </div>
       <ul>
         <li ui-sref="home.map.search" ui-sref-active="selected">
@@ -47,6 +47,12 @@
     <div class="notification-message notification" ng-show="notifMsg">
       <ul>
         <li ng-repeat="msg in notifMsg">{{msg}}</li>
+      </ul>
+    </div>
+
+    <div class="notification-message warning" ng-show="warningMsg">
+      <ul>
+        <li ng-repeat="msg in warningMsg">{{msg}}</li>
       </ul>
     </div>
   </div>
