@@ -4,11 +4,13 @@
 
 angular.module('ParkingSpaceMobile.services')
 
-    .service('geolocationService', function ($q) {
+    .service('geolocationService', function ($rootScope) {
         var _this = this;
 
         function onError(error) {
             console.error('code: ' + error.code + ', message: ' + error.message, error);
+            $rootScope.$emit("http.warning","Locația dvs. nu a fost găsită. Recomandăm " +
+                "folosirea locației pentru o experiență cât mai bună.")
         }
 
         this.initCurrentLocation = function (highAccuracy) {

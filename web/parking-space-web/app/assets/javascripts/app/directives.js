@@ -180,9 +180,6 @@ angular.module('ParkingSpaceMobile.directives', [])
 
             link: function ($scope, element, attrs) {
 
-                $(element).on('focus', (evt) => {
-                    console.log('focus', evt);
-                });
 
                 $scope.increase = function () {
                     if (!$scope.bidAmount) {
@@ -259,7 +256,6 @@ angular.module('ParkingSpaceMobile.directives', [])
         return function (scope, element, attrs) {
             var clbk = attrs.ngRepeatFinish;
             if (scope.$last) {
-                console.log('calling ', clbk, ' on ', scope);
                 if (scope[clbk])
                     scope[clbk]();
             }

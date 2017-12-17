@@ -139,6 +139,7 @@ map {
     box-shadow: none;
     border: none;
     border-radius: 5px;
+    padding-left: 13%;
   }
 
   .addon {
@@ -786,6 +787,11 @@ parking-spot-info-box {
 
     &.notification {
       background-color: $green;
+      display: block;
+    }
+
+    &.warning {
+      background-color: $yellow;
       display: block;
     }
   }

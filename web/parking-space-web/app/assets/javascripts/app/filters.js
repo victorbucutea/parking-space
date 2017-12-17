@@ -66,7 +66,6 @@ angular.module("ParkingSpaceMobile.filters", [])
     })
     .filter('periodFilter', function () {
         return function (items, arg) {
-            console.log(items, arg);
             if (!items || !items.length || !arg ) {
                 return items;
             }

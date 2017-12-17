@@ -43,10 +43,6 @@ font-awesome@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
-google-maps-utility-library-v3-markerwithlabel@^1.1.10:
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/google-maps-utility-library-v3-markerwithlabel/-/google-maps-utility-library-v3-markerwithlabel-1.1.10.tgz#cb7a79aeab08a566a5e7a6b1ebef876ae33faf2a"
-
 jquery.scrollto@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz#e7580d9c7ac46ef5bb25319483f6f45713fd7c6c"

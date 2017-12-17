@@ -50,7 +50,14 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
             $scope.errMsg = []
         }
         addMsg($scope.errMsg, data);
+    });
 
+
+    $rootScope.$on('http.warning', function (event, data) {
+        if (!$scope.warningMsg) {
+            $scope.warningMsg = []
+        }
+        addMsg($scope.warningMsg, data);
     });
 
     $rootScope.$on('http.notif', function (event, data) {
@@ -58,42 +65,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
             $scope.notifMsg = []
         }
         addMsg($scope.notifMsg, data);
-
     });
-
-    if (localStorage.helpShown !== "1") {
-        let currentState = $state.current.name;
-        if (!currentState) {
-            return;
-        }
-
-        if (currentState.indexOf('help') > -1) {
-            return;//already in help
-        }
-
-        $state.go(currentState + '.help');
-        localStorage.setItem("helpShown", 1);
-    }
 
 
     $scope.logout = function () {
         userService.logout();
         $state.go('home.login');
     };
-
-
-    $document.on('click', '.ps-modal', function (event) {
-        if ($(event.target).hasClass('ps-modal'))
-            $state.go('^');
-    });
-
-    // hide geographical location search menu when clicking outside its container
-    $('ui-view.map-container').on('click', function (event) {
-        var pacInput = $('#pac-input');
-
-        if (event.target !== pacInput.get()[0]) {
-            pacInput.blur();
-        }
-    })
 
 });

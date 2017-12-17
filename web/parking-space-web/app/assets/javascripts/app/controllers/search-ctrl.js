@@ -4,6 +4,10 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $stateParams) {
+    if(!$rootScope.map){
+        $rootScope.$emit('http.error','Nu se poate inițializa harta. Ești conectat la internet? ')
+        return;
+    }
     $rootScope.map.setZoom(15);
 
     let center = $rootScope.map.getCenter();

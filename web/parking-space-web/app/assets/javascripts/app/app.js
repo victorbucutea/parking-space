@@ -13,6 +13,8 @@ angular.module('ParkingSpaceMobile', [
 
     .run(function (ENV, $http, $rootScope) {
 
+        if (!window.google || !window.google.maps) return;
+
         function HtmlMarker(space, scope) {
             this.price = space.price;
             this.space = space;
