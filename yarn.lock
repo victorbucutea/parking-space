@@ -10,6 +10,10 @@ angular-sanitize@^1.6.6:
   version "1.6.6"
   resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.6.6.tgz#0fd065a19931517fbece66596d325d72b6e06041"
 
+angular-ui-bootstrap@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/angular-ui-bootstrap/-/angular-ui-bootstrap-2.5.6.tgz#23937322ec641a6fbee16498cc32452aa199e7c5"
+
 angular-ui-router@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/angular-ui-router/-/angular-ui-router-0.4.3.tgz#6c29546fe50b8d2f74614dcb8660d6fc40d6e167"
@@ -39,6 +43,20 @@ cleave.js@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/cleave.js/-/cleave.js-1.0.7.tgz#227ebc407d0b8fb3dcd2ce15d53876505a2b02cc"
 
+cloudinary-core@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.4.0.tgz#d58edf2349bbb0d3ea5834e597b0004a6f7b9775"
+  dependencies:
+    lodash ">=3.0"
+
+cloudinary-tiny-js@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/cloudinary-tiny-js/-/cloudinary-tiny-js-0.0.3.tgz#589a312df157f98d43779b83132eb1be0e164082"
+
+cloudinary_ng@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/cloudinary_ng/-/cloudinary_ng-1.1.1.tgz#fc96d553cd36d4a0c7f9ef391dfa4c8925356210"
+
 font-awesome@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
@@ -53,6 +71,10 @@ jquery@>=1.10, jquery@>=1.8, jquery@>=1.8.3, jquery@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
 
+lodash@>=3.0:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+
 moment-duration-format@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-1.3.0.tgz#541771b5f87a049cc65540475d3ad966737d6908"
@@ -60,6 +82,10 @@ moment-duration-format@^1.3.0:
 moment@^2.19.1, moment@^2.9.0:
   version "2.19.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
+
+ng-file-upload@^12.2.13:
+  version "12.2.13"
+  resolved "https://registry.yarnpkg.com/ng-file-upload/-/ng-file-upload-12.2.13.tgz#01800f3872e526f95310f8477e99e4f12d0d8d14"
 
 owl.carousel@^2.2.0:
   version "2.2.0"

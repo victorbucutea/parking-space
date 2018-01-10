@@ -2,7 +2,7 @@
  * Created by 286868 on 04.04.2015.
  */
 angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl',
-    function ($scope, $rootScope, $state, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, ENV) {
+    function ($scope, $rootScope, $state, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, $timeout) {
 
 
         $scope.calculateAddress = function () {
@@ -22,7 +22,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 space.address_line_2 = sublocality + ', ' + city;
                 space.location_lat = mapCenter.lat();
                 space.location_long = mapCenter.lng();
-                space.title = sublocality;
+                space.title = "Spațiu nou în " + sublocality;
                 space.sublocality = sublocality;
                 space.price = parameterService.getStartingAskingPrice();
                 space.currency = parameterService.getStartingCurrency();
@@ -31,76 +31,92 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
             });
         };
 
-        $scope.calculateAddress();
+        $scope.ctrl = {};
+
+        if ($scope.spaceEdit && !$scope.spaceEdit.weeklySched)
+            $scope.spaceEdit.weeklySched = {
+                mon: true,
+                tue: true,
+                wed: true,
+                thu: true,
+                fri: true,
+                sat: false,
+                sun: false,
+            };
 
         if ($stateParams.parking_space_id) {
             parkingSpaceService.getSpace($stateParams.parking_space_id, function (data) {
                 $scope.spaceEdit = data;
             });
+        } else {
+            $scope.calculateAddress();
         }
 
-        $scope.imageUrl = function (spaceEdit) {
-            if (!spaceEdit) {
-                return '#';
-            }
-
-            if (spaceEdit.local_image_url) {
-                return spaceEdit.local_image_url;
-            }
-
-            if (spaceEdit.thumbnail_url) {
-                return ENV + spaceEdit.thumbnail_url;
-            }
-
-            if (spaceEdit.image_url) {
-                return ENV + spaceEdit.image_url;
-            }
-
-        };
-
-        let cameraSuccess = function (img) {
-            $scope.spaceEdit.local_image_url = img;
-            $scope.$apply();
-        };
-
-        let cameraError = function (img) {
-            console.log('error while taking :', img);
-        };
-
-
-        $scope.takePhoto = function () {
-
-            navigator.camera.getPicture(cameraSuccess, cameraError, {
-                quality: 80,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                encodingType: Camera.EncodingType.JPEG
-            });
-        };
-
-        $scope.attachPhoto = function () {
-            navigator.camera.getPicture(cameraSuccess, cameraError, {
-                quality: 80,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-            });
+        $scope.showSched = function () {
+            $('#schedule').slideToggle(200);
+            $scope.scheduleOpen = !$scope.scheduleOpen;
         };
 
 
         $scope.save = function () {
-            setTimeout(function () {
-                $("#saveSpinner").show();
-            }, 1000);
-            parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
-                replaceById(savedSpace, $scope.spaces);
-                $("#saveSpinner").hide();
-                $state.go('home.map.search');
-            });
+            $scope.loading = true;
+            let saveInfo = function () {
+                parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
+                    replaceById(savedSpace, $scope.spaces);
+                    $scope.loading = false;
+                    $state.go('home.map.search');
+                });
+            };
+
+            if ($scope.file1) {
+                $scope.ctrl.uploadPic($scope.file1,
+                    (response) => {
+                        $scope.spaceEdit.file1 = response.data.public_id;
+                        if ($scope.file2) {
+                            $scope.ctrl.uploadPic($scope.file2,
+                                (response2) => {
+                                    $scope.spaceEdit.file2 = response2.data.public_id;
+                                    if ($scope.file3) {
+                                        $scope.ctrl.uploadPic($scope.file2,
+                                            (response3) => {
+                                                $scope.spaceEdit.file3 = response3.data.public_id
+                                                saveInfo();
+                                            })
+                                    } else {
+                                        saveInfo();
+                                    }
+
+                                })
+                        } else {
+                            saveInfo();
+                        }
+                    });
+            } else {
+                saveInfo();
+            }
+
         };
 
+        function removeSchedule() {
+            if (!$scope.scheduleOpen) {
+                $scope.spaceEdit.weeklySched = undefined;
+                $scope.spaceEdit.dailyStart = undefined;
+                $scope.spaceEdit.dailyStop = undefined;
+            }
+        }
+
         $scope.confirmSave = function () {
+
+            removeSchedule();
+
+            if (!$scope.postSpaceForm.$valid) {
+                $('#postSpaceForm').addClass('was-validated');
+                return;
+            }
+
             let spaceEdit = $scope.spaceEdit;
             if (!spaceEdit.title) {
-                alert("Introdu un titlu pentru loc");
+                alert("Introdu un titlu pentru acest loc.");
                 return;
             }
 
@@ -109,7 +125,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 return;
             }
 
-            let text = "Postezi locul " + spaceEdit.price + " " + spaceEdit.currency + "?\n\n";
+            let text = "Postezi locul pentru " + spaceEdit.price + " " + spaceEdit.currency + "?\n\n";
             if (confirm(text)) {
                 $scope.save();
             }

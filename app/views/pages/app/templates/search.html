@@ -1,12 +1,14 @@
 <div ng-controller="SearchParkingSpaceCtrl" class="map-controls">
 
-    <div id="searchCenterIcon" class="search-center-icon map-center-marker no-pointer-events"></div>
-
     <ui-view name="place-bid"></ui-view>
 
     <ui-view name="help"></ui-view>
 
-    <button class="space-description-box" ng-click="showPostSpace()">
-        <i class="fa fa-plus" aria-hidden="true"></i>
+    <button class="center-btn btn btn-info" ng-click="centerMap()">
+        <i class="fa fa-crosshairs"></i>
+    </button>
+
+    <button class="add-btn" ng-click="showPostSpace()">
+        <i class="fa fa-plus" aria-hidden="true"></i> Adaugă
     </button>
 </div>

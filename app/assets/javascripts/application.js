@@ -22,8 +22,12 @@
 //= require bootstrap-daterangepicker/daterangepicker
 //= require owl.carousel/dist/owl.carousel
 //= require angular-ui-router/release/angular-ui-router
+//= require angular-ui-bootstrap/dist/ui-bootstrap
 //= require angular-easyfb/build/angular-easyfb
 //= require cleave.js/dist/cleave-angular
+//= require ng-file-upload/dist/ng-file-upload
+//= require cloudinary-core/cloudinary-core-shrinkwrap
+//= require cloudinary_ng/js/angular.cloudinary
 //= require main
 //= require_tree .
 

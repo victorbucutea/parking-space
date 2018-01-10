@@ -1,17 +1,26 @@
 <div class="ps-modal ">
     <div class="mt-md-4" ng-controller="EditParkingSpaceCtrl">
 
-        <form class="form-edit-details">
+        <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm">
             <div>
-                <h3 class="ps-page-title" ng-show="spaceEdit.id">
-                    Editează
-                </h3>
+                <h3 class="ps-page-title" ng-hide="editTitle">
+                    {{spaceEdit.title}}
+                    <i class="fa fa-edit edit-title"
+                       ng-click="editTitle = true"></i>
 
-                <h3 class="ps-page-title" ng-hide="spaceEdit.id">
-                    Spațiu nou în {{spaceEdit.sublocality}}
                 </h3>
+                <div class="input-group" ng-show="editTitle">
+                    <input class="form-control form-control-lg"
+                           ng-model="spaceEdit.title">
+                    <span class="input-group-addon" ng-click="editTitle=false">
+                        <i class="fa fa-check"></i>
+                    </span>
+
+                </div>
+
             </div>
             <div class="container">
+
                 <div class="form-group row align-items-center">
                     <label for="bidAmount" class="col-form-label col-form-label-lg col-3">Preț:</label>
                     <bid-amount class="col-9" id="bidAmount" bid-amount="spaceEdit.price"
@@ -19,60 +28,121 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-form-label col-form-label-lg col-3">Titlu: </label>
+                    <label for="addr" class="col-form-label col-form-label-lg col-3">Adresă:</label>
                     <div class="col-9">
-                        <input type="text" placeholder="Titlu" class="form-control form-control-lg" ng-model="spaceEdit.title">
+                        <input id="addr" type="text" placeholder="Adresă" class="form-control form-control-lg"
+                               ng-model="spaceEdit.address_line_1" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-form-label-lg col-3">Adresă:</label>
-                    <div class="col-9">
-                        <input type="text" placeholder="Adresă" class="form-control form-control-lg"
-                               ng-model="spaceEdit.address_line_1">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-4">Disp. din: </label>
+                    <label class="col-form-label  col-4"
+                           for="dateStart">Disp. din:</label>
                     <div class="col-8">
-                        <input type="text" placeholder="Data start" date-time class="datetime form-control"
-                               ng-date-model="spaceEdit.space_availability_start">
+                        <div class="input-group">
+                            <input id="dateStart" type="text" date-time class="form-control"
+                                   ng-date-model="spaceEdit.space_availability_start" required>
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-4">Disp. până la:</label>
+                    <label class="col-form-label col-4 pr-2"
+                           for="dateStop">Disp. până la:</label>
                     <div class="col-8">
-                        <input type="text" placeholder="Data stop" date-time day class="form-control"
-                               ng-date-model="spaceEdit.space_availability_stop">
+                        <div class="input-group">
+                            <input id="dateStop" type="text" date-time day class="form-control"
+                                   ng-date-model="spaceEdit.space_availability_stop" required>
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="invalid-feedback">
+                            Perioada minimă e de 15 min
+                        </div>
+                        <span class="form-text text-muted pt-2" ng-click="showSched()">
+                            <u>Orar pe zile / ore >> </u>
+                        </span>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-4" ng-click="takePhoto()" on-hold="attachPhoto()">
-                            <span class="parking-sign" ng-hide="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
-                               <i class="fa fa-camera"></i>
-                               <i class="text"></i>
-                            </span>
-                        <img ng-src="{{imageUrl(spaceEdit)}}" class="parking-sign"
-                             ng-show="spaceEdit.local_image_url || spaceEdit.thumbnail_url">
+                <!-- Daily and weekly custom schedule -->
+                <div id="schedule" style="display: none;">
+                    <div class="form-group row">
+                        <label class="col-form-label col-10 pr-2">
+                            Disp. săptămânală:
+                        </label>
+                        <div class="col-12 text-center">
+                            <div class="btn-group week-sched">
+                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.mon" uib-btn-checkbox>
+                                    Lu
+                                </label>
+                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.tue" uib-btn-checkbox>
+                                    M
+                                </label>
+                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.wed" uib-btn-checkbox>
+                                    Mi
+                                </label>
+                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.thu" uib-btn-checkbox>
+                                    J
+                                </label>
+                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.fri" uib-btn-checkbox>
+                                    V
+                                </label>
+                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.sat" uib-btn-checkbox>
+                                    S
+                                </label>
+                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.sun" uib-btn-checkbox>
+                                    D
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-8">
+                    <div class="form-group row">
+                        <label class="col-form-label col-4 pr-2"
+                               for="timeStart">Disp. zilnică:</label>
+                        <div class="col-4 ">
+                            <input id="timeStart" ng-required="scheduleOpen" ng-model="spaceEdit.dailyStart" type="time"
+                                   class="form-control">
+                        </div>
+                        <div class="col-4 ">
+                            <input id="timeStop" ng-required="scheduleOpen" ng-model="spaceEdit.dailyStop" type="time"
+                                   class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row justify-content-center">
+                    <div class="col-12 mt-3" ng-show="addModeImgs">
                         <textarea placeholder="Descriere" maxlength="165"
-                                      ng-model="spaceEdit.description" class="form-control"></textarea>
+                                  ng-model="spaceEdit.description" class="form-control"></textarea>
                     </div>
+                    <div class="col-4">
+                        <upload-image image-file="file1" label="'Adaugă photo'"
+                                      control="ctrl"></upload-image>
+                    </div>
+                    <div class="col-4" ng-show="file1">
+                        <upload-image image-file="file2" optional="true" label="'Adaugă photo'"
+                                      control="ctrl"></upload-image>
+                    </div>
+                    <div class="col-4" ng-show="file2">
+                        <upload-image image-file="file3" optional="true" label="'Adaugă photo'"
+                                      control="ctrl"></upload-image>
+                    </div>
+
                 </div>
             </div>
 
             <div class="mt-3 ps-control-buttons">
-                <button class="btn btn-primary btn-lg" ng-click="confirmSave()">Salvează</button>
-                <button class="btn btn-secondary btn-lg" ng-click="close()">Anulare</button>
+                <button class="btn btn-primary btn-lg" ng-disabled="loading" ng-click="confirmSave()">
+                    <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+                    Salvează
+                </button>
+                <button class="btn btn-secondary btn-lg" ng-click="close()">
+                    Anulează
+                </button>
             </div>
 
-            <div class="ps-dialog" id="saveSpinner">
-                <div class="ps-dialog-content ">
-                    <div class="ps-question text-center save-spinner">
-                        <h3>Saving ...</h3>
-                    </div>
-                </div>
+            <div class="ps-dialog" ng-show="loading">
+
             </div>
         </form>
 

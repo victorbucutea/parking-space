@@ -153,17 +153,14 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
         $scope.selectOffer = function (offer) {
             $scope.selOffer = offer;
         };
-        /*
-        $scope.showMessages = function (offer) {
-            $state.go('home.myposts.bids.talk', {offer: JSON.stringify(offer)});
-        };*/
+
 
         $scope.showEdit = function (selectedSpace) {
-            $state.go('home.myposts.edit', {parking_space_id: selectedSpace.id});
+            $state.go('.edit', {parking_space_id: selectedSpace.id});
         };
 
         $scope.showDelete = function (selectedSpace) {
-            $state.go('home.myposts.delete', {parking_space_id: selectedSpace.id});
+            $state.go('.delete', {parking_space_id: selectedSpace.id});
 
         };
 

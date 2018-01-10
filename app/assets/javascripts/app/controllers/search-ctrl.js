@@ -8,32 +8,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         $rootScope.$emit('http.error','Nu se poate inițializa harta. Ești conectat la internet? ')
         return;
     }
-    $rootScope.map.setZoom(15);
-
-    let center = $rootScope.map.getCenter();
-
-    $scope.circleOptions = {
-        strokeColor: '#111',
-        strokeWeight: 0.5,
-        fillColor: '#333',
-        fillOpacity: 0.1,
-        map: $rootScope.map,
-        radius: parameterService.getDefaultSearchRadius()
-    };
-
-    $scope.circleOptions.center = $rootScope.map.getCenter();
-    $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
-
 
     let dragListenClbk = function () {
-        if ($scope.searchRadiusCircle)
-            $scope.searchRadiusCircle.setMap();
-
-        $scope.circleOptions.center = $rootScope.map.getCenter();
-        $scope.searchRadiusCircle = new google.maps.Circle($scope.circleOptions);
-
-        let latLng = $rootScope.map.getCenter();
-        parkingSpaceService.getAvailableSpaces(latLng.lat(), latLng.lng(), $scope.circleOptions.radius, function (spaces) {
+        let bnds = $rootScope.map.getBounds().toJSON();
+        parkingSpaceService.getAvailableSpaces(bnds,  function (spaces) {
             drawSpaces(spaces);
         });
     };
@@ -88,11 +66,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         $state.go('.post');
     };
 
+    $scope.centerMap = function(){
+        geolocationService.getCurrentLocation(function (position) {
+            let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            $rootScope.map.setCenter(pos);
+        });
+    };
+
 
     $scope.$on('$stateChangeStart', function (event, toState) {
         if (toState.name.indexOf('home.map.search') === -1) {
-            if ($scope.searchRadiusCircle)
-                $scope.searchRadiusCircle.setMap();
 
             google.maps.event.removeListener(dragListenHandle);
 

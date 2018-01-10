@@ -6,6 +6,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
     $document.mousedown(function () {
         $scope.errMsg = null;
         $scope.notifMsg = null;
+        $scope.warningMsg = null;
         $scope.$apply();
     });
 
@@ -72,5 +73,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         userService.logout();
         $state.go('home.login');
     };
+
+    $document.on('click', '.ps-modal', function (event) {
+        if ($(event.target).hasClass('ps-modal'))
+            $state.go('^');
+    });
 
 });
