@@ -9,55 +9,27 @@ angular.module('ParkingSpaceMobile.directives', [])
                 onCreate: '&'
             },
             link: function ($scope, $element, $attr) {
-                function CenterControl(controlDiv, map) {
 
-                    // Set CSS for the control border.
-                    var controlUI = document.createElement('div');
-                    $(controlUI).addClass('center-btn');
-                    controlDiv.appendChild(controlUI);
-
-                    // Set CSS for the control interior.
-                    var controlText = document.createElement('div');
-                    controlText.innerHTML = '<i class="fa fa-locate" ></i>';
-                    controlUI.appendChild(controlText);
-
-                    // Setup the click event listeners: simply set the map to Chicago.
-                    controlUI.addEventListener('click', function () {
-                        geolocationService.getCurrentLocation(function (position) {
-                            var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                            map.setCenter(pos);
-                        });
-                    });
-
-                }
 
                 function initialize() {
-                    var mapOptions = {
+                    let mapOptions = {
                         center: new google.maps.LatLng(44.412, 26.113),
                         zoom: 15,
+                        minZoom: 15,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         streetViewControl: false,
-                        zoomControl: false,
-                        zoomControlOptions: {
-                            position: google.maps.ControlPosition.RIGHT_CENTER
-                        },
-                        mapTypeControl: false,
                         scaleControl: false,
                         rotateControl: false,
-                        disableDefaultUI: true
+                        disableDefaultUI: true,
+                        gestureHandling: 'greedy'
                     };
-                    var map = new google.maps.Map($element[0], mapOptions);
-
-                    var centerControlDiv = document.createElement('div');
-                    var centerControl = new CenterControl(centerControlDiv, map);
-                    centerControlDiv.index = 1;
-                    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(centerControlDiv);
-                    var overlay = new google.maps.OverlayView();
+                    let map = new google.maps.Map($element[0], mapOptions);
+                    let overlay = new google.maps.OverlayView();
                     overlay.setMap(map);
                     overlay.draw = function () {
                     };
 
-                    var geocoder = new google.maps.Geocoder();
+                    let geocoder = new google.maps.Geocoder();
 
                     $scope.onCreate({map: map, overlay: overlay, geocoder: geocoder});
                 }
@@ -165,13 +137,14 @@ angular.module('ParkingSpaceMobile.directives', [])
             ' <div class="row no-gutters align-items-center">' +
             '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
             '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
-            '<input type="number" ng-model="bidAmount" class="form-control ">' +
+            '<input type="number" maxlength="3" ng-model="bidAmount" class="form-control" required>' +
             '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
             '</div>' +
             '<div class="col-4 col-sm-5 col-md-5">' +
             '<select ng-model="bidCurrency" ' +
-            'ng-options="bidCurrency.name as bidCurrency.label for bidCurrency in currencies" ' +
-            'class="form-control form-control-lg"> </select>' +
+            '   ng-options="bidCurrency.name as bidCurrency.label for bidCurrency in currencies" ' +
+            '   class="form-control form-control-lg"' +
+            '   required> </select>' +
             '</div>' +
             '</div>',
             controller: function ($scope) {
@@ -213,6 +186,103 @@ angular.module('ParkingSpaceMobile.directives', [])
                     $scope.bidAmount--;
                 };
 
+            }
+        }
+    })
+
+    .directive('uploadImage', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                imageFile: '=',
+                label: '=',
+                optional: '=',
+                control: '='
+
+            },
+            template:
+            ' <div class="parking-sign pt-2 d-flex flex-column" ' +
+            '       ngf-drop ' +
+            '       ngf-select ' +
+            '       ng-class="{secondary: optional}" ' +
+            '       ng-hide="imageFile"' +
+            '       ng-model="imageFile" ' +
+            '       accept="image/*"' +
+            '       ngf-max-size="2MB">' +
+            '   <i class="fa fa-camera fa-3x"></i>' +
+            '   <i class="text" ng-bind="label"></i>' +
+            '</div>' +
+
+            '<div ngf-thumbnail="imageFile" ' +
+            '       ngf-as-background="true" ' +
+            '       ng-click="showThumbnail=true"' +
+            '       class="parking-sign"></div>' +
+
+            '<div id="uploadProgressCont" class="progress-container">' +
+            '   <div id="uploadProgressBar" ' +
+            '        style="width: {{progress}}%" ' +
+            '        class="progress-bar"' +
+            '        ng-init="progress=0">' +
+            '</div>' +
+            '</div>' +
+
+            '<button class="btn btn-sm btn-link btn-change-photo" ' +
+            '        ng-show="imageFile"' +
+            '        ngf-select ' +
+            '        ng-model="imageFile">Schimbă</button>' +
+
+            '<div class="ps-modal p-3" ng-show="showThumbnail">' +
+            '   <img ngf-thumbnail="imageFile" class="img-fluid">' +
+            '</div>',
+
+            controller: function ($scope, $rootScope, Upload, $timeout, cloudinary) {
+                if (!$scope.control)
+                    $scope.control = {};
+
+                $scope.$watch('imageFile',function(newVal){
+                    console.log(newVal);
+                });
+
+                $scope.control.uploadPic = function (file, successClbk, errClbk) {
+                    if (!file) return;
+
+                    let cloudName = cloudinary.config().cloud_name;
+                    let upload = Upload.upload({
+                        url: 'http://api.cloudinary.com/v1_1/' + cloudName + '/upload',
+                        data: {
+                            upload_preset: cloudinary.config().upload_preset,
+                            file: file
+                        }
+                    });
+
+                    upload.then(function (response) {
+
+                        if (successClbk)
+                            successClbk(response);
+                    }, function (response) {
+
+                        if (response.status > 0) {
+                            let msg = response.status + ': ' + response.data;
+                            $rootScope.emit('http.error', ' Error while uploading :' + msg);
+                        }
+                        if (errClbk)
+                            errClbk(response)
+                    }, function (evt) {
+                        // Math.min is to fix IE which reports 200% sometimes
+                        let progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                        $scope.progress = progress;
+                    });
+                };
+
+
+            },
+            link: function ($scope, elm) {
+
+                $(elm).find('.ps-modal').click((evt) => {
+                    evt.stopPropagation();
+                    $scope.showThumbnail = false;
+                    $scope.$apply();
+                })
             }
         }
     })
@@ -347,8 +417,25 @@ angular.module('ParkingSpaceMobile.directives', [])
             if (model.length === 1) {
                 $scope[model[0]] = moment2.toDate();
             } else {
-                $scope[model[0]][model[1]] = moment2.toDate();
+                if ($scope[model[0]])
+                    $scope[model[0]][model[1]] = moment2.toDate();
             }
+
+            $scope.$watch(model[0], newVal => {
+                if (!newVal) {
+                    return;
+                }
+                if (model[1]) {
+                    moment2 = newVal[model[1]];
+                } else {
+                    moment2 = newVal;
+                }
+
+                elm.data('daterangepicker').setStartDate(moment2);
+                elm.data('daterangepicker').setEndDate(moment2);
+
+            });
+
             if (!$scope.$$phase)
                 $scope.$apply();
 

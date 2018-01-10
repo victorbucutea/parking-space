@@ -31,44 +31,9 @@ class ParkingSpace < DeviceRecord
   attr_accessor :thumbnail_data
   attr_accessor :owner
 
-  before_save :save_image_and_thumbnail
-  after_destroy :delete_image
   after_initialize :init
 
 
-  def save_image_and_thumbnail
-    if image_data.present?
-      path = "#{Rails.root}/public/files/images/"
-      FileUtils.mkdir_p(path) unless File.directory?(path)
-
-      extension = Rack::Mime::MIME_TYPES.invert[image_content_type]
-
-      light_deviceid = Time.now.to_i.to_s + "_" + self.deviceid[0..10]
-
-      standard_name = "#{light_deviceid}_standard#{extension}"
-      thumbnail_name = "#{light_deviceid}_thumbnail#{extension}"
-      File.open(path + standard_name, 'wb') do |file|
-        file.write(Base64.decode64(self.image_data[22..-1]))
-      end
-
-      File.open(path + thumbnail_name, 'wb') do |file|
-        file.write(Base64.decode64(self.thumbnail_data[22..-1])) if thumbnail_data.present?
-      end
-
-      self.standard_image_url = "/files/images/#{standard_name}"
-      self.thumbnail_image_url = "/files/images/#{thumbnail_name}"
-    end
-  end
-
-  def delete_image
-    path = "#{Rails.root}/public/"
-
-    std = path + ( standard_image_url || '' )
-    thumbnail = path + ( thumbnail_image_url || '' )
-
-    File.delete(std) if File.exist?(std) && File.file?(std)
-    File.delete(thumbnail) if File.exist?(thumbnail) && File.file?(thumbnail)
-  end
 
   def availability_stops_after_start
     if self.space_availability_start > self.space_availability_stop

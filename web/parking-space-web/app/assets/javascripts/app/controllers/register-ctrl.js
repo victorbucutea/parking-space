@@ -19,10 +19,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
         $scope.prefix = '+40';
     }
 
-    $scope.dialogOk = function () {
-        $('#requiredFieldsDialog').hide();
-        $('#registerForm').addClass('was-validated');
-    };
 
     $scope.fromFb = $stateParams.fromFb;
     $scope.email = $stateParams.email;
@@ -52,7 +48,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
 
     $scope.save = function () {
         if (!$scope.registerForm.$valid) {
-            $('#requiredFieldsDialog').show();
+            $('#registerForm').addClass('was-validated');
             return;
         }
 
@@ -65,7 +61,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
     $scope.register = function () {
 
         if (!$scope.registerForm.$valid) {
-            $('#requiredFieldsDialog').show();
+            $('#registerForm').addClass('was-validated');
             return;
         }
 

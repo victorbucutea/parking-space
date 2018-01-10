@@ -1,12 +1,11 @@
 <div ng-controller="MyOffersCtrl">
 
-    <div class="loading-spinner">
-        <i class="fa fa-5x fa-refresh "></i>
-    </div>
-    <div class="no-items-msg loading-finished" ng-hide="spaces.length"> Nu ai ofertat nici un loc.</div>
-
     <div class="container open-offers-list">
         <div class="scroll" id="my-bids-list">
+
+            <div class="no-items-msg loading-finished" ng-hide="spaces.length"> Nu ai nici o rezervare activă.</div>
+
+
             <div class="bids-area mt-4 mt-md-5 pb-3 " ng-repeat="space in spaces| orderBy: 'timestamp'">
                 <h4 class="bid-title">
                     {{space.title}} -
@@ -24,7 +23,7 @@
                         </span>
 
                         <span>
-                                {{offer | totalPeriod}}
+                            {{offer | totalPeriod}}
                         </span>
                         <span class="pull-right offer-accept">
                             <i class="accepted" ng-show="offer.approved">Acceptat</i>
@@ -38,7 +37,7 @@
                         <i class="fa fa-credit-card"></i> Plătește online
                     </button>
                     <a tabindex ng-href="tel:{{space.owner_phone_number}}" class="btn btn-secondary ">
-                        <i class="fa fa-phone"></i> Apelează proprietar
+                        <i class="fa fa-phone"></i> Apelează propr.
                     </a>
                 </div>
             </div>

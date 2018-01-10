@@ -4,7 +4,9 @@
     <i class="pac-nav fa fa-bars " ng-click="openMenu()"></i>
     <i id="notifmyposts" class="notif-icon" ng-show="showNotif()" ng-click="gotoOffersOrSpaces()"></i>
   </span>
-  <hr/>
+  <div class="loading-container">
+    <div id="loading-progress" class="loading-progress"></div>
+  </div>
   <div class="row no-gutters">
     <div class="col-6">
       <input type="text" date-time ng-date-model="dateFilter.start" title="start" class="form-control">

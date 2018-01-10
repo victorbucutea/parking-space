@@ -58,15 +58,11 @@ $xxsm-measure-unit: $xsm-measure-unit / $golden-ratio;
 
 // map controls
 #map {
-  height: 100%;
+  height: 100vh;
 }
 
 a {
   color: $dflt-font-color;
-}
-
-.full-height {
-  height: 100%
 }
 
 .map-container {
@@ -79,42 +75,39 @@ map {
   display: block;
   width: 100%;
   height: 100%;
-
-  .center-btn {
-    border: 2px solid $white;
-    border-radius: 3px;
-    box-shadow: rgba(0, 0, 0, 0.298039) 0 2px 6px;
-    cursor: pointer;
-    text-align: center;
-    background-color: $white;
-    margin: 4px $measure-unit;
-    width: 36px;
-    height: 36px;
-    padding: $xxsm-measure-unit;
-    color: #656565;
-    font-size: 2.5em;
-  }
 }
 
-.space-description-box {
-  background-color: #a73e01;
-  font-size: 20px;
-  padding: 0;
-  box-shadow: 2px 2px 6px 0 #333;
+.center-btn {
+  position: fixed;
+  bottom: 98px;
+  z-index: 2;
+  right: 32px;
+  box-shadow: 2px 4px 20px 2px $gray-600;
+  cursor: pointer;
+  width: 41px;
+  height: 41px;
+  padding: 3.361399996px;
   border-radius: 50%;
-  position: absolute;
+  font-size: 1.4em;
+}
+
+.add-btn {
+  background-color: $blue-800;
+  padding: 0;
+  box-shadow: 2px 4px 20px 2px $gray-600;
+  border-radius: 50%;
+  position: fixed;
   bottom: 24px;
   z-index: 2;
   right: 24px;
   outline: 0;
   border: 0;
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   color: $white;
+  line-height: 1;
+  font-size: .9em;
 
-  .address-text {
-    font-size: 0.9em;
-  }
 }
 
 #pac-container {
@@ -122,7 +115,7 @@ map {
   font-size: 16px;
   width: 95%;
   margin: $big-measure-unit auto;
-  box-shadow: 0 2px 20px 2px #828282;
+  box-shadow: 0 2px 20px 2px $gray-600;
   border-radius: 5px;
   position: fixed;
   top: 0;
@@ -188,6 +181,24 @@ map {
   }
 }
 
+.loading-container {
+  border-bottom: 1px solid $gray-500;
+
+  .loading-progress {
+    width: 0;
+    border-top: 2px solid $gray-500;
+    transition: width ease-in-out 2s;
+  }
+
+  .loading-start {
+    width: 100%;
+  }
+
+  .loading-done {
+    transition: none;
+  }
+}
+
 .ps-control-buttons {
   display: flex;
   justify-content: space-around;
@@ -197,15 +208,21 @@ map {
   .btn {
     color: $white
   }
+
+  .btn-lg {
+    font-size: inherit;
+  }
 }
 
 .ps-modal {
-  position: absolute;
+  position: fixed;
   top: 0;
+  bottom: 0;
   background-color: $gray-dark-transparent;
   width: 100%;
   z-index: 3;
-  height: 100%;
+  left: 0;
+  overflow: scroll;
 
   > div:first-child {
     border-top: 4px solid $red;
@@ -270,121 +287,6 @@ map {
   }
 }
 
-.chat-area-modal {
-
-  .no-message {
-    color: #aaa;
-    width: 100px;
-    margin: auto;
-    margin-top: 45%;
-  }
-
-  .watermark {
-    position: absolute;
-    top: 61px;
-    left: 26%;
-    font-size: 137px;
-    color: $gray-xlight;
-  }
-  .message {
-    z-index: 2;
-    clear: both;
-    margin: 5px 10px;
-    padding: 2px 5px;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-    position: relative;
-    line-height: 1.4em;
-    background-color: $white;
-
-    .message-meta {
-      font-size: 0.8em;
-      color: $gray-lighter;
-    }
-
-    .desc {
-      overflow: auto;
-    }
-
-    &.right {
-      float: right;
-      margin-left: 40px;
-      background-color: $blue;
-      color: $white;
-
-      &:after {
-        content: ' ';
-        background-color: $blue;
-        border-right: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-        transform: rotate(-45deg);
-        width: 10px;
-        height: 10px;
-        display: block;
-        position: absolute;
-        right: -6px;
-        bottom: 10px;
-      }
-
-      .message-meta {
-        float: right;
-        color: $gray-xlight;
-      }
-    }
-
-    &.left {
-      float: left;
-      margin-right: 40px;
-
-      &:after {
-        content: ' ';
-        background-color: $white;
-        border-right: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-        transform: rotate(135deg);
-        width: 10px;
-        height: 10px;
-        display: block;
-        position: absolute;
-        left: -6px;
-        bottom: 10px;
-      }
-
-      .message-meta {
-        float: left;
-      }
-    }
-  }
-
-  .message-input {
-    border: 1px solid $gray-xlight;
-
-    input {
-      padding-left: 10px;
-    }
-
-    div.col-10 {
-      background-color: $white;
-
-      .ion-android-send {
-        display: inline-block;
-        padding-top: 8px;
-        font-size: 1.4em;
-
-        &.activated {
-          color: #666;
-        }
-      }
-    }
-  }
-
-  .title {
-    @extend .ps-page-title;
-    margin: 0 10px 0 10px;
-    padding: 20px 0 10px 0;
-    border-bottom: 1px solid $gray;
-  }
-}
 
 .thumbnail-modal {
   background-color: transparentize($gray-dark, 0.3) !important;
@@ -406,11 +308,12 @@ map {
 
 .ps-dialog {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 4;
   width: 100%;
+  height: 100%;
 
   .form-control {
     box-shadow: none;
@@ -423,20 +326,20 @@ map {
     width: 74%;
     box-shadow: 1px 1px 3px;
     border-top: 4px solid $red;
+    top: 40%;
 
     .ps-question {
       padding: $sm-measure-unit;
       padding-bottom: $big-measure-unit;
     }
 
-    .ps-row:nth-child(2n+1){
+    .ps-row:nth-child(2n+1) {
       background-color: $blue-90;
     }
     .ps-row {
       margin: 0;
       padding: 5px 0;
     }
-
 
     .save-spinner {
       // just enough for the h3 margin to kick in
@@ -459,41 +362,6 @@ map {
   text-align: center;
 }
 
-.search-radius-controller {
-  position: absolute;
-  width: 120px;
-  background-color: $white;
-  z-index: 1;
-  top: 51.5%;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
-  right: 0;
-  border-radius: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
-
-  .value {
-    width: 55px;
-    display: inline-block;
-    height: 28px;
-    padding-top: 4px;
-    font-size: 1.2em;
-  }
-
-  a.button {
-    padding: 2px;
-    min-height: 20px;
-    color: $gray-dark;
-    line-height: 20px;
-    border: 0 none;
-
-    &:before {
-      font-size: 28px;
-      line-height: 20px;
-    }
-  }
-}
-
 .search-center-icon {
   border-radius: 100%;
   width: 15px;
@@ -508,7 +376,7 @@ map {
 .open-spaces-list {
   margin-top: $lg-jumbo-measure-unit;
 
-  h1,h2,h3 {
+  h1, h2, h3 {
     margin: 0;
   }
 
@@ -526,7 +394,6 @@ map {
 
 .open-offers-list {
   margin-top: $jumbo-measure-unit;
-
 }
 
 .post-space-container {
@@ -570,6 +437,7 @@ map {
 bid-amount {
   input.form-control {
     font-size: 3em;
+    line-height: 1.3;
   }
 
   a {
@@ -580,6 +448,24 @@ bid-amount {
     padding: 0;
   }
 
+}
+
+.edit-title {
+  float: right;
+  color: $gray-400;
+}
+
+.week-sched {
+  .btn {
+    &:active, &:focus, &.focus  {
+      box-shadow: none !important;
+    }
+    &.active{
+      background-color: #122944 !important;
+      border-color: #10233a !important;
+      box-shadow: none !important;
+    }
+  }
 }
 
 .slider-tabs-menu {
@@ -650,43 +536,40 @@ bid-amount {
   }
 }
 
-.new-post-ribbon {
-  padding: 4px 20px;
-  font-weight: 200;
-  background-color: $blue;
-  color: $gray-xxlight;
-  font-size: $lg-font-size;
-  text-align: center;
-  margin: 0;
-}
 
-@mixin parking-sign($size: $lg-jumbo-measure-unit, $icon: false) {
+.progress-container {
+  height: 5px;
+  border-radius: 2px;
+  margin-top: -6px;
 
-  $width: $size * 3 / 4; // 3:4 image scale
-  $height: $size;
-  $font-size: $size * 0.8;
 
-  @if ($icon == true) {
-    $font-size: $size * 0.5;
+  .progress-bar {
+    background-color: $blue;
+    height:100%;
   }
-
-  color: #23467C;
-  font-weight: bold;
-  width: $width;
-  height: $height;
-  line-height: $height;
-  text-align: center;
-  border-radius: 4px;
-  font-family: sans-serif;
-  margin-right: 10px;
-  border: 1px solid #23467C;
-  display: inline-block;
-  font-size: $font-size;
-
 }
+
 
 .parking-sign {
-  @include parking-sign($lg-jumbo-measure-unit, true);
+  color: $blue;
+  text-align: center;
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 0 $gray-500;
+  border: 1px solid $gray-500;
+  height: 118px;
+  background-size: 100%;
+  background-repeat: no-repeat;
+
+  &.secondary {
+    color: $gray-500;
+    border-color: $gray-500;
+  }
+}
+
+.btn-change-photo {
+  text-decoration: underline;
+  width: 100%;
 }
 
 parking-spot-info-box {
@@ -752,7 +635,7 @@ parking-spot-info-box {
 
 .ps-page-title {
   border-bottom: 1px solid #aaa;
-  padding: 14px 14px 5px 10px;
+  padding: 14px 14px 5px 14px;
   background-color: $white;
 }
 
@@ -824,7 +707,7 @@ parking-spot-info-box {
     padding-top: 5px;
   }
 
-  div.row:nth-child(2n+3) {
+  .panel-body .row:nth-child(2n+1) {
     background-color: $blue-90;
   }
 
@@ -867,7 +750,7 @@ parking-spot-info-box {
 
       &.offer-head {
         border-bottom: 1px solid $gray-500;
-        font-size: 1.2em;
+        font-size: 1em;
       }
       &.selected {
         background-color: darken($blue-90, 10%);

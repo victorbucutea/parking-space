@@ -21,6 +21,10 @@ Rails.application.routes.draw do
     get 'phone_number'
 
     collection do
+      get 'range'
+    end
+
+    collection do
       get 'myspaces'
     end
 

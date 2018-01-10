@@ -34,18 +34,18 @@
              ng-repeat="offer in selectedSpace.offers | orderBy: 'timestamp'"
              ng-class="{selected: selOffer == offer}">
 
-             <span class="offer-price">
+          <span class="offer-price">
                  {{offer | totalPrice }}
-             </span>
+          </span>
 
           <span class="offer-desc">
               {{offerDuration(offer)}}
-            </span>
+          </span>
 
           <span class="offer-accept" ng-click="confirmApproval(offer)">
               <i class="accepted" ng-show="offer.approved">Acceptat</i>
-              <i class="" ng-show="!offer.approved"> Accept</i>
-            </span>
+              <i class="" ng-show="!offer.approved">Accept</i>
+          </span>
 
           <span class="offer-accept" ng-click="confirmApproval(offer)">
               Neachitat
@@ -60,7 +60,7 @@
       <div ng-show="selOffer" class="offer-desc-area py-3">
         <h5 class="text-center font-weight-bold">
           Neachitat <br/>
-          <small class="font-weight-light"> (Se achită cash proprietarului) </small>
+          <small class="font-weight-light"> (Se achită cash proprietarului)</small>
         </h5>
 
         <div class="offer-desc-item">
@@ -77,6 +77,7 @@
           Propusă de:
           <div class="value pull-right">{{selOffer.owner_name}}</div>
         </div>
+
         <div class="offer-desc-item phone-number">
           Nr. Tel.:
           <span class="value pull-right" ng-show="selOffer.approved">
@@ -112,7 +113,7 @@
           <span class="offer-accept">
                 <i class="accepted" ng-show="bid.approved">Acceptat</i>
                 <i class="" ng-show="!bid.approved"> Asteptare</i>
-               </span>
+          </span>
         </div>
       </div>
 
@@ -130,5 +131,7 @@
         Anulează
       </button>
     </div>
+
   </div>
+  <ui-view name="action"></ui-view>
 </div>

@@ -5,7 +5,10 @@ angular.module('ParkingSpaceMobile', [
     'config',
     'ezfb',
     'cleave.js',
+    'ngFileUpload',
     'ui.router',
+    'ui.bootstrap.buttons',
+    'cloudinary',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
@@ -37,7 +40,7 @@ angular.module('ParkingSpaceMobile', [
             let _this = this;
             let div = document.createElement('DIV');
             div.className = "html-marker";
-            if ( !this.space.public ) {
+            if (!this.space.public) {
                 div.className = "html-marker private";
             }
             $(div).on('click', function (evt) {
@@ -147,6 +150,22 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
+            .state('home.map.search.review-bids.delete', {
+                url: '/delete/{parking_space_id}',
+                views: {
+                    'action': {
+                        templateUrl: "templates/delete-post.html"
+                    }
+                }
+            })
+            .state('home.map.search.review-bids.edit', {
+                url: '/edit/{parking_space_id}',
+                views: {
+                    'action': {
+                        templateUrl: "templates/post-space.html"
+                    }
+                }
+            })
             .state('home.myposts', {
                 url: '/myposts',
                 views: {
@@ -190,14 +209,6 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.myposts.user', {
-                url: '/user/{user_id}',
-                views: {
-                    'edit-user': {
-                        templateUrl: "templates/user.html"
-                    }
-                }
-            })
             .state('home.myoffers', {
                 url: '/myoffers',
                 views: {
@@ -235,6 +246,34 @@ angular.module('ParkingSpaceMobile', [
         };
 
         ezfbProvider.setInitFunction(myInitFunction);
+    })
+
+    .config(function (cloudinaryProvider) {
+        cloudinaryProvider
+            .set("cloud_name", "hbrl7w3by")
+            .set("secure", true)
+            .set("upload_preset", "ixih1eoo");
+    })
+
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push(function ($q) {
+            return {
+                'request': function (config) {
+                    let loading = $('#loading-progress');
+                    loading.removeClass('loading-done');
+                    loading.css('width', '100%');
+                    return config;
+                },
+                'response': function (response) {
+                    let loading = $('#loading-progress');
+                    loading.addClass('loading-done');
+                    setTimeout(() => {
+                        loading.css('width', 0);
+                    }, 500);
+                    return response;
+                }
+            };
+        });
     })
 
     .constant('currencies', [

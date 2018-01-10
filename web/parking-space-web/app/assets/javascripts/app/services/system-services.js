@@ -9,19 +9,14 @@ angular.module('ParkingSpaceMobile.services')
 
         /* get current user details */
         _this.getUser = function (clbk) {
-            $('.loading-spinner').show();
-            $('.loading-finished').hide();
 
             $http.get(ENV + 'users/edit.json')
                 .then(function (res) {
                     let data = res.data;
-                    $('.loading-spinner').hide();
-                    $('.loading-finished').show();
                     if (clbk)
                         clbk(data);
                 }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
-                    $('.loading-finished').show();
                 });
         };
 
@@ -30,14 +25,11 @@ angular.module('ParkingSpaceMobile.services')
             $http.put(ENV + '/users.json', {user: user})
                 .then(function (res) {
                     let data = res.data;
-                    $('.loading-spinner').hide();
-                    $('.loading-finished').show();
                     $rootScope.$emit('http.notif', 'Profil salvat cu succes!');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
-                    $('.loading-finished').show();
                 });
         };
 
@@ -164,7 +156,6 @@ angular.module('ParkingSpaceMobile.services')
             } else {
                 $rootScope.$emit('http.error', 'Connectivity error.');
             }
-            $('.loading-spinner').hide();
         }
 
     });
