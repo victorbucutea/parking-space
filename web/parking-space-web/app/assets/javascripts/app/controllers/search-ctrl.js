@@ -9,33 +9,54 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         return;
     }
 
-    let dragListenClbk = function () {
+    if (!sessionStorage.getItem("current_user")){
+        userService.getUser(function (user) {
+            if (!user) return;
+            let userjson = JSON.stringify(user);
+            sessionStorage.setItem("current_user",userjson);
+
+            if (!user.phone_no_confirm){
+                $rootScope.$emit('http.warning.html',
+                    'Vă rugăm confirmați numărul de telefon ' +
+                    '<a href="#!/home/map/search/confirm-phone"><u>aici</u></a><br/>'+
+                    'Fără un nr. de telefon valid nu veți putea efectua rezervări.')
+            }
+        });
+    } else {
+        let user = JSON.parse(sessionStorage.getItem("current_user"));
+        if (!user.phone_no_confirm){
+            $rootScope.$emit('http.warning.html',
+                'Vă rugăm confirmați numărul de telefon ' +
+                '<a href="#!/home/map/search/confirm-phone"><u>aici</u></a><br/>'+
+                'Fără un nr. de telefon valid nu veți putea efectua rezervări.')
+        }
+    }
+
+
+
+    let drawSpaces = function () {
         let bnds = $rootScope.map.getBounds().toJSON();
         parkingSpaceService.getAvailableSpaces(bnds,  function (spaces) {
-            drawSpaces(spaces);
+            if (!spaces || spaces.length === 0) {
+                $scope.selectedSpace = null;
+            }
+
+            if ($rootScope.markers)
+                $rootScope.markers.forEach(function (d) {
+                    d.setMap();//clear marker
+                });
+
+            $rootScope.markers = [];
+
+            spaces.forEach(function (space) {
+                let htmlMarker = new HtmlMarker(space, $scope);
+                $rootScope.markers.push(htmlMarker);
+            })
         });
     };
 
-    let dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', dragListenClbk);
+    let dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
 
-    let drawSpaces = function (newVal) {
-
-        if (!newVal || newVal.length === 0) {
-            $scope.selectedSpace = null;
-        }
-
-        if ($rootScope.markers)
-            $rootScope.markers.forEach(function (d) {
-                d.setMap();//clear marker
-            });
-
-        $rootScope.markers = [];
-
-        newVal.forEach(function (space) {
-            let htmlMarker = new HtmlMarker(space, $scope);
-            $rootScope.markers.push(htmlMarker);
-        })
-    };
 
     $scope.$watch('selectedLocation',newVal => {
         if (!newVal) return;
@@ -55,7 +76,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
     };
 
 
+
     $scope.showPostSpace = function () {
+        if (!$scope.placingSpot) {
+            $scope.placingSpot = true;
+            return;
+        }
         $scope.spaceEdit = {};
         angular.copy($scope.space, $scope.spaceEdit);
         $scope.spaceEdit.title = "";
@@ -80,7 +106,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             google.maps.event.removeListener(dragListenHandle);
 
         } else if (toState.name === 'home.map.search') {
-            dragListenClbk();
+            drawSpaces();
+            $scope.placingSpot = null;
             // this is dom cleanup, daterange picker does not reuse divs
             $('div.daterangepicker').remove();
         }

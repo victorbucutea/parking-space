@@ -22,19 +22,21 @@ angular.module('ParkingSpaceMobile.services', [])
 
 
             $http.get(ENV + '/parking_spaces.json', {
-                        params: {
-                            lat_min: latMinMax.south,
-                            lat_max: latMinMax.north,
-                            lon_min: latMinMax.west,
-                            lon_max: latMinMax.east,
-                        }
-                    })
+                params: {
+                    lat_min: latMinMax.south,
+                    lat_max: latMinMax.north,
+                    lon_min: latMinMax.west,
+                    lon_max: latMinMax.east,
+                }
+            })
                 .then(function (response) {
                     let data = response.data;
                     if (data) {
                         data.forEach(function (p_space) {
                             p_space.space_availability_start = new Date(p_space.space_availability_start);
                             p_space.space_availability_stop = new Date(p_space.space_availability_stop);
+                            p_space.daily_start = new Date(p_space.daily_start);
+                            p_space.daily_stop = new Date(p_space.daily_stop);
                         });
                     }
                     if (clbk)
@@ -73,6 +75,9 @@ angular.module('ParkingSpaceMobile.services', [])
                     if (data) {
                         data.space_availability_start = new Date(data.space_availability_start);
                         data.space_availability_stop = new Date(data.space_availability_stop);
+                        data.daily_start = new Date(data.daily_start);
+                        data.daily_stop = new Date(data.daily_stop);
+                        data.weekly_schedule = JSON.parse(data.weekly_schedule);
                     }
                     if (clbk)
                         clbk(data);
@@ -95,17 +100,9 @@ angular.module('ParkingSpaceMobile.services', [])
         this.saveSpace = function (space, clbk) {
 
             // massage space a to fit the back end model
-            let imageUrl = space.local_image_url;
             space.target_price = space.price;
             space.target_price_currency = space.currency;
-            space.image_data = imageResizeFactory(imageUrl, 480, 640);
-            space.thumbnail_data = imageResizeFactory(imageUrl, 89, 118);
-            if (imageUrl) {
-                space.image_file_name = imageUrl.substr(imageUrl.lastIndexOf("/") + 1);
-            }
-            space.image_content_type = 'image/jpeg';
-
-
+            space.weekly_schedule = JSON.stringify(space.weekly_schedule);
             let parking_space = {parking_space: space};
 
             let url = space.id ? ENV + '/parking_spaces/' + space.id + '.json' : ENV + '/parking_spaces.json';
@@ -115,8 +112,9 @@ angular.module('ParkingSpaceMobile.services', [])
                 //TODO show mesage with direct dom manipulation
                 $rootScope.$emit('http.notif', 'Locul de parcare a fost postat!');
 
+                let data = response.data;
                 if (clbk) {
-                    clbk(response.data);
+                    clbk(data);
                 }
             }, function (error) {
                 errorHandlingService.handle(error.data, error.status);
@@ -151,38 +149,6 @@ angular.module('ParkingSpaceMobile.services', [])
         };
     })
 
-    .service('messageService', function ($rootScope, $http, $timeout, ENV, userService) {
-        this.messages = [];
-        let _this = this;
-
-        this.markRead = function (postId, messages, clbk) {
-            // execute call on server
-            messages.forEach(function (x) {
-                x.read = true;
-            });
-            this.getMessages(postId, clbk);
-        };
-
-        this.getMessages = function (postId, clbk) {
-            $timeout(function () {
-                if (clbk)
-                    clbk(_this.messages);
-            }, 1000)
-        };
-
-        this.sendMessage = function (pSpaceId, proposalId, msg, clbk) {
-            msg.deviceid = deviceAndUserInfoService.deviceId;
-            msg.proposal_id = proposalId;
-            $http.post(ENV + '/parking_spaces/' + pSpaceId + '/proposals/' + proposalId + '/messages.json', msg)
-                .then(function (data) {
-                    if (clbk)
-                        clbk(data)
-                }, function (err) {
-                    errorHandlingService.handle(err.data, err.status);
-                });
-        }
-    })
-
     .service('offerService', function ($http, $timeout, ENV, userService, $rootScope, errorHandlingService) {
 
         this.placeOffer = function (bid, spaceId, clbk) {
@@ -190,22 +156,14 @@ angular.module('ParkingSpaceMobile.services', [])
             $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals.json', bid)
                 .then(function (resp) {
                     let data = resp.data;
-                    //TODO show message with direct dom manipulation
-                    $rootScope.$emit('http.notif', 'Ofertă trimisă!');
-                    if (clbk)
-                        clbk(data);
-                }, function (err) {
-                    errorHandlingService.handle(err.data, err.status);
-                })
-        };
+                    data.start_date = new Date(data.start_date);
+                    data.end_date = new Date(data.end_date);
+                    if (data.approved)
+                        $rootScope.$emit('http.notif', 'Felicitări! Locul a fost rezervat pt. tine.' +
+                            ' Acum poți achita online sau poți contacta proprietarul.');
+                    else
+                        $rootScope.$emit('http.notif', 'Ofertă trimisă, însă nu a putut fi aprobată!');
 
-        this.updateOffer = function (bid, spaceId, clbk) {
-            bid.parking_space_id = spaceId;
-            $http.put(ENV + '/parking_spaces/' + spaceId + '/proposals/' + bid.id + '.json', bid)
-                .then(function (resp) {
-                    let data = resp.data;
-                    //TODO show message with direct dom manipulation
-                    $rootScope.$emit('http.notif', 'Ofertă trimisă!');
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -233,6 +191,21 @@ angular.module('ParkingSpaceMobile.services', [])
                     let data = res.data;
                     $rootScope.$emit('http.notif',
                         'Ai respins oferta de ' + offer.bid_price + ' ' + offer.bid_currency + '. Proprietarul a fost notificat'
+                    );
+                    if (clbk) {
+                        clbk(data);
+                    }
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
+                })
+        };
+
+        this.cancelOffer = function (spaceId, offer, clbk) {
+            $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
+                .then(function (res) {
+                    let data = res.data;
+                    $rootScope.$emit('http.notif',
+                        'Ai anulat oferta de ' + offer.bid_price + ' ' + offer.bid_currency + '. Proprietarul a fost notificat'
                     );
                     if (clbk) {
                         clbk(data);
@@ -359,6 +332,36 @@ angular.module('ParkingSpaceMobile.services', [])
             });
         };
     })
+
+    .service('paymentService', function ($rootScope, $http, errorHandlingService) {
+        let _this = this;
+
+        _this.generateToken = function (clbk) {
+            $http.get('/users/client_token.json').then(function (resp) {
+                if (clbk) {
+                    let data = resp.data;
+                    clbk(data.token);
+                }
+            }, function (err) {
+                errorHandlingService.handle(err.data, err.status);
+            })
+        };
+
+        _this.registerPayment = function (payload, spaceId, offerId, clbk, errClbk) {
+            $http.post('/parking_spaces/' + spaceId + '/proposals/' + offerId + '/pay.json', {nonce: 'fake-processor-declined-visa-nonce'}).then(function (resp) {
+                if (clbk) {
+                    let data = resp.data;
+                    clbk(data);
+                }
+            }, function (err) {
+                errorHandlingService.handle(err.data, err.status);
+                if (errClbk){
+                    errClbk(err);
+                }
+            })
+        }
+    })
+
 
     .service('notificationService', function ($rootScope, $http, $q, ENV, $state) {
 

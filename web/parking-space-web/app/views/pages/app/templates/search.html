@@ -4,11 +4,22 @@
 
     <ui-view name="help"></ui-view>
 
+
+    <search-center-icon shown="placingSpot"></search-center-icon>
+
     <button class="center-btn btn btn-info" ng-click="centerMap()">
         <i class="fa fa-crosshairs"></i>
     </button>
 
-    <button class="add-btn" ng-click="showPostSpace()">
-        <i class="fa fa-plus" aria-hidden="true"></i> Adaugă
+    <button class="add-btn" ng-click="showPostSpace()" ng-class="{wide: placingSpot}">
+       <span ng-hide="placingSpot">
+           <i class="fa fa-plus"></i> Adaugă
+       </span>
+        <span ng-show="placingSpot">
+            Continuă
+            <i class="fa fa-arrow-right"></i>
+        </span>
     </button>
+
+
 </div>

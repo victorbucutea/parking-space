@@ -16,22 +16,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
             let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             map.setCenter(pos);
         });
-
-        // Create the search box and link it to the UI element.
-
-    };
-
-    $scope.selectNewPlace = function (places) {
-        if (!places || !places[0])
-            return;
-
-        $rootScope.map.setCenter(places[0].geometry.location);
-
-    };
-
-    window.notify = function (area) {
-        notificationService.showNotifications({message: "new msg", area: area, msgcnt: 1, parking_space: 18});
-        $rootScope.$apply();
     };
 
 
@@ -42,7 +26,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
         if (!offerNotifs && !parkingSpaceNotifs) {
             return false;
         }
-
 
         let activeOfferNotif = offerNotifs.find(function (offer) {
             return offer.active;

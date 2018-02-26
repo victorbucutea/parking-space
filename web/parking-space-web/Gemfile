@@ -23,6 +23,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'devise'
 gem 'rest-client'
 gem 'json'
+gem 'swagger_client_go_park'
 
 gem 'high_voltage', '~> 3.0.0'
 
@@ -38,6 +39,7 @@ gem 'high_voltage', '~> 3.0.0'
 # gem 'aws-sdk', '~> 2'
 
 gem 'pushmeup'
+gem "braintree", "~> 2.83.0"
 
 
 # Use debugger

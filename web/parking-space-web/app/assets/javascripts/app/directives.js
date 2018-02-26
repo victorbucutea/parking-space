@@ -14,14 +14,15 @@ angular.module('ParkingSpaceMobile.directives', [])
                 function initialize() {
                     let mapOptions = {
                         center: new google.maps.LatLng(44.412, 26.113),
-                        zoom: 15,
+                        zoom: 16,
                         minZoom: 15,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         streetViewControl: false,
                         scaleControl: false,
                         rotateControl: false,
                         disableDefaultUI: true,
-                        gestureHandling: 'greedy'
+                        gestureHandling: 'greedy',
+                        clickableIcons: false
                     };
                     let map = new google.maps.Map($element[0], mapOptions);
                     let overlay = new google.maps.OverlayView();
@@ -37,6 +38,128 @@ angular.module('ParkingSpaceMobile.directives', [])
                 initialize();
             }
         };
+    })
+
+    .directive('payment', function (paymentService, $rootScope, $state) {
+        return {
+            restrict: 'E',
+            scope: {
+                offer: '=',
+                selectedSpace: '='
+            },
+            template:
+            '<div class="ps-modal" style="display: none">' +
+            '    <div class="dropin-wrapper p-3 animated zoomIn ">' +
+            '      <div class="dropin-header">' +
+            '      </div>' +
+            '      <div class="dropin-container">' +
+            '      </div>' +
+            '      <div class="dropin-footer my-4 text-center mark small">' +
+            '        Go Park nu utilizează și nu stochează date financiare.<br/> Procesul de plată este gestionat și securizat prin <br/>' +
+            '        <a href="https://www.braintreegateway.com/merchants/z9m7pkx8dz7jsgq4/verified" target="_blank">' +
+            '          <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-dark.png" width="159" height="25" border="0">' +
+            '        </a>' +
+            '      </div>' +
+            '      <button class="btn btn-lg btn-primary btn-block start-payment" ng-disabled="loading">' +
+            '        <i class="fa fa-spinner fa-spin" ng-show="loading"></i>' +
+            '        <i class="fa fa-credit-card"></i> Plătește' +
+            '      </button>' +
+            '    </div>' +
+            '  </div>',
+            link: function ($scope, elm, attrs) {
+
+                $rootScope.$on('$stateChangeStart',
+                    function (event, toState, toParams, fromState, fromParams, options) {
+                        if (toState.name.indexOf('.pay') !== -1) {
+                            elm.find('.ps-modal').show();
+                        } else {
+                            elm.find('.ps-modal').hide();
+
+                        }
+                    });
+
+                $('.start-payment').hide();
+
+                paymentService.generateToken(function (token) {
+                    let container = $(elm).find('.dropin-container').get(0);
+                    let button = $(elm).find('.start-payment').get(0);
+                    $scope.loading = false;
+
+                    braintree.dropin.create({
+                        authorization: token,
+                        container: container,
+                        translations: {
+                            payingWith: 'Metodă plată: {{paymentSource}}',
+                            chooseAnotherWayToPay: 'Alege altă metodă de plată',
+                            chooseAWayToPay: 'Alege o metodă de plată',
+                            otherWaysToPay: 'Alte metode de plată',
+                            cardVerification: 'Verificare card',
+                            // Errors
+                            fieldEmptyForCvv: 'Vă rugăm completați CVV.',
+                            fieldEmptyForExpirationDate: 'Vă rugăm completați data expirării.',
+                            fieldEmptyForCardholderName: 'Vă rugăm completați numele deținatorului.',
+                            fieldEmptyForNumber: 'Va rugăm completați numarul cardului.',
+                            fieldEmptyForPostalCode: 'Va rugăm completați codul poștal.',
+                            fieldInvalidForCvv: 'Codul de securitate este invalid.',
+                            fieldInvalidForExpirationDate: 'Data expirării este invalidă.',
+                            fieldInvalidForNumber: 'Numarul cardului este invalid.',
+                            fieldInvalidForPostalCode: 'Codul poștal este invalid.',
+                            fieldTooLongForCardholderName: 'Numele deținătorului nu poate depașii 256 caractere.',
+                            genericError: 'A apărut o eroare in procesare.',
+                            hostedFieldsFailedTokenizationError: 'Vă rugăm verificați informațiile si încercați din nou.',
+                            hostedFieldsTokenizationCvvVerificationFailedError: 'Verificarea cardului a eșuat. Verificați informațiile și încercați din nou.',
+                            hostedFieldsTokenizationNetworkErrorError: 'Eroare de rețea. Vă rugăm incercați din nou.',
+                            hostedFieldsFieldsInvalidError: 'Vă rugăm verificați informațiile si încercați din nou.',
+                            paypalAccountTokenizationFailedError: 'A aparut o eroare in adaugarea contului de PayPal. Încercați din nou.',
+                            paypalFlowFailedError: 'A apărut o eroare la conectarea cu PayPal. Încercați din nou.',
+                            paypalTokenizationRequestActiveError: 'Autorizarea plății prin PayPal este deja pornită.',
+                            applePayTokenizationError: 'O eroare de rețea a aparut la procesarea Apple Pay. Încercați din nou.',
+                            applePayActiveCardError: 'Add a supported card to your Apple Pay wallet.',
+                            unsupportedCardTypeError: 'Acest tip de card nu este suportat. Vă rugăm folosiți alt card.',
+                            // Card form
+                            cardholderNameLabel: 'Nume deținător',
+                            cardholderNamePlaceholder: 'Nume deținător',
+                            cardNumberLabel: 'Număr card',
+                            expirationDateLabel: 'Dată expirare',
+                            postalCodeLabel: 'Cod poștal',
+                            payWithCard: 'Plată cu cardul',
+                            endingIn: 'Ultimele cifre ••{{lastTwoCardDigits}}',
+                        },
+                        paypal: {
+                            flow: 'vault'
+                        }
+                    }, function (createErr, instance) {
+                        $('.start-payment').show();
+                        button.addEventListener('click', function () {
+                            $scope.loading = true;
+                            if (!$scope.$$phase)
+                                $scope.$apply();
+
+                            instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+                                if (requestPaymentMethodErr) {
+                                    // No payment method is available.
+                                    // An appropriate error will be shown in the UI.
+                                    alert('Eroare in procesare:' + requestPaymentMethodErr);
+                                    return;
+                                }
+
+                                paymentService.registerPayment(payload, $scope.selectedSpace.id, $scope.offer.id, function (respData) {
+                                    $scope.loading = false;
+                                    $scope.offer = respData;
+                                    $state.go('^');
+                                    $rootScope.$emit('http.notif', 'Ați achitat cu succes rezervarea. Proprietarul a fost notificat.')
+                                }, function(errResp){
+                                    $scope.loading = false;
+                                    $state.go('^');
+                                });
+                            });
+                        });
+                    });
+
+
+                });
+            }
+        }
     })
 
     .directive('placesAutocomplete', function (geolocationService) {
@@ -91,13 +214,34 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('searchCenterIcon', function () {
+    .directive('searchCenterIcon', function (geocoderService, $rootScope) {
         return {
+            scope: {
+                shown: '='
+            },
             restrict: 'E',
-            template: '<div id="searchCenterIcon" class="search-center-icon"></div>',
+            template: '<div ' +
+            '               ng-show="shown"' +
+            '               id="searchCenterIcon" ' +
+            '               class="search-center-icon animated bounce"' +
+            '               </div>',
             link: function ($scope, $element, $attr) {
-                var height = $element.height();
-                $element.find('.search-center-icon').css('margin-top', height / 2);
+
+                let start = google.maps.event.addListener($rootScope.map, 'dragstart', () => {
+                    $('#searchCenterIcon').addClass('shadow');
+                });
+                let end = google.maps.event.addListener($rootScope.map, 'dragend', () => {
+                    $('#searchCenterIcon').removeClass('shadow');
+
+                });
+
+                $scope.$watch('shown', (newVal) => {
+                    if (newVal === false) {
+                        google.maps.event.removeListener(start);
+                        google.maps.event.removeListener(end);
+                    }
+                })
+
             }
         }
     })
@@ -105,23 +249,88 @@ angular.module('ParkingSpaceMobile.directives', [])
     .directive('parkingSpotInfoBox', function (ENV) {
         return {
             restrict: 'E',
-            template: '<div class="parking-spot-details p-0 p-md-2" >' +
-            '    <div ng-show="space">' +
-            '        <h2><i class="fa fa-car"></i> {{space.title}}</h2>' +
-            '        <p>{{space.address_line_1}} ' +
-            '               <br  />' +
-            '           {{space.address_line_2}} ' +
-            '        </p>' +
-            '        <h1>' +
-            '            {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
-            '            <currency val="space.currency"></currency>' +
-            '               / h' +
-            '        </h1>' +
-            '    </div>' +
-            '</div>',
+            template:
+            '<div class="parking-spot-details p-0 p-md-2 d-flex ">' +
+            '          <div ng-click="showFullImage=true" class="d-flex">' +
+            '            <cl-image public-id="{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '            <cl-image public-id="{{space.file2}}" ng-show="space.file2" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '          </div>' +
+            '          <div class="ml-3" >' +
+            '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
+            '              <p>{{space.address_line_1}} ' +
+            '                     <br  />' +
+            '                 {{space.address_line_2}} ' +
+            '              </p>' +
+            '              <h1>' +
+            '                  {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
+            '                  <currency val="space.currency"></currency> / h' +
+            '              </h1>' +
+            '          </div>' +
+            '</div>' +
+            ' <div class="ps-modal p-1 " ng-show="showFullImage" ng-init="showFullImage=false">' +
+            '    <cl-image public-id="{{space.file1}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
+            '    <cl-image public-id="{{space.file2}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
+            '    <cl-image public-id="{{space.file3}}" class="img-fluid mb-1"></cl-image>' +
+            '    <span>{{space.description}}</span>' +
+            ' </div>',
             scope: {
                 space: '=',
-                hideThumbnail: '@'
+                thumbnailModal: '='
+            },
+            link: function ($scope, elm) {
+
+                $(elm).find('.parking-spot-details').click(evt => {
+                    let isRoot = $(evt.currentTarget).hasClass('parking-spot-details');
+                    if (isRoot && !$scope.thumbnailModal) {
+                        $scope.showFullImage = true;
+                        $scope.$evalAsync();
+                    }
+                });
+
+                $(elm).find('.ps-modal').click((evt) => {
+                    evt.stopPropagation();
+                    $scope.showFullImage = false;
+                    $scope.$evalAsync();
+                });
+
+            }
+        }
+    })
+
+    .directive('smallParkingSpotInfoBox', function () {
+        return {
+            restrict: 'E',
+            template: ' ' +
+            '<div class="space-summary-content py-2 d-flex d-sm-none align-items-center" ng-click="showFullImage = true">' +
+            '          <div class="d-flex">' +
+            '            <cl-image public-id="{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '            <cl-image public-id="{{space.file2}}" ng-show="space.file2" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '          </div>' +
+            '          <div class="ml-3">' +
+            '            <h4 class="text-truncate">{{space.price | units }}.' +
+            '              <small>{{space.price | subunits}}</small>' +
+            '              {{space.currency}}/h' +
+            '            </h4>' +
+            '            <p class="text-truncate">{{space.address_line_1}}</p>' +
+            '            <u class="text-secondary">Mai multe ...</u>' +
+            '          </div>' +
+            '</div>' +
+            ' <div class="ps-modal p-1 " ng-show="showFullImage">' +
+            '    <cl-image public-id="{{space.file1}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
+            '    <cl-image public-id="{{space.file2}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
+            '    <cl-image public-id="{{space.file3}}" class="img-fluid mb-1"></cl-image>' +
+            '    <span>{{space.description}}</span>' +
+            ' </div>',
+            scope: {
+                space: '='
+            },
+            link: function ($scope, elm) {
+
+                $(elm).find('.ps-modal').click((evt) => {
+                    evt.stopPropagation();
+                    $scope.showFullImage = false;
+                    $scope.$evalAsync();
+                })
             }
         }
     })
@@ -197,18 +406,20 @@ angular.module('ParkingSpaceMobile.directives', [])
                 imageFile: '=',
                 label: '=',
                 optional: '=',
-                control: '='
-
+                control: '=',
+                uploadedFile: '='
             },
             template:
-            ' <div class="parking-sign pt-2 d-flex flex-column" ' +
+            ' ' +
+            '<div class="parking-sign justify-content-center d-flex flex-column" ' +
             '       ngf-drop ' +
             '       ngf-select ' +
             '       ng-class="{secondary: optional}" ' +
-            '       ng-hide="imageFile"' +
+            '       ng-hide="imageFile || uploadedFile"' +
             '       ng-model="imageFile" ' +
             '       accept="image/*"' +
-            '       ngf-max-size="2MB">' +
+            '       ngf-max-size="4MB"' +
+            '       ngf-model-invalid="invalidFile">' +
             '   <i class="fa fa-camera fa-3x"></i>' +
             '   <i class="text" ng-bind="label"></i>' +
             '</div>' +
@@ -216,32 +427,44 @@ angular.module('ParkingSpaceMobile.directives', [])
             '<div ngf-thumbnail="imageFile" ' +
             '       ngf-as-background="true" ' +
             '       ng-click="showThumbnail=true"' +
-            '       class="parking-sign"></div>' +
+            '       class="parking-sign">' +
+            '</div>' +
+
+            '<div class="parking-sign " ng-show="uploadedFile && !imageFile" style="overflow: auto">' +
+            '   <cl-image public-id="{{uploadedFile}}" ' +
+            '       style="max-width:100%;"' +
+            '       ng-click="showThumbnail=true">' +
+            '   </cl-image>' +
+            '</div>' +
 
             '<div id="uploadProgressCont" class="progress-container">' +
             '   <div id="uploadProgressBar" ' +
             '        style="width: {{progress}}%" ' +
             '        class="progress-bar"' +
             '        ng-init="progress=0">' +
+            '   </div>' +
             '</div>' +
+            ' <div class="invalid-feedback" style="display:block" ng-show="invalidFile.$error">' +
+            ' Dim. nu poate fi mai mare de 4MB</div> ' +
             '</div>' +
-
-            '<button class="btn btn-sm btn-link btn-change-photo" ' +
+            '<button class="btn btn-link btn-change-photo" ' +
             '        ng-show="imageFile"' +
-            '        ngf-select ' +
-            '        ng-model="imageFile">Schimbă</button>' +
+            '        ng-click="imageFile = null">Șterge</button>' +
+
+            '<button class="btn btn-link btn-change-photo" ' +
+            '        ng-show="uploadedFile"' +
+            '        ng-click="uploadedFile = null">Șterge</button>' +
 
             '<div class="ps-modal p-3" ng-show="showThumbnail">' +
-            '   <img ngf-thumbnail="imageFile" class="img-fluid">' +
+            '   <img  class="img-fluid animated zoomIn" ngf-thumbnail="imageFile" >' +
+            '   <cl-image public-id="{{uploadedFile}}" ' +
+            '             class="img-fluid">' +
+            '   </cl-image>' +
             '</div>',
 
             controller: function ($scope, $rootScope, Upload, $timeout, cloudinary) {
                 if (!$scope.control)
                     $scope.control = {};
-
-                $scope.$watch('imageFile',function(newVal){
-                    console.log(newVal);
-                });
 
                 $scope.control.uploadPic = function (file, successClbk, errClbk) {
                     if (!file) return;
@@ -255,25 +478,22 @@ angular.module('ParkingSpaceMobile.directives', [])
                         }
                     });
 
+
                     upload.then(function (response) {
-
-                        if (successClbk)
-                            successClbk(response);
                     }, function (response) {
-
                         if (response.status > 0) {
                             let msg = response.status + ': ' + response.data;
-                            $rootScope.emit('http.error', ' Error while uploading :' + msg);
+                            $rootScope.emit('http.error', ' Error while uploading image:' + msg);
                         }
-                        if (errClbk)
-                            errClbk(response)
                     }, function (evt) {
                         // Math.min is to fix IE which reports 200% sometimes
                         let progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
                         $scope.progress = progress;
                     });
-                };
 
+
+                    return upload;
+                };
 
             },
             link: function ($scope, elm) {
@@ -281,7 +501,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                 $(elm).find('.ps-modal').click((evt) => {
                     evt.stopPropagation();
                     $scope.showThumbnail = false;
-                    $scope.$apply();
+                    $scope.$evalAsync();
                 })
             }
         }
@@ -332,114 +552,95 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
+
     .directive('dateTime', function () {
-        return function ($scope, element, attrs) {
-            let elm = $(element);
-            let model = attrs.ngDateModel.split(".");
+        let template = '<input ' +
+            '       type="datetime-local" ' +
+            '       class="form-control"' +
+            '       required>';
 
-            let moment2 = moment();
-            let rangePicker = elm.daterangepicker({
-                "singleDatePicker": true,
-                "minDate": moment2,
-                "autoApply": true,
-                "timePicker": true,
-                "timePicker24Hour": true,
-                "timePickerIncrement": 15,
-                "applyClass": "apply",
-                "cancelClass": "cancel",
-                "locale": {
-                    "format": "DD MMM [(h)] HH:mm",
-                    "separator": " până la ",
-                    "applyLabel": "Ok",
-                    "cancelLabel": "Anulează",
-                    "fromLabel": "De la",
-                    "toLabel": "Până la",
-                    "customRangeLabel": "Custom",
-                    "weekLabel": "S",
-                    "daysOfWeek": [
-                        "Du",
-                        "Lu",
-                        "Ma",
-                        "Mi",
-                        "Jo",
-                        "Vi",
-                        "Sâ"
-                    ],
-                    "monthNames": [
-                        "Ianuarie",
-                        "Februarie",
-                        "Martie",
-                        "Aprilie",
-                        "Mai",
-                        "Iunie",
-                        "Iulie",
-                        "August",
-                        "Septembrie",
-                        "Octombrie",
-                        "Noiembrie",
-                        "Decembrie"
-                    ]
-                },
-
-            }, function (start, end, label) {
-                if (model.length === 1) {
-                    $scope[model[0]] = start;
-                } else {
-                    $scope[model[0]][model[1]] = start.toDate();
-                }
-                elm.removeClass('is-invalid');
-                if (!$scope.$$phase)
-                    $scope.$apply();
-
-            });
-
-            elm.on('show.daterangepicker', function (ev, picker) {
-                let winHeight = $(window).height();
-                let pickerHeight = picker.container.height();
-                let pickerOffset = picker.container.offset().top;
-                let alreadyScrolled = $(window).scrollTop();
-                let scrollAmount = pickerOffset + pickerHeight - winHeight;
-
-                if (scrollAmount - alreadyScrolled > 0) {
-                    $('html, body').animate({
-                        scrollTop: scrollAmount + 10
-                    }, 200);
-                }
-            });
-
-            if (attrs.day !== undefined) {
-                moment2 = moment2.add(1, 'd');
-            }
-
-            elm.data('daterangepicker').setStartDate(moment2);
-            elm.data('daterangepicker').setEndDate(moment2);
-
-            if (model.length === 1) {
-                $scope[model[0]] = moment2.toDate();
-            } else {
-                if ($scope[model[0]])
-                    $scope[model[0]][model[1]] = moment2.toDate();
-            }
-
-            $scope.$watch(model[0], newVal => {
-                if (!newVal) {
-                    return;
-                }
-                if (model[1]) {
-                    moment2 = newVal[model[1]];
-                } else {
-                    moment2 = newVal;
-                }
-
-                elm.data('daterangepicker').setStartDate(moment2);
-                elm.data('daterangepicker').setEndDate(moment2);
-
-            });
-
-            if (!$scope.$$phase)
-                $scope.$apply();
-
-
+        if (isMobileOrTablet()) {
+            template = '<input ' +
+                '       type="datetime-local" ' +
+                '       class="form-control"' +
+                '       min="' + moment().startOf('h').format('YYYY-MM-DD[T]HH:mm:ss.ms') + '"' +
+                '       ng-model="dateModel"' +
+                '       required>';
         }
+        return {
+            restrict: 'E',
+            scope: {
+                dateModel: '=',
+                day: '='
+            },
+            compile: function (element, attrs) {
+                return {
+                    post: function ($scope, elm) {
+                        if (isMobileOrTablet()) {
+                            return;
+                        }
+                        elm = $(elm);
 
+                        $scope.$watch('dateModel', function (newVal) {
+                            elm.data('daterangepicker').setStartDate(moment(newVal));
+                            elm.data('daterangepicker').setEndDate(moment(newVal));
+
+                        });
+
+                        elm.daterangepicker({
+                            "singleDatePicker": true,
+                            "minDate": moment().startOf('h'),
+                            "autoApply": true,
+                            "timePicker": true,
+                            "timePicker24Hour": true,
+                            "timePickerIncrement": 15,
+                            "applyClass": "apply",
+                            "cancelClass": "cancel",
+                            "locale": {
+                                "format": "DD MMM [(h)] HH:mm",
+                                "separator": " până la ",
+                                "applyLabel": "Ok",
+                                "cancelLabel": "Anulează",
+                                "fromLabel": "De la",
+                                "toLabel": "Până la",
+                                "customRangeLabel": "Custom",
+                                "weekLabel": "S",
+                                "daysOfWeek": [
+                                    "Du",
+                                    "Lu",
+                                    "Ma",
+                                    "Mi",
+                                    "Jo",
+                                    "Vi",
+                                    "Sâ"
+                                ],
+                                "monthNames": [
+                                    "Ianuarie",
+                                    "Februarie",
+                                    "Martie",
+                                    "Aprilie",
+                                    "Mai",
+                                    "Iunie",
+                                    "Iulie",
+                                    "August",
+                                    "Septembrie",
+                                    "Octombrie",
+                                    "Noiembrie",
+                                    "Decembrie"
+                                ]
+                            },
+
+                        }, function (start, end, label) {
+                            $scope.dateModel = start.toDate();
+                            $scope.$evalAsync();
+                            elm.removeClass('is-invalid');
+                        });
+
+                    }
+                }
+            },
+            replace: true,
+            template: template
+
+        };
     });

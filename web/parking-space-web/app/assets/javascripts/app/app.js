@@ -4,6 +4,7 @@ angular.module('ParkingSpaceMobile.controllers', []);
 angular.module('ParkingSpaceMobile', [
     'config',
     'ezfb',
+    'ngSanitize',
     'cleave.js',
     'ngFileUpload',
     'ui.router',
@@ -78,9 +79,6 @@ angular.module('ParkingSpaceMobile', [
                     'content': {
                         templateUrl: "templates/login.html"
                     }
-                },
-                params: {
-                    hide_blanket: false
                 }
             })
             .state('home.register', {
@@ -91,7 +89,6 @@ angular.module('ParkingSpaceMobile', [
                     }
                 },
                 params: {
-                    hide_blanket: false,
                     fromFb: false,
                     email: null,
                     firstName: null,
@@ -126,13 +123,24 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
+            .state('home.map.search.confirm-phone', {
+                url: '/confirm-phone',
+                views: {
+                    'place-bid': {
+                        templateUrl: "templates/confirm-phone.html"
+                    }
+                }
+            })
             .state('home.map.search.post-bids', {
-                url: '/post-bid',
+                url: '/post-offer',
                 views: {
                     'place-bid': {
                         templateUrl: "templates/post-offer.html"
                     }
                 }
+            })
+            .state('home.map.search.post-bids.pay', {
+                url: '/pay'
             })
             .state('home.map.search.review-bids', {
                 url: '/review-bid',
@@ -164,6 +172,17 @@ angular.module('ParkingSpaceMobile', [
                     'action': {
                         templateUrl: "templates/post-space.html"
                     }
+                }
+            })
+            .state('home.map.search.myaccount', {
+                url: '/myaccount',
+                views: {
+                    'place-bid': {
+                        templateUrl: "templates/register.html"
+                    }
+                },
+                params: {
+                    inside: true
                 }
             })
             .state('home.myposts', {
@@ -274,8 +293,27 @@ angular.module('ParkingSpaceMobile', [
                 }
             };
         });
+
+        $httpProvider.useApplyAsync(true);
     })
 
+    .config(function () {
+        window.isMobileOrTablet = function () {
+            if (navigator.userAgent.match(/Android/i)
+                || navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i)
+                || navigator.userAgent.match(/BlackBerry/i)
+                || navigator.userAgent.match(/Windows Phone/i)
+            ) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
+    })
     .constant('currencies', [
         {
             name: 'Usd',
@@ -329,7 +367,7 @@ angular.module('ParkingSpaceMobile', [
         }
     ])
 
-    .constant('uom`', {
+    .constant('uom', {
         metric: {
             name: 'meters',
             abr: 'm'
@@ -338,6 +376,13 @@ angular.module('ParkingSpaceMobile', [
             name: 'feets',
             abr: 'ft'
         }
+    })
+
+    .constant('df', function (dt) {
+        return moment(dt).format("YYYY-MM-DD[T]HH:mm:ss.SSS[Z]");
+    })
+    .constant('rdf', function (dt) {
+        return moment(dt, "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]").toDate();
     })
 ;
 

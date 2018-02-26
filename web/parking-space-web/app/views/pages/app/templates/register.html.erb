@@ -1,16 +1,17 @@
-<div class="register" ng-controller="RegisterCtrl">
-  <div class="container">
+<div class="register" ng-class="{'ps-modal p-3': inside}" ng-controller="RegisterCtrl">
+  <div class="container" ng-class="{'animated zoomIn': inside}">
     <div class="text-center p-4 p-md-5">
       <img width="200" src="<%= image_path 'logo_sm.png' %>">
     </div>
 
-    <div id="register" class="row pt-4 pt-md-5 justify-content-center">
+    <div id="register" class="row pt-4 pt-md-5 justify-content-center" ng-class="{'py-4':inside}">
       <div class="col-11 col-sm-7 col-md-6 col-lg-4">
         <form id="registerForm" name="registerForm">
 
-          <h3 ng-hide="fromFb" class="text-center"> Avem nevoie de câteva detalii </h3>
-          <h3 ng-show="fromFb" class="text-center"> Doar câteva detalii {{firstName}} </h3>
-
+          <div ng-if="::!inside">
+            <h3 ng-hide="fromFb" class="text-center"> Avem nevoie de câteva detalii </h3>
+            <h3 ng-show="fromFb" class="text-center"> Doar câteva detalii {{firstName}} </h3>
+          </div>
 
           <div class="form-group">
             <div class="input-group mt-3 input-group-lg">
@@ -20,19 +21,27 @@
               {{ selectedCountry.prefix || '+40'}}
             </span>
               <input class="phone-number form-control" type="text" id="phoneNo"
+                     autocorrect="off" autocapitalize="none"
                      placeholder="Nr. mobil" ng-model="phoneNumber" name="phoneNumber"
                      required minlength="5"
                      cleave="options.phoneNumber"
                      pattern="[0-9]{3}[\. ]*[0-9]{3}[\. ]*[0-9]{3}"
                      data-toggle="tooltip"
                      data-placement="bottom"
+                     ng-readonly="::inside"
                      title="(e.g. 727 333 444)"/>
+            </div>
+            <div ng-if="::inside" class="text-center">
+              <button class="btn btn-info btn-sm mt-2" ui-sref="home.map.search.confirm-phone">
+                <i class="fa fa-spinner loading-spinner fa-spin"></i>
+                Schimbă nr. telefon
+              </button>
+              <hr/>
             </div>
           </div>
 
 
           <div class="form-group">
-
             <input type="text" class="form-control form-control-lg"
                    placeholder="Nr. înmatriculare"
                    ng-model="licensePlate" name="licensePlate"
@@ -41,14 +50,13 @@
                    ng-blur="repairLicenseFormat()"
                    data-toggle="tooltip"
                    data-placement="bottom"
-                   title="e.g. B-10-INM (Delimitat cu cratimă)"/>
-
+                   title="(e.g. B 10 INM) "/>
           </div>
 
           <div ng-hide="fromFb">
             <div class="form-group">
-              <input type="text" class="form-control form-control-lg"
-                     placeholder="Email" ng-model="email" name="email" required minlength="5"
+              <input type="email" class="form-control form-control-lg"
+                     placeholder="Email" ng-disabled="::inside" ng-model="email" name="email" required minlength="5"
                      pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"/>
             </div>
 
@@ -56,9 +64,18 @@
               <input type="text" class="form-control form-control-lg" placeholder="Nume și prenume"
                      ng-model="firstName" name="firstName" required
                      minlength="5"/>
+              <div ng-if="::inside" class="text-right">
+                <button class="btn btn-link btn-sm mb-2 " ng-click="recoverPassword()">
+                  <i class="fa fa-spinner loading-spinner fa-spin"></i>
+                  Resetează parola
+                </button>
+              </div>
             </div>
 
-            <div class="form-group">
+
+
+
+            <div class="form-group" ng-if="::!inside">
               <input type="password" class="form-control form-control-lg" placeholder="Parolă"
                      ng-model="password" name="password"
                      ng-required="!fromFb"
@@ -68,12 +85,18 @@
           </div>
 
           <div class="text-center d-flex justify-content-around">
-            <button class="btn btn-primary btn-lg" ng-click="register()">
+            <button ng-if="::!inside" class="btn btn-primary btn-lg" ng-click="register()">
               <i class="fa fa-spinner loading-spinner fa-spin"></i>
               Înregistrare
             </button>
 
-            <button class="btn btn-lg btn-secondary" ui-sref="home.login">
+            <button ng-if="::inside" class="btn btn-primary btn-lg" ng-click="register()">
+              <i class="fa fa-spinner loading-spinner fa-spin"></i>
+              Salvează
+            </button>
+
+
+            <button class="btn btn-lg btn-secondary" ng-click="back()">
               <i class="fa fa-spinner loading-spinner fa-spin"></i>
               Înapoi
             </button>

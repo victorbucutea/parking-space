@@ -10,4 +10,6 @@ angular.module('ParkingSpace.controllers')
         $scope.show = function(item) {
             $('#'+item).slideToggle(200);
         }
+
+
     });

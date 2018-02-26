@@ -6,8 +6,12 @@ Rails.application.routes.draw do
 
   #provide a screen to confirm the password reset
   devise_scope :user do
+    get "/users/client_token" => "registrations#client_token", :as => "client_token"
+    get "/users/create_payment_method" => "registrations#create_payment_method", :as => "create_payment_method"
     get "/users/password/done" => "passwords#done", :as => "done_user_password"
     post "/users/sign_in_fb" => "sessions#sign_in_fb", :as => "sign_in_fb"
+    post "/users/validate_code" => "registrations#validate_code", :as => "validate_code"
+    post "/users/send_new_code" => "registrations#send_new_code", :as => "send_new_code"
   end
 
   post '/notif' => 'notifications#notif', :as => 'notif'
@@ -21,10 +25,6 @@ Rails.application.routes.draw do
     get 'phone_number'
 
     collection do
-      get 'range'
-    end
-
-    collection do
       get 'myspaces'
     end
 
@@ -33,8 +33,10 @@ Rails.application.routes.draw do
     end
 
     resources :proposals do
+      post 'pay'
       post 'reject'
       post 'approve'
+      post 'cancel'
       resources :messages
     end
   end

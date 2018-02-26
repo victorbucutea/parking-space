@@ -18,45 +18,9 @@ class ParkingSpacesController < ApplicationController
     end
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
-    @parking_spaces = ParkingSpace.not_expired.active.within_boundaries(query_attrs).includes(:proposals)
-  end
-
-  # GET /parking_spaces/range
-  # GET /parking_spaces/range.json
-  def range
-
-    #TODO move validation to model
-    lat = !params[:lat] || params[:lat].empty? ? nil : params[:lat]
-    lon = !params[:lon] || params[:lon].empty? ? nil : params[:lon]
-    range = !params[:range] || params[:range].empty? ? nil : params[:range]
-
-
-    unless lat && lon && range
-      render json: {Error: {general: "Missing parameters 'lat', 'lon' and 'range'"}}, status: :unprocessable_entity
-      return
-    end
-
-    if range.to_i > SysParams.instance.get_i('max_search_radius')
-      render json: {Error: {general: "Cannot have a range larger than 1200"}}, status: :unprocessable_entity
-      return
-    end
-
-    cur_lat = lat.to_f
-    cur_long = lon.to_f
-    cur_range = range.to_f
-
-    lat_range_in_deg = DegreeToMeters.from_meters_to_lat_deg cur_range
-    lat_max = cur_lat + lat_range_in_deg
-    lat_min = cur_lat - lat_range_in_deg
-
-    long_range_in_deg = DegreeToMeters.from_meters_to_long_deg cur_range
-    lon_max = cur_long + long_range_in_deg
-    lon_min = cur_long - long_range_in_deg
-
-    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
-    # add long term
-    @parking_spaces = ParkingSpace.not_expired.active.within_boundaries(query_attrs).includes(:proposals)
-
+    @parking_spaces = ParkingSpace.not_expired.active
+                          .includes(:proposals)
+                          .within_boundaries(query_attrs)
   end
 
 
@@ -79,7 +43,9 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    @parking_spaces = ParkingSpace.not_expired.active.includes(proposals: [:messages]).where({deviceid: deviceid})
+    @parking_spaces = ParkingSpace.not_expired.active
+                          .includes(:proposals)
+                          .where({deviceid: deviceid})
 
     @parking_spaces.each do |space|
       space.owner = User.find_by_device_id deviceid
@@ -98,7 +64,9 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    @parking_spaces = ParkingSpace.not_expired.active.includes(proposals: [:messages]).where(proposals: {deviceid: deviceid})
+    @parking_spaces = ParkingSpace.not_expired.active
+                          .includes(:proposals)
+                          .where(proposals: {deviceid: deviceid})
 
     @parking_spaces.each do |space|
       space.owner = User.find_by_device_id space.deviceid
@@ -118,7 +86,7 @@ class ParkingSpacesController < ApplicationController
       @parking_space.proposals.update_all(read: true)
     end
 
-    @parking_space = ParkingSpace.includes(proposals: [:messages]).find(parking_space_id)
+    @parking_space = ParkingSpace.includes(:proposals).find(parking_space_id)
 
 
     respond_to do |format|
@@ -176,7 +144,11 @@ class ParkingSpacesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_parking_space
-    @parking_space = ParkingSpace.find(params[:id])
+    if params[:id].nil?
+      @parking_space = ParkingSpace.find(params[:parking_space_id])
+    else
+      @parking_space = ParkingSpace.find(params[:id])
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -188,6 +160,7 @@ class ParkingSpacesController < ApplicationController
                                           :address_line_1, :address_line_2,
                                           :space_availability_start, :space_availability_stop,
                                           :file1, :file2, :file3,
+                                          :daily_start, :daily_stop, :weekly_schedule,
                                           :description, :created_at)
   end
 end

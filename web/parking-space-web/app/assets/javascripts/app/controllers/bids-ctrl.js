@@ -3,168 +3,132 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function ($rootScope, notificationService, $scope, $state, offerService, parkingSpaceService, replaceById) {
+angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function ($rootScope, paymentService, $scope, $state, $stateParams, offerService, parkingSpaceService, replaceById) {
 
-        $scope.bid = {};
+    $scope.bid = {};
 
-        if ($scope.selectedSpace) {
-            $scope.bid.bid_price = $scope.selectedSpace.price;
-            $scope.bid.bid_currency = $scope.selectedSpace.currency;
-            let offerPresent = false;
-            let offerAccepted = false;
-            $scope.selectedSpace.offers.forEach((offer) => {
-                if (offer.owner_is_current_user) {
-                    offerPresent = true;
-                    $scope.bid = offer;
-                    if (offer.approved) {
-                        offerAccepted = true;
-                    }
-                }
-            });
+    if ($scope.selectedSpace) {
+        $scope.bid.bid_price = $scope.selectedSpace.price;
+        $scope.bid.bid_currency = $scope.selectedSpace.currency;
+        $scope.bid.start_date = new Date();
+        $scope.bid.end_date = moment().add(1, 'd').toDate();
+        let offerAccepted = false;
+        $scope.selectedSpace.userOffers = $scope.selectedSpace.offers.filter(offer => {
+            return offer.owner_is_current_user;
+        });
 
-            if (offerPresent && offerAccepted) {
-                $rootScope.$emit('http.notif', 'Aveți deja o ofertă acceptată pentru acest loc');
-            }
+        $scope.selectedSpace.userOffers.forEach((offer) => {
+            $scope.hideRentForm = true;
+        });
 
-            if (offerPresent && !offerAccepted) {
-                $rootScope.$emit('http.notif', 'Aveți deja o ofertă propusă pentru acest loc');
-            }
-
-            if (offerPresent) {
-                $scope.offerPresent = true;
-            }
-
+        if (offerAccepted) {
+            $rootScope.$emit('http.notif', 'Aveți deja o rezervare acceptată pentru acest loc');
         }
 
-        $scope.offerDuration = function (offer) {
-            if (!offer && !offer.start_date && !offer.end_date) return;
-            return moment(offer.start_date).to(offer.end_date, true);
-        };
+    }
 
 
-        $scope.timeFromCreation = function (offer) {
-            if (!offer && !offer.created_at) return;
-            return moment(offer.created_at).fromNow();
-        };
+    $scope.timeFromCreation = function (offer) {
+        if (!offer && !offer.created_at) return;
+        return moment(offer.created_at).fromNow();
+    };
 
 
-        $scope.expireDuration = function () {
-            if (!$scope.selectedSpace) {
+    $scope.expireDuration = function () {
+        if (!$scope.selectedSpace) {
+            return;
+        }
+
+        if (moment($scope.selectedSpace.space_availability_stop).isBefore(moment())) {
+            return " a expirat";
+        }
+
+        return moment($scope.selectedSpace.space_availability_stop).fromNow();
+    };
+
+    $scope.show = function (item) {
+        $('#' + item).slideToggle(200);
+    };
+
+    $scope.$watch('selectedSpace', function (newVal) {
+        if (!newVal) return;
+        parkingSpaceService.getPhoneNumber($scope.selectedSpace.id, (data) => {
+            $scope.phoneNumber = data.number;
+            $('#callOwner').attr('href', 'tel:' + data.number);
+        });
+    });
+
+
+    $scope.placeOffer = function () {
+        if (!$scope.selectedSpace.owner_is_current_user) {
+            let bid = $scope.bid;
+            bid.bid_amount = bid.bid_price;
+            let start = bid.start_date.getTime();
+            let stop = bid.end_date.getTime();
+            let interval = stop - start;
+
+            if (moment.duration(interval).asMinutes() < 15) {
+                $('#dateStop').addClass('is-invalid');
                 return;
             }
 
-            if (moment($scope.selectedSpace.space_availability_stop).isBefore(moment())) {
-                return " a expirat";
-            }
-
-            return moment($scope.selectedSpace.space_availability_stop).fromNow();
-        };
-
-        $scope.show = function (item) {
-            $('#' + item).slideToggle(200);
-        };
-
-        $scope.showPhoneNo = function (item) {
-            parkingSpaceService.getPhoneNumber($scope.selectedSpace.id, (data) => {
-               $scope.phoneNumber = data.number;
-            })
-        };
-
-
-        $scope.placeOffer = function () {
-            if (!$scope.selectedSpace.owner_is_current_user) {
-                let bid = $scope.bid;
-                bid.bid_amount = bid.bid_price;
-                bid.start_date = bid.s_start_date;
-                bid.end_date = bid.s_end_date;
-                let start = new Date(bid.start_date).getTime();
-                let stop = new Date(bid.end_date).getTime();
-                let interval = stop - start;
-
-                if (moment.duration(interval).asMinutes() < 15 ){
-                    $('#dateStop').addClass('is-invalid');
-                    return;
-                }
-
-
-                if (!bid.id) {
-                    offerService.placeOffer(bid, $scope.selectedSpace.id, function (bid) {
-                        $scope.selectedSpace.offers.push(bid);
-                    });
-                }
-                else {
-                    offerService.updateOffer(bid, $scope.selectedSpace.id, function (bid) {
-                        $scope.selectedSpace.offers.push(bid);
-                    });
-                }
-
-
-                $state.go('^');
-            }
-        };
-
-        notificationService.hideParkingSpaceNotifications();
-
-        $scope.confirmApproval = function (offer) {
-            let acceptedOffers = $scope.selectedSpace.offers.filter(function (d) {
-                if (d.approved === true && offer !== d) {
-                    return true;
-                }
+            offerService.placeOffer(bid, $scope.selectedSpace.id, function (bid) {
+                $scope.selectedSpace.offers.push(bid);
             });
-            if (acceptedOffers.length) {
-                alert("Poți accepta o singura ofertă");
-                return;
-            }
 
 
-            let message = "Accepți oferta de " + offer.bid_price + " " + offer.bid_currency + " pentru acest loc?";
-            if (offer.approved) {
-                message = "Refuzi oferta de " + offer.bid_price + " " + offer.bid_currency + " pentru acest loc?";
-            }
+            $state.go('^');
+        }
+    };
+
+    $scope.cancelOffer = function (offer) {
+        offerService.cancelOffer($scope.selectedSpace.id, offer, function (bid) {
+            replaceById(bid, $scope.selectedSpace.offers);
+            $state.go("^");
+        });
+    };
+
+    $scope.confirmApproval = function (offer) {
+
+        let message = "Accepți oferta de " + offer.bid_price + " " + offer.bid_currency + "/h pentru acest loc?";
+        if (offer.approved) {
+            message = "Refuzi oferta de " + offer.bid_price + " " + offer.bid_currency + "/h pentru acest loc?";
+        }
 
 
-            if (confirm(message)) {
-                $scope.accept($scope.selectedSpace, offer);
-            }
-        };
+        if (confirm(message)) {
+            $scope.accept($scope.selectedSpace, offer);
+            $('#approveDialog').hide();
+        }
+    };
 
-        $scope.accept = function (space, offer) {
-            if (!offer.approved) {
-                offerService.acceptOffer(space.id, offer, function (result) {
-                    replaceById(result, space.offers);
-                    $scope.selOffer = result;
-                });
-            } else {
-                offerService.rejectOffer(space.id, offer, function (result) {
-                    replaceById(result, space.offers);
-                    $scope.selOffer = result;
-                });
-            }
-
-        };
-
-        $scope.reject = function (space, offer) {
+    $scope.accept = function (space, offer) {
+        if (!offer.approved) {
+            offerService.acceptOffer(space.id, offer, function (result) {
+                replaceById(result, space.offers);
+                $scope.selOffer = result;
+            });
+        } else {
             offerService.rejectOffer(space.id, offer, function (result) {
                 replaceById(result, space.offers);
                 $scope.selOffer = result;
-            })
-        };
+            });
+        }
 
-        $scope.selectOffer = function (offer) {
-            $scope.selOffer = offer;
-        };
+    };
 
+    $scope.selectOffer = function (offer) {
+        $scope.selOffer = offer;
+    };
 
-        $scope.showEdit = function (selectedSpace) {
-            $state.go('.edit', {parking_space_id: selectedSpace.id});
-        };
+    $scope.showEdit = function (selectedSpace) {
+        $state.go('.edit', {parking_space_id: selectedSpace.id});
+    };
 
-        $scope.showDelete = function (selectedSpace) {
-            $state.go('.delete', {parking_space_id: selectedSpace.id});
+    $scope.showDelete = function (selectedSpace) {
+        $state.go('.delete', {parking_space_id: selectedSpace.id});
 
-        };
+    };
 
-    }
-)
-;
+});
 

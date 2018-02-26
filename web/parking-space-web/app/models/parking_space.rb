@@ -1,12 +1,12 @@
 require 'rack/mime'
 
 
-class ParkingSpace < DeviceRecord
+class ParkingSpace < ActiveRecord::Base
   include ActiveModel::Dirty
 
   enum legal_type: [:public_parking, :private_parking]
-  scope :not_expired, -> { where('parking_spaces.space_availability_stop >= ? ', Time.now )}
-  scope :active, -> { where('parking_spaces.space_availability_start <= ? ', Time.now )}
+  scope :not_expired, -> {  where('parking_spaces.space_availability_stop >= ? ',Time.now)}
+  scope :active, ->  { where('parking_spaces.space_availability_start <= ? ',Time.now )}
   scope :within_boundaries, ->(attrs) {
     where('parking_spaces.location_lat >= :lat_min
            AND parking_spaces.location_lat <= :lat_max
@@ -26,10 +26,6 @@ class ParkingSpace < DeviceRecord
   validates :space_availability_start, :presence => true
   validates :space_availability_stop, :presence => true
   validate :availability_stops_after_start
-
-  attr_accessor :image_data
-  attr_accessor :thumbnail_data
-  attr_accessor :owner
 
   after_initialize :init
 

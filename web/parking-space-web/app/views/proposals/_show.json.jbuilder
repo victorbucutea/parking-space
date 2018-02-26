@@ -8,4 +8,5 @@ json.start_date proposal.start_date
 json.end_date proposal.end_date
 json.owner_is_current_user proposal.deviceid == current_user.device_id
 json.read proposal.read
+json.paid proposal.paid?
 json.owner_name proposal.bidder_name
