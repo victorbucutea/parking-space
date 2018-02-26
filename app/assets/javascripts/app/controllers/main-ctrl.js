@@ -1,27 +1,43 @@
 'use strict';
 
-angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, parameterService, $state, userService) {
+angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, $stateParams, parameterService, $state, userService) {
 
+    $scope.errMsg = [];
+    $scope.notifMsg = [];
+    $scope.warningMsg = [];
+    $scope.warningMsgHtml = [];
+    let notifArea = $('.notification-area');
+    let drawer = $('.drawer');
 
-    $document.mousedown(function () {
-        $scope.errMsg = null;
-        $scope.notifMsg = null;
-        $scope.warningMsg = null;
-        $scope.$apply();
+    notifArea.on('mousedown', function (evt) {
+        $scope.errMsg = [];
+        $scope.notifMsg = [];
+        $scope.warningMsg = [];
+        $scope.warningMsgHtml = [];
+        notifArea.removeClass('zoomIn').addClass('zoomOut');
+        setTimeout(function () {
+            notifArea.removeClass('zoomOut').addClass('zoomIn');
+            $scope.$evalAsync()
+        }, 300);
+        evt.preventDefault();
     });
 
 
-    $scope.openMenu = function() {
-        $('.drawer').fadeIn(200);
-        $('#drawer').css('left','0');
+    $scope.openMenu = function () {
+        $('#drawer').css('left', '0');
+        drawer.css('display', 'block');
+        drawer.css('opacity', '.4');
     };
 
-    $scope.closeMenu = function(){
-        $('#drawer').css('left','-100%');
-        $('.drawer').fadeOut(200);
+    $scope.closeMenu = function () {
+        $('#drawer').css('left', '-100%');
+        drawer.css('opacity', '0');
+        setTimeout(function () {
+            drawer.hide()
+        }, 300);
     };
 
-    $scope.selectPlace = function(newAddr, newLocation){
+    $scope.selectPlace = function (newAddr, newLocation) {
         $scope.selectedAddress = newAddr;
         if (!$scope.$$phase) {
             $scope.$apply();
@@ -29,7 +45,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         $scope.selectedLocation = newLocation;
     };
 
-    $scope.dateFilter = {};
+    $scope.dateFilter = {start: new Date(), stop: moment().add(1, 'd').toDate()};
 
 
     let addMsg = function (type, msg) {
@@ -42,29 +58,21 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
             if (type.indexOf(msg) === -1)
                 type.push(msg);
         }
-
     };
 
 
     $rootScope.$on('http.error', function (event, data) {
-        if (!$scope.errMsg) {
-            $scope.errMsg = []
-        }
         addMsg($scope.errMsg, data);
     });
 
-
     $rootScope.$on('http.warning', function (event, data) {
-        if (!$scope.warningMsg) {
-            $scope.warningMsg = []
-        }
         addMsg($scope.warningMsg, data);
+    });
+    $rootScope.$on('http.warning.html', function (event, data) {
+        addMsg($scope.warningMsgHtml, data);
     });
 
     $rootScope.$on('http.notif', function (event, data) {
-        if (!$scope.notifMsg) {
-            $scope.notifMsg = []
-        }
         addMsg($scope.notifMsg, data);
     });
 
@@ -78,5 +86,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         if ($(event.target).hasClass('ps-modal'))
             $state.go('^');
     });
+
+
 
 });

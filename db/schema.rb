@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171223212009) do
+ActiveRecord::Schema.define(version: 20180226105640) do
 
   create_table "messages", force: :cascade do |t|
     t.string "deviceid"
@@ -41,11 +41,60 @@ ActiveRecord::Schema.define(version: 20171223212009) do
     t.datetime "updated_at"
   end
 
-# Could not dump table "parking_spaces" because of following StandardError
-#   Unknown type '' for column 'approved_proposal_id'
+  create_table "parking_spaces", force: :cascade do |t|
+    t.decimal "location_lat"
+    t.decimal "location_long"
+    t.decimal "recorded_from_lat"
+    t.decimal "recorded_from_long"
+    t.string "deviceid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "approved_proposal_id"
+    t.decimal "target_price"
+    t.string "phone_number"
+    t.string "owner_name"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "title"
+    t.string "description"
+    t.text "target_price_currency"
+    t.datetime "space_availability_start"
+    t.datetime "space_availability_stop"
+    t.integer "legal_type"
+    t.string "file1"
+    t.string "file2"
+    t.string "file3"
+    t.string "weekly_schedule"
+    t.time "daily_start"
+    t.time "daily_stop"
+    t.index ["created_at"], name: "index_parking_spaces_on_created_at"
+    t.index ["deviceid"], name: "index_parking_spaces_on_deviceid"
+    t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
+    t.index ["location_long"], name: "index_parking_spaces_on_location_long"
+    t.index ["space_availability_start"], name: "index_parking_spaces_on_space_availability_start"
+    t.index ["space_availability_stop"], name: "index_parking_spaces_on_space_availability_stop"
+  end
 
-# Could not dump table "proposals" because of following StandardError
-#   Unknown type '' for column 'bid_amount'
+  create_table "proposals", force: :cascade do |t|
+    t.string "deviceid"
+    t.string "title_message"
+    t.integer "parking_space_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal "bid_amount"
+    t.string "bid_currency"
+    t.string "bidder_name"
+    t.integer "approval_status"
+    t.boolean "read"
+    t.string "phone_number"
+    t.string "message_from_device_id"
+    t.datetime "start_date", null: false
+    t.datetime "end_date", null: false
+    t.datetime "payment_date"
+    t.integer "payment_status"
+    t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
+    t.index ["deviceid"], name: "index_proposals_on_deviceid"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -66,6 +115,9 @@ ActiveRecord::Schema.define(version: 20171223212009) do
     t.string "country"
     t.string "notif_registration_id"
     t.string "license"
+    t.boolean "phone_no_confirm"
+    t.string "phone_confirm_code"
+    t.string "payment_id"
     t.index ["device_id"], name: "index_users_on_device_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["license"], name: "index_users_on_license"

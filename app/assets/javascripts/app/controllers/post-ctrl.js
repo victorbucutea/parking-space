@@ -2,7 +2,7 @@
  * Created by 286868 on 04.04.2015.
  */
 angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl',
-    function ($scope, $rootScope, $state, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, $timeout) {
+    function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, $timeout) {
 
 
         $scope.calculateAddress = function () {
@@ -26,22 +26,24 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 space.sublocality = sublocality;
                 space.price = parameterService.getStartingAskingPrice();
                 space.currency = parameterService.getStartingCurrency();
+                space.daily_start = new Date(1970, 0, 1, 0, 0);
+                space.daily_stop = new Date(1970, 0, 1, 23, 59);
+                space.space_availability_start = new Date();
+                space.space_availability_stop = moment().add(1,'d').toDate();
 
                 $scope.$apply();
             });
         };
 
-        $scope.ctrl = {};
-
-        if ($scope.spaceEdit && !$scope.spaceEdit.weeklySched)
-            $scope.spaceEdit.weeklySched = {
+        if ($scope.spaceEdit && !$scope.spaceEdit.weekly_schedule)
+            $scope.spaceEdit.weekly_schedule = {
                 mon: true,
                 tue: true,
                 wed: true,
                 thu: true,
                 fri: true,
-                sat: false,
-                sun: false,
+                sat: true,
+                sun: true,
             };
 
         if ($stateParams.parking_space_id) {
@@ -60,7 +62,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
         $scope.save = function () {
             $scope.loading = true;
-            let saveInfo = function () {
+            let saveSpace = function () {
                 parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
                     replaceById(savedSpace, $scope.spaces);
                     $scope.loading = false;
@@ -68,46 +70,23 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 });
             };
 
-            if ($scope.file1) {
-                $scope.ctrl.uploadPic($scope.file1,
-                    (response) => {
-                        $scope.spaceEdit.file1 = response.data.public_id;
-                        if ($scope.file2) {
-                            $scope.ctrl.uploadPic($scope.file2,
-                                (response2) => {
-                                    $scope.spaceEdit.file2 = response2.data.public_id;
-                                    if ($scope.file3) {
-                                        $scope.ctrl.uploadPic($scope.file2,
-                                            (response3) => {
-                                                $scope.spaceEdit.file3 = response3.data.public_id
-                                                saveInfo();
-                                            })
-                                    } else {
-                                        saveInfo();
-                                    }
+            let promises = [$scope.ctrl1.uploadPic($scope.file1),
+                $scope.ctrl2.uploadPic($scope.file2),
+                $scope.ctrl3.uploadPic($scope.file3)];
 
-                                })
-                        } else {
-                            saveInfo();
-                        }
-                    });
-            } else {
-                saveInfo();
-            }
+            $q.all(promises).then((resp) => {
+                if (resp[0]) $scope.spaceEdit.file1 = resp[0].data.public_id;
+                if (resp[1]) $scope.spaceEdit.file2 = resp[1].data.public_id;
+                if (resp[2]) $scope.spaceEdit.file3 = resp[2].data.public_id;
+                saveSpace();
+            }, () => {
+                // when error just close the window
+                $scope.close()
+            })
 
         };
 
-        function removeSchedule() {
-            if (!$scope.scheduleOpen) {
-                $scope.spaceEdit.weeklySched = undefined;
-                $scope.spaceEdit.dailyStart = undefined;
-                $scope.spaceEdit.dailyStop = undefined;
-            }
-        }
-
         $scope.confirmSave = function () {
-
-            removeSchedule();
 
             if (!$scope.postSpaceForm.$valid) {
                 $('#postSpaceForm').addClass('was-validated');
@@ -125,7 +104,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 return;
             }
 
-            let text = "Postezi locul pentru " + spaceEdit.price + " " + spaceEdit.currency + "?\n\n";
+            let text = "Postezi locul pentru " + spaceEdit.price + " " + spaceEdit.currency + " /h ?\n\n";
             if (confirm(text)) {
                 $scope.save();
             }
@@ -135,5 +114,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
             $state.go('^');
         };
 
-    })
-;
+    });

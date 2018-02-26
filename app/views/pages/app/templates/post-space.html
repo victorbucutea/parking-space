@@ -1,5 +1,5 @@
 <div class="ps-modal ">
-    <div class="mt-md-4" ng-controller="EditParkingSpaceCtrl">
+    <div class="mt-md-4 animated zoomIn" ng-controller="EditParkingSpaceCtrl">
 
         <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm">
             <div>
@@ -10,7 +10,7 @@
 
                 </h3>
                 <div class="input-group" ng-show="editTitle">
-                    <input class="form-control form-control-lg"
+                    <input type="text" class="form-control form-control-lg"
                            ng-model="spaceEdit.title">
                     <span class="input-group-addon" ng-click="editTitle=false">
                         <i class="fa fa-check"></i>
@@ -35,24 +35,22 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label  col-4"
+                    <label class="col-form-label col-form-label-lg col-4"
                            for="dateStart">Disp. din:</label>
                     <div class="col-8">
                         <div class="input-group">
-                            <input id="dateStart" type="text" date-time class="form-control"
-                                   ng-date-model="spaceEdit.space_availability_start" required>
+                            <date-time id="dateStart"  class="form-control-lg"  date-model="spaceEdit.space_availability_start" day></date-time>
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-4 pr-2"
+                    <label class="col-form-label  col-form-label-lg col-4 pr-0"
                            for="dateStop">Disp. până la:</label>
                     <div class="col-8">
                         <div class="input-group">
-                            <input id="dateStop" type="text" date-time day class="form-control"
-                                   ng-date-model="spaceEdit.space_availability_stop" required>
+                            <date-time id="dateStop"  class="form-control-lg" date-model="spaceEdit.space_availability_stop" day></date-time>
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                         <div class="invalid-feedback">
@@ -66,66 +64,77 @@
 
                 <!-- Daily and weekly custom schedule -->
                 <div id="schedule" style="display: none;">
+                    <hr/>
                     <div class="form-group row">
-                        <label class="col-form-label col-10 pr-2">
-                            Disp. săptămânală:
-                        </label>
+                        <label class="col-form-label col-4 pr-2"
+                               for="timeStart">Disp. între:</label>
+                        <div class="col-8 row no-gutters">
+                            <div class="col-5 ">
+                                <input id="timeStart" ng-required="scheduleOpen" ng-model="spaceEdit.daily_start"
+                                       type="time"
+                                       class="form-control">
+                            </div>
+                            <label class="col-form-label col-2 text-center "
+                                   for="timeStop">și</label>
+                            <div class="col-5 ">
+                                <input id="timeStop" ng-required="scheduleOpen" ng-model="spaceEdit.daily_stop"
+                                       type="time"
+                                       class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-12 text-center">
                             <div class="btn-group week-sched">
-                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.mon" uib-btn-checkbox>
+                                <label class="btn  btn-lg btn-secondary" ng-model="spaceEdit.weekly_schedule.mon"
+                                       uib-btn-checkbox>
                                     Lu
                                 </label>
-                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.tue" uib-btn-checkbox>
+                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.tue"
+                                       uib-btn-checkbox>
                                     M
                                 </label>
-                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.wed" uib-btn-checkbox>
+                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.wed"
+                                       uib-btn-checkbox>
                                     Mi
                                 </label>
-                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.thu" uib-btn-checkbox>
+                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.thu"
+                                       uib-btn-checkbox>
                                     J
                                 </label>
-                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.fri" uib-btn-checkbox>
+                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.fri"
+                                       uib-btn-checkbox>
                                     V
                                 </label>
-                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.sat" uib-btn-checkbox>
+                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.sat"
+                                       uib-btn-checkbox>
                                     S
                                 </label>
-                                <label class="btn  btn-secondary" ng-model="spaceEdit.weeklySched.sun" uib-btn-checkbox>
+                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.sun"
+                                       uib-btn-checkbox>
                                     D
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-4 pr-2"
-                               for="timeStart">Disp. zilnică:</label>
-                        <div class="col-4 ">
-                            <input id="timeStart" ng-required="scheduleOpen" ng-model="spaceEdit.dailyStart" type="time"
-                                   class="form-control">
-                        </div>
-                        <div class="col-4 ">
-                            <input id="timeStop" ng-required="scheduleOpen" ng-model="spaceEdit.dailyStop" type="time"
-                                   class="form-control">
-                        </div>
-                    </div>
                 </div>
                 <hr/>
                 <div class="row justify-content-center">
-                    <div class="col-12 mt-3" ng-show="addModeImgs">
-                        <textarea placeholder="Descriere" maxlength="165"
-                                  ng-model="spaceEdit.description" class="form-control"></textarea>
-                    </div>
                     <div class="col-4">
                         <upload-image image-file="file1" label="'Adaugă photo'"
-                                      control="ctrl"></upload-image>
+                                      control="ctrl1"
+                                      uploaded-file="spaceEdit.file1"></upload-image>
                     </div>
-                    <div class="col-4" ng-show="file1">
+
+                    <div class="col-4" >
                         <upload-image image-file="file2" optional="true" label="'Adaugă photo'"
-                                      control="ctrl"></upload-image>
+                                      control="ctrl2"
+                                      uploaded-file="spaceEdit.file2"></upload-image>
                     </div>
-                    <div class="col-4" ng-show="file2">
+                    <div class="col-4" >
                         <upload-image image-file="file3" optional="true" label="'Adaugă photo'"
-                                      control="ctrl"></upload-image>
+                                      control="ctrl3"
+                                      uploaded-file="spaceEdit.file3"></upload-image>
                     </div>
 
                 </div>
@@ -141,9 +150,6 @@
                 </button>
             </div>
 
-            <div class="ps-dialog" ng-show="loading">
-
-            </div>
         </form>
 
 

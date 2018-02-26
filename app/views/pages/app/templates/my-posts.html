@@ -3,7 +3,7 @@
     <div class="list open-spaces-list scroll container">
         <div class="item panel mb-3 mb-md-4"
              ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
-            <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space"></parking-spot-info-box>
+            <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
             <span class="unread-item-notif" ng-show="unreadNotifications(space)">&nbsp;</span>
             <span class="item-notifications">
                 <i class="fa fa-money"></i>
@@ -21,16 +21,16 @@
                         <h5> {{offer | totalPrice}}</h5>
                     </div>
                     <div class="col-6">
-                        Perioada
+                        Durata
                         <h5>{{offer | totalPeriod }}</h5>
                     </div>
                     <div class="col-6">
                         Start
-                        <div>{{offer.start_date |moment: 'ddd, D MMM, h:mm'}}</div>
+                        <div>{{offer.start_date |moment: 'ddd, D MMM, HH:mm'}}</div>
                     </div>
                     <div class="col-6">
                         Stop
-                        <div>{{offer.end_date | moment: 'ddd, D MMM, h:mm'}}</div>
+                        <div>{{offer.end_date | moment: 'ddd, D MMM, HH:mm'}}</div>
                     </div>
 
                     <div class="col-12 mt-3 text-center">
@@ -48,8 +48,9 @@
                                 class="btn btn-info btn-sm">
                             <i class="fa fa-phone"></i> Arata nr tel
                         </button>
-                        <a ng-href="tel:{{offer.phone_number}}" class="btn btn-lg btn-link" ng-show="phoneShow"> <i
-                                class="fa fa-phone"></i> {{offer.phone_number}}</a>
+                        <a ng-href="tel:{{offer.phone_number}}" class="btn btn-lg btn-link animate zoomIn" ng-show="phoneShow">
+                            <i class="fa fa-phone"></i> {{offer.phone_number}}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -57,7 +58,7 @@
 
         <div class="no-items-msg loading-finished" ng-hide="spaces.length">
             Nu ai postat un loc, sau acestea au expirat.
-            Rotunjește-ți veniturile
+            Ajută la descongestionarea traficului și rotunjește-ți veniturile
             <u>
                 <a ui-sref="home.map.search">
                     postând un loc.

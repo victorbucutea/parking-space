@@ -82,11 +82,10 @@ map {
   bottom: 98px;
   z-index: 2;
   right: 32px;
-  box-shadow: 2px 4px 20px 2px $gray-600;
+  box-shadow: 2px 6px 20px 2px $gray-600;
   cursor: pointer;
-  width: 41px;
-  height: 41px;
-  padding: 3.361399996px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   font-size: 1.4em;
 }
@@ -94,19 +93,26 @@ map {
 .add-btn {
   background-color: $blue-800;
   padding: 0;
-  box-shadow: 2px 4px 20px 2px $gray-600;
-  border-radius: 50%;
+  box-shadow: 2px 6px 20px 2px $gray-600;
+  border-radius: 28px;
   position: fixed;
   bottom: 24px;
   z-index: 2;
   right: 24px;
   outline: 0;
   border: 0;
-  width: 58px;
-  height: 58px;
+  width: 56px;
+  height: 56px;
   color: $white;
   line-height: 1;
   font-size: .9em;
+  transition: width .2s ease-in-out;
+
+  &.wide {
+    width: 118px;
+    font-size: initial;
+
+  }
 
 }
 
@@ -115,8 +121,8 @@ map {
   font-size: 16px;
   width: 95%;
   margin: $big-measure-unit auto;
-  box-shadow: 0 2px 20px 2px $gray-600;
-  border-radius: 5px;
+  box-shadow: 2px 8px 20px 2px $gray-600;
+  border-radius: 3px;
   position: fixed;
   top: 0;
   z-index: 1;
@@ -124,7 +130,9 @@ map {
   left: 0;
 
   #pac-input {
-    padding-left: 44px;
+    padding-right: 17%;
+    padding-left: 3%;
+    font-size: 1.2em;
   }
 
   .input-group, .form-control {
@@ -132,7 +140,7 @@ map {
     box-shadow: none;
     border: none;
     border-radius: 5px;
-    padding-left: 13%;
+    padding-left: 17%;
   }
 
   .addon {
@@ -153,6 +161,7 @@ map {
   span {
     position: absolute;
     top: -10px;
+    right: 0;
     font-size: 1.5em;
     padding: 10px;
 
@@ -165,7 +174,7 @@ map {
 
   .clear-btn {
     position: absolute;
-    right: 10px;
+    right: 40px;
     top: 13px;
   }
 }
@@ -208,10 +217,6 @@ map {
   .btn {
     color: $white
   }
-
-  .btn-lg {
-    font-size: inherit;
-  }
 }
 
 .ps-modal {
@@ -245,6 +250,7 @@ map {
   .space-type {
     border-bottom: 1px solid $gray-500;
   }
+
   .space-detail-thumb {
     padding-top: 10px;
   }
@@ -252,15 +258,13 @@ map {
   .space-detail-content {
     overflow: auto;
     border-bottom: 1px solid $gray-500;
-
-    img {
-      border-radius: 5px;
-    }
+    border-top: 1px solid $gray-500;
   }
 
   .space-summary-content {
     overflow: auto;
-    border-bottom: 1px solid $gray-600;
+    border-bottom: 1px solid $gray-500;
+    border-top: 1px solid $gray-500;
 
     p {
       color: $gray-600;
@@ -269,6 +273,10 @@ map {
 
     h4 {
       color: $red;
+    }
+
+    img {
+      height: 5em;
     }
   }
 }
@@ -287,29 +295,10 @@ map {
   }
 }
 
-
-.thumbnail-modal {
-  background-color: transparentize($gray-dark, 0.3) !important;
-  top: 0;
-  .ps-std-thumbnail {
-    max-width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    margin-top: 20px;
-  }
-
-  span {
-    color: $white;
-    padding: $measure-unit;
-    display: inline-block;
-  }
-}
-
 .ps-dialog {
   display: none;
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 10%;
   left: 0;
   z-index: 4;
   width: 100%;
@@ -326,7 +315,6 @@ map {
     width: 74%;
     box-shadow: 1px 1px 3px;
     border-top: 4px solid $red;
-    top: 40%;
 
     .ps-question {
       padding: $sm-measure-unit;
@@ -362,15 +350,25 @@ map {
   text-align: center;
 }
 
+.tooltip-inner {
+  font-size: 1.2em;
+}
+
 .search-center-icon {
-  border-radius: 100%;
-  width: 15px;
-  height: 15px;
-  background-color: $red;
-  border: 2px solid $white;
-  margin-left: auto;
-  margin-right: auto;
+  width: 10px;
+  height: 10px;
+  background-color: $blue;
+  margin: auto;
   pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+
+  &.shadow {
+    box-shadow: 2px 2px 12px 1px $gray-700;
+  }
 }
 
 .open-spaces-list {
@@ -457,10 +455,11 @@ bid-amount {
 
 .week-sched {
   .btn {
-    &:active, &:focus, &.focus  {
+    &:active, &:focus, &.focus {
       box-shadow: none !important;
     }
-    &.active{
+
+    &.active {
       background-color: #122944 !important;
       border-color: #10233a !important;
       box-shadow: none !important;
@@ -536,22 +535,20 @@ bid-amount {
   }
 }
 
-
 .progress-container {
   height: 5px;
   border-radius: 2px;
   margin-top: -6px;
 
-
   .progress-bar {
     background-color: $blue;
-    height:100%;
+    height: 100%;
   }
 }
 
-
 .parking-sign {
   color: $blue;
+  background-color: #fff;
   text-align: center;
   width: 100%;
   border-radius: 4px;
@@ -592,6 +589,10 @@ parking-spot-info-box {
 
     h2 {
       font-size: $lg-font-size;
+    }
+
+    img {
+      height: 8em;
     }
   }
 
@@ -641,10 +642,9 @@ parking-spot-info-box {
 
 .notification-area {
   position: absolute;
-  top: 59px;
+  top: 53px;
   z-index: 100;
-  left: 15%;
-  width: 70%;
+  width: 100%;
 
   .notification-message {
     text-align: center;
@@ -652,7 +652,8 @@ parking-spot-info-box {
     color: $white;
     padding: $sm-measure-unit;
     display: none;
-    margin-top: $xsm-measure-unit;
+    margin: $measure-unit auto;
+    width: 70%;
 
     ul {
       list-style-type: none;
@@ -680,21 +681,30 @@ parking-spot-info-box {
   }
 }
 
+.border-right {
+  border-right: 1px solid $gray-400;
+}
+
 .offer-desc-area {
   .offer-desc-item {
     font-size: 1.1em;
     padding-bottom: 5px;
     clear: both;
+    font-weight: 300;
 
     .value {
       font-weight: 600;
       padding-right: 10px;
       padding-left: 10px;
-      background-color: $gray-xlight;
       border-radius: 3px;
       white-space: nowrap;
     }
   }
+}
+
+.code-confirm {
+  font-size: 1.6em;
+  width: 48%;
 }
 
 .scroll {
@@ -702,7 +712,7 @@ parking-spot-info-box {
 }
 
 .existing-offers {
-  div.row:nth-child(n+2) {
+  div.row {
     padding-bottom: 5px;
     padding-top: 5px;
   }
@@ -735,41 +745,47 @@ parking-spot-info-box {
   }
 
   .bid-table {
-    max-height: 110px;
-    border-top: 1px solid $gray-500;
+    max-height: 210px;
     border-bottom: 1px solid $gray-500;
+    overflow: scroll;
+    padding-bottom: 10px;
 
     .offer {
-      background-color: $blue-90;
+      background-color: $white;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding-right: 5px;
-      font-size: 1.3em;
-      white-space: nowrap;
 
       &.offer-head {
         border-bottom: 1px solid $gray-500;
-        font-size: 1em;
       }
       &.selected {
         background-color: darken($blue-90, 10%);
         .offer-price {
-          background-color: darken($blue-600, 10%);
+          background-color: $blue-700;
+          color: $white;
         }
       }
 
       .offer-desc {
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 128px;
-        font-size: 0.8em;
+        white-space: nowrap;
+        font-weight: 100;
       }
 
       .offer-price {
-        background-color: $blue-600;
-        color: $white;
+        color: $blue-700;
+        background-color: $white;
+        font-weight: bold;
         padding: 5px;
+        font-size: 1.4em;
+        display: inline-block;
+        width: 85px;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
       }
 
       .offer-accept {
@@ -784,49 +800,55 @@ parking-spot-info-box {
   }
 }
 
+// left hand drawer menu
+
 .drawer {
   display: none;
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(51, 51, 51, 0.37);
+  background-color: $gray-700;
   z-index: 2;
   top: 0;
+  opacity: 0;
+  transition: opacity ease-out .3s;
+}
 
-  .menu {
-    width: 60%;
-    position: fixed;
-    z-index: 3;
-    left: -100%;
-    background: $blue-90;
-    color: $blue-800;
-    height: 100%;
-    box-shadow: 1px 1px 27px 1px $gray-800;
-    transition: left ease-in-out .3s;
 
-    .logo {
-      border-bottom: 1px solid $blue-700;
-      background-color: $blue-800;
+.menu {
+  width: 60%;
+  position: fixed;
+  z-index: 3;
+  left: -100%;
+  background: $blue-90;
+  color: $blue-800;
+  height: 100%;
+  top: 0;
+  box-shadow: 1px 1px 27px 1px $gray-800;
+  transition: left ease-out .3s;
 
-      img {
-        width: 100%;
-        max-width: 200px;
-      }
+  .logo {
+    border-bottom: 1px solid $blue-700;
+    background-color: $blue-800;
+
+    img {
+      width: 100%;
+      max-width: 200px;
     }
+  }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
+  ul {
+    list-style-type: none;
+    padding: 0;
 
-      li {
-        padding: 10px 20px;
-        font-size: 1.1em;
+    li {
+      padding: 10px 20px;
+      font-size: 1.1em;
 
-        &.selected {
-          background-color: $blue-700;
-          color: $blue-100;
-          text-shadow: 2px 2px $blue-800;
-        }
+      &.selected {
+        background-color: $blue-700;
+        color: $blue-100;
+        text-shadow: 2px 2px $blue-800;
       }
     }
   }

@@ -10,7 +10,7 @@ angular.module('ParkingSpaceMobile.services')
         /* get current user details */
         _this.getUser = function (clbk) {
 
-            $http.get(ENV + 'users/edit.json')
+            $http.get(ENV + '/users/edit.json')
                 .then(function (res) {
                     let data = res.data;
                     if (clbk)
@@ -26,10 +26,15 @@ angular.module('ParkingSpaceMobile.services')
                 .then(function (res) {
                     let data = res.data;
                     $rootScope.$emit('http.notif', 'Profil salvat cu succes!');
+                    sessionStorage.setItem('current_user', JSON.stringify(user));
                     if (clbk)
                         clbk(data);
                 }, function (err) {
-                    errorHandlingService.handle(err.data, err.status);
+                    if (!errClbk) {
+                        errorHandlingService.handle(err.data, err.status);
+                    } else {
+                        errClbk(err.data, err.status);
+                    }
                 });
         };
 
@@ -38,9 +43,8 @@ angular.module('ParkingSpaceMobile.services')
             $http.post(ENV + '/users.json', {user: user})
                 .then(function (res) {
                     let data = res.data;
-                    //TODO show message with direct dom manipulation
                     $rootScope.$emit('http.notif', 'Bine ai venit ' + user.email + '!');
-                    localStorage.setItem('user', JSON.stringify(data));
+                    sessionStorage.setItem('current_user', JSON.stringify(data));
                     if (clbk)
                         clbk(data);
                 }, function (err) {
@@ -71,7 +75,7 @@ angular.module('ParkingSpaceMobile.services')
                     let data = rs.data;
                     //TODO show message with direct dom manipulation
                     $rootScope.$emit('http.notif', 'Bine ai venit ' + user + '!');
-                    localStorage.setItem('user', JSON.stringify(data));
+                    sessionStorage.setItem('current_user', JSON.stringify(data));
                     if (clbk) {
                         clbk(data);
                     }
@@ -88,9 +92,8 @@ angular.module('ParkingSpaceMobile.services')
             $http.post(ENV + '/users/sign_in_fb.json', {user: {id: id, email: email, token: token, remember_me: 1}})
                 .then(function (rs) {
                     let user = rs.data.user;
-                    //TODO show message with direct dom manipulation
                     $rootScope.$emit('http.notif', 'Bine ai venit ' + user.full_name + '!');
-                    localStorage.setItem('user', JSON.stringify(user));
+                    sessionStorage.setItem('current_user', JSON.stringify(user));
                     if (clbk) {
                         clbk(user);
                     }
@@ -106,7 +109,7 @@ angular.module('ParkingSpaceMobile.services')
         _this.logout = function (errClbk) {
             $http['delete'](ENV + '/users/sign_out.json', {})
                 .then(function (res) {
-                    localStorage.removeItem('user');
+                    sessionStorage.removeItem('current_user');
                 }, function (err) {
                     if (!errClbk)
                         errorHandlingService.handle(err.data, err.status);
@@ -115,6 +118,38 @@ angular.module('ParkingSpaceMobile.services')
                     }
                 })
         };
+
+        _this.validateCode = function(code, clbk, errClbk){
+            $http.post(ENV+'/users/validate_code.json',{phone_validation_code : code})
+                .then(function(res){
+                    let user = res.data;
+                    sessionStorage.setItem('current_user', JSON.stringify(user));
+                    if (clbk)
+                        clbk(user);
+                }, function (err) {
+                    if (!errClbk) {
+                        errorHandlingService.handle(err.data, err.status);
+                    } else {
+                        errClbk(err.data, err.status);
+                    }
+                });
+        };
+
+        _this.resendCode = function(number, clbk, errClbk){
+            $http.post(ENV+'/users/send_new_code.json',{phone_number: number})
+                .then(function(res){
+                    let user = res.data;
+                    sessionStorage.setItem('current_user', JSON.stringify(user));
+                    if (clbk)
+                        clbk(user);
+                }, function (err) {
+                    if (!errClbk) {
+                        errorHandlingService.handle(err.data, err.status);
+                    } else {
+                        errClbk(err.data, err.status);
+                    }
+                });
+        }
 
     })
 

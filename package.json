@@ -8,6 +8,7 @@
     "animate-sass": "^0.6.6",
     "bootstrap": "4.0.0-beta.2",
     "bootstrap-daterangepicker": "^2.1.25",
+    "braintree-web": "^3.31.0",
     "cleave.js": "^1.0.7",
     "cloudinary-core": "^2.4.0",
     "cloudinary_ng": "^1.1.1",

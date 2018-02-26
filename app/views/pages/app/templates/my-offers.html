@@ -44,9 +44,9 @@
         </div>
 
         <div class="ps-dialog mt-5" id="showPhoneNumber">
-            <div class="ps-dialog-content">
+            <div class="ps-dialog-content animated zoomIn">
                 <div class="ps-question">
-                    <parking-spot-info-box space="selectedSpace"></parking-spot-info-box>
+                    <parking-spot-info-box space="selectedSpace" " ></parking-spot-info-box>
                     <hr/>
                     <div class="row ps-row">
                         <div class="col-4">Perioada</div>
@@ -57,13 +57,13 @@
                     <div class="row ps-row">
                         <div class="col-4">Start</div>
                         <div class="col-8">
-                            {{selOffer.start_date | moment: 'ddd, D MMM, h:mm'}}
+                            {{selOffer.start_date | moment: 'ddd, D MMM, HH:mm'}}
                         </div>
                     </div>
                     <div class="row ps-row">
                         <div class="col-4">Stop</div>
                         <div class="col-8">
-                            {{selOffer.end_date | moment: 'ddd, D MMM, h:mm'}}
+                            {{selOffer.end_date | moment: 'ddd, D MMM, HH:mm'}}
                         </div>
                     </div>
                     <div class="row ps-row">

@@ -9,16 +9,25 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
 
 
     if ($stateParams.inside) {
+        $scope.inside = true;
         userService.getUser(function (user) {
             if (!user) return;
-            $scope.user = user;
-            $scope.user.phone_number = $scope.user.phone_number.replace("+", "");
+
+            if (!user.phone_no_confirm) {
+                $state.go('home.map.search.confirm-phone');
+            }
+            $scope.firstName = user.full_name;
+            $scope.phoneNumber = user.phone_number.replace("+40", "");
+            $scope.country = user.country;
+            $scope.email = user.email;
+            $scope.password = user.password;
+            $scope.licensePlate = user.license;
+            $scope.password_confirmation = user.password;
         });
-    } else {
-        $scope.user = {country: 'ro'};
-        $scope.prefix = '+40';
     }
 
+    $scope.prefix = '+40';
+    $scope.user = {country: 'ro'};
 
     $scope.fromFb = $stateParams.fromFb;
     $scope.email = $stateParams.email;
@@ -71,13 +80,28 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
         backEndUser.country = $scope.user.country;
         backEndUser.email = $scope.email;
         backEndUser.password = $scope.password;
-        backEndUser.license = $scope.licensePlate;
         backEndUser.password_confirmation = $scope.password;
+        backEndUser.license = $scope.licensePlate;
 
 
-        userService.registerUser(backEndUser, function () {
-            $state.go('home.map.search');
-        });
+        if ($stateParams.inside) {
+            userService.saveUser(backEndUser, function () {
+                $state.go('home.map.search');
+            });
+        } else {
+            userService.registerUser(backEndUser, function () {
+                $state.go('home.map.search');
+            });
+        }
 
+    };
+
+
+    $scope.back = function () {
+        if ($scope.inside) {
+            $state.go('^');
+        } else {
+            $state.go('home.login');
+        }
     };
 });
