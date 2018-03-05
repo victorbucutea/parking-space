@@ -1,0 +1,194 @@
+// Place all the styles related to the pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+$golden-ratio: 1.428571429;
+
+$dflt-border-radius: 3px;
+$big-border-radius: (3px * $golden-ratio);
+
+$base-font-size: 14px;
+
+// 10px
+$sm-font-size: $base-font-size / $golden-ratio;
+
+// 20px
+$lg-font-size: $base-font-size * $golden-ratio;
+
+// 28px
+$xlg-font-size: $lg-font-size * $golden-ratio;
+
+// 28px
+$xxlg-font-size: $xlg-font-size * $golden-ratio;
+
+// 20px
+$base-line-height: $base-font-size * $golden-ratio;
+
+// a balanced measure unit is a sub-unitary value of the base font size
+// 10px
+$measure-unit: $base-font-size / $golden-ratio;
+
+// 14 px
+$big-measure-unit: $base-font-size;
+
+// 20 px
+$xbig-measure-unit: $big-measure-unit * $golden-ratio;
+
+//28px
+$xxbig-measure-unit: $xbig-measure-unit * $golden-ratio;
+
+// 39 px
+$xxxbig-measure-unit: $xxbig-measure-unit * $golden-ratio;
+
+// 54 px
+$xxxxbig-measure-unit: $xxxbig-measure-unit * $golden-ratio;
+
+// 76 px ( $base-unit * ratio ^ 6 )
+$jumbo-measure-unit: $xxxbig-measure-unit  * $golden-ratio * $golden-ratio;
+
+// 106 px ( $base-unit * ratio ^ 7 )
+$lg-jumbo-measure-unit: $jumbo-measure-unit * $golden-ratio;
+
+// 7px
+$sm-measure-unit: $measure-unit / $golden-ratio;
+
+// 5px
+$xsm-measure-unit: $sm-measure-unit / $golden-ratio;
+
+// 3px
+$xxsm-measure-unit: $xsm-measure-unit / $golden-ratio;
+
+$font-family:  "Open Sans", sans-serif;
+
+$grid-breakpoints: (
+        xs: 0,
+        xsm: 350px,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+) ;
+
+// base colors
+$blue:    #1d426c;
+$red: #a52116;
+
+// action and various colors
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #e83e8c;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #28a745;
+$teal:    #20c997;
+$cyan:    #17a2b8;
+
+$blue-80: lighten($blue,72.5%);
+$blue-90: lighten($blue,70%);
+$blue-100: lighten($blue,60%);
+$blue-200: lighten($blue,50%);
+$blue-300: lighten($blue,40%);
+$blue-400: lighten($blue,30%);
+$blue-500: lighten($blue,20%);
+$blue-600: lighten($blue,10%);
+$blue-700: $blue ;
+$blue-800: darken($blue,10%);
+$blue-850: darken($blue,15%);
+$blue-900: darken($blue,20%);
+$blue-1000: darken($blue,30%);
+
+
+$dflt-font-color: $blue-900;
+
+
+$primary:       $blue ;
+$success:       $green ;
+$info:          $cyan ;
+$warning:       $yellow ;
+$danger:        $red ;
+
+$white:    $blue-80 !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #868e96 !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+
+// these are variables used in parking space web app
+// so we sync the colors with the ones from bootstrap above
+$gray: $gray-400;
+$gray-light: $gray-700;
+$gray-lighter: $gray-600;
+$gray-xlight: $gray-200;
+$gray-xxlight: $gray-100;
+$gray-dark: $gray-800;
+$gray-dark-transparent: transparentize($gray-dark, 0.5);
+
+$gray: #ddd;
+
+
+
+
+/*********** Fonts ******************/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(https://fonts.gstatic.com/s/opensans/v15/xjAJXh38I15wypJXxuGMBqfTCPadK0KLfdEfFtGWCYw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v15/DXI1ORHCpsQm3Vp6mXoaTeY5mlVXtdNkpsMpKkrDXP4.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'), url(https://fonts.gstatic.com/s/opensans/v15/u-WUoqrET9fUeobQW7jkRbO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(https://fonts.gstatic.com/s/opensans/v15/k3k702ZOKiLJc3WVjuplzOY5mlVXtdNkpsMpKkrDXP4.woff) format('woff');
+}
+
+
+
+
+/*********** Overrides ******************/
+
+body, html {
+  margin: 0;
+  padding: 0;
+  background: $white;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $dflt-font-color;
+  font-size: $base-font-size;
+  font-family: $font-family;
+}
+
+/* Prevent ugly blue glow on chrome and safari */
+a, button, input {
+  outline: none !important;
+}
+
+/*********** Framework overrides ******************/
+$fa-font-path: 'font-awesome/fonts';
+
+
+// animate css
+$use-fade: true;
+$use-slide: true;
+$use-zoom: true;
+$use-bounce: true;
+$base-duration: .2s;

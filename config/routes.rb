@@ -1,21 +1,33 @@
 Rails.application.routes.draw do
 
-  match "users*" => "registrations#cors_preflight_check", via: [:options ]
+  match "users*" => "registrations#cors_preflight_check", via: [:options]
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}
 
   #provide a screen to confirm the password reset
   devise_scope :user do
+    get "/users/client_token" => "registrations#client_token", :as => "client_token"
+    get "/users/create_payment_method" => "registrations#create_payment_method", :as => "create_payment_method"
     get "/users/password/done" => "passwords#done", :as => "done_user_password"
+    post "/users/sign_in_fb" => "sessions#sign_in_fb", :as => "sign_in_fb"
+    post "/users/validate_code" => "registrations#validate_code", :as => "validate_code"
+    post "/users/send_new_code" => "registrations#send_new_code", :as => "send_new_code"
   end
 
   post '/notif' => 'notifications#notif', :as => 'notif'
 
   resources :parameters
 
+  resources :accounts do
+    post 'withdraw'
+    get 'withdrawals'
+  end
+
   resources :parking_spaces do
 
     get 'mark_offers_as_read'
+
+    get 'phone_number'
 
     collection do
       get 'myspaces'
@@ -26,8 +38,12 @@ Rails.application.routes.draw do
     end
 
     resources :proposals do
+      post 'pay'
+      get 'get_user_payments'
+      get 'get_payment_details'
       post 'reject'
       post 'approve'
+      post 'cancel'
       resources :messages
     end
   end
@@ -36,7 +52,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  # root 'pages#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

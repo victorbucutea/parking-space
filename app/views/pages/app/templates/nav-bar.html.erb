@@ -1,0 +1,19 @@
+<div id="pac-container">
+  <places-autocomplete selected-place="selectPlace(place,location)" place-holder="'Caută adresa si ora ...'"></places-autocomplete>
+  <span ng-click="openMenu()">
+    <i class="pac-nav fa fa-bars " ></i>
+    <i id="notifmyposts" class="notif-icon d-none" ></i>
+  </span>
+  <div class="loading-container">
+    <div id="loading-progress" class="loading-progress"></div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-6">
+      <date-time id="dateFilterStart"  class="form-control-lg" date-model="dateFilter.start" day></date-time>
+      <i class="fa fa-arrows-h addon"></i>
+    </div>
+    <div class="col-6">
+      <date-time id="dateFilterStop"  class="form-control-lg" date-model="dateFilter.stop" day></date-time>
+    </div>
+  </div>
+</div>

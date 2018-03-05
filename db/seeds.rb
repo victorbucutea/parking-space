@@ -6,25 +6,18 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Message.delete_all
-Proposal.delete_all
-ParkingSpace.delete_all
+
 ParameterValue.delete_all
 Parameter.delete_all
-User.delete_all
 
 
-Parameter.create! ([
-                      {id: 1,name: 'max_search_radius', default_value: 1200},
-                      {id: 3,name: 'short_term_expiration', default_value: 10}, #minutes
-                      {id: 4,name: 'long_term_expiration', default_value: 2}, #weeks
-                      {id: 5,name: 'default_range', default_value: 500},
-                      {id: 6,name: 'country' , default_value: 'ro'},
-                      {id: 7,name: 'bid_price_epsilon', default_value: 0.05},
+Parameter.create!([
+                      {id: 1,name: 'country' , default_value: 'ro'},
+                      {id: 2,name: 'bid_price_epsilon', default_value: 0.05},
                   ])
 
 
-ParameterValue.create! ([
+ParameterValue.create!([
                            {parameter_id: 6,key: 'en', value: 5   , value2: 'Usd', value3: '+1', value4: 'United States of America'},
                            {parameter_id: 6,key: 'ae', value: 5   , value2: 'Usd', value3: '+971', value4: 'United Arab Emirates'},
                            {parameter_id: 6,key: 'ca', value: 5   , value2: 'Usd', value3: '+1', value4: 'Canada'},

@@ -11,6 +11,24 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
-//= require turbolinks
+//= require jquery.scrollto/jquery.scrollTo
+//= require moment/min/moment.min
+//= require moment/locale/ro
+//= require moment-duration-format/lib/moment-duration-format
+//= require angular/angular
+//= require angular-sanitize/angular-sanitize
+//= require popper.js/dist/umd/popper
+//= require bootstrap/dist/js/bootstrap
+//= require bootstrap-daterangepicker/daterangepicker
+//= require owl.carousel/dist/owl.carousel
+//= require angular-ui-router/release/angular-ui-router
+//= require angular-ui-bootstrap/dist/ui-bootstrap
+//= require angular-easyfb/build/angular-easyfb
+//= require cleave.js/dist/cleave-angular
+//= require ng-file-upload/dist/ng-file-upload
+//= require cloudinary-core/cloudinary-core-shrinkwrap
+//= require cloudinary_ng/js/angular.cloudinary
+//= require iban/iban.js
+//= require main
 //= require_tree .
+

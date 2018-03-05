@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,116 +10,141 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160117134100) do
+ActiveRecord::Schema.define(version: 20180304151910) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.decimal "amount"
+    t.string "currency"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
 
   create_table "messages", force: :cascade do |t|
-    t.string   "deviceid"
-    t.string   "content"
-    t.integer  "proposal_id"
+    t.string "deviceid"
+    t.string "content"
+    t.integer "proposal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "parameter_values", force: :cascade do |t|
-    t.string   "key"
-    t.string   "value"
-    t.integer  "parameter_id"
+    t.string "key"
+    t.string "value"
+    t.integer "parameter_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "value1"
-    t.string   "value2"
-    t.string   "value3"
-    t.string   "value4"
+    t.string "value1"
+    t.string "value2"
+    t.string "value3"
+    t.string "value4"
+    t.index ["key"], name: "index_parameter_values_on_key"
+    t.index ["parameter_id"], name: "index_parameter_values_on_parameter_id"
   end
 
-  add_index "parameter_values", ["key"], name: "index_parameter_values_on_key"
-  add_index "parameter_values", ["parameter_id"], name: "index_parameter_values_on_parameter_id"
-
   create_table "parameters", force: :cascade do |t|
-    t.string   "name"
-    t.string   "default_value"
+    t.string "name"
+    t.string "default_value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "parking_spaces", force: :cascade do |t|
-    t.decimal  "location_lat"
-    t.decimal  "location_long"
-    t.decimal  "recorded_from_lat"
-    t.decimal  "recorded_from_long"
-    t.string   "deviceid"
+    t.decimal "location_lat"
+    t.decimal "location_long"
+    t.decimal "recorded_from_lat"
+    t.decimal "recorded_from_long"
+    t.string "deviceid"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "target_price"
-    t.decimal  "approved_proposal_id"
-    t.string   "phone_number"
-    t.string   "owner_name"
-    t.integer  "interval"
-    t.string   "address_line_1"
-    t.string   "address_line_2"
-    t.string   "title"
-    t.string   "description"
-    t.text     "target_price_currency"
-    t.text     "image_file_name"
-    t.text     "image_content_type"
-    t.integer  "image_file_size"
-    t.text     "thumbnail_image_url"
-    t.text     "standard_image_url"
-    t.decimal  "rotation_angle"
-    t.date     "availability_start"
-    t.date     "availability_stop"
+    t.integer "approved_proposal_id"
+    t.decimal "target_price"
+    t.string "phone_number"
+    t.string "owner_name"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "title"
+    t.string "description"
+    t.text "target_price_currency"
     t.datetime "space_availability_start"
     t.datetime "space_availability_stop"
+    t.integer "legal_type"
+    t.string "file1"
+    t.string "file2"
+    t.string "file3"
+    t.string "weekly_schedule"
+    t.time "daily_start"
+    t.time "daily_stop"
+    t.index ["created_at"], name: "index_parking_spaces_on_created_at"
+    t.index ["deviceid"], name: "index_parking_spaces_on_deviceid"
+    t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
+    t.index ["location_long"], name: "index_parking_spaces_on_location_long"
+    t.index ["space_availability_start"], name: "index_parking_spaces_on_space_availability_start"
+    t.index ["space_availability_stop"], name: "index_parking_spaces_on_space_availability_stop"
   end
-
-  add_index "parking_spaces", ["created_at"], name: "index_parking_spaces_on_created_at"
-  add_index "parking_spaces", ["deviceid"], name: "index_parking_spaces_on_deviceid"
-  add_index "parking_spaces", ["interval"], name: "index_parking_spaces_on_interval"
-  add_index "parking_spaces", ["location_lat"], name: "index_parking_spaces_on_location_lat"
-  add_index "parking_spaces", ["location_long"], name: "index_parking_spaces_on_location_long"
-  add_index "parking_spaces", ["space_availability_start"], name: "index_parking_spaces_on_space_availability_start"
-  add_index "parking_spaces", ["space_availability_stop"], name: "index_parking_spaces_on_space_availability_stop"
 
   create_table "proposals", force: :cascade do |t|
-    t.string   "deviceid"
-    t.string   "title_message"
-    t.integer  "parking_space_id"
+    t.string "deviceid"
+    t.string "title_message"
+    t.integer "parking_space_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "bid_amount"
-    t.string   "bid_currency"
-    t.string   "bidder_name"
-    t.integer  "approval_status"
-    t.boolean  "read"
-    t.string   "phone_number"
-    t.string   "message_from_device_id"
+    t.decimal "bid_amount"
+    t.string "bid_currency"
+    t.string "bidder_name"
+    t.integer "approval_status"
+    t.boolean "read"
+    t.string "phone_number"
+    t.string "message_from_device_id"
+    t.datetime "start_date", null: false
+    t.datetime "end_date", null: false
+    t.datetime "payment_date"
+    t.integer "payment_status"
+    t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
+    t.index ["deviceid"], name: "index_proposals_on_deviceid"
+    t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"
   end
-
-  add_index "proposals", ["bid_amount"], name: "index_proposals_on_bid_amount"
-  add_index "proposals", ["deviceid"], name: "index_proposals_on_deviceid"
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "full_name"
-    t.string   "phone_number"
-    t.string   "device_id"
-    t.string   "country"
-    t.string   "notif_registration_id"
+    t.string "full_name"
+    t.string "phone_number"
+    t.string "device_id"
+    t.string "country"
+    t.string "notif_registration_id"
+    t.string "license"
+    t.boolean "phone_no_confirm"
+    t.string "phone_confirm_code"
+    t.string "payment_id"
+    t.index ["device_id"], name: "index_users_on_device_id", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["license"], name: "index_users_on_license"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_index "users", ["device_id"], name: "index_users_on_device_id", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  create_table "withdrawals", force: :cascade do |t|
+    t.decimal "amount"
+    t.string "iban"
+    t.integer "status"
+    t.string "status_message"
+    t.datetime "processed_at"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_withdrawals_on_account_id"
+    t.index ["amount"], name: "index_withdrawals_on_amount"
+  end
 
 end

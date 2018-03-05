@@ -1,0 +1,503 @@
+
+nav {
+  background-color: $blue-900;
+  border-radius: none;
+  .navbar-brand {
+    color: $blue-100;
+  }
+  .navbar-nav {
+    & > li > a.nav-link {
+      color: $blue-100;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+    }
+  }
+}
+
+.find-block {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  background: url("/assets/bg.png");
+}
+
+@include media-breakpoint-down(md) {
+  .find-block {
+    background: url("/assets/bg_sm.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .find-block {
+    background: url("/assets/bg_xs.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .find-block {
+    background: url("/assets/bg.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+
+.date-err {
+  color: $red;
+  position: relative;
+  text-align: center;
+  font-style: italic;
+
+  &.active {
+    background: $blue-90;
+    border: 1px solid $red;
+    border-radius: 3px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      right: 60px;
+      display: inline-block;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid $blue-90;
+      border-left: 8px solid transparent;
+    }
+  }
+}
+
+div.daterangepicker {
+  font-size: 1.1em;
+  padding: 0;
+  margin-top: 7px;
+  box-shadow: 2px 2px 5px 0 $gray-700;
+
+  &:after {
+    border-bottom-color: $blue-700;
+  }
+
+  .daterangepicker_input {
+    background-color: $blue-700;
+    margin-top: 0;
+    padding: 4px;
+    color: $blue-90;
+
+    i {
+      font-size: 1.6em;
+      top: 5px;
+    }
+
+    select {
+
+      &.hourselect {
+        font-size: 1.4em;
+        background-color: $blue-700;
+        color: $blue-90;
+        border: 0;
+        border-bottom: 1px solid $blue-90;
+        width: 30%;
+      }
+
+      &.minuteselect {
+        font-size: 1.4em;
+        background-color: $blue-700;
+        color: $blue-90;
+        border: 0;
+        width: 30%;
+        border-bottom: 1px solid $blue-90;
+      }
+
+    }
+  }
+
+  .header {
+    text-align: center;
+    padding: 3px;
+  }
+
+  .apply {
+    width: 95%;
+    padding: 8px;
+    background-color: $gray-500;
+    border: 1px solid $gray-600;
+    color: #fff;
+    font-size: 1.4em;
+    margin: 7px;
+  }
+
+  .ranges {
+    float: none !important;
+  }
+
+  .cancel {
+    display: none;
+  }
+
+  .calendar {
+    max-width: inherit;
+    margin: auto;
+
+    td {
+      padding: 5px;
+    }
+  }
+
+}
+
+.search-form {
+  position: relative;
+
+  input.form-control {
+    border: 1px solid $gray-lighter;
+    line-height: 2;
+    font-size: 1.2em;
+    padding-right: 2.5em;
+    text-overflow: ellipsis;
+    background-color: $blue-80;
+    color: $blue-900;
+    box-shadow: 1px 2px 3px 0 $gray-700;
+
+    &:focus {
+      box-shadow: 1px 2px 3px 0 $gray-700;
+    }
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 3%;
+    top: 32%;
+    font-size: 1.4em;
+    color: $gray-light;
+
+    &:hover {
+      color: $dflt-font-color;
+      cursor: pointer;
+    }
+  }
+
+  .dropdown-item {
+    white-space: nowrap;
+    font-size: 1.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .res-marker {
+      font-size: 1.3em;
+      color: $red;
+    }
+
+    &.no-item {
+      color: $gray-lighter;
+    }
+
+  }
+
+  .address-suggestion {
+    width: 100%;
+    display: block;
+    top: inherit;
+    right: 0;
+    left: 0;
+    background-color: $blue-80;
+    box-shadow: 0 2px 3px 0 $gray-700;
+    color: $blue-900;
+  }
+}
+
+.date-range-container {
+  font-size: 1.2em;
+
+  date-input {
+
+    box-shadow: 0px -1px 3px 0 $gray-700;
+    &.err {
+      border: 1px solid $red;
+    }
+
+    &.shadow {
+      box-shadow: 1px 4px 3px 0 $gray-700;
+
+      .input {
+        border-top: 3px solid $red;
+      }
+    }
+  }
+
+  .date {
+    text-transform: capitalize;
+  }
+
+  .day-of-week {
+    text-align: center;
+    font-size: 1.2em;
+    line-height: 1;
+    text-transform: capitalize;
+    color: $blue-900;
+  }
+
+  .date-container {
+    background-color: $blue-900;
+    color: $blue-100;
+  }
+
+  .label {
+    font-size: 0.8em;
+    color: $blue-900;
+  }
+
+  .input {
+    border-radius: $border-radius;
+    background-color: $blue-90;
+    line-height: 2;
+    text-align: center;
+
+    &:focus {
+      box-shadow: 1px 2px 7px 0 $blue-900;
+
+    }
+  }
+}
+
+.btn-search {
+  color: $blue-80;
+}
+
+.ios {
+  a {
+    display: inline-block;
+    overflow: hidden;
+    background: url(https://linkmaker.itunes.apple.com/assets/shared/badges/en-us/appstore-lrg.svg) no-repeat;
+    width: 135px;
+    height: 40px;
+    background-size: contain;
+  }
+}
+
+.appstore {
+  img {
+    width: 100%
+  }
+}
+
+.rent {
+  .pricing-box-1 {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 25px 15px;
+    box-shadow: 2px 0 10px 0 transparentize($blue-800, .5);
+    background-color: #fff;
+  }
+
+  .owl-stage-outer {
+    overflow: visible;
+  }
+
+  .owl-carousel {
+    .owl-item {
+      img {
+        width: auto;
+      }
+    }
+
+    .owl-dots {
+      position: absolute;
+      width: 100%;
+      top: -20px;
+    }
+
+  }
+
+  .pricing-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #151515;
+    text-align: center;
+  }
+
+  .pricing-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    height: 150px;
+    background-color: #f8f9fb;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .t-bar {
+    z-index: 2;
+  }
+  .pricing-list {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: $measure-unit $sm-measure-unit;
+      font-weight: 300;
+    }
+  }
+
+  .price-wrap {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+
+    .price {
+      display: block;
+      font-size: 36px;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #151515;
+    }
+
+    + .btn {
+      margin-top: 30px;
+    }
+
+  }
+
+}
+
+.faq {
+
+  .faq-box {
+    background-color: #fff;
+    border: 1px solid $gray-300;
+    border-radius: 5rem;
+    text-align: center;
+    height: 100%;
+
+    span {
+      font-weight: 300;
+    }
+
+    a:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+  .pricing-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    height: 150px;
+    background-color: #f8f9fb;
+    border-radius: 50%;
+    overflow: hidden;
+    color: $blue-500;
+
+    &.disp {
+      flex-direction: column;
+    }
+  }
+}
+
+.panel {
+
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  box-shadow: 3px 3px 0 0 $gray-400;
+  border-radius: 4px;
+
+
+  h5 {
+    font-weight: 600;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  .panel-body {
+    display: none;
+    border-top: 1px solid $gray-400;
+    padding: 10px;
+  }
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $blue-200;
+  z-index: 10;
+
+  &:hover {
+    background-color: $blue-600;
+    color: $white !important;
+    cursor: pointer;
+  }
+}
+
+.footer {
+  background-color: $blue-850;
+  color: $white;
+
+  [class*="col-"]:nth-child(2n) {
+    background-color: $blue-800;
+  }
+
+  a {
+    color: $white;
+    font-size: 1.2em;
+  }
+
+  ul {
+    list-style-type: none;
+
+    li {
+      i {
+        color: lighten($red, 10%);
+      }
+    }
+  }
+
+  hr {
+    border-top: 1px solid $blue-700;
+  }
+
+  .social-lg {
+    margin: 0 7px;
+  }
+
+  .contact-form {
+    .form-group {
+      input {
+        background-color: $blue-900;
+        border: 0;
+      }
+      textarea {
+        height: 67px;
+        background-color: $blue-900;
+        border: 0;
+      }
+    }
+  }
+}
+
+.ending {
+  background-color: $blue-900;
+  color: $blue-100;
+}
+
+
+
