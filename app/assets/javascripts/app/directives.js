@@ -14,7 +14,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                 function initialize() {
                     let mapOptions = {
                         center: new google.maps.LatLng(44.412, 26.113),
-                        zoom: 16,
+                        zoom: 15,
                         minZoom: 15,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         streetViewControl: false,
@@ -40,125 +40,44 @@ angular.module('ParkingSpaceMobile.directives', [])
         };
     })
 
-    .directive('payment', function (paymentService, $rootScope, $state) {
+    .directive('productTable', function () {
         return {
             restrict: 'E',
             scope: {
                 offer: '=',
-                selectedSpace: '='
+                space: '=',
             },
             template:
-            '<div class="ps-modal" style="display: none">' +
-            '    <div class="dropin-wrapper p-3 animated zoomIn ">' +
-            '      <div class="dropin-header">' +
-            '      </div>' +
-            '      <div class="dropin-container">' +
-            '      </div>' +
-            '      <div class="dropin-footer my-4 text-center mark small">' +
-            '        Go Park nu utilizează și nu stochează date financiare.<br/> Procesul de plată este gestionat și securizat prin <br/>' +
-            '        <a href="https://www.braintreegateway.com/merchants/z9m7pkx8dz7jsgq4/verified" target="_blank">' +
-            '          <img src="https://s3.amazonaws.com/braintree-badges/braintree-badge-wide-dark.png" width="159" height="25" border="0">' +
-            '        </a>' +
-            '      </div>' +
-            '      <button class="btn btn-lg btn-primary btn-block start-payment" ng-disabled="loading">' +
-            '        <i class="fa fa-spinner fa-spin" ng-show="loading"></i>' +
-            '        <i class="fa fa-credit-card"></i> Plătește' +
-            '      </button>' +
-            '    </div>' +
-            '  </div>',
-            link: function ($scope, elm, attrs) {
 
-                $rootScope.$on('$stateChangeStart',
-                    function (event, toState, toParams, fromState, fromParams, options) {
-                        if (toState.name.indexOf('.pay') !== -1) {
-                            elm.find('.ps-modal').show();
-                        } else {
-                            elm.find('.ps-modal').hide();
-
-                        }
-                    });
-
-                $('.start-payment').hide();
-
-                paymentService.generateToken(function (token) {
-                    let container = $(elm).find('.dropin-container').get(0);
-                    let button = $(elm).find('.start-payment').get(0);
-                    $scope.loading = false;
-
-                    braintree.dropin.create({
-                        authorization: token,
-                        container: container,
-                        translations: {
-                            payingWith: 'Metodă plată: {{paymentSource}}',
-                            chooseAnotherWayToPay: 'Alege altă metodă de plată',
-                            chooseAWayToPay: 'Alege o metodă de plată',
-                            otherWaysToPay: 'Alte metode de plată',
-                            cardVerification: 'Verificare card',
-                            // Errors
-                            fieldEmptyForCvv: 'Vă rugăm completați CVV.',
-                            fieldEmptyForExpirationDate: 'Vă rugăm completați data expirării.',
-                            fieldEmptyForCardholderName: 'Vă rugăm completați numele deținatorului.',
-                            fieldEmptyForNumber: 'Va rugăm completați numarul cardului.',
-                            fieldEmptyForPostalCode: 'Va rugăm completați codul poștal.',
-                            fieldInvalidForCvv: 'Codul de securitate este invalid.',
-                            fieldInvalidForExpirationDate: 'Data expirării este invalidă.',
-                            fieldInvalidForNumber: 'Numarul cardului este invalid.',
-                            fieldInvalidForPostalCode: 'Codul poștal este invalid.',
-                            fieldTooLongForCardholderName: 'Numele deținătorului nu poate depașii 256 caractere.',
-                            genericError: 'A apărut o eroare in procesare.',
-                            hostedFieldsFailedTokenizationError: 'Vă rugăm verificați informațiile si încercați din nou.',
-                            hostedFieldsTokenizationCvvVerificationFailedError: 'Verificarea cardului a eșuat. Verificați informațiile și încercați din nou.',
-                            hostedFieldsTokenizationNetworkErrorError: 'Eroare de rețea. Vă rugăm incercați din nou.',
-                            hostedFieldsFieldsInvalidError: 'Vă rugăm verificați informațiile si încercați din nou.',
-                            paypalAccountTokenizationFailedError: 'A aparut o eroare in adaugarea contului de PayPal. Încercați din nou.',
-                            paypalFlowFailedError: 'A apărut o eroare la conectarea cu PayPal. Încercați din nou.',
-                            paypalTokenizationRequestActiveError: 'Autorizarea plății prin PayPal este deja pornită.',
-                            applePayTokenizationError: 'O eroare de rețea a aparut la procesarea Apple Pay. Încercați din nou.',
-                            applePayActiveCardError: 'Add a supported card to your Apple Pay wallet.',
-                            unsupportedCardTypeError: 'Acest tip de card nu este suportat. Vă rugăm folosiți alt card.',
-                            // Card form
-                            cardholderNameLabel: 'Nume deținător',
-                            cardholderNamePlaceholder: 'Nume deținător',
-                            cardNumberLabel: 'Număr card',
-                            expirationDateLabel: 'Dată expirare',
-                            postalCodeLabel: 'Cod poștal',
-                            payWithCard: 'Plată cu cardul',
-                            endingIn: 'Ultimele cifre ••{{lastTwoCardDigits}}',
-                        },
-                        paypal: {
-                            flow: 'vault'
-                        }
-                    }, function (createErr, instance) {
-                        $('.start-payment').show();
-                        button.addEventListener('click', function () {
-                            $scope.loading = true;
-                            if (!$scope.$$phase)
-                                $scope.$apply();
-
-                            instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-                                if (requestPaymentMethodErr) {
-                                    // No payment method is available.
-                                    // An appropriate error will be shown in the UI.
-                                    alert('Eroare in procesare:' + requestPaymentMethodErr);
-                                    return;
-                                }
-
-                                paymentService.registerPayment(payload, $scope.selectedSpace.id, $scope.offer.id, function (respData) {
-                                    $scope.loading = false;
-                                    $scope.offer = respData;
-                                    $state.go('^');
-                                    $rootScope.$emit('http.notif', 'Ați achitat cu succes rezervarea. Proprietarul a fost notificat.')
-                                }, function(errResp){
-                                    $scope.loading = false;
-                                    $state.go('^');
-                                });
-                            });
-                        });
-                    });
-
-
-                });
-            }
+            '<table class="table table-hover table-sm">' +
+            '<thead>' +
+            '    <tr>' +
+            '        <th>Produs</th>' +
+            '        <th class="text-center">Pret</th>' +
+            '        <th class="text-center">Pret cu TVA</th>' +
+            '    </tr>' +
+            '</thead>' +
+            '<tbody>' +
+            '    <tr>' +
+            '        <td><em>Închirere spatiu </em></td>' +
+            '        <td class="text-center">{{offer.amount }} {{space.currency}}</td>' +
+            '        <td class="text-center">{{offer.amount_with_vat}} {{space.currency}}</td>' +
+            '    </tr>' +
+            '    <tr>' +
+            '        <td><em>Comision(8% + 2.5)</em></h4></td>' +
+            '        <td class="text-center">{{offer.comision}} {{space.currency}}</td>' +
+            '        <td class="text-center">{{offer.comision_with_vat}} {{space.currency}}</td>' +
+            '    </tr>' +
+            '    <tr>' +
+            '        <td>   </td>' +
+            '        <td class="text-right"><h5><strong>Total: </strong></h5></td>' +
+            '        <td class="text-center text-danger">' +
+            '           <h5><strong>' +
+            '               {{ offer.amount_with_vat - 0 + offer.comision_with_vat }} {{space.currency}} ' +
+            '           </strong></h5>' +
+            '</td>' +
+            '    </tr>' +
+            '</tbody></table>'
         }
     })
 
@@ -195,12 +114,10 @@ angular.module('ParkingSpaceMobile.directives', [])
 
                 searchBox.addListener('place_changed', function () {
                     let place = searchBox.getPlace();
-                    $scope.selectedPlace(
-                        {
-                            place: place.address_components,
-                            location: place.geometry.location
-                        }
-                    );
+                    $scope.selectedPlace({
+                        place: place.address_components,
+                        location: place.geometry.location
+                    });
                     $scope.$apply();
                 });
 
@@ -251,7 +168,7 @@ angular.module('ParkingSpaceMobile.directives', [])
             restrict: 'E',
             template:
             '<div class="parking-spot-details p-0 p-md-2 d-flex ">' +
-            '          <div ng-click="showFullImage=true" class="d-flex">' +
+            '          <div ng-click="showFullImage=true" class="d-flex" style="overflow: hidden">' +
             '            <cl-image public-id="{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail"></cl-image>' +
             '            <cl-image public-id="{{space.file2}}" ng-show="space.file2" class="img-thumbnail p-0 thumbnail"></cl-image>' +
             '          </div>' +
@@ -541,17 +458,6 @@ angular.module('ParkingSpaceMobile.directives', [])
             }
         }
     })
-
-    .directive('ngRepeatFinish', function () {
-        return function (scope, element, attrs) {
-            var clbk = attrs.ngRepeatFinish;
-            if (scope.$last) {
-                if (scope[clbk])
-                    scope[clbk]();
-            }
-        }
-    })
-
 
     .directive('dateTime', function () {
         let template = '<input ' +

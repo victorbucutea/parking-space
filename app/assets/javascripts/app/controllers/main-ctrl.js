@@ -45,7 +45,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
         $scope.selectedLocation = newLocation;
     };
 
-    $scope.dateFilter = {start: new Date(), stop: moment().add(1, 'd').toDate()};
+    $scope.dateFilter = {start: new Date(), stop: moment().add(1, 'M').toDate()};
 
 
     let addMsg = function (type, msg) {

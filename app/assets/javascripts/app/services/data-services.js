@@ -200,6 +200,18 @@ angular.module('ParkingSpaceMobile.services', [])
                 })
         };
 
+        this.getOffer = function(offerId,clbk){
+            $http.get(ENV + '/parking_spaces/1/proposals/' + offerId + '.json')
+                .then(function (res) {
+                    let data = res.data;
+                    if (clbk) {
+                        clbk(data);
+                    }
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
+                })
+        };
+
         this.cancelOffer = function (spaceId, offer, clbk) {
             $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
                 .then(function (res) {
@@ -333,29 +345,96 @@ angular.module('ParkingSpaceMobile.services', [])
         };
     })
 
-    .service('paymentService', function ($rootScope, $http, errorHandlingService) {
+    .service('paymentService', function ($rootScope, $http, errorHandlingService, $q) {
         let _this = this;
 
-        _this.generateToken = function (clbk) {
-            $http.get('/users/client_token.json').then(function (resp) {
-                if (clbk) {
-                    let data = resp.data;
-                    clbk(data.token);
-                }
+        _this.generateToken = function () {
+            return $http.get('/users/client_token.json').then(function (resp) {
+                return resp.data.token;
             }, function (err) {
                 errorHandlingService.handle(err.data, err.status);
-            })
+            });
         };
 
         _this.registerPayment = function (payload, spaceId, offerId, clbk, errClbk) {
-            $http.post('/parking_spaces/' + spaceId + '/proposals/' + offerId + '/pay.json', {nonce: 'fake-processor-declined-visa-nonce'}).then(function (resp) {
+            $http.post('/parking_spaces/' + spaceId + '/proposals/' + offerId + '/pay.json', {nonce: payload.nonce}).then(function (resp) {
                 if (clbk) {
                     let data = resp.data;
                     clbk(data);
                 }
             }, function (err) {
                 errorHandlingService.handle(err.data, err.status);
-                if (errClbk){
+                if (errClbk) {
+                    errClbk(err);
+                }
+            })
+        };
+
+        _this.getPayments = function (clbk, errClbk) {
+            $http.get('/parking_spaces/1/proposals/1/get_user_payments.json').then(function (resp) {
+                if (clbk) {
+                    let data = resp.data;
+                    clbk(data);
+                }
+            }, function (err) {
+                errorHandlingService.handle(err.data, err.status);
+                if (errClbk) {
+                    errClbk(err);
+                }
+            })
+        };
+
+        _this.getPaymentDetails = function (paymentId, clbk, errClbk) {
+            $http.get('/parking_spaces/1/proposals/1/get_payment_details.json?payment_id=' + paymentId).then(function (resp) {
+                if (clbk) {
+                    let data = resp.data;
+                    clbk(data);
+                }
+            }, function (err) {
+                errorHandlingService.handle(err.data, err.status);
+                if (errClbk) {
+                    errClbk(err);
+                }
+            })
+        };
+
+        _this.getAccountStatus = function (clbk, errClbk) {
+            $http.get('/accounts.json').then(function (resp) {
+                if (clbk) {
+                    let data = resp.data;
+                    clbk(data);
+                }
+            }, function (err) {
+                errorHandlingService.handle(err.data, err.status);
+                if (errClbk) {
+                    errClbk(err);
+                }
+            })
+        };
+
+        _this.withdraw = function (amnt, iban, clbk, errClbk) {
+            $http.post('/accounts/1/withdraw.json',{amount: amnt, iban:iban}).then(function (resp) {
+                if (clbk) {
+                    let data = resp.data;
+                    clbk(data);
+                }
+            }, function (err) {
+                errorHandlingService.handle(err.data, err.status);
+                if (errClbk) {
+                    errClbk(err);
+                }
+            })
+        };
+
+        _this.getWithdrawals = function (clbk, errClbk) {
+            $http.get('/accounts/1/withdrawals.json').then(function (resp) {
+                if (clbk) {
+                    let data = resp.data;
+                    clbk(data);
+                }
+            }, function (err) {
+                errorHandlingService.handle(err.data, err.status);
+                if (errClbk) {
                     errClbk(err);
                 }
             })

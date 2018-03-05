@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   before_create :generate_device_id
 
+  has_one :account
+
 
   def generate_device_id
     phone_number = self.phone_number || ''

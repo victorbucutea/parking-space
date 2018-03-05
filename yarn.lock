@@ -102,6 +102,10 @@ framebus@2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/framebus/-/framebus-2.0.8.tgz#01c7ee5f765beb3f9a2e0390ca0b7088b2bf76d3"
 
+iban@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/iban/-/iban-0.0.10.tgz#1a6aeb08e85cd98d5651c5e0c08c5c0de81ba78d"
+
 inject-stylesheet@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/inject-stylesheet/-/inject-stylesheet-1.0.0.tgz#f673047458ee58f109fee4cfb66b09f362ccc261"

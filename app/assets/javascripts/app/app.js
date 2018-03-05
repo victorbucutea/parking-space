@@ -19,9 +19,10 @@ angular.module('ParkingSpaceMobile', [
 
         if (!window.google || !window.google.maps) return;
 
-        function HtmlMarker(space, scope) {
+        function HtmlMarker(space, scope, nearestOffer) {
             this.price = space.price;
             this.space = space;
+            this.nearestOffer = nearestOffer;
             this.currency = space.currency;
             this.noOfPlaces = 1;
             this.scope = scope;
@@ -43,16 +44,46 @@ angular.module('ParkingSpaceMobile', [
             div.className = "html-marker";
             if (!this.space.public) {
                 div.className = "html-marker private";
+                if (this.space.owner_is_current_user) {
+                    div.className += " owner";
+                }
             }
-            $(div).on('click', function (evt) {
+            $(div).on('click touchstart', function (evt) {
                 _this.scope.markerClick({elm: _this});
                 evt.preventDefault();
                 evt.stopPropagation();
             });
-            div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' </div>';
+            if (!this.nearestOffer) {
+                div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' <small> / h </small> </div>';
+            } else {
+                this.markReservationActive(div);
+            }
             let panes = this.getPanes();
             panes.overlayImage.appendChild(div);
             this._div = div;
+        };
+
+        HtmlMarker.prototype.markReservationActive = function (div) {
+            let st = moment(this.nearestOffer.start_date);
+            let end = moment(this.nearestOffer.end_date);
+            let now = moment();
+            let text = '';
+            if (end.isBefore(now)) {
+                return;
+            }
+
+            text = st.fromNow();
+
+            if (end.isAfter(now) && st.isBefore(now)) {
+                text = ' în curs';
+            }
+
+
+            let rezHtml =
+                '<div>' + this.price + ' ' + this.currency + ' <small> / h </small>  <br/>' +
+                '<small class="text-secondary"> <i class="fa fa-flash"></i> Rez. ' + text + ' </small>' +
+                '</div>';
+            div.innerHTML = rezHtml;
         };
 
         HtmlMarker.prototype.draw = function () {
@@ -113,6 +144,11 @@ angular.module('ParkingSpaceMobile', [
                     'map-controls': {
                         templateUrl: "templates/search.html"
                     }
+                },
+                params: {
+                    lat: null,
+                    lng: null,
+                    zoom: null
                 }
             })
             .state('home.map.search.help', {
@@ -140,7 +176,16 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.map.search.post-bids.pay', {
-                url: '/pay'
+                url: '/pay',
+                views: {
+                    'pay': {
+                        templateUrl: 'templates/pay.html'
+                    }
+                },
+                params: {
+                    offer: null,
+                    space: null
+                }
             })
             .state('home.map.search.review-bids', {
                 url: '/review-bid',
@@ -216,7 +261,7 @@ angular.module('ParkingSpaceMobile', [
                 url: '/edit/{parking_space_id}',
                 views: {
                     'edit-space': {
-                        templateUrl: "templates/review-post.html"
+                        templateUrl: "templates/post-space.html"
                     }
                 }
             })
@@ -236,6 +281,43 @@ angular.module('ParkingSpaceMobile', [
                     },
                     'my-menu': {
                         templateUrl: "templates/nav-bar.html"
+                    }
+                }
+            })
+            .state('home.myoffers.pay', {
+                url: '/pay',
+                views: {
+                    'pay':{
+                        templateUrl: "templates/pay.html"
+
+                    }
+                },
+                params: {
+                    offer: null,
+                    space: null
+                }
+            })
+            .state('home.account', {
+                url:"/account",
+                views: {
+                    'content': {
+                        templateUrl: "templates/account.html"
+                    }
+                }
+            })
+            .state('home.account.payments', {
+                url:"/payments",
+                views: {
+                    'financial': {
+                        templateUrl: "templates/payments.html"
+                    }
+                }
+            })
+            .state('home.account.withdrawals', {
+                url:"/withdrawals",
+                views: {
+                    'financial': {
+                        templateUrl: "templates/withdrawals.html"
                     }
                 }
             })

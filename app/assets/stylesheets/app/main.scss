@@ -179,6 +179,12 @@ map {
   }
 }
 
+.hamburger {
+  position: fixed;
+  top: .5rem;
+  right: 1rem;
+}
+
 .pac-item {
   line-height: $xxxbig-measure-unit;
   font-size: 1.2em;
@@ -390,8 +396,12 @@ map {
   }
 }
 
+.scroll {
+  overflow-y: scroll;
+}
+
 .open-offers-list {
-  margin-top: $jumbo-measure-unit;
+  margin-top: $lg-jumbo-measure-unit;
 }
 
 .post-space-container {
@@ -750,14 +760,14 @@ parking-spot-info-box {
     overflow: scroll;
     padding-bottom: 10px;
 
+
+
     .offer {
       background-color: $white;
       display: flex;
       align-items: center;
 
-      &.offer-head {
-        border-bottom: 1px solid $gray-500;
-      }
+
       &.selected {
         background-color: darken($blue-90, 10%);
         .offer-price {
@@ -766,11 +776,9 @@ parking-spot-info-box {
         }
       }
 
-      .offer-desc {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-weight: 100;
+
+      .canceled {
+        text-decoration: line-through;
       }
 
       .offer-price {
@@ -780,7 +788,7 @@ parking-spot-info-box {
         padding: 5px;
         font-size: 1.4em;
         display: inline-block;
-        width: 85px;
+        width: 95px;
         -ms-text-overflow: ellipsis;
         text-overflow: ellipsis;
         text-align: center;
@@ -788,13 +796,6 @@ parking-spot-info-box {
         overflow: hidden;
       }
 
-      .offer-accept {
-        text-decoration: underline;
-      }
-
-      .accepted {
-        color: $green;
-      }
     }
 
   }
@@ -902,11 +903,13 @@ parking-spot-info-box {
   position: absolute;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
   align-items: center;
+  white-space: nowrap;
 
   > div {
     border-left: 1px solid $gray-400;
     margin-left: 5px;
     padding-left: 5px;
+
   }
 
   &:after {
@@ -933,15 +936,20 @@ parking-spot-info-box {
   }
 
   &.private:before {
-    content: '\f0e7';
+    content: '\f1b9';
     background-image: none;
     width: auto;
     height: auto;
     margin: 2px;
     font-family: 'fontawesome';
-    color: $yellow;
+    color: $green;
     font-size: 20px;
   }
+
+  &.private.owner:before {
+    content: '\f007';
+  }
+
 
   &:hover {
     background-color: $blue-200;

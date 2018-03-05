@@ -10,6 +10,10 @@ json.price parking_space.target_price.to_f
 json.currency parking_space.target_price_currency
 json.owner_is_current_user parking_space.deviceid == current_user.device_id
 json.expired parking_space.expired?
+if parking_space.owner.present?
+  json.owner_phone_number parking_space.owner.phone_number
+  json.owner_email parking_space.owner.email
+end
 
 json.offers do
   # this call increases costs by 40%, replacing the partial call with its raw content
@@ -27,7 +31,12 @@ json.offers do
     json.end_date proposal.end_date
     json.owner_is_current_user proposal.deviceid == current_user.device_id
     json.read proposal.read
+    json.amount proposal.amount.to_f
+    json.amount_with_vat proposal.amount_with_vat.to_f
+    json.comision proposal.comision.to_f
+    json.comision_with_vat proposal.comision_with_vat.to_f
     json.owner_name proposal.bidder_name
     json.paid proposal.paid?
+    json.payment_date proposal.payment_date
   end
 end

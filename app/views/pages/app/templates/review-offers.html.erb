@@ -1,4 +1,4 @@
-<div id="search-space" class="ps-modal" ng-controller="ReviewBidsCtrl">
+<div class="ps-modal" ng-controller="ReviewBidsCtrl">
   <div class="search-space-modal animated zoomIn container mt-md-4">
 
     <div ng-hide="selectedSpace.public" class="row my-2 pb-3 align-items-center space-type ">
@@ -28,7 +28,7 @@
              ng-class="{selected: selOffer == offer, canceled: !offer.approved}">
 
           <span class="offer-price">
-                 {{offer | totalPrice }}
+                 {{offer.amount}} {{selectedSpace.currency}}
           </span>
 
           <span class="offer-desc pl-2">
@@ -47,18 +47,25 @@
 
       <div ng-show="selOffer" class="offer-desc-area py-3 animated zoomIn">
         <h5 class="text-center font-weight-bold">
-          Neachitat <br/>
-          <small class="font-weight-light"> (Se achită cash proprietarului)</small>
+          <span ng-hide="selOffer.paid">
+            Neachitat <br/>
+            <small class="font-weight-light"> (Se achită cash proprietarului)</small>
+          </span>
+          <span ng-show="selOffer.paid">Achitat online  <br/>
+            <small class="font-weight-light"> ( La data de {{selOffer.payment_date | moment: 'D/MM HH:mm'}})</small>
+
+          </span>
+
         </h5>
 
         <div class="offer-desc-item">
           Data start:
-          <div class="value pull-right">{{selOffer.start_date | moment: 'ddd, D MMM, HH:mm'}}</div>
+          <div class="value pull-right">{{selOffer.start_date | moment: 'ddd, D MMM HH:mm'}}</div>
         </div>
 
         <div class="offer-desc-item">
           Data stop:
-          <div class="value pull-right">{{selOffer.end_date | moment: 'ddd, D MMM, HH:mm'}}</div>
+          <div class="value pull-right">{{selOffer.end_date | moment: 'ddd, D MMM HH:mm'}}</div>
         </div>
 
         <div class="offer-desc-item">

@@ -51,7 +51,7 @@
             </div>
             <div class="col-6">
               Cost total
-              <h5>{{bid | totalPrice }}</h5>
+              <h5>{{bid.amount}} {{selectedSpace.currency}}</h5>
             </div>
             <div class="col-6">
               Durata
@@ -83,7 +83,7 @@
               <div class="col-4 ">Status</div>
               <div class="col-8">
                 <span ng-show="bid.approved" class="green">Acceptată</span>
-                <span ng-hide="bid.approved || bid.rejected">In așteptare</span>
+                <span ng-show="bid.canceled">In așteptare</span>
                 <span ng-show="bid.rejected" class="red">Respinsă</span>
                 &nbsp;
                 <button class="btn btn-danger btn-sm" ng-click="cancelOffer(bid)">Anulează</button>
@@ -100,7 +100,7 @@
           </div>
 
           <div class="mt-2 text-center" ng-show="bid.approved">
-            <button class="mt-1 btn btn-outline-primary" id="startPayment" ui-sref=".pay" ng-if="!bid.paid">
+            <button class="mt-1 btn btn-outline-primary"  ui-sref=".pay({offer:bid})" ng-if="!bid.paid">
               <i class="fa fa-credit-card"></i> Plătește online
             </button>
             <button class="mt-1 btn btn-link" ng-if="bid.paid">
@@ -111,11 +111,10 @@
             </a>
           </div>
 
-          <!-- payment dialog -->
-          <payment offer="bid" selected-space="selectedSpace"></payment>
-
-
         </div>
+
+        <!-- payment dialog outside offer loop-->
+        <ui-view name="pay"></ui-view>
 
       </div>
       <form ng-hide="hideRentForm">

@@ -1,9 +1,10 @@
 defaults: &defaults
-  short_term_expiration: 10 # minutes
-  long_term_expiration: 2 # weeks
   android_gcm_url: https://gcm-http.googleapis.com/gcm/send
   fb_debug_token_url: https://graph.facebook.com/debug_token
   app_name: 'Go-Park'
+  vat: 0.21
+  comision_fixed: 2.5
+  comision_percent: 0.08
 
 development:
   <<: *defaults

@@ -135,6 +135,12 @@ class ParkingSpacesController < ApplicationController
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
+
+    if @parking_space.has_paid_proposals?
+      render json: {Error: {general: "Nu se poate șterge un loc cu oferte plătite"}}, status: :unprocessable_entity
+      return
+    end
+
     @parking_space.destroy
     respond_to do |format|
       format.json {head :no_content}
