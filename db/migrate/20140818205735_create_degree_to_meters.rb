@@ -1,4 +1,4 @@
-class CreateDegreeToMeters < ActiveRecord::Migration
+class CreateDegreeToMeters < ActiveRecord::Migration[5.1]
   def change
     create_table :degree_to_meters do |t|
       t.decimal :degrees

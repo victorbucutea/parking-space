@@ -1,4 +1,4 @@
-class CreateParameterValues < ActiveRecord::Migration
+class CreateParameterValues < ActiveRecord::Migration[5.1]
   def change
     create_table :parameter_values do |t|
       t.string :key, index: true
