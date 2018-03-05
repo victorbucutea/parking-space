@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require jquery
 //= require jquery.scrollto/jquery.scrollTo
 //= require moment/min/moment.min
 //= require moment/locale/ro
