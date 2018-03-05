@@ -7,7 +7,7 @@ class ParkingSpace < ActiveRecord::Base
   enum legal_type: [:public_parking, :private_parking]
   scope :not_expired, -> {  where('parking_spaces.space_availability_stop >= ? ',Time.now)}
   scope :active, ->  { where('parking_spaces.space_availability_start <= ? ',Time.now )}
-  scope :within_boundaries, ->(attrs) {
+  scope :within_boundaries, -> (attrs) {
     where('parking_spaces.location_lat >= :lat_min
            AND parking_spaces.location_lat <= :lat_max
            AND parking_spaces.location_long >= :lon_min
@@ -26,6 +26,7 @@ class ParkingSpace < ActiveRecord::Base
   validates :space_availability_start, :presence => true
   validates :space_availability_stop, :presence => true
   validate :availability_stops_after_start
+  attr_accessor :owner
 
   after_initialize :init
 
@@ -40,6 +41,15 @@ class ParkingSpace < ActiveRecord::Base
 
   def init
     self.legal_type ||= :private_parking
+  end
+
+  def has_paid_proposals?
+    self.proposals.each do |offer|
+      if offer.end_date > DateTime.now && offer.paid?
+        return true
+      end
+    end
+    false
   end
 
   def expired?

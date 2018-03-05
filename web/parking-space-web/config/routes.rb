@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  match "users*" => "registrations#cors_preflight_check", via: [:options ]
+  match "users*" => "registrations#cors_preflight_check", via: [:options]
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}
 
@@ -18,6 +18,11 @@ Rails.application.routes.draw do
 
   resources :parameters
 
+  resources :accounts do
+    post 'withdraw'
+    get 'withdrawals'
+  end
+
   resources :parking_spaces do
 
     get 'mark_offers_as_read'
@@ -34,6 +39,8 @@ Rails.application.routes.draw do
 
     resources :proposals do
       post 'pay'
+      get 'get_user_payments'
+      get 'get_payment_details'
       post 'reject'
       post 'approve'
       post 'cancel'

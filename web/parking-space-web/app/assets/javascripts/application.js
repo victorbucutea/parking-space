@@ -28,6 +28,7 @@
 //= require ng-file-upload/dist/ng-file-upload
 //= require cloudinary-core/cloudinary-core-shrinkwrap
 //= require cloudinary_ng/js/angular.cloudinary
+//= require iban/iban.js
 //= require main
 //= require_tree .
 

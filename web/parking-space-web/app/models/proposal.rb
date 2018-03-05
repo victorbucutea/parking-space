@@ -148,6 +148,29 @@ class Proposal < DeviceRecord
     paid!
   end
 
+  def amount
+    quarter_hrs = (self.end_date.to_time - self.start_date.to_time) / (0.25).hours
+    quarter_hrs = quarter_hrs.ceil
+    price_per_q_hr = (self.parking_space.target_price) / 4
+    (quarter_hrs * price_per_q_hr).round(0)
+  end
+
+  def amount_with_vat
+    vat = APP_CONFIG['vat'].to_f
+    (amount * (1 + vat)).round(2)
+  end
+
+  def comision
+    c_fixed = APP_CONFIG['comision_fixed'].to_f
+    c_percent = APP_CONFIG['comision_percent'].to_f
+    ((amount * c_percent) + c_fixed).round(0)
+  end
+
+  def comision_with_vat
+    vat = APP_CONFIG['vat'].to_f
+    comision * (1 + vat).round(2)
+  end
+
   def expired?
     Time.now >= self.end_date
   end

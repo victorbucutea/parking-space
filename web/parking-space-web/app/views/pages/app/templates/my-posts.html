@@ -4,12 +4,20 @@
         <div class="item panel mb-3 mb-md-4"
              ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
             <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
-            <span class="unread-item-notif" ng-show="unreadNotifications(space)">&nbsp;</span>
-            <span class="item-notifications">
-                <i class="fa fa-money"></i>
-                <span> Ai {{space.offers.length}} oferte.</span>
-                <span ng-show="space.offers.length">Click pt detalii.</span>
-            </span>
+            <hr class="mb-2"/>
+            <div class="d-flex justify-content-around justify-content-sm-center">
+                <button class="btn btn-link" ng-click="show(space,'item-'+$index)">
+                    <i class="fa fa-money"></i>
+                   {{space.offers.length}} Oferte
+                </button>
+                <button class="btn btn-link" ui-sref=".edit({parking_space_id: space.id})">
+                    <i class="fa fa-edit"></i> Modifică
+                </button>
+                <button class="btn btn-link " ui-sref="home.map.search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
+                    <i class="fa fa-map"></i>
+                    Vezi harta
+                </button>
+            </div>
 
             <div class="panel-body" id="item-{{$index}}">
                 <div ng-repeat="offer in space.offers" class="offer pb-3 row">
@@ -18,7 +26,7 @@
 
                     <div class="col-6">
                         Pret total
-                        <h5> {{offer | totalPrice}}</h5>
+                        <h5> {{offer.amount}} {{space.currency}}</h5>
                     </div>
                     <div class="col-6">
                         Durata
@@ -34,9 +42,13 @@
                     </div>
 
                     <div class="col-12 mt-3 text-center">
-                        <h5> Neachitat
+                        <h5 ng-show="!offer.paid"> Neachitat
                             <br/>
                             <small class="font-weight-light"> (Se achită cash proprietarului)</small>
+                        </h5>
+                        <h5 ng-show="offer.paid"> Achitat online
+                            <br/>
+                            <small class="font-weight-light">  ( La data de {{offer.payment_date | moment: 'D/MM HH:mm'}}) </small>
                         </h5>
                     </div>
                     <div class="col-12 mt-3 text-center">

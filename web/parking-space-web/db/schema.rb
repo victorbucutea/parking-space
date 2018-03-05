@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180226105640) do
+ActiveRecord::Schema.define(version: 20180304151910) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.decimal "amount"
+    t.string "currency"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
 
   create_table "messages", force: :cascade do |t|
     t.string "deviceid"
@@ -94,6 +103,7 @@ ActiveRecord::Schema.define(version: 20180226105640) do
     t.integer "payment_status"
     t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
     t.index ["deviceid"], name: "index_proposals_on_deviceid"
+    t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -122,6 +132,19 @@ ActiveRecord::Schema.define(version: 20180226105640) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["license"], name: "index_users_on_license"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "withdrawals", force: :cascade do |t|
+    t.decimal "amount"
+    t.string "iban"
+    t.integer "status"
+    t.string "status_message"
+    t.datetime "processed_at"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_withdrawals_on_account_id"
+    t.index ["amount"], name: "index_withdrawals_on_amount"
   end
 
 end

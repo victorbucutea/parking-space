@@ -1,5 +1,5 @@
 /**
- * Created by 286868 on 04.04.2015.
+ *  Created by 286868 on 04.04.2015.
  */
 
 
@@ -17,7 +17,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
     });
 
     $scope.acceptOffer = function (space, offer) {
-        if (confirm("Accepti oferta lui " + offer.owner_name + " de " + offer.bid_price + " " + offer.bid_currency + " ?s")) {
+        if (confirm("Accepti oferta lui " + offer.owner_name + " de " + offer.bid_price + " " + offer.bid_currency + " ?")) {
             offerService.acceptOffer(space.id, offer, function (result) {
                 replaceById(result, space.offers);
             });
@@ -55,4 +55,3 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
     };
 
 });
-

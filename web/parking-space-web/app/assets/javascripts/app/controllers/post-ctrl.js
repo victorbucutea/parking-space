@@ -22,7 +22,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 space.address_line_2 = sublocality + ', ' + city;
                 space.location_lat = mapCenter.lat();
                 space.location_long = mapCenter.lng();
-                space.title = "Spațiu nou în " + sublocality;
+                space.title = "Loc parcare " + sublocality;
                 space.sublocality = sublocality;
                 space.price = parameterService.getStartingAskingPrice();
                 space.currency = parameterService.getStartingCurrency();

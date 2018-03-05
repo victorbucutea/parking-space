@@ -3,7 +3,7 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function ($rootScope, paymentService, $scope, $state, $stateParams, offerService, parkingSpaceService, replaceById) {
+angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function ($rootScope, paymentService,$state, $scope, offerService, parkingSpaceService, replaceById) {
 
     $scope.bid = {};
 
@@ -45,6 +45,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
 
         return moment($scope.selectedSpace.space_availability_stop).fromNow();
     };
+
+
 
     $scope.show = function (item) {
         $('#' + item).slideToggle(200);
