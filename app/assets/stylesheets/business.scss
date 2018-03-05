@@ -1,12 +1,12 @@
 
 .business {
   min-height: 40vh;
-  background: url("/assets/bg_business.png");
+  background: asset_url("bg_business.png");
 }
 
 @include media-breakpoint-down(md) {
   .business {
-    background: url("/assets/bg_business_sm.png");
+    background: asset_url("bg_business_sm.png");
     background-size: 100%;
     background-repeat: no-repeat;
   }
@@ -14,7 +14,7 @@
 
 @include media-breakpoint-down(sm) {
   .business {
-    background: url("/assets/bg_business_xs.png");
+    background: asset_url("bg_business_xs.png");
     background-size: 100%;
     background-repeat: no-repeat;
   }
@@ -22,7 +22,7 @@
 
 @include media-breakpoint-up(lg) {
   .business {
-    background: url("/assets/bg_business.png");
+    background: asset_url("bg_business.png");
     background-size: 100%;
     background-repeat: no-repeat;
   }
