@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function ($rootScope, $scope, $document, $stateParams, parameterService, $state, userService) {
+angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
+    ['$rootScope', '$scope', '$document', '$stateParams', 'parameterService', '$state', 'userService',
+    function ($rootScope, $scope, $document, $stateParams, parameterService, $state, userService) {
 
     $scope.errMsg = [];
     $scope.notifMsg = [];
@@ -89,4 +91,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl', function
 
 
 
-});
+}]);

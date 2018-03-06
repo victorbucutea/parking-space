@@ -2,7 +2,8 @@
  * Created by 286868 on 04.04.2015.
  */
 angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl',
-    function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, $timeout) {
+    ['$scope', '$rootScope', '$state', '$q', 'geocoderService', 'parameterService', '$stateParams', 'replaceById', 'parkingSpaceService',
+    function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService) {
 
 
         $scope.calculateAddress = function () {
@@ -114,4 +115,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
             $state.go('^');
         };
 
-    });
+    }]);

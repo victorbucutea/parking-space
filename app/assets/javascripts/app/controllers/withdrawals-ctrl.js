@@ -1,6 +1,8 @@
 'use strict'
 
-angular.module('ParkingSpaceMobile.controllers').controller('WithdrawalsCtrl', function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
+angular.module('ParkingSpaceMobile.controllers').controller('WithdrawalsCtrl',
+    ['$rootScope', '$state', '$scope', 'offerService', 'parkingSpaceService', 'paymentService',
+    function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
 
     $('.loading-finished-withd').hide();
     paymentService.getWithdrawals((withd) => {
@@ -23,5 +25,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('WithdrawalsCtrl', f
     }
 
 
-});
+}]);
 

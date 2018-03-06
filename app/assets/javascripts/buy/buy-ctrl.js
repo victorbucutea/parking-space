@@ -1,5 +1,5 @@
 angular.module('ParkingSpace.controllers')
-    .controller('BuyCtrl', function ($scope, $rootScope, $document, geoService) {
+    .controller('BuyCtrl', ['$scope',function ($scope) {
 
         $scope.selectThumbnail = function (item) {
             let initSrc = $("#" + item).attr('src');
@@ -48,4 +48,4 @@ angular.module('ParkingSpace.controllers')
             $scope.overallTotal = $scope.priceWVat + $scope.subscrTotalPriceWVat
         })
 
-    });
+    }]);

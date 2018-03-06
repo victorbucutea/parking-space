@@ -1,5 +1,5 @@
 angular.module('ParkingSpace.controllers')
-    .controller('MainCtrl', function ($scope, $rootScope, $document, geoService) {
+    .controller('MainCtrl', ['$scope',function ($scope) {
 
         $scope.scrollTo = function (menu) {
             $scope.menu = menu;
@@ -12,4 +12,4 @@ angular.module('ParkingSpace.controllers')
         }
 
 
-    });
+    }]);

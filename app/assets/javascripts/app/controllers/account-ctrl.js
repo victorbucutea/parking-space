@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl', function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
+angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl', 
+    ['$rootScope', '$state', '$scope', 'offerService', 'parkingSpaceService', 'paymentService',function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
 
     $('.loading-finished').hide();
     paymentService.getAccountStatus((acc) => {
@@ -40,5 +41,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl', funct
 
     }
 
-});
+}]);
 

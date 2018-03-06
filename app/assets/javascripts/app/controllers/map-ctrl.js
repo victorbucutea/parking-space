@@ -3,7 +3,9 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function ($state, notificationService, $scope, $rootScope, geolocationService) {
+angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
+    ['$state', 'notificationService', '$scope', '$rootScope', 'geolocationService',
+    function ($state, notificationService, $scope, $rootScope, geolocationService) {
 
 
     $scope.mapCreated = function (map, overlay, geocoder) {
@@ -80,4 +82,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl', function 
 
     }
 
-});
+}]);

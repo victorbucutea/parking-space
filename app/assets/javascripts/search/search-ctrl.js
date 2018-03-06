@@ -4,7 +4,9 @@
 
 
 angular.module('ParkingSpace.controllers')
-    .controller('SearchAddressCtrl', function ($scope, $rootScope, $document, geoService) {
+    .controller('SearchAddressCtrl',
+        ['$scope', '$rootScope', '$document', 'geoService',
+        function ($scope, $rootScope, $document, geoService) {
 
 
         geoService.getCurrentPosition((result, position) => {
@@ -112,4 +114,4 @@ angular.module('ParkingSpace.controllers')
         });
 
 
-    });
+    }]);

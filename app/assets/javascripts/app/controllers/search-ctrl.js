@@ -3,7 +3,9 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl', function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, ENV, $stateParams) {
+angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl',
+    ['geocoderService', 'notificationService', 'userService', '$rootScope', '$scope', 'parkingSpaceService', 'parameterService', 'geolocationService', '$state', 'currencyFactory', 'offerService', '$stateParams',
+    function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService, parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams) {
     if (!$rootScope.map) {
         $rootScope.$emit('http.error', 'Nu se poate inițializa harta. Ești conectat la internet? ')
         return;
@@ -123,5 +125,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             $scope.placingSpot = null;
         }
     });
-});
+}]);
 

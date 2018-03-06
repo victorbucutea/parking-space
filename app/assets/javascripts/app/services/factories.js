@@ -26,7 +26,7 @@ angular.module('ParkingSpaceMobile.services')
         }
     })
 
-    .factory('currencyFactory', function (currencies) {
+    .factory('currencyFactory', ['currencies',function (currencies) {
 
         this.getCurrency = function (curName) {
             let currency = $.grep(currencies, function (cur) {
@@ -42,7 +42,7 @@ angular.module('ParkingSpaceMobile.services')
         };
 
         return this;
-    })
+    }])
 
     .factory('replaceById', function () {
         return function (item, collection) {

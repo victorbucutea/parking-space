@@ -2,7 +2,7 @@
 
 angular.module('ParkingSpaceMobile.directives', [])
 
-    .directive('map', function (geolocationService) {
+    .directive('map', function () {
         return {
             restrict: 'E',
             scope: {
@@ -81,7 +81,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('placesAutocomplete', function (geolocationService) {
+    .directive('placesAutocomplete', function () {
         return {
             restrict: 'E',
             scope: {
@@ -131,7 +131,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('searchCenterIcon', function (geocoderService, $rootScope) {
+    .directive('searchCenterIcon', ['geocoderService, $rootScope', function (geocoderService, $rootScope) {
         return {
             scope: {
                 shown: '='
@@ -161,9 +161,9 @@ angular.module('ParkingSpaceMobile.directives', [])
 
             }
         }
-    })
+    }])
 
-    .directive('parkingSpotInfoBox', function (ENV) {
+    .directive('parkingSpotInfoBox', function () {
         return {
             restrict: 'E',
             template:
@@ -252,7 +252,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('bidAmount', function (currencies) {
+    .directive('bidAmount', ['currencies', function (currencies) {
         return {
             restrict: 'E',
             scope: {
@@ -314,7 +314,7 @@ angular.module('ParkingSpaceMobile.directives', [])
 
             }
         }
-    })
+    }])
 
     .directive('uploadImage', function () {
         return {
@@ -424,7 +424,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('currency', function (currencies) {
+    .directive('currency', ['currencies', function (currencies) {
         return {
             restrict: 'E',
             template: '<span> <i class="fa" ng-class="currSym"></i> {{currName}} </span>',
@@ -457,7 +457,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                 });
             }
         }
-    })
+    }])
 
     .directive('dateTime', function () {
         let template = '<input ' +

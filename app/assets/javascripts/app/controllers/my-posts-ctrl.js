@@ -3,7 +3,9 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams, notificationService, replaceById) {
+angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
+    ['$scope', '$filter', 'offerService', 'parkingSpaceService', '$state', '$stateParams', 'notificationService', 'replaceById',
+    function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams, notificationService, replaceById) {
 
     parkingSpaceService.getMySpaces(function (spaces) {
         $scope.spaces = spaces;
@@ -54,4 +56,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl', funct
         $state.go('home.myposts.bids.talk');
     };
 
-});
+}]);
