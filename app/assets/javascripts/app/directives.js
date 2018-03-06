@@ -388,7 +388,7 @@ angular.module('ParkingSpaceMobile.directives', [])
 
                     let cloudName = cloudinary.config().cloud_name;
                     let upload = Upload.upload({
-                        url: 'http://api.cloudinary.com/v1_1/' + cloudName + '/upload',
+                        url: 'https://api.cloudinary.com/v1_1/' + cloudName + '/upload',
                         data: {
                             upload_preset: cloudinary.config().upload_preset,
                             file: file
