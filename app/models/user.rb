@@ -16,8 +16,10 @@ class User < ActiveRecord::Base
     email = self.email || ''
     full_name = self.full_name || ''
     user_uuid = phone_number + '_'+email + '_' +  full_name
+    puts user_uuid
     crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
     encrypted_data = crypt.encrypt_and_sign(user_uuid)
+    puts encrypted_data
     self.device_id = encrypted_data
   end
 

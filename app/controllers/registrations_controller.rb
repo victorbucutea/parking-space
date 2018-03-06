@@ -7,6 +7,7 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters
 
   def create
+    puts params
     super
     #send_sms(resource.phone_number,
        #      "Bine ai venit #{resource.full_name}! Codul tau de confirmare este: '#{resource.phone_confirm_code}'")
