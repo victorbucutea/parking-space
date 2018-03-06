@@ -7,8 +7,6 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters
 
   def create
-    puts params
-    puts sign_up_params
     super
     send_sms(resource.phone_number,
             "Bine ai venit #{resource.full_name}! Codul tau de confirmare este: '#{resource.phone_confirm_code}'")
@@ -64,7 +62,6 @@ class RegistrationsController < Devise::RegistrationsController
 # :country, :notif_registration_id
   def configure_permitted_parameters
     permitted = [:full_name, :license, :phone_number, :phone_validation_code, :country, :email, :password, :password_confirmation, :notif_registration_id]
-    puts permitted
     devise_parameter_sanitizer.permit(:sign_up, keys: permitted)
     devise_parameter_sanitizer.permit(:account_update, keys: permitted)
     devise_parameter_sanitizer.permit(:sign_in, keys: permitted)
