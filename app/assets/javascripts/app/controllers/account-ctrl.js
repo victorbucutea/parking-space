@@ -5,6 +5,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl',
 
     $('.loading-finished').hide();
     paymentService.getAccountStatus((acc) => {
+        if (!acc || !acc.amount ) {
+            acc = {amount: 0};
+        }
         $('.loading-finished').show();
         $scope.sum = acc.amount;
         $scope.account = acc
