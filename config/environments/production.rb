@@ -1,7 +1,8 @@
 Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = Logger::INFO
+  config.log_level = Logger::DEBUG
+  config.logger.level = Logger::DEBUG
 
   # Settings specified here will take precedence over those in config/application.rb.
 
