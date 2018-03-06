@@ -131,7 +131,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('searchCenterIcon', ['geocoderService, $rootScope', function (geocoderService, $rootScope) {
+    .directive('searchCenterIcon', ['$rootScope', function ( $rootScope) {
         return {
             scope: {
                 shown: '='
