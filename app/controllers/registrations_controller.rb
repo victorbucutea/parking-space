@@ -8,6 +8,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     puts params
+    puts sign_up_params
     super
     #send_sms(resource.phone_number,
        #      "Bine ai venit #{resource.full_name}! Codul tau de confirmare este: '#{resource.phone_confirm_code}'")
