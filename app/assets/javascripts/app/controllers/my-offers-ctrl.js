@@ -63,17 +63,15 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
 
                 return space.offers.find((off) => {
                     return off.id === selOffer.id;
-            })
+                })
             };
 
             $scope.payButtonAvailable = function (space, selOffer) {
                 if (!selOffer || selOffer.paid || !selOffer.approved) return false;
 
-                return space.offers.find((of) = > {
+                return space.offers.find((of) => {
                     return of.id === selOffer.id
-                }
-            )
-                ;
+                });
             }
 
         }]);
