@@ -23,7 +23,7 @@ module SmsApi
     sms_message.tag = "offers"
     begin
      # result = @sms_api.send_message(sms_message)
-      p result
+      #p result
     rescue SwaggerClient::ApiError => e
       puts "Exception when sending SMS : #{e} , #{e.response_body}"
     end
