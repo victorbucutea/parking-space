@@ -11,5 +11,4 @@ angular.module('ParkingSpace.controllers')
             $('#'+item).slideToggle(200);
         }
 
-
     }]);
