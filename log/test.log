@@ -1,0 +1,358 @@
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "accounts"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "amount" decimal, "currency" varchar, "user_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE  INDEX "index_accounts_on_user_id" ON "accounts" ("user_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "messages"[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "messages" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "deviceid" varchar, "content" varchar, "proposal_id" integer, "created_at" datetime, "updated_at" datetime)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "parameter_values"[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "parameter_values" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "key" varchar, "value" varchar, "parameter_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "value1" varchar, "value2" varchar, "value3" varchar, "value4" varchar)[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX "index_parameter_values_on_key" ON "parameter_values" ("key")[0m
+  [1m[35m (0.4ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parameter_values_on_key' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parameter_values_on_key' AND type='index'
+[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE  INDEX "index_parameter_values_on_parameter_id" ON "parameter_values" ("parameter_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "parameters"[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "parameters" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "default_value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "parking_spaces"[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "parking_spaces" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "location_lat" decimal, "location_long" decimal, "recorded_from_lat" decimal, "recorded_from_long" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "approved_proposal_id" integer, "target_price" decimal, "phone_number" varchar, "owner_name" varchar, "address_line_1" varchar, "address_line_2" varchar, "title" varchar, "description" varchar, "target_price_currency" text, "space_availability_start" datetime, "space_availability_stop" datetime, "legal_type" integer, "file1" varchar, "file2" varchar, "file3" varchar, "weekly_schedule" varchar, "daily_start" time, "daily_stop" time, "user_id" integer)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX "index_parking_spaces_on_created_at" ON "parking_spaces" ("created_at")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE  INDEX "index_parking_spaces_on_location_lat" ON "parking_spaces" ("location_lat")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX "index_parking_spaces_on_location_long" ON "parking_spaces" ("location_long")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_location_long' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_location_long' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE  INDEX "index_parking_spaces_on_space_availability_start" ON "parking_spaces" ("space_availability_start")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_space_availability_start' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_space_availability_start' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_location_long' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_location_long' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX "index_parking_spaces_on_space_availability_stop" ON "parking_spaces" ("space_availability_stop")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_space_availability_stop' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_space_availability_stop' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_space_availability_start' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_space_availability_start' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_location_long' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_location_long' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_location_lat' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_parking_spaces_on_created_at' AND type='index'
+[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE  INDEX "index_parking_spaces_on_user_id" ON "parking_spaces" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "proposals"[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "proposals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title_message" varchar, "parking_space_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "bid_amount" decimal, "bid_currency" varchar, "bidder_name" varchar, "approval_status" integer, "read" boolean, "phone_number" varchar, "message_from_device_id" varchar, "start_date" datetime NOT NULL, "end_date" datetime NOT NULL, "payment_date" datetime, "payment_status" integer, "user_id" integer)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX "index_proposals_on_bid_amount" ON "proposals" ("bid_amount")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_proposals_on_bid_amount' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_proposals_on_bid_amount' AND type='index'
+[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX "index_proposals_on_parking_space_id" ON "proposals" ("parking_space_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_proposals_on_parking_space_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_proposals_on_parking_space_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_proposals_on_bid_amount' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_proposals_on_bid_amount' AND type='index'
+[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE  INDEX "index_proposals_on_user_id" ON "proposals" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "sign_in_count" integer DEFAULT 0 NOT NULL, "current_sign_in_at" datetime, "last_sign_in_at" datetime, "current_sign_in_ip" varchar, "last_sign_in_ip" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "full_name" varchar, "phone_number" varchar, "device_id" varchar, "country" varchar, "notif_registration_id" varchar, "license" varchar, "phone_no_confirm" boolean, "phone_confirm_code" varchar, "payment_id" varchar)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_device_id" ON "users" ("device_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_device_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_device_id' AND type='index'
+[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_device_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_device_id' AND type='index'
+[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX "index_users_on_license" ON "users" ("license")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_license' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_license' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_device_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_device_id' AND type='index'
+[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "withdrawals"[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "withdrawals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "amount" decimal, "iban" varchar, "status" integer, "status_message" varchar, "processed_at" datetime, "account_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX "index_withdrawals_on_account_id" ON "withdrawals" ("account_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_withdrawals_on_account_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_withdrawals_on_account_id' AND type='index'
+[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX "index_withdrawals_on_amount" ON "withdrawals" ("amount")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20180310162346)[0m
+  [1m[35m (1.8ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20140818175749),
+(20150419163825),
+(20160106171232),
+(20160117134100),
+(20180202173501),
+(20150225184631),
+(20150208192113),
+(20180226105640),
+(20140906150102),
+(20180310102747),
+(20150523085418),
+(20140820155712),
+(20150530233440),
+(20171204122359),
+(20171204141034),
+(20180226105319),
+(20150207202435),
+(20150523120235),
+(20140818195900),
+(20150413134415),
+(20140820130157),
+(20150313165034),
+(20180211085426),
+(20140818185320),
+(20180302101324),
+(20150208110411),
+(20171205160757),
+(20150523075827),
+(20171204141532),
+(20150523081514),
+(20150621100933),
+(20180202162115),
+(20140820130228),
+(20150308175701),
+(20150308120325),
+(20140818213127),
+(20160106201625),
+(20150224202336),
+(20150201123803),
+(20140818191319),
+(20150221185527),
+(20140818210251),
+(20180310094955),
+(20171223211710),
+(20171207160036),
+(20171130133335),
+(20150523085317),
+(20150206164157),
+(20150310180615),
+(20140906100825),
+(20171223212009),
+(20180110201739),
+(20171204143407),
+(20150522183203),
+(20180304150738),
+(20171204142308),
+(20150315144817),
+(20150225184655),
+(20140818190050),
+(20140818205735),
+(20171210114911),
+(20140906125427),
+(20140906100749),
+(20171204141430),
+(20150308194620),
+(20180304151910),
+(20180225151645),
+(20180211152813),
+(20140826165450),
+(20160106171251),
+(20140818184734),
+(20150308114129),
+(20180302101049);
+
+[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", "2018-03-10 19:49:48.341310"], ["updated_at", "2018-03-10 19:49:48.341310"]]
+  [1m[35m (1.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "parameters"[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "parameters" ("name", "default_value", "id", "created_at", "updated_at") VALUES ('starting_currency', 'Eur', 1, '2018-03-10 19:49:48.635795', '2018-03-10 19:49:48.635795')[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameters" ("name", "default_value", "id", "created_at", "updated_at") VALUES ('starting_asking_price', '5', 2, '2018-03-10 19:49:48.635795', '2018-03-10 19:49:48.635795')[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameters" ("name", "default_value", "created_at", "updated_at", "id") VALUES ('max_search_radius', '1200', '2018-03-10 19:49:48.635795', '2018-03-10 19:49:48.635795', 113629430)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameters" ("name", "default_value", "created_at", "updated_at", "id") VALUES ('short_term_expiration', '10', '2018-03-10 19:49:48.635795', '2018-03-10 19:49:48.635795', 281110143)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameters" ("name", "default_value", "created_at", "updated_at", "id") VALUES ('long_term_expiration', '2', '2018-03-10 19:49:48.635795', '2018-03-10 19:49:48.635795', 1018350795)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameters" ("name", "default_value", "created_at", "updated_at", "id") VALUES ('bid_price_epsilon', '0.05', '2018-03-10 19:49:48.635795', '2018-03-10 19:49:48.635795', 51848956)[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "messages"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "messages" ("id", "deviceid", "content", "proposal_id") VALUES (1, 'IMEI8129631231', 'I''m not happy with the offer you gave me', 1)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "messages" ("id", "deviceid", "content", "proposal_id") VALUES (2, 'IMEI8129631232', 'I will give you +10 EUR', 1)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "messages" ("id", "deviceid", "content", "proposal_id") VALUES (3, 'IMEI8129631241', 'I''m not happy with the offer you gave me', 2)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "messages" ("id", "deviceid", "content", "proposal_id") VALUES (4, 'IMEI8129631234', 'I will give you +10 EUR', 2)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "messages" ("id", "deviceid", "content", "proposal_id") VALUES (5, 'IMEI8129631241', '7- I''m not happy with the offer you gave me', 7)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "messages" ("id", "deviceid", "content", "proposal_id") VALUES (6, 'IMEI8129631234', '7 - I will give you +10 EUR', 7)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "messages" ("id", "deviceid", "content", "proposal_id") VALUES (7, 'IMEI8129231231', 'Message belonging to proposal 7 and parking space 1 ( all with same deviceid)', 7)[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "parameter_values"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameter_values" ("key", "value", "parameter_id", "created_at", "updated_at", "id") VALUES ('en', 'Usd', 1, '2018-03-10 19:49:48.642161', '2018-03-10 19:49:48.642161', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameter_values" ("key", "value", "parameter_id", "created_at", "updated_at", "id") VALUES ('es', 'Eur', 1, '2018-03-10 19:49:48.642161', '2018-03-10 19:49:48.642161', 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameter_values" ("key", "value", "parameter_id", "created_at", "updated_at", "id") VALUES ('tr', 'Try', 1, '2018-03-10 19:49:48.642161', '2018-03-10 19:49:48.642161', 113629430)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameter_values" ("key", "value", "parameter_id", "created_at", "updated_at", "id") VALUES ('es', '3', 2, '2018-03-10 19:49:48.642161', '2018-03-10 19:49:48.642161', 281110143)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "parameter_values" ("key", "value", "parameter_id", "created_at", "updated_at", "id") VALUES ('kr', '1000', 2, '2018-03-10 19:49:48.642161', '2018-03-10 19:49:48.642161', 1018350795)[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "proposals"[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
