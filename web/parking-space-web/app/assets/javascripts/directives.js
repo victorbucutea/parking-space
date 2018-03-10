@@ -1,6 +1,6 @@
 angular.module('ParkingSpace.directives')
 
-    .directive('dateRange', function ($rootScope) {
+    .directive('dateRange',['$rootScope', function ($rootScope) {
         return {
             restrict: 'E',
             scope: {
@@ -46,7 +46,7 @@ angular.module('ParkingSpace.directives')
 
             }
         }
-    })
+    }])
 
     .directive('dateInput', function () {
         return {

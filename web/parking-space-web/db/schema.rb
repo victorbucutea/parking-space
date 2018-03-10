@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180304151910) do
+ActiveRecord::Schema.define(version: 20180310162346) do
 
   create_table "accounts", force: :cascade do |t|
     t.decimal "amount"
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20180304151910) do
     t.string "key"
     t.string "value"
     t.integer "parameter_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "value1"
     t.string "value2"
     t.string "value3"
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 20180304151910) do
   create_table "parameters", force: :cascade do |t|
     t.string "name"
     t.string "default_value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "parking_spaces", force: :cascade do |t|
@@ -55,9 +55,8 @@ ActiveRecord::Schema.define(version: 20180304151910) do
     t.decimal "location_long"
     t.decimal "recorded_from_lat"
     t.decimal "recorded_from_long"
-    t.string "deviceid"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "approved_proposal_id"
     t.decimal "target_price"
     t.string "phone_number"
@@ -76,20 +75,20 @@ ActiveRecord::Schema.define(version: 20180304151910) do
     t.string "weekly_schedule"
     t.time "daily_start"
     t.time "daily_stop"
+    t.integer "user_id"
     t.index ["created_at"], name: "index_parking_spaces_on_created_at"
-    t.index ["deviceid"], name: "index_parking_spaces_on_deviceid"
     t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
     t.index ["location_long"], name: "index_parking_spaces_on_location_long"
     t.index ["space_availability_start"], name: "index_parking_spaces_on_space_availability_start"
     t.index ["space_availability_stop"], name: "index_parking_spaces_on_space_availability_stop"
+    t.index ["user_id"], name: "index_parking_spaces_on_user_id"
   end
 
   create_table "proposals", force: :cascade do |t|
-    t.string "deviceid"
     t.string "title_message"
     t.integer "parking_space_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.decimal "bid_amount"
     t.string "bid_currency"
     t.string "bidder_name"
@@ -101,9 +100,10 @@ ActiveRecord::Schema.define(version: 20180304151910) do
     t.datetime "end_date", null: false
     t.datetime "payment_date"
     t.integer "payment_status"
+    t.integer "user_id"
     t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
-    t.index ["deviceid"], name: "index_proposals_on_deviceid"
     t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"
+    t.index ["user_id"], name: "index_proposals_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(version: 20180304151910) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "full_name"
     t.string "phone_number"
     t.string "device_id"

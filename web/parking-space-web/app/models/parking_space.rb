@@ -16,6 +16,8 @@ class ParkingSpace < ActiveRecord::Base
 
   has_many :proposals, :dependent => :destroy
 
+  belongs_to :user
+
   validates :location_lat, :presence => true, numericality: {greater_than_or_equal_to: -90, less_than_or_equal_to: 90}
   validates :location_long, :presence => true, numericality: {greater_than_or_equal_to: -180, less_than_or_equal_to: 180}
 

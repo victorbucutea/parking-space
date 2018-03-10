@@ -1,6 +1,8 @@
 angular.module('ParkingSpace.services')
 
-    .service('geoService', function ($rootScope, $http, GEOCODE_API_URL, countryBounds) {
+    .service('geoService',
+        ['$rootScope', '$http', 'GEOCODE_API_URL', 'countryBounds',
+        function ($rootScope, $http, GEOCODE_API_URL, countryBounds) {
 
         let service = new google.maps.places.AutocompleteService();
         let _this = this;
@@ -43,4 +45,4 @@ angular.module('ParkingSpace.services')
             });
 
         }
-    });
+    }]);

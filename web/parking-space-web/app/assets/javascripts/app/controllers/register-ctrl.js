@@ -3,7 +3,9 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', function ($rootScope, $stateParams, $scope, parameterService, ENV, userService, ezfb, $state) {
+angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
+    ['$rootScope', '$stateParams', '$scope', 'parameterService', 'userService', 'ezfb', '$state',
+    function ($rootScope, $stateParams, $scope, parameterService, userService, ezfb, $state) {
 
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -104,4 +106,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl', func
             $state.go('home.login');
         }
     };
-});
+}]);

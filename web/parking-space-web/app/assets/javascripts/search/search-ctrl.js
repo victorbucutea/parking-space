@@ -3,8 +3,8 @@
 //# You can use CoffeeScript in this file: http://coffeescript.org/
 
 
-angular.module('ParkingSpace.controllers')
-    .controller('SearchAddressCtrl', function ($scope, $rootScope, $document, geoService) {
+angular.module('ParkingSpace.controllers').controller('SearchAddressCtrl',
+    ['$scope', '$rootScope', '$document', 'geoService', function ($scope, $rootScope, $document, geoService) {
 
 
         geoService.getCurrentPosition((result, position) => {
@@ -21,7 +21,7 @@ angular.module('ParkingSpace.controllers')
         });
 
         $scope.$watch('searchString', (newVal, oldVal) => {
-            if (!( newVal && newVal.length > 3)) return;
+            if (!(newVal && newVal.length > 3)) return;
 
             if ($scope.bypass) {
                 $scope.bypass = false;
@@ -87,6 +87,13 @@ angular.module('ParkingSpace.controllers')
             }
         };
 
+
+        $scope.search = function () {
+            let location = '/app/index.html#!/home/map/search?';
+
+            window.location = location;
+        };
+
         $scope.selectAddr = function (address) {
             $scope.searchLocation = {
                 name: address.addr,
@@ -112,4 +119,4 @@ angular.module('ParkingSpace.controllers')
         });
 
 
-    });
+    }]);

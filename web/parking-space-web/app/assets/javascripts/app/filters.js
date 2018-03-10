@@ -60,7 +60,7 @@ angular.module("ParkingSpaceMobile.filters", [])
             return items;
         }
     })
-    .filter('periodFilter', function ($filter) {
+    .filter('periodFilter', ['$filter',function ($filter) {
         return function (items, arg1, arg2) {
             if (!items || !items.length || !arg1) {
                 return items;
@@ -91,7 +91,7 @@ angular.module("ParkingSpaceMobile.filters", [])
             });
             return items;
         }
-    })
+    }])
     .filter('periodFilterOffers', function () {
         return function (items, arg) {
             if (!items || !items.length || !arg) {

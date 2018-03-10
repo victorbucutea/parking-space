@@ -8,7 +8,7 @@ json.timestamp parking_space.created_at
 json.public parking_space.public_parking?
 json.price parking_space.target_price.to_f
 json.currency parking_space.target_price_currency
-json.owner_is_current_user parking_space.deviceid == current_user.device_id
+json.owner_is_current_user parking_space.user.id == current_user.id
 json.expired parking_space.expired?
 if parking_space.owner.present?
   json.owner_phone_number parking_space.owner.phone_number
@@ -29,7 +29,7 @@ json.offers do
     json.bid_currency proposal.bid_currency
     json.start_date proposal.start_date
     json.end_date proposal.end_date
-    json.owner_is_current_user proposal.deviceid == current_user.device_id
+    json.owner_is_current_user proposal.user.id == current_user.id
     json.read proposal.read
     json.amount proposal.amount.to_f
     json.amount_with_vat proposal.amount_with_vat.to_f

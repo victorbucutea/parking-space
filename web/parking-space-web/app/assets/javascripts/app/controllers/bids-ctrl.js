@@ -3,7 +3,9 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', function ($rootScope, paymentService,$state, $scope, offerService, parkingSpaceService, replaceById) {
+angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
+    ['$rootScope', 'paymentService','$state', '$scope', 'offerService', 'parkingSpaceService', 'replaceById' ,
+        function ($rootScope, paymentService,$state, $scope, offerService, parkingSpaceService, replaceById) {
 
     $scope.bid = {};
 
@@ -132,5 +134,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl', fu
 
     };
 
-});
+}]);
 
