@@ -926,7 +926,7 @@ parking-spot-info-box {
 
   &:before {
     content: '';
-    background-image: url('/assets/app/p_logo_icon.png');
+    background-image: asset_url('/assets/app/p_logo_icon.png');
     display: inline-block;
     width: 17px;
     height: 23px;
