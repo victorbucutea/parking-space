@@ -4,7 +4,7 @@
 
 angular.module('ParkingSpaceMobile.services')
 
-    .service('geolocationService', function ($rootScope) {
+    .service('geolocationService',['$rootScope', function ($rootScope) {
         var _this = this;
 
         function onError(error) {
@@ -39,10 +39,10 @@ angular.module('ParkingSpaceMobile.services')
 
         // attempt to find current location with low accuracy first
         this.initCurrentLocation(false);
-    })
+    }])
 
 
-    .service('geocoderService', function ($rootScope) {
+    .service('geocoderService', ['$rootScope',function ($rootScope) {
         this.getAddress = function (lat, lng, clbk) {
             var latLng = {
                 'latLng': new google.maps.LatLng(lat, lng)
@@ -89,4 +89,4 @@ angular.module('ParkingSpaceMobile.services')
                 clbk(resultAddr);
             });
         }
-    });
+    }]);

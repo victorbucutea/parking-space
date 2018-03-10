@@ -26,7 +26,7 @@ class ParkingSpacesController < ApplicationController
 
   # GET /parking_spaces/1/phone_number
   def phone_number
-    render json: {number: User.find_by_device_id(@parking_space.deviceid).phone_number}, status: :ok
+    render json: {number: @parking_space.user.phone_number}, status: :ok
   end
 
   # GET /parking_spaces/1
@@ -36,19 +36,13 @@ class ParkingSpacesController < ApplicationController
 
 
   def myspaces
-    deviceid = current_user.device_id
-
-    unless deviceid
-      render json: {Error: {general: "Missing deviceid"}}, status: :unprocessable_entity
-      return
-    end
 
     @parking_spaces = ParkingSpace.not_expired.active
                           .includes(:proposals)
-                          .where({deviceid: deviceid})
+                          .where({user: current_user})
 
     @parking_spaces.each do |space|
-      space.owner = User.find_by_device_id deviceid
+      space.owner = space.user
     end
 
     respond_to do |format|
@@ -57,19 +51,13 @@ class ParkingSpacesController < ApplicationController
   end
 
   def myoffers
-    deviceid = current_user.device_id
-
-    unless deviceid
-      render json: {Error: {general: "Missing deviceid"}}, status: :unprocessable_entity
-      return
-    end
 
     @parking_spaces = ParkingSpace.not_expired.active
                           .includes(:proposals)
-                          .where(proposals: {deviceid: deviceid})
+                          .where(proposals: {user: current_user})
 
     @parking_spaces.each do |space|
-      space.owner = User.find_by_device_id space.deviceid
+      space.owner = space.user
     end
 
     respond_to do |format|
@@ -77,29 +65,11 @@ class ParkingSpacesController < ApplicationController
     end
   end
 
-  # GET /parking_spaces/1/mark_offers_as_read
-  def mark_offers_as_read
-    parking_space_id = params[:parking_space_id]
-    @parking_space = ParkingSpace.find(parking_space_id)
-
-    if @parking_space.proposals
-      @parking_space.proposals.update_all(read: true)
-    end
-
-    @parking_space = ParkingSpace.includes(:proposals).find(parking_space_id)
-
-
-    respond_to do |format|
-      format.json {render :show, status: :ok}
-    end
-  end
-
   # POST /parking_spaces
   # POST /parking_spaces.json
   def create
     @parking_space = ParkingSpace.new(parking_space_params)
-    @parking_space.deviceid = current_user.device_id
-    @parking_space.owner_name = current_user.full_name
+    @parking_space.user = current_user
 
     respond_to do |format|
       if @parking_space.save
@@ -114,7 +84,7 @@ class ParkingSpacesController < ApplicationController
   # PATCH/PUT /parking_spaces/1.json
   def update
 
-    if current_user.device_id != @parking_space.deviceid
+    if current_user.id != @parking_space.user.id
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
@@ -131,7 +101,7 @@ class ParkingSpacesController < ApplicationController
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-    if current_user.device_id != @parking_space.deviceid
+    if current_user.id != @parking_space.id
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end
@@ -161,7 +131,7 @@ class ParkingSpacesController < ApplicationController
   def parking_space_params
     params.require(:parking_space).permit(:location_lat, :location_long,
                                           :recorded_from_lat, :recorded_from_long,
-                                          :deviceid, :target_price, :target_price_currency,
+                                          :target_price, :target_price_currency,
                                           :phone_number, :owner_name, :title,
                                           :address_line_1, :address_line_2,
                                           :space_availability_start, :space_availability_stop,

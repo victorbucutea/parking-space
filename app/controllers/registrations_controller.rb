@@ -9,7 +9,7 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     super
     send_sms(resource.phone_number,
-             "Bine ai venit #{resource.full_name}! Codul tau de confirmare este: '#{resource.phone_confirm_code}'")
+            "Bine ai venit #{resource.full_name}! Codul tau de confirmare este: '#{resource.phone_confirm_code}'")
   end
 
   def send_new_code

@@ -3,7 +3,9 @@
  */
 angular.module('ParkingSpaceMobile.services')
 
-    .service('userService', function ($http, ENV, errorHandlingService, $rootScope, parameterService, $state, notificationService) {
+    .service('userService',
+        ['$http', 'ENV', 'errorHandlingService', '$rootScope', 'parameterService', '$state', 'notificationService',
+        function ($http, ENV, errorHandlingService, $rootScope, parameterService, $state, notificationService) {
         let _this = this;
 
 
@@ -151,9 +153,9 @@ angular.module('ParkingSpaceMobile.services')
                 });
         }
 
-    })
+    }])
 
-    .service('errorHandlingService', function ($rootScope, $state) {
+    .service('errorHandlingService', ['$rootScope','$state',function ($rootScope, $state) {
 
         let _this = this;
         _this = this;
@@ -193,4 +195,4 @@ angular.module('ParkingSpaceMobile.services')
             }
         }
 
-    });
+    }]);

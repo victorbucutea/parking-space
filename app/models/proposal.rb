@@ -1,4 +1,4 @@
-class Proposal < DeviceRecord
+class Proposal < ActiveRecord::Base
   scope :with_messages, ->(prop_id) {includes(:messages).find(prop_id)}
   scope :for_space, ->(sp_id) {where('proposals.parking_space_id = ? ', sp_id)}
   scope :price_above, ->(price) {where('proposals.bid_amount >= ? ', price)}
@@ -8,6 +8,7 @@ class Proposal < DeviceRecord
   enum payment_status: [:unpaid, :paid]
 
   belongs_to :parking_space
+  belongs_to :user
 
   validates :bidder_name, :presence => true
   validates :approval_status, :presence => true
@@ -15,7 +16,6 @@ class Proposal < DeviceRecord
   validates :bid_currency, :presence => true
   validate :offers_do_not_overlap, :on => [:create, :update], :unless => :skip_overlap_check
   validate :bid_amount_valid, :on => :create
-  validate :propose_on_own_post, :on => :create
   validate :space_is_not_expired, :unless => :skip_expiration_check
   validate :cannot_update_expired, :on => :update, :unless => :skip_expiration_check
   validate :cannot_update_paid, :on => :update, :unless => :skip_paid_check
@@ -32,12 +32,6 @@ class Proposal < DeviceRecord
     self.skip_expiration_check = false
   end
 
-  def propose_on_own_post
-    if parking_space.deviceid == deviceid
-      #bidding for own parking space
-      errors.add :general, 'Not allowed to bid on own post!'
-    end
-  end
 
   def bid_amount_valid
     unless bid_amount.nil? or bid_amount > 0
@@ -107,9 +101,9 @@ class Proposal < DeviceRecord
     end
   end
 
-  def reject(owner_deviceid)
+  def reject
     self.skip_overlap_check = true
-    if parking_space.deviceid == owner_deviceid
+    if parking_space.user.id == user.id
       self.approval_status = 1
       save
     else
@@ -118,9 +112,9 @@ class Proposal < DeviceRecord
     end
   end
 
-  def cancel(incoming_deviceid)
+  def cancel
     self.skip_overlap_check = true
-    if self.deviceid == incoming_deviceid
+    if self.user.id == user.id
       self.approval_status = 3
       save
     else
@@ -129,9 +123,9 @@ class Proposal < DeviceRecord
     end
   end
 
-  def approve(owner_deviceid)
+  def approve
     # only the owner of the parking space can approve or reject an offer
-    if self.parking_space.deviceid != owner_deviceid
+    if self.parking_space.user.id != user.id
       errors.add :general, 'You are not allowed to accept the offer!'
       false
     else

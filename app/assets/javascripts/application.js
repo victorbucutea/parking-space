@@ -1,3 +1,4 @@
+
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -10,25 +11,24 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery.scrollto/jquery.scrollTo
+//= require jquery/dist/jquery.min
+//= require jquery.scrollto/jquery.scrollTo.min
 //= require moment/min/moment.min
 //= require moment/locale/ro
 //= require moment-duration-format/lib/moment-duration-format
-//= require angular/angular
-//= require angular-sanitize/angular-sanitize
-//= require popper.js/dist/umd/popper
-//= require bootstrap/dist/js/bootstrap
+//= require popper.js/dist/umd/popper.min
+//= require bootstrap/dist/js/bootstrap.min
 //= require bootstrap-daterangepicker/daterangepicker
-//= require owl.carousel/dist/owl.carousel
-//= require angular-ui-router/release/angular-ui-router
-//= require angular-ui-bootstrap/dist/ui-bootstrap
-//= require angular-easyfb/build/angular-easyfb
-//= require cleave.js/dist/cleave-angular
-//= require ng-file-upload/dist/ng-file-upload
-//= require cloudinary-core/cloudinary-core-shrinkwrap
-//= require cloudinary_ng/js/angular.cloudinary
+//= require owl.carousel/dist/owl.carousel.min
 //= require iban/iban.js
+//= require angular/angular.min
+//= require angular-sanitize/angular-sanitize
+//= require angular-ui-router/release/angular-ui-router.min
+//= require angular-ui-bootstrap/dist/ui-bootstrap
+//= require angular-easyfb/build/angular-easyfb.min
+//= require cleave.js/dist/cleave-angular.min
+//= require ng-file-upload/dist/ng-file-upload.min
+//= require cloudinary-core/cloudinary-core-shrinkwrap.min
+//= require cloudinary_ng/js/angular.cloudinary
 //= require main
 //= require_tree .
-

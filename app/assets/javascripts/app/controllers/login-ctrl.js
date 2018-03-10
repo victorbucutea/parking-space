@@ -1,7 +1,6 @@
 angular.module('ParkingSpaceMobile.controllers')
-    .controller('LoginCtrl',
-        function ($rootScope, $stateParams, $scope, $http,
-                  parameterService, ENV, userService, ezfb, $state) {
+    .controller('LoginCtrl', ['$rootScope', '$stateParams', '$scope', '$http', 'parameterService', 'ENV', 'userService', 'ezfb', '$state',
+        function ($rootScope, $stateParams, $scope, $http, parameterService, ENV, userService, ezfb, $state) {
 
             $scope.login = function () {
                 let user = $scope.userName;
@@ -61,5 +60,4 @@ angular.module('ParkingSpaceMobile.controllers')
                 }, {scope: 'public_profile,email,user_location'})
             };
 
-        }
-    );
+        }]);

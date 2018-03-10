@@ -13,7 +13,7 @@ angular.module('ParkingSpace', [
     'ParkingSpace.filters',
     'ParkingSpace.services'])
 
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('main', {
                 url: '/'
@@ -38,9 +38,9 @@ angular.module('ParkingSpace', [
 
         $urlRouterProvider.otherwise('/')
 
-    })
+    }])
 
-    .run(function ($rootScope) {
+    .run(['$rootScope',function ($rootScope) {
 
         moment.locale('ro');
 
@@ -90,7 +90,7 @@ angular.module('ParkingSpace', [
             });
 
 
-    })
+    }])
     .constant("GEOCODE_API_URL", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY")
     .factory("countryBounds", () => {
         let sw = new google.maps.LatLng({lat: 44.308127, lng: 20.146866});

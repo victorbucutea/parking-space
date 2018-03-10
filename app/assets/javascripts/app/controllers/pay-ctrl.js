@@ -1,6 +1,8 @@
 'use strict'
 
-angular.module('ParkingSpaceMobile.controllers').controller('PayCtrl', function ($rootScope, $scope, $state, $stateParams, replaceById, paymentService) {
+angular.module('ParkingSpaceMobile.controllers').controller('PayCtrl', 
+    ['$rootScope', '$scope', '$state', '$stateParams', 'replaceById', 'paymentService',
+    function ($rootScope, $scope, $state, $stateParams, replaceById, paymentService) {
 
 
     $scope.offer = $stateParams.offer;
@@ -91,5 +93,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('PayCtrl', function 
             }
         }
     });
-});
+}]);
 

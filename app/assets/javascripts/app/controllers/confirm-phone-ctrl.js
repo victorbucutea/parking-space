@@ -1,4 +1,5 @@
-angular.module('ParkingSpaceMobile.controllers').controller('ConfirmPhoneCtrl', function ($rootScope, $scope, $state, userService) {
+angular.module('ParkingSpaceMobile.controllers').controller('ConfirmPhoneCtrl', 
+    ['$rootScope', '$scope', '$state', 'userService',function ($rootScope, $scope, $state, userService) {
 
     $scope.options = {
         phoneNumber: {
@@ -36,4 +37,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('ConfirmPhoneCtrl', 
     $('[data-toggle=tooltip]').tooltip()
 
 
-});
+}]);

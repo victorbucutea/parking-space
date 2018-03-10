@@ -3,7 +3,8 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('DeleteParkingSpaceCtrl', function ($scope, parkingSpaceService, $state, $stateParams) {
+angular.module('ParkingSpaceMobile.controllers').controller('DeleteParkingSpaceCtrl',
+    ['$scope', 'parkingSpaceService', '$state', '$stateParams', function ($scope, parkingSpaceService, $state, $stateParams) {
 
     $scope.deleteSpace = function () {
         let parkingSpaceId = $stateParams.parking_space_id;
@@ -11,4 +12,4 @@ angular.module('ParkingSpaceMobile.controllers').controller('DeleteParkingSpaceC
         $state.go('home.map.search');
     };
 
-});
+}]);

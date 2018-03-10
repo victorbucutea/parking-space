@@ -3,17 +3,19 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('MyMenuCtrl', function ($scope, notificationService) {
+angular.module('ParkingSpaceMobile.controllers').controller('MyMenuCtrl',
+    ['$scope', 'notificationService',
+        function ($scope, notificationService) {
 
-    notificationService.hideOfferNotifications();
+            notificationService.hideOfferNotifications();
 
-    $scope.unreadNotificationsForSpaces = function() {
-        return notificationService.parkingSpaceNotifications.length ? true :false;
-    };
+            $scope.unreadNotificationsForSpaces = function () {
+                return notificationService.parkingSpaceNotifications.length ? true : false;
+            };
 
 
-    $scope.unreadNotificationsForOffers = function() {
-        return notificationService.offerNotifications.length ? true :false;
-    };
+            $scope.unreadNotificationsForOffers = function () {
+                return notificationService.offerNotifications.length ? true : false;
+            };
 
-});
+        }]);

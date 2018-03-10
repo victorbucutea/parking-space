@@ -1,4 +1,4 @@
-class AddAttachmentImageToParkingSpaces < ActiveRecord::Migration
+class AddAttachmentImageToParkingSpaces < ActiveRecord::Migration[5.1]
   def self.up
       add_column :parking_spaces , :image_file_name, :text
       add_column :parking_spaces ,:image_content_type, :text

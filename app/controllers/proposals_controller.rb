@@ -19,9 +19,8 @@ class ProposalsController < ApplicationController
 
   def pay
     @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = current_user.device_id
 
-    if @proposal.deviceid != owner_deviceid
+    if @proposal.user.id != current_user.id
       render json: {Error: 'Cannot pay an offer which doesn\'t belong to the current user'}, status: :unprocessable_entity
       return
     end
@@ -58,11 +57,9 @@ class ProposalsController < ApplicationController
 
   def reject
     @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = current_user.device_id
 
     respond_to do |format|
-      if @proposal.reject(owner_deviceid)
-        notify_proposal_owner_reject @proposal
+      if @proposal.reject
         format.json {render :show, status: :ok}
       else
         format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
@@ -71,12 +68,9 @@ class ProposalsController < ApplicationController
   end
 
   def cancel
-    @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = current_user.device_id
 
     respond_to do |format|
-      if @proposal.cancel(owner_deviceid)
-        notify_proposal_owner_reject @proposal
+      if @proposal.cancel
         format.json {render :show, status: :ok}
       else
         format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
@@ -85,13 +79,9 @@ class ProposalsController < ApplicationController
   end
 
   def approve
-    @proposal = Proposal.find(params[:proposal_id])
-    owner_deviceid = current_user.device_id
 
     respond_to do |format|
-      if @proposal.approve(owner_deviceid)
-        notify_proposal_owner_approve @proposal
-
+      if @proposal.approve
         format.json {render :show, status: :ok}
       else
         format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
@@ -105,13 +95,12 @@ class ProposalsController < ApplicationController
   def create
     @proposal = Proposal.new(proposal_params)
 
-    @proposal.deviceid = current_user.device_id
     @proposal.bidder_name = current_user.full_name
     @proposal.phone_number = current_user.phone_number
+    @proposal.user = current_user
 
     respond_to do |format|
       if @proposal.save
-        notify_space_owner @proposal
         format.json {render :show, status: :created}
       else
         format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
