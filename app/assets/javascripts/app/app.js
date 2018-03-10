@@ -15,90 +15,89 @@ angular.module('ParkingSpaceMobile', [
     'ParkingSpaceMobile.filters',
     'ParkingSpaceMobile.services'])
 
-    .run(['ENV', '$http', '$rootScope',
-        function (ENV, $http, $rootScope) {
+    .run(function (ENV, $http, $rootScope) {
 
-            if (!window.google || !window.google.maps) return;
+        if (!window.google || !window.google.maps) return;
 
-            function HtmlMarker(space, scope, nearestOffer) {
-                this.price = space.price;
-                this.space = space;
-                this.nearestOffer = nearestOffer;
-                this.currency = space.currency;
-                this.noOfPlaces = 1;
-                this.scope = scope;
-                this.pos = new google.maps.LatLng(space.location_lat, space.location_long);
-                this.setMap($rootScope.map);
+        function HtmlMarker(space, scope, nearestOffer) {
+            this.price = space.price;
+            this.space = space;
+            this.nearestOffer = nearestOffer;
+            this.currency = space.currency;
+            this.noOfPlaces = 1;
+            this.scope = scope;
+            this.pos = new google.maps.LatLng(space.location_lat, space.location_long);
+            this.setMap($rootScope.map);
+        }
+
+        HtmlMarker.prototype = new google.maps.OverlayView();
+
+        HtmlMarker.prototype.onRemove = function () {
+            this._div.parentNode.removeChild(this._div);
+            this._div = null;
+        };
+
+        //init your html element here
+        HtmlMarker.prototype.onAdd = function () {
+            let _this = this;
+            let div = document.createElement('DIV');
+            div.className = "html-marker";
+            if (!this.space.public) {
+                div.className = "html-marker private";
+                if (this.space.owner_is_current_user) {
+                    div.className += " owner";
+                }
+            }
+            $(div).on('click touchstart', function (evt) {
+                _this.scope.markerClick({elm: _this});
+                evt.preventDefault();
+                evt.stopPropagation();
+            });
+            if (!this.nearestOffer) {
+                div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' <small> / h </small> </div>';
+            } else {
+                this.markReservationActive(div);
+            }
+            let panes = this.getPanes();
+            panes.overlayImage.appendChild(div);
+            this._div = div;
+        };
+
+        HtmlMarker.prototype.markReservationActive = function (div) {
+            let st = moment(this.nearestOffer.start_date);
+            let end = moment(this.nearestOffer.end_date);
+            let now = moment();
+            let text = '';
+            if (end.isBefore(now)) {
+                return;
             }
 
-            HtmlMarker.prototype = new google.maps.OverlayView();
+            text = st.fromNow();
 
-            HtmlMarker.prototype.onRemove = function () {
-                this._div.parentNode.removeChild(this._div);
-                this._div = null;
-            };
-
-            //init your html element here
-            HtmlMarker.prototype.onAdd = function () {
-                let _this = this;
-                let div = document.createElement('DIV');
-                div.className = "html-marker";
-                if (!this.space.public) {
-                    div.className = "html-marker private";
-                    if (this.space.owner_is_current_user) {
-                        div.className += " owner";
-                    }
-                }
-                $(div).on('click touchstart', function (evt) {
-                    _this.scope.markerClick({elm: _this});
-                    evt.preventDefault();
-                    evt.stopPropagation();
-                });
-                if (!this.nearestOffer) {
-                    div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' <small> / h </small> </div>';
-                } else {
-                    this.markReservationActive(div);
-                }
-                let panes = this.getPanes();
-                panes.overlayImage.appendChild(div);
-                this._div = div;
-            };
-
-            HtmlMarker.prototype.markReservationActive = function (div) {
-                let st = moment(this.nearestOffer.start_date);
-                let end = moment(this.nearestOffer.end_date);
-                let now = moment();
-                let text = '';
-                if (end.isBefore(now)) {
-                    return;
-                }
-
-                text = st.fromNow();
-
-                if (end.isAfter(now) && st.isBefore(now)) {
-                    text = ' în curs';
-                }
+            if (end.isAfter(now) && st.isBefore(now)) {
+                text = ' în curs';
+            }
 
 
-                let rezHtml =
-                    '<div>' + this.price + ' ' + this.currency + ' <small> / h </small>  <br/>' +
-                    '<small class="text-secondary"> <i class="fa fa-flash"></i> Rez. ' + text + ' </small>' +
-                    '</div>';
-                div.innerHTML = rezHtml;
-            };
+            let rezHtml =
+                '<div>' + this.price + ' ' + this.currency + ' <small> / h </small>  <br/>' +
+                '<small class="text-secondary"> <i class="fa fa-flash"></i> Rez. ' + text + ' </small>' +
+                '</div>';
+            div.innerHTML = rezHtml;
+        };
 
-            HtmlMarker.prototype.draw = function () {
-                let overlayProjection = this.getProjection();
-                let position = overlayProjection.fromLatLngToDivPixel(this.pos);
-                this._div.style.left = position.x - 20 + 'px';
-                this._div.style.top = position.y - 45 + 'px';
-            };
-            window.HtmlMarker = HtmlMarker;
+        HtmlMarker.prototype.draw = function () {
+            let overlayProjection = this.getProjection();
+            let position = overlayProjection.fromLatLngToDivPixel(this.pos);
+            this._div.style.left = position.x - 20 + 'px';
+            this._div.style.top = position.y - 45 + 'px';
+        };
+        window.HtmlMarker = HtmlMarker;
 
 
-        }])
+    })
 
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('home', {
                 url: '/home',
@@ -288,7 +287,7 @@ angular.module('ParkingSpaceMobile', [
             .state('home.myoffers.pay', {
                 url: '/pay',
                 views: {
-                    'pay': {
+                    'pay':{
                         templateUrl: "templates/pay.html"
 
                     }
@@ -299,7 +298,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.account', {
-                url: "/account",
+                url:"/account",
                 views: {
                     'content': {
                         templateUrl: "templates/account.html"
@@ -307,7 +306,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.account.payments', {
-                url: "/payments",
+                url:"/payments",
                 views: {
                     'financial': {
                         templateUrl: "templates/payments.html"
@@ -315,7 +314,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.account.withdrawals', {
-                url: "/withdrawals",
+                url:"/withdrawals",
                 views: {
                     'financial': {
                         templateUrl: "templates/withdrawals.html"
@@ -333,13 +332,13 @@ angular.module('ParkingSpaceMobile', [
 
         $urlRouterProvider.otherwise("/home/map/search/");
 
-    }])
+    })
 
-    .config(['$compileProvider', function ($compileProvider) {
+    .config(function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
-    }])
+    })
 
-    .config(['ezfbProvider', function (ezfbProvider) {
+    .config(function (ezfbProvider) {
         var myInitFunction = function ($window, $rootScope) {
             $window.FB.init({
                 appId: '1725456304415807',
@@ -348,16 +347,16 @@ angular.module('ParkingSpaceMobile', [
         };
 
         ezfbProvider.setInitFunction(myInitFunction);
-    }])
+    })
 
-    .config(['cloudinaryProvider', function (cloudinaryProvider) {
+    .config(function (cloudinaryProvider) {
         cloudinaryProvider
             .set("cloud_name", "hbrl7w3by")
             .set("secure", true)
             .set("upload_preset", "ixih1eoo");
-    }])
+    })
 
-    .config(['$httpProvider', function ($httpProvider) {
+    .config(function ($httpProvider) {
         $httpProvider.interceptors.push(function ($q) {
             return {
                 'request': function (config) {
@@ -378,7 +377,7 @@ angular.module('ParkingSpaceMobile', [
         });
 
         $httpProvider.useApplyAsync(true);
-    }])
+    })
 
     .config(function () {
         window.isMobileOrTablet = function () {
@@ -397,7 +396,6 @@ angular.module('ParkingSpaceMobile', [
             }
         };
     })
-
     .constant('currencies', [
         {
             name: 'Usd',
@@ -460,6 +458,13 @@ angular.module('ParkingSpaceMobile', [
             name: 'feets',
             abr: 'ft'
         }
+    })
+
+    .constant('df', function (dt) {
+        return moment(dt).format("YYYY-MM-DD[T]HH:mm:ss.SSS[Z]");
+    })
+    .constant('rdf', function (dt) {
+        return moment(dt, "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]").toDate();
     })
 ;
 

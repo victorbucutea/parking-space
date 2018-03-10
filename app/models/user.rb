@@ -6,22 +6,8 @@ class User < ActiveRecord::Base
 
   attr_accessor :skip_password_validation
 
-  before_create :generate_device_id
-
   has_one :account
-
-
-  def generate_device_id
-    phone_number = self.phone_number || ''
-    email = self.email || ''
-    full_name = self.full_name || ''
-    user_uuid = phone_number + '_'+email + '_' +  full_name
-    puts user_uuid
-    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base)
-    encrypted_data = crypt.encrypt_and_sign(user_uuid)
-    puts encrypted_data
-    self.device_id = encrypted_data
-  end
+  has_many :parking_spaces
 
 
   def password_required?
