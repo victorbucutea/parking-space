@@ -1,0 +1,19 @@
+<div ng-controller="MainCtrl" class="full-height">
+
+    <div class="notification-area">
+        <div class="notification-message error" ng-show="errMsg">
+            <ul>
+                <li ng-repeat="msg in errMsg">{{msg.fieldName}} {{msg.text}}</li>
+            </ul>
+        </div>
+
+        <div class="notification-message notification" ng-show="notifMsg">
+            <ul>
+                <li ng-repeat="msg in notifMsg">{{msg.text}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <ui-view name="my-menu"></ui-view>
+    <ui-view name="content"></ui-view>
+</div>

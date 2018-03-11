@@ -1,0 +1,139 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="ro.sft.parking.main.MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mapLayout">
+
+            <fragment
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="ro.sft.parking.map.ParkingSpaceMapFragment"
+                android:layout_gravity="right|center_vertical" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom">
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/shape"
+                    android:baselineAligned="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/searchRangeBar"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:text="@string/range"
+                        android:id="@+id/textView"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="#fffbfbfb"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:id="@+id/buttonPlus"
+                        android:text="@string/plus"
+                        android:textSize="30sp"
+                        android:background="@drawable/shape"
+                        android:layout_margin="8dp" />
+
+                    <EditText
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:ems="10"
+                        android:text="@integer/defaultSearchRadius"
+                        android:id="@+id/searchRadius"
+                        android:textColor="#fffbfbfb"
+                        android:inputType="number"
+                        android:layout_weight="0.08" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:text="@string/metersUom"
+                        android:id="@+id/unitOfMeasure"
+                        android:textColor="#fffbfbfb"
+                        android:textSize="20sp" />
+
+
+                    <Button
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:id="@+id/buttonMinus"
+                        android:background="@drawable/shape"
+                        android:text="@string/minus"
+                        android:layout_margin="8dp"
+                        android:padding="3dp"
+                        android:singleLine="false"
+                        android:textSize="32sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/shape"
+                    android:baselineAligned="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/centerButtonBar"
+                    android:weightSum="1"
+                    android:gravity="center_vertical|center_horizontal">
+
+                    <ImageButton
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/center_icon_ggl"
+                        android:contentDescription="center-icon"
+                        android:id="@+id/centerMapButton"/>
+
+
+                   </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/new_spot_marker"
+        android:layout_width="40dp"
+        android:layout_height="76dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="14dp"
+        android:layout_gravity="top|right"
+        android:src="@drawable/red_police"
+        android:contentDescription="new_spot_marker" />
+
+
+</FrameLayout>

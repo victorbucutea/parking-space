@@ -1,0 +1,211 @@
+
+.form-edit-details {
+    background-color: #fff;
+
+    label:first-child {
+        border-top: 0;
+    }
+
+    .row {
+        padding: 0;
+    }
+
+    .input-label {
+        width: 31.5%;
+        color: $gray-lighter;
+    }
+
+    .upload-photo {
+        padding-top: 30px;
+        padding-bottom: 30px;
+        z-index: 3;
+        border-bottom: 0;
+    }
+
+    .desc-textarea {
+        border: 0;
+        padding-top: 0;
+        margin-top: -4px;
+        padding-left: 0;
+
+        span {
+            padding-top: 0;
+        }
+        textarea {
+            height: 100px;
+            border-bottom: 1px solid #eee;
+        }
+    }
+
+    input, textarea, select {
+        font-family: $font-family;
+    }
+
+    bid-amount {
+        width: 100%;
+
+        a {
+            line-height: 0.8em;
+        }
+
+        input {
+            height: 30px;
+            width: 30px;
+            padding: 0;
+            font-size: 24px;
+        }
+
+        select.currency {
+            font-size: 24px;
+        }
+
+    }
+
+    .important {
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+
+.register {
+    background: url('../images/register_bg.png') no-repeat;
+    color: #333;
+
+    &.reg-modal {
+        background: #fff;
+        padding: $measure-unit $measure-unit 0 $measure-unit ;
+
+        .country-list {
+            background-color: $gray-xxlight;
+        }
+
+        input {
+            width: 90%;
+
+            &.phone-number {
+                width: 70%;
+            }
+        }
+    }
+
+    .phone-desc {
+        color: #666;
+
+        &.small {
+            font-size: .8em;
+        }
+    }
+
+
+
+    h1 {
+        margin-bottom: 25px;
+    }
+    h2, h3 {
+        border-bottom: 1px solid $gray;
+    }
+
+    .parking-spot-watermark {
+        position: absolute;
+        top: 20px;
+        z-index: -1;
+    }
+
+    // register screen
+    .country-list {
+        height: 110px;
+        overflow-y: scroll;
+        .flag {
+            font-size: 1.1em;
+            padding: $xxsm-measure-unit;
+
+            &.selected {
+                background-color: $gray;
+            }
+        }
+    }
+
+    .car-icon {
+        font-size: 10em;
+        color: $gray;
+        position: absolute;
+        bottom: 100px;
+        right: -100px;
+    }
+
+    input {
+        width: 70%;
+        padding: $xsm-measure-unit;
+        margin-bottom: 2px;
+        border-bottom: 1px solid $gray;
+        display: inline-block;
+
+        &.ng-valid + i.fa {
+            &:before {
+                content: "\f00c";
+            }
+            font-size: 1.8em;
+            color: $darkgreen;
+        }
+
+        &.ng-invalid + i.fa {
+
+            &:before {
+                content: "\f00d";
+            }
+
+            font-size: 1.8em;
+            color: red;
+        }
+    }
+
+    .prefix {
+        background-color: $gray;
+        padding: $xxsm-measure-unit;
+    }
+
+    .invalid-field-list {
+        font-size: 0.9em;
+        list-style: disc;
+        margin-top: 10px;
+        margin-left: 14px;
+    }
+
+    .recover-pw-link {
+        text-decoration: underline;
+        display: block;
+        width: 70%;
+        margin: auto;
+        text-align: right;
+    }
+
+    .register-btn {
+        border: 0 none;
+        padding: $sm-measure-unit $measure-unit;
+        margin-top: $xxbig-measure-unit;
+        display: block;
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        z-index: 20;
+        background-color: $red;
+        color: #fff;
+        border-radius: 4px;
+        font-size: $xbig-measure-unit;
+        font-weight: 300;
+
+        &.blue {
+            background-color: $blue;
+        }
+    }
+
+    .or-text {
+        text-align: center;
+        margin-top: $xbig-measure-unit;
+    }
+
+}
+
+

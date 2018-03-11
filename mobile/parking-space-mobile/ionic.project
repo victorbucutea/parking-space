@@ -1,0 +1,5 @@
+{
+  "name": "parking-space-mobile",
+  "app_id": "",
+  "watchPatterns": ["www/**/*", "!www/lib/**/*", "!www/**/*.map"]
+}
