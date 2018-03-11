@@ -27,7 +27,7 @@ nav {
 @include media-breakpoint-down(md) {
   .find-block {
     background: url("/assets/bg_sm.png");
-    background-size: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
   }
 }
@@ -35,7 +35,7 @@ nav {
 @include media-breakpoint-down(sm) {
   .find-block {
     background: url("/assets/bg_xs.png");
-    background-size: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
   }
 }
@@ -43,7 +43,7 @@ nav {
 @include media-breakpoint-up(lg) {
   .find-block {
     background: url("/assets/bg.png");
-    background-size: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
   }
 }

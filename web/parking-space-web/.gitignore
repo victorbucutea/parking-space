@@ -27,5 +27,6 @@
 .idea
 *.iml
 /public/packs
+/public/files
 /public/packs-test
 /node_modules
