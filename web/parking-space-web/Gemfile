@@ -47,6 +47,7 @@ gem 'high_voltage', '~> 3.0.0'
 
 gem 'pushmeup'
 gem "braintree", "~> 2.83.0"
+gem "cloudinary"
 
 
 # Use debugger
