@@ -42,7 +42,7 @@ nav {
 
 @include media-breakpoint-up(lg) {
   .find-block {
-    background: image_url("/assets/bg.png");
+    background: asset_url("bg.png");
     background-size: 100%;
     background-repeat: no-repeat;
   }
