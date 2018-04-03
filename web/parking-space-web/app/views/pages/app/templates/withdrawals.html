@@ -13,19 +13,15 @@
             <div class="offer d-flex justify-content-between" ng-repeat="withd in withdrawals"
                  ng-click="selectWithd(withd)" ng-class="{selected: selWithd == withd}">
 
-                    <span class="offer-price">
-                        {{withd.amount}}
-                    </span>
+                <span class="offer-price">
+                    {{withd.amount}}
+                </span>
 
+                <span>{{ withd.created_at | moment: 'D/MM HH:mm' }}</span>
+                <span class="text-capitalize">{{ withd.status}}</span>
                 <span>
-                            {{ withd.created_at | moment: 'D/MM HH:mm' }}
-                    </span>
-                <span class="text-capitalize">
-                            {{ withd.status}}
-                    </span>
-                <span>
-                        <button class="btn btn-sm btn-link" ng-click="getDetails(payment)">Detalii</button>
-                    </span>
+                    <button class="btnbtn-sm btn-link" ng-click="getDetails(payment)">Detalii</button>
+                </span>
             </div>
         </div>
 

@@ -7,9 +7,12 @@ angular.module('ParkingSpaceMobile.controllers')
                 let password = $scope.password;
 
                 userService.login(user, password, function () {
-                    $state.go('home.map.search');
+                    $state.go('home.map.search', $stateParams);
                 })
             };
+
+            $scope.lat= $stateParams.lat;
+            $scope.lng= $stateParams.lng;
 
             $scope.recoverPassword = function () {
                 $('#recoverPassword').hide();
@@ -30,8 +33,8 @@ angular.module('ParkingSpaceMobile.controllers')
                             userService.loginFb(authResponse.userID, authResponse.accessToken, res.email,
                                 function (resp) {
                                     // user successfully logged in
-                                    $state.go('home.map.search');
-                                }, function (err,status) {
+                                    $state.go('home.map.search', $stateParams);
+                                }, function (err, status) {
 
                                     if (status === 422) {
                                         // user does not exist
@@ -41,14 +44,20 @@ angular.module('ParkingSpaceMobile.controllers')
                                             email: res.email,
                                             firstName: res.name,
                                             fbId: authResponse.userID,
-                                            token: loginRes.authResponse.accessToken
+                                            token: loginRes.authResponse.accessToken,
+                                            lat: $stateParams.lat,
+                                            lng: $stateParams.lng
                                         });
 
                                     } else {
                                         // display error message
                                         $rootScope.$emit('http.error',
                                             'Error while logging in with facebook. Please try again.');
-                                        $state.go("home.login", {fromFb: true});
+                                        $state.go("home.login", {
+                                            fromFb: true,
+                                            lat: $stateParams.lat,
+                                            lng: $stateParams.lng
+                                        });
                                     }
                                 });
                         });

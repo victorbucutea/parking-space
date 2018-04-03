@@ -1,12 +1,13 @@
 <div class="register" ng-class="{'ps-modal p-3': inside}" ng-controller="RegisterCtrl">
   <div class="container" ng-class="{'animated zoomIn': inside}">
     <div class="text-center p-4 p-md-5">
-      <img width="200" src="<%= image_path 'logo_sm.png' %>">
+      <img width="150" src="<%= image_url 'useravatar_blue_lg.png' %>">
+      <h4 class="mt-3"> {{firstName}}</h4>
     </div>
 
-    <div id="register" class="row pt-4 pt-md-5 justify-content-center" ng-class="{'py-4':inside}">
-      <div class="col-11 col-sm-7 col-md-6 col-lg-4">
-        <form id="registerForm" name="registerForm">
+    <div id="register" class="row justify-content-center" ng-class="{'pb-4':inside}">
+      <div class="col-11">
+        <form id="registerForm" name="registerForm" novalidate="novalidate">
 
           <div ng-if="::!inside">
             <h3 ng-hide="fromFb" class="text-center"> Avem nevoie de câteva detalii </h3>
@@ -16,7 +17,7 @@
           <div class="form-group">
             <div class="input-group mt-3 input-group-lg">
             <span class="input-group-addon">
-              <img width="25" src="<%= image_path 'app/flags/Romania.png' %>">
+              <img width="25" src="<%= image_url '/app/flags/Romania.png' %>">
               &nbsp;
               {{ selectedCountry.prefix || '+40'}}
             </span>
@@ -77,7 +78,7 @@
 
             <div class="form-group" ng-if="::!inside">
               <input type="password" class="form-control form-control-lg" placeholder="Parolă"
-                     ng-model="password" name="password"
+                     ng-model="pw" name="pw"
                      ng-required="!fromFb"
                      minlength="8"/>
             </div>

@@ -1,7 +1,38 @@
 <div ng-controller="MainCtrl" class="full-height">
 
 
-  <div id="drawer" class="menu " ng-click="closeMenu()">
+  <!-- Notification messages -->
+  <div class="notification-area animated zoomIn">
+    <div class="notification-message error" ng-show="errMsg.length">
+      <ul>
+        <li ng-repeat="msg in errMsg">{{msg}}</li>
+      </ul>
+    </div>
+
+    <div class="notification-message notification" ng-show="notifMsg.length">
+      <ul>
+        <li ng-repeat="msg in notifMsg">{{msg}}</li>
+      </ul>
+    </div>
+
+    <div class="notification-message warning" ng-show="warningMsg.length">
+      <ul>
+        <li ng-repeat="msg in warningMsg">{{msg}}</li>
+      </ul>
+    </div>
+
+    <div class="notification-message warning" ng-show="warningMsgHtml.length">
+      <ul>
+        <li ng-repeat="msg in warningMsgHtml">
+          <span ng-bind-html="msg"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- Navigation drawer menu -->
+  <div id="drawer" class="menu d-flex flex-column " ng-click="closeMenu()">
     <div class="logo p-5 text-center" ui-sref="home.map.search">
       <img src="<%= image_path 'logo_sm_dark.png' %>">
     </div>
@@ -19,55 +50,48 @@
         Rezervările mele
       </li>
       <li ui-sref="home.map.search.myaccount" ui-sref-active="selected">
-        <i class="fa fa-user" ></i>
-        Contul meu
+        <i class="fa fa-user"></i>
+        Setări utilzator
       </li>
       <li ui-sref="home.account" ui-sref-active="selected">
         <i class="fa fa-credit-card"></i>
-        Plăți
-        <!--<span class="badge badge-warning badge-pill">14</span>-->
-      </li>
-      <li ng-click="logout()">
-        <i class="fa fa-credit-card"></i>
-        Logout
+        Contul meu
         <!--<span class="badge badge-warning badge-pill">14</span>-->
       </li>
     </ul>
+    <ul class="terms border-top " ui-sref-active="selected" ui-sref="home.map.search.terms">
+      <li>
+        <i class="fa fa-file"></i> Termeni si condiții Go-Park
+      </li>
+    </ul>
   </div>
-  <div class="drawer" ng-click="closeMenu()">
-  </div>
+  <div class="drawer" ng-click="closeMenu()"></div>
+  <!-- End navigation drawer menu -->
 
 
-  <div class="notification-area animated zoomIn" >
-    <div class="notification-message error" ng-show="errMsg.length">
-      <ul>
-        <li ng-repeat="msg in errMsg">{{msg}}</li>
-      </ul>
+  <div class="row no-gutters pos-relative">
+    <div class="d-none d-md-block col-md-4 col-xl-3 spaces-list">
+      <div ng-repeat="space in mapSpaces" class="left-panel py-3 px-0">
+        <parking-spot-info-box space="space" class="left-side"></parking-spot-info-box>
+        <div class="m-3 mt-0 offer-availability" >
+            {{nextOffer(space)}}
+        </div>
+        <div class="mt-2 d-flex justify-content-around">
+          <button class="btn btn-outline-primary " ng-click="selectSpace(space)">
+            <i class="fa fa-calendar"></i>
+            Rezervă
+          </button>
+          <button class="btn btn-link"  ui-sref="home.map.search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
+            <i class="fa fa-map"></i>
+            Vezi pe hartă
+          </button>
+        </div>
+      </div>
     </div>
+    <div class="col ">
+      <ui-view name="my-menu"></ui-view>
 
-    <div class="notification-message notification" ng-show="notifMsg.length">
-      <ul>
-        <li ng-repeat="msg in notifMsg">{{msg}}</li>
-      </ul>
-    </div>
-
-    <div class="notification-message warning" ng-show="warningMsg.length" >
-      <ul>
-        <li ng-repeat="msg in warningMsg">{{msg}}</li>
-      </ul>
-    </div>
-
-    <div class="notification-message warning" ng-show="warningMsgHtml.length">
-      <ul>
-        <li ng-repeat="msg in warningMsgHtml">
-          <span ng-bind-html="msg"></span>
-        </li>
-      </ul>
+      <ui-view name="content"></ui-view>
     </div>
   </div>
-
-
-  <ui-view name="my-menu"></ui-view>
-  <ui-view name="content"></ui-view>
-
 </div>

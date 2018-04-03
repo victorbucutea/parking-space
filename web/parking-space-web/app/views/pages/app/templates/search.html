@@ -2,9 +2,6 @@
 
     <ui-view name="place-bid"></ui-view>
 
-    <ui-view name="help"></ui-view>
-
-
     <search-center-icon shown="placingSpot"></search-center-icon>
 
     <button class="center-btn btn btn-info" ng-click="centerMap()">
@@ -13,13 +10,15 @@
 
     <button class="add-btn" ng-click="showPostSpace()" ng-class="{wide: placingSpot}">
        <span ng-hide="placingSpot">
-           <i class="fa fa-plus"></i> Adaugă
+           <i class="fa fa-plus"></i> <br/> Vinde
        </span>
         <span ng-show="placingSpot">
             Continuă
             <i class="fa fa-arrow-right"></i>
         </span>
     </button>
+
+    <ui-view name="help"></ui-view>
 
 
 </div>

@@ -1,59 +1,3 @@
-$golden-ratio: 1.428571429;
-
-$dflt-border-radius: 3px;
-$big-border-radius: 3px * $golden-ratio;
-
-$base-font-size: 14px;
-
-// 10px
-$sm-font-size: $base-font-size / $golden-ratio;
-
-// 20px
-$lg-font-size: $base-font-size * $golden-ratio;
-
-// 28px
-$xlg-font-size: $lg-font-size * $golden-ratio;
-
-// 28px
-$xxlg-font-size: $xlg-font-size * $golden-ratio;
-
-// 20px
-$base-line-height: $base-font-size * $golden-ratio;
-
-// a balanced measure unit is a sub-unitary value of the base font size
-// 10px
-$measure-unit: $base-font-size / $golden-ratio;
-
-// 14 px
-$big-measure-unit: $base-font-size;
-
-// 20 px
-$xbig-measure-unit: $big-measure-unit * $golden-ratio;
-
-//28px
-$xxbig-measure-unit: $xbig-measure-unit * $golden-ratio;
-
-// 39 px
-$xxxbig-measure-unit: $xxbig-measure-unit * $golden-ratio;
-
-// 54 px
-$xxxxbig-measure-unit: $xxxbig-measure-unit * $golden-ratio;
-
-// 76 px ( $base-unit * ratio ^ 6 )
-$jumbo-measure-unit: $xxxbig-measure-unit  * $golden-ratio * $golden-ratio;
-
-// 106 px ( $base-unit * ratio ^ 7 )
-$lg-jumbo-measure-unit: $jumbo-measure-unit * $golden-ratio;
-
-// 7px
-$sm-measure-unit: $measure-unit / $golden-ratio;
-
-// 5px
-$xsm-measure-unit: $sm-measure-unit / $golden-ratio;
-
-// 3px
-$xxsm-measure-unit: $xsm-measure-unit / $golden-ratio;
-
 @import "forms";
 
 // map controls
@@ -78,7 +22,7 @@ map {
 }
 
 .center-btn {
-  position: fixed;
+  position: absolute;
   bottom: 98px;
   z-index: 2;
   right: 32px;
@@ -95,7 +39,7 @@ map {
   padding: 0;
   box-shadow: 2px 6px 20px 2px $gray-600;
   border-radius: 28px;
-  position: fixed;
+  position: absolute;
   bottom: 24px;
   z-index: 2;
   right: 24px;
@@ -105,7 +49,7 @@ map {
   height: 56px;
   color: $white;
   line-height: 1;
-  font-size: .9em;
+  font-size: 1.1em;
   transition: width .2s ease-in-out;
 
   &.wide {
@@ -114,20 +58,26 @@ map {
 
   }
 
+  &.help {
+    bottom: 35%;
+    right: 33%;
+  }
+
 }
 
 #pac-container {
   background-color: $white;
   font-size: 16px;
-  width: 95%;
+  width: 90%;
   margin: $big-measure-unit auto;
   box-shadow: 2px 8px 20px 2px $gray-600;
   border-radius: 3px;
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 1;
   right: 0;
   left: 0;
+  max-width: 700px;
 
   #pac-input {
     padding-right: 17%;
@@ -156,8 +106,8 @@ map {
   .pac-nav {
     display: inline-block;
     vertical-align: middle;
-  }
 
+  }
   span {
     position: absolute;
     top: -10px;
@@ -226,13 +176,12 @@ map {
 }
 
 .ps-modal {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   background-color: $gray-dark-transparent;
   width: 100%;
   z-index: 3;
-  left: 0;
   overflow: scroll;
 
   > div:first-child {
@@ -580,9 +529,19 @@ bid-amount {
 }
 
 parking-spot-info-box {
-  position: relative;
   display: block;
 
+  &:hover {
+    background-color: $gray-200;
+    cursor: pointer;
+  }
+
+  &.left-side {
+    font-size: .9em;
+    .parking-spot-details h1 {
+      font-size: 1.9em;
+    }
+  }
   .parking-spot-details {
     padding: $measure-unit 0;
 
@@ -817,7 +776,6 @@ parking-spot-info-box {
 
 
 .menu {
-  width: 60%;
   position: fixed;
   z-index: 3;
   left: -100%;
@@ -834,7 +792,7 @@ parking-spot-info-box {
 
     img {
       width: 100%;
-      max-width: 200px;
+      max-width: 150px;
     }
   }
 
@@ -843,8 +801,8 @@ parking-spot-info-box {
     padding: 0;
 
     li {
-      padding: 10px 20px;
-      font-size: 1.1em;
+      padding: 14px 20px;
+      font-size: 1.2em;
 
       &.selected {
         background-color: $blue-700;
@@ -853,14 +811,24 @@ parking-spot-info-box {
       }
     }
   }
+
+  .terms {
+    margin-top: auto;
+    margin-bottom: 0;
+    border-top: 1px solid $gray-300;
+    font-size: .9em;
+    color: $gray-700;
+  }
 }
 
 // the overlay blanket for showing help
 .help-blanket {
   position: fixed;
   height: 100%;
-  background-color: transparentize($gray-dark, 0.25);
+  background-color: transparentize($gray-dark, 0.3);
   top: 0;
+  left:0;
+  right:0;
   color: $white;
   padding: $measure-unit;
   text-align: center;
@@ -892,6 +860,10 @@ parking-spot-info-box {
 
 .fa-twitter-square {
   color: #5EA9DD;
+}
+
+.full-height {
+  height: 100%;
 }
 
 .html-marker {
@@ -957,6 +929,8 @@ parking-spot-info-box {
     z-index: 2;
   }
 }
+
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

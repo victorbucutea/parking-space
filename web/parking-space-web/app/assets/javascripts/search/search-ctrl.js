@@ -84,14 +84,26 @@ angular.module('ParkingSpace.controllers').controller('SearchAddressCtrl',
             $scope.searchLocation = {
                 name: $scope.currentAddress,
                 position: $scope.currentPosition
-            }
+            };
+            $("#mainSearch").val($scope.currentAddress);
+            $('.address-suggestion').hide();
         };
 
 
         $scope.search = function () {
+            console.log($scope.searchLocation);
             let location = '/app/index.html#!/home/map/search?';
+            let coords = $scope.searchLocation.position.coords;
+            if (coords) {
+                location += 'lat=' + coords.latitude + '&lng=' + coords.longitude;
+                window.location = location;
 
-            window.location = location;
+            } else {
+                geoService.getPositionForPlace($scope.searchLocation.position, (resp) => {
+                    location += 'lat=' + resp.lat + '&lng=' + resp.lng;
+                    window.location = location;
+                })
+            }
         };
 
         $scope.selectAddr = function (address) {

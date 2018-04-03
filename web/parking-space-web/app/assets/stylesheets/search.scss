@@ -1,33 +1,51 @@
 
 nav {
   background-color: $blue-900;
-  border-radius: none;
+
   .navbar-brand {
     color: $blue-100;
   }
   .navbar-nav {
-    & > li > a.nav-link {
-      color: $blue-100;
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
+    & > li {
+      &.active {
+        font-weight: bold;
       }
 
+      & > a.nav-link {
+        color: $blue-90;
+        font-size: 1.1em;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+
+      .navbar-toggler {
+        border: none;
+      }
     }
+  }
+
+  .user {
+    border: 1px solid #333;
+    border-radius: 50%;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 20px;
   }
 }
 
 .find-block {
-  min-height: 40vh;
-  display: flex;
-  align-items: center;
+  height: 100vh;
   background: cloudinary_url("bg.png");
+  max-height: 700px;
 }
 
 @include media-breakpoint-down(md) {
   .find-block {
     background: cloudinary_url("bg_sm.png");
-    background-size: contain;
+    background-size: 100%;
     background-repeat: no-repeat;
   }
 }
@@ -35,7 +53,7 @@ nav {
 @include media-breakpoint-down(sm) {
   .find-block {
     background: cloudinary_url("bg_xs.png");
-    background-size: contain;
+    background-size: 100%;
     background-repeat: no-repeat;
   }
 }
@@ -43,32 +61,8 @@ nav {
 @include media-breakpoint-up(lg) {
   .find-block {
     background: cloudinary_url("bg.png");
-    background-size: contain;
+    background-size: 100%;
     background-repeat: no-repeat;
-  }
-}
-
-.date-err {
-  color: $red;
-  position: relative;
-  text-align: center;
-  font-style: italic;
-
-  &.active {
-    background: $blue-90;
-    border: 1px solid $red;
-    border-radius: 3px;
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: -8px;
-      right: 60px;
-      display: inline-block;
-      border-right: 8px solid transparent;
-      border-bottom: 8px solid $blue-90;
-      border-left: 8px solid transparent;
-    }
   }
 }
 
@@ -76,7 +70,7 @@ div.daterangepicker {
   font-size: 1.1em;
   padding: 0;
   margin-top: 7px;
-  box-shadow: 2px 2px 5px 0 $gray-700;
+  box-shadow: 2px 8px 40px 2px $gray-800;
 
   &:after {
     border-bottom-color: $blue-700;
@@ -196,6 +190,10 @@ div.daterangepicker {
       color: $gray-lighter;
     }
 
+    &:hover {
+      cursor: pointer;
+    }
+
   }
 
   .address-suggestion {
@@ -204,6 +202,7 @@ div.daterangepicker {
     top: inherit;
     right: 0;
     left: 0;
+    font-size: 1.1em;
     background-color: $blue-80;
     box-shadow: 0 2px 3px 0 $gray-700;
     color: $blue-900;
@@ -264,25 +263,13 @@ div.daterangepicker {
   }
 }
 
-.btn-search {
-  color: $blue-80;
-}
-
 .ios {
-  a {
-    display: inline-block;
-    overflow: hidden;
-    background: url(https://linkmaker.itunes.apple.com/assets/shared/badges/en-us/appstore-lrg.svg) no-repeat;
-    width: 135px;
-    height: 40px;
-    background-size: contain;
-  }
+  max-width: 150px;
 }
 
 .appstore {
-  img {
-    width: 100%
-  }
+  max-width: 166px;
+
 }
 
 .rent {
@@ -332,7 +319,15 @@ div.daterangepicker {
     background-color: #f8f9fb;
     border-radius: 50%;
     overflow: hidden;
+
+    &.help {
+      color: $blue-600;
+      display: flex;
+      flex-direction: column;
+    }
   }
+
+
 
   .t-bar {
     z-index: 2;
@@ -413,7 +408,6 @@ div.daterangepicker {
   box-shadow: 3px 3px 0 0 $gray-400;
   border-radius: 4px;
 
-
   h5 {
     font-weight: 600;
     &:hover {
@@ -424,6 +418,17 @@ div.daterangepicker {
   .panel-body {
     display: none;
     border-top: 1px solid $gray-400;
+    padding: 10px;
+  }
+}
+
+.left-panel {
+  border-bottom: 10px solid $gray-300;
+
+  .offer-availability {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
     padding: 10px;
   }
 }
@@ -490,6 +495,10 @@ div.daterangepicker {
         background-color: $blue-900;
         border: 0;
       }
+
+      .form-control {
+        box-shadow: none;
+      }
     }
   }
 }
@@ -499,5 +508,20 @@ div.daterangepicker {
   color: $blue-100;
 }
 
+.btn-link, .btn-outline-primary, .btn-outline-info, .btn-outline-secondary {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.spaces-list {
+  position: static;
+  height: 100vh;
+  overflow: scroll;
+}
+
+.pos-relative {
+  position: relative;
+}
 
 

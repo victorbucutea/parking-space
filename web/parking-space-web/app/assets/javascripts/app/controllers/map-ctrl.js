@@ -4,82 +4,90 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
-    ['$state', 'notificationService', '$scope', '$rootScope', 'geolocationService',
-    function ($state, notificationService, $scope, $rootScope, geolocationService) {
+    ['$state', '$stateParams', 'notificationService', '$scope', '$rootScope', 'geolocationService',
+        function ($state, $stateParams, notificationService, $scope, $rootScope, geolocationService) {
 
 
-    $scope.mapCreated = function (map, overlay, geocoder) {
+            $scope.mapCreated = function (map, overlay, geocoder) {
 
-        $rootScope.map = map;
-        $rootScope.overlay = overlay;
-        $rootScope.geocoder = geocoder;
+                $rootScope.map = map;
+                $rootScope.overlay = overlay;
+                $rootScope.geocoder = geocoder;
 
-        geolocationService.getCurrentLocation(function (position) {
-            let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            map.setCenter(pos);
-        });
-    };
+                // center on request params if need be
+                if ($stateParams.lat && $stateParams.lng) {
+                    let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
+                    map.setZoom(17);
+                    map.setCenter(pos);
+                    return;
+                }
 
-
-    $scope.showNotif = function () {
-        let offerNotifs = notificationService.offerNotifications;
-        let parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
-
-        if (!offerNotifs && !parkingSpaceNotifs) {
-            return false;
-        }
-
-        let activeOfferNotif = offerNotifs.find(function (offer) {
-            return offer.active;
-        });
-
-        let activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
-            return pspaceMsg.active;
-        });
+                geolocationService.getCurrentLocation(function (position) {
+                    let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    map.setCenter(pos);
+                });
+            };
 
 
-        if (activeOfferNotif || activeParkingSpaceNotif) {
-            return true;
-        }
-    };
+            $scope.showNotif = function () {
+                let offerNotifs = notificationService.offerNotifications;
+                let parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
 
-    $scope.gotoOffersOrSpaces = function () {
-        let offerNotifs = notificationService.offerNotifications;
-        let parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
+                if (!offerNotifs && !parkingSpaceNotifs) {
+                    return false;
+                }
 
-        if (!offerNotifs && !parkingSpaceNotifs) {
-            $state.go("home.myposts");
-            return;
-        }
+                let activeOfferNotif = offerNotifs.find(function (offer) {
+                    return offer.active;
+                });
 
-
-        let activeOfferNotif = offerNotifs.find(function (offer) {
-            return offer.active;
-        });
-
-        let activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
-            return pspaceMsg.active;
-        });
-
-        let bothActive = activeOfferNotif && activeParkingSpaceNotif;
-        let bothNotActive = !activeOfferNotif && !activeParkingSpaceNotif;
+                let activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
+                    return pspaceMsg.active;
+                });
 
 
-        if (bothActive || bothNotActive) {
-            $state.go("home.myposts");
-            return;
-        }
+                if (activeOfferNotif || activeParkingSpaceNotif) {
+                    return true;
+                }
+            };
 
-        if (activeOfferNotif) {
-            $state.go("home.myoffers");
-            return;
-        }
+            $scope.gotoOffersOrSpaces = function () {
+                let offerNotifs = notificationService.offerNotifications;
+                let parkingSpaceNotifs = notificationService.parkingSpaceNotifications;
+
+                if (!offerNotifs && !parkingSpaceNotifs) {
+                    $state.go("home.myposts");
+                    return;
+                }
 
 
-        if (activeParkingSpaceNotif) {
-            $state.go("home.myposts");
-        }
+                let activeOfferNotif = offerNotifs.find(function (offer) {
+                    return offer.active;
+                });
 
-    }
+                let activeParkingSpaceNotif = parkingSpaceNotifs.find(function (pspaceMsg) {
+                    return pspaceMsg.active;
+                });
 
-}]);
+                let bothActive = activeOfferNotif && activeParkingSpaceNotif;
+                let bothNotActive = !activeOfferNotif && !activeParkingSpaceNotif;
+
+
+                if (bothActive || bothNotActive) {
+                    $state.go("home.myposts");
+                    return;
+                }
+
+                if (activeOfferNotif) {
+                    $state.go("home.myoffers");
+                    return;
+                }
+
+
+                if (activeParkingSpaceNotif) {
+                    $state.go("home.myposts");
+                }
+
+            }
+
+        }]);

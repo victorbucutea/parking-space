@@ -9,7 +9,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
 
     $('[data-toggle="tooltip"]').tooltip();
 
-
     if ($stateParams.inside) {
         $scope.inside = true;
         userService.getUser(function (user) {
@@ -22,9 +21,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
             $scope.phoneNumber = user.phone_number.replace("+40", "");
             $scope.country = user.country;
             $scope.email = user.email;
-            $scope.password = user.password;
+            $scope.pw = user.pw;
             $scope.licensePlate = user.license;
-            $scope.password_confirmation = user.password;
+            $scope.pw_confirmation = user.pw;
         });
     }
 
@@ -36,6 +35,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
     $scope.fbId = $stateParams.fbId;
     $scope.firstName = $stateParams.firstName;
     $scope.token = $stateParams.token;
+    $scope.lat = $stateParams.lat;
+    $scope.lng = $stateParams.lng;
+
+    console.log($stateParams);
 
     $scope.$watch('registerForm.licensePlate.$valid', function (newVal) {
         if (!newVal) return;
@@ -81,18 +84,18 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
         backEndUser.phone_number = $scope.prefix + $scope.phoneNumber;
         backEndUser.country = $scope.user.country;
         backEndUser.email = $scope.email;
-        backEndUser.password = $scope.password;
-        backEndUser.password_confirmation = $scope.password;
+        backEndUser.password = $scope.registerForm.pw.$viewValue;
+        backEndUser.password_confirmation = backEndUser.pw;
         backEndUser.license = $scope.licensePlate;
 
 
         if ($stateParams.inside) {
             userService.saveUser(backEndUser, function () {
-                $state.go('home.map.search');
+                $state.go('home.map.search',{lat:$scope.lat,lng:$scope.lng});
             });
         } else {
             userService.registerUser(backEndUser, function () {
-                $state.go('home.map.search');
+                $state.go('home.map.search',{lat:$scope.lat,lng:$scope.lng});
             });
         }
 
@@ -103,7 +106,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
         if ($scope.inside) {
             $state.go('^');
         } else {
-            $state.go('home.login');
+            $state.go('home.login',{lat:$scope.lat,lng:$scope.lng});
         }
     };
 }]);

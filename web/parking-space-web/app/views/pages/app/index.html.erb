@@ -7,10 +7,6 @@
   <script src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
   <script src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
   <script src="https://js.braintreegateway.com/web/3.31.0/js/payment-request.js"></script>
-  <!-- Load the PayPal Checkout component. -->
-  <script src="https://js.braintreegateway.com/web/3.31.0/js/paypal-checkout.min.js"></script>
-  <script src="https://www.paypalobjects.com/api/checkout.js" data-version-4 log-level="warn"></script>
-  <script src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -19,8 +15,104 @@
 <body ng-app="ParkingSpaceMobile" >
 
 
+<!-- Main nav menu -->
+<nav id="navbar" class="d-none d-md-flex navbar navbar-dark navbar-expand-lg">
+  <a class="navbar-brand ml-3" href="#">
+    <img width="100" src="<%= image_path 'logo_sm_dark.png' %>"/>
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item text-right active">
+        <a ng-click="scrollTo('faq')" class="nav-link px-3">Caută loc</a>
+      </li>
+      <li class="nav-item text-right">
+        <a ng-click="scrollTo('faq')" class="nav-link px-3">Cum funcționează?</a>
+      </li>
+      <li class="nav-item text-right">
+        <a ng-click="scrollTo('rent')" class="nav-link px-3">Închiriază loc personal</a>
+      </li>
+      <li class="nav-item text-right">
+        <a ui-sref="business" class="nav-link px-3">Soluții parcări publice </a>
+      </li>
+    </ul>
+
+    <div class="navbar-form form-inline">
+      <a ui-sref="home.map.search.myaccount" class="px-4">
+          <img src="<%= image_url ('useravatar_blue.png')%>" class="" height="35">
+      </a>
+    </div>
+  </div>
+</nav>
+<!-- End Main nav menu -->
+
+
 <ui-view></ui-view>
 
+
+<!-- Footer -->
+
+<div class="footer mt-5 d-none d-md-block" id="footer">
+  <div class="row no-gutters align-items-center justify-content-center">
+    <div class="col-md-4 py-4 text-center">
+      <a href="#">
+        <img width="140" src="<%= image_path 'logo_sm_dark.png' %>">
+      </a>
+    </div>
+    <div class="col-md-4 p-3">
+      <h5>Contact</h5>
+      <ul>
+        <li>
+          <i class="fa fa-phone fa-2x"></i>
+          <a href="tel:+40727.456.250">&nbsp;&nbsp;
+            +40727.456.250
+          </a>
+        </li>
+        <li>
+          <i class="fa fa-envelope fa-2x"></i>
+          <a href="mailto:office@go-park.ro">&nbsp;&nbsp;
+            office@go-park.ro
+          </a>
+        </li>
+      </ul>
+      <hr/>
+      <div class="text-center">
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-facebook "></span>
+        </a>
+        <a class="social-lg" href="http://www.twitter.com/go-park" target="_blank">
+          <span class="fa fa-instagram icon-md icon-carmine-pink"></span>
+        </a>
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-google-plus"></span>
+        </a>
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-twitter"></span>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4 p-2 contact-form">
+      <form method="POST" action="http://formspree.io/office@go-park.ro">
+        <div class="form-group">
+          <input required type="email" name="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <textarea required class="form-control" name="message" placeholder="Spune-ne cum te putem ajuta..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-sm btn-danger">Trimite</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="d-none d-md-flex ending row justify-content-center">
+    &copy;&nbsp;<a href="mailto:office@go-park.ro" target="_blank" style="color:#fff"> &nbsp;Softspot &nbsp;</a> 2017. All rights reserved
+</div>
+
+<!-- end footer -->
 
 </body>
 </html>

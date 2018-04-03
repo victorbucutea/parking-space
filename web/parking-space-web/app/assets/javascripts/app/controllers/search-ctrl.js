@@ -27,19 +27,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             sessionStorage.setItem("current_user", userjson);
 
             if (!user.phone_no_confirm) {
-                $rootScope.$emit('http.warning.html',
-                    'Vă rugăm confirmați numărul de telefon ' +
-                    '<a href="#!/home/map/search/confirm-phone"><u>aici</u></a><br/>' +
-                    'Fără un nr. de telefon valid nu veți putea efectua rezervări.')
+                $state.go('.confirm-phone');
             }
         });
     } else {
         let user = JSON.parse(sessionStorage.getItem("current_user"));
         if (!user.phone_no_confirm) {
-            $rootScope.$emit('http.warning.html',
-                'Vă rugăm confirmați numărul de telefon ' +
-                '<a href="#!/home/map/search/confirm-phone"><u>aici</u></a><br/>' +
-                'Fără un nr. de telefon valid nu veți putea efectua rezervări.')
+            $state.go('.confirm-phone');
         }
     }
 
@@ -57,6 +51,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 });
 
             $rootScope.markers = [];
+
+            $rootScope.$emit('spaces',spaces);
 
             spaces.forEach(function (space) {
                 // search for first offer for current user
@@ -78,6 +74,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         if (!newVal) return;
 
         $rootScope.map.setCenter(newVal);
+    });
+
+    $scope.$on('selectSpace', function (event, space) {
+        $scope.markerClick({elm: {space: space}});
     });
 
 

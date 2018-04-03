@@ -189,7 +189,7 @@ angular.module('ParkingSpaceMobile.services')
                 //if unauthorized, go to login
                 errorMessages = _this.buildErrorMessages(data);
                 $rootScope.$emit('http.error', errorMessages);
-                $state.go('home.login', {'hide_blanket': true});//hide blanket
+                $state.go('home.login',$state.params);
             } else {
                 $rootScope.$emit('http.error', 'Connectivity error.');
             }

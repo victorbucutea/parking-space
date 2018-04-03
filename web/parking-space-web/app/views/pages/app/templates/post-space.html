@@ -1,7 +1,7 @@
 <div class="ps-modal ">
     <div class="mt-md-4 animated zoomIn" ng-controller="EditParkingSpaceCtrl">
 
-        <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm">
+        <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm" novalidate="novalidate">
             <div>
                 <h3 class="ps-page-title" ng-hide="editTitle">
                     {{spaceEdit.title}}
@@ -63,8 +63,7 @@
                 </div>
 
                 <!-- Daily and weekly custom schedule -->
-                <div id="schedule" style="display: none;">
-                    <hr/>
+                <div id="schedule" class="mt-4" style="display: none;">
                     <div class="form-group row">
                         <label class="col-form-label col-4 pr-2"
                                for="timeStart">Disp. între:</label>
@@ -118,8 +117,7 @@
                         </div>
                     </div>
                 </div>
-                <hr/>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center pt-4">
                     <div class="col-4">
                         <upload-image image-file="file1" label="'Adaugă photo'"
                                       control="ctrl1"

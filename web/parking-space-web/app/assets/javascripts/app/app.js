@@ -33,7 +33,7 @@ angular.module('ParkingSpaceMobile', [
         HtmlMarker.prototype = new google.maps.OverlayView();
 
         HtmlMarker.prototype.onRemove = function () {
-            this._div.parentNode.removeChild(this._div);
+            this._div.parentElement.removeChild(this._div);
             this._div = null;
         };
 
@@ -110,6 +110,10 @@ angular.module('ParkingSpaceMobile', [
                     'content': {
                         templateUrl: "templates/login.html"
                     }
+                },
+                params: {
+                    lng: null,
+                    lat: null
                 }
             })
             .state('home.register', {
@@ -124,7 +128,9 @@ angular.module('ParkingSpaceMobile', [
                     email: null,
                     firstName: null,
                     fbId: null,
-                    token: null
+                    token: null,
+                    lat: null,
+                    lng: null
                 }
             })
             .state('home.map', {
@@ -139,11 +145,11 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.map.search', {
-                url: '/search',
+                url: '/search?lat&lng',
                 views: {
                     'map-controls': {
                         templateUrl: "templates/search.html"
-                    }
+                    },
                 },
                 params: {
                     lat: null,
@@ -164,6 +170,14 @@ angular.module('ParkingSpaceMobile', [
                 views: {
                     'place-bid': {
                         templateUrl: "templates/confirm-phone.html"
+                    }
+                }
+            })
+            .state('home.map.search.terms', {
+                url: '/terms',
+                views: {
+                    'place-bid': {
+                        templateUrl: "templates/terms.html"
                     }
                 }
             })
