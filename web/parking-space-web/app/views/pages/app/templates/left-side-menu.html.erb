@@ -1,0 +1,29 @@
+<div class="spaces-list">
+  <div ng-hide="mapSpaces.length">
+    <div class="no-items-msg loading-finished" ng-hide="spaces.length">
+      Nu sunt locuri in zonă.<br/>
+      Fii primul care
+      <u>
+        <a ui-sref="home.map.search">
+          postează un loc.
+        </a>
+      </u>
+    </div>
+  </div>
+  <div ng-repeat="space in mapSpaces" class="left-panel py-3 px-0">
+    <parking-spot-info-box space="space" class="left-side"></parking-spot-info-box>
+    <div class="m-0 offer-availability">
+      {{nextOffer(space)}}
+    </div>
+    <div class="mt-2 d-flex justify-content-around">
+      <button class="btn btn-outline-primary " ng-click="selectSpace(space)">
+        <i class="fa fa-calendar"></i>
+        Rezervă
+      </button>
+      <button class="btn btn-link" ui-sref="home.map.search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
+        <i class="fa fa-map"></i>
+        Vezi pe hartă
+      </button>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
     ['$rootScope', '$scope', '$document', '$stateParams', 'parameterService', '$state', 'userService',
         function ($rootScope, $scope, $document, $stateParams, parameterService, $state, userService) {
 
+            $rootScope.desktopScreen = $(document).width() > 1140;
+
             $scope.errMsg = [];
             $scope.notifMsg = [];
             $scope.warningMsg = [];

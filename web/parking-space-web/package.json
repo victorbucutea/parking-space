@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "angular": "^1.6.6",
+    "angular-cookies": "^1.6.10",
     "angular-easyfb": "^1.5.2",
     "angular-sanitize": "^1.6.6",
     "angular-ui-bootstrap": "^2.5.6",

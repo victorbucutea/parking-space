@@ -150,7 +150,7 @@ div.daterangepicker {
   input.form-control {
     border: 1px solid $gray-lighter;
     line-height: 2;
-    font-size: 1.4em;
+    font-size: 1.5em;
     padding-right: 2.5em;
     text-overflow: ellipsis;
     background-color: $blue-80;
@@ -160,6 +160,10 @@ div.daterangepicker {
     &:focus {
       box-shadow: 1px 2px 3px 0 $gray-700;
     }
+  }
+
+  .btn-search {
+    font-size: 1.4rem;
   }
 
   .search-icon {
@@ -177,12 +181,12 @@ div.daterangepicker {
 
   .dropdown-item {
     white-space: nowrap;
-    font-size: 1.2em;
+    font-size: 1.3em;
     overflow: hidden;
     text-overflow: ellipsis;
 
     .res-marker {
-      font-size: 1.3em;
+      font-size: 1.4em;
       color: $red;
     }
 
@@ -408,8 +412,9 @@ div.daterangepicker {
   box-shadow: 3px 3px 0 0 $gray-400;
   border-radius: 4px;
 
-  h5 {
+  h5, h4 {
     font-weight: 600;
+    color: $dflt-font-color !important;
     &:hover {
       text-decoration: underline;
       cursor: pointer;
@@ -420,10 +425,17 @@ div.daterangepicker {
     border-top: 1px solid $gray-400;
     padding: 10px;
   }
+
+  &.help-explanation {
+    text-align: left;
+    box-shadow: none;
+  }
 }
 
+
+
 .left-panel {
-  border-bottom: 10px solid $gray-300;
+  border-bottom: 15px solid $gray-300;
 
   .offer-availability {
     border-top: 1px solid #ddd;
@@ -457,12 +469,18 @@ div.daterangepicker {
   background-color: $blue-850;
   color: $white;
 
-  [class*="col-"]:nth-child(2n) {
-    background-color: $blue-800;
+  .parking-list {
+    font-size: .9em;
+
+    p {
+      a {
+        color: $gray-400;
+      }
+    }
   }
 
   a {
-    color: $white;
+    color: $gray-400;
     font-size: 1.2em;
   }
 

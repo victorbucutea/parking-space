@@ -7,6 +7,7 @@ angular.module('ParkingSpaceMobile', [
     'ngSanitize',
     'cleave.js',
     'ngFileUpload',
+    'ngCookies',
     'ui.router',
     'ui.bootstrap.buttons',
     'cloudinary',
@@ -141,11 +142,14 @@ angular.module('ParkingSpaceMobile', [
                     },
                     "my-menu": {
                         templateUrl: "templates/nav-bar.html"
+                    },
+                    "left-side-menu": {
+                        templateUrl: "templates/left-side-menu.html"
                     }
                 }
             })
             .state('home.map.search', {
-                url: '/search?lat&lng',
+                url: '/search?lat&lng&zoom',
                 views: {
                     'map-controls': {
                         templateUrl: "templates/search.html"
@@ -162,6 +166,14 @@ angular.module('ParkingSpaceMobile', [
                 views: {
                     'help': {
                         templateUrl: "templates/search-help.html"
+                    }
+                }
+            })
+            .state('home.map.search.instructions', {
+                url: '/instructions',
+                views: {
+                    'help': {
+                        templateUrl: "templates/search-instructions.html"
                     }
                 }
             })
@@ -332,14 +344,6 @@ angular.module('ParkingSpaceMobile', [
                 views: {
                     'financial': {
                         templateUrl: "templates/withdrawals.html"
-                    }
-                }
-            })
-            .state('home.help', {
-                url: '/help',
-                views: {
-                    'help': {
-                        templateUrl: "templates/my-offers-help.html"
                     }
                 }
             });

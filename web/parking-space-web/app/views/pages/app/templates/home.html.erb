@@ -1,4 +1,4 @@
-<div ng-controller="MainCtrl" class="full-height">
+<div ng-controller="MainCtrl" style="height: 100vh">
 
 
   <!-- Notification messages -->
@@ -31,64 +31,52 @@
   </div>
 
 
-  <!-- Navigation drawer menu -->
-  <div id="drawer" class="menu d-flex flex-column " ng-click="closeMenu()">
-    <div class="logo p-5 text-center" ui-sref="home.map.search">
-      <img src="<%= image_path 'logo_sm_dark.png' %>">
-    </div>
-    <ul>
-      <li ui-sref="home.map.search" ui-sref-active="selected">
-        <i class="fa fa-map-o"></i>
-        Hartă
-      </li>
-      <li class="selected" ui-sref="home.myposts" ui-sref-active="selected">
-        <i class="fa fa-car"></i>
-        Locurile mele
-      </li>
-      <li ui-sref="home.myoffers" ui-sref-active="selected">
-        <i class="fa fa-calendar"></i>
-        Rezervările mele
-      </li>
-      <li ui-sref="home.map.search.myaccount" ui-sref-active="selected">
-        <i class="fa fa-user"></i>
-        Setări utilzator
-      </li>
-      <li ui-sref="home.account" ui-sref-active="selected">
-        <i class="fa fa-credit-card"></i>
-        Contul meu
-        <!--<span class="badge badge-warning badge-pill">14</span>-->
-      </li>
-    </ul>
-    <ul class="terms border-top " ui-sref-active="selected" ui-sref="home.map.search.terms">
-      <li>
-        <i class="fa fa-file"></i> Termeni si condiții Go-Park
-      </li>
-    </ul>
-  </div>
-  <div class="drawer" ng-click="closeMenu()"></div>
-  <!-- End navigation drawer menu -->
+  <div class="row no-gutters pos-relative full-height">
 
-
-  <div class="row no-gutters pos-relative">
-    <div class="d-none d-md-block col-md-4 col-xl-3 spaces-list">
-      <div ng-repeat="space in mapSpaces" class="left-panel py-3 px-0">
-        <parking-spot-info-box space="space" class="left-side"></parking-spot-info-box>
-        <div class="m-3 mt-0 offer-availability" >
-            {{nextOffer(space)}}
-        </div>
-        <div class="mt-2 d-flex justify-content-around">
-          <button class="btn btn-outline-primary " ng-click="selectSpace(space)">
-            <i class="fa fa-calendar"></i>
-            Rezervă
-          </button>
-          <button class="btn btn-link"  ui-sref="home.map.search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
-            <i class="fa fa-map"></i>
-            Vezi pe hartă
-          </button>
-        </div>
+    <!-- Navigation drawer menu -->
+    <div id="drawer" class="menu d-flex flex-column" ng-click="closeMenu()">
+      <div class="logo p-5 d-md-none text-center " ui-sref="home.map.search">
+        <img src="<%= image_path 'logo_sm_dark.png' %>">
       </div>
+      <ul>
+        <li ui-sref="home.map.search" ui-sref-active="selected">
+          <i class="fa fa-map-o"></i>
+          Hartă
+        </li>
+        <li class="selected" ui-sref="home.myposts" ui-sref-active="selected">
+          <i class="fa fa-car"></i>
+          Locurile mele
+        </li>
+        <li ui-sref="home.myoffers" ui-sref-active="selected">
+          <i class="fa fa-calendar"></i>
+          Rezervările mele
+        </li>
+        <li ui-sref="home.map.search.myaccount" ui-sref-active="selected" class="d-md-none">
+          <i class="fa fa-user"></i>
+          Setări utilzator
+        </li>
+        <li ui-sref="home.account" ui-sref-active="selected">
+          <i class="fa fa-credit-card"></i>
+          Plăți și facturi
+          <!--<span class="badge badge-warning badge-pill">14</span>-->
+        </li>
+      </ul>
+      <ul class="terms border-top " ui-sref-active="selected" ui-sref="home.map.search.terms">
+        <li>
+          <i class="fa fa-file"></i> Termeni si condiții Go-Park
+        </li>
+      </ul>
     </div>
-    <div class="col ">
+    <div class="drawer" ng-click="closeMenu()"></div>
+
+    <!-- End navigation drawer menu -->
+
+    <!-- left side menu -->
+    <div ng-if="desktopScreen"  class="d-none d-lg-block col-lg-auto left-side-menu" >
+      <ui-view name="left-side-menu"></ui-view>
+    </div>
+    <!-- End left side menu -->
+    <div class="col scroll">
       <ui-view name="my-menu"></ui-view>
 
       <ui-view name="content"></ui-view>

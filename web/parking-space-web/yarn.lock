@@ -18,6 +18,10 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@braintree/wrap-promise/-/wrap-promise-1.1.1.tgz#d22c76855e6d4b4012610060421fae1a37ec90b0"
 
+angular-cookies@^1.6.10:
+  version "1.6.10"
+  resolved "https://registry.yarnpkg.com/angular-cookies/-/angular-cookies-1.6.10.tgz#20a014d501242e2edacd21397c0e5480e08dee00"
+
 angular-easyfb@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/angular-easyfb/-/angular-easyfb-1.5.2.tgz#ce5b1ac323a3441b2f5249a3b0e61addfca608f5"

@@ -14,8 +14,8 @@ angular.module('ParkingSpaceMobile.directives', [])
                 function initialize() {
                     let mapOptions = {
                         center: new google.maps.LatLng(44.412, 26.113),
-                        zoom: 15,
-                        minZoom: 15,
+                        zoom: 18,
+                        minZoom: 16,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                         streetViewControl: false,
                         scaleControl: false,

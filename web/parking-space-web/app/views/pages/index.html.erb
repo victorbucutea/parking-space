@@ -29,15 +29,18 @@
   </button>
 
   <div class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item text-right active">
+    <ul class="navbar-nav" >
+      <li class="nav-item text-right" ui-sref="main" ui-sref-active="active">
+        <a class="nav-link">Caută loc</a>
+      </li>
+      <li class="nav-item text-right">
         <a ng-click="scrollTo('faq')" class="nav-link">Cum funcționează?</a>
       </li>
       <li class="nav-item text-right">
         <a ng-click="scrollTo('rent')" class="nav-link">Închiriază loc personal</a>
       </li>
-      <li class="nav-item text-right">
-        <a ui-sref="business" class="nav-link">Soluții parcări publice </a>
+      <li class="nav-item text-right"  ui-sref-active="active" ui-sref="business">
+        <a  class="nav-link">Soluții parcări publice </a>
       </li>
     </ul>
 
@@ -67,7 +70,7 @@
         <div class="row justify-content-center">
 
           <!-- Address Search -->
-          <div class="col-sm-12 col-md-9 col-lg-7 mt-3 mt-md-4">
+          <div class="col-sm-12 col-md-9 col-lg-8 mt-3 mt-md-4">
             <div class="form-group search-form">
 
               <!-- Seach box -->
@@ -216,7 +219,7 @@
                   <span class="price">0 Ron</span>
                   <span>pe lună</span>
                 </div>
-                <a class="btn btn-primary px-5" href="/app/index.html#!/home/login">Încearcă</a>
+                <a class="btn btn-primary px-5" href="/app/index.html#!/home/map/search">Încearcă</a>
               </div>
             </div>
             <!-- End Free Offering -->
@@ -524,15 +527,31 @@
 <!-- ScrollToTop Button END-->
 
 <!-- Footer - bloc-8 -->
-<div class="footer mt-5" id="footer">
+
+<div class="footer mt-5 d-none d-md-block" id="footer">
   <div class="row no-gutters align-items-center justify-content-center">
-    <div class="col-md-4 py-4 text-center">
-      <a href="#">
-        <img width="140" src="<%= image_url 'logo_sm_dark.png' %>">
-      </a>
+    <div class="col-md-4 ">
+      <div class="row">
+        <div class="col-6 d-flex align-items-center justify-content-center">
+          <a href="#">
+            <img width="120" src="<%= image_path 'logo_sm_dark.png' %>">
+          </a>
+        </div>
+        <div class="col-6 parking-list p-3">
+          <h4> Parcare București</h4>
+          <div class="">
+            <p><a href="/">Parcare Aeroport</a></p>
+            <p><a href="/">Parcare Sector 1</a></p>
+            <p><a href="/">Parcare Sector 2</a></p>
+            <p><a href="/">Parcare Centrul Vechi</a></p>
+            <p><a href="/">Parcare Victoriei</a></p>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="col-md-4 p-3">
-      <h5>Contact</h5>
+      <h5>Asistență</h5>
       <ul>
         <li>
           <i class="fa fa-phone fa-2x"></i>
@@ -552,11 +571,8 @@
         <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
           <span class="fa fa-facebook "></span>
         </a>
-        <a class="social-lg" href="http://www.twitter.com/go-park" target="_blank">
-          <span class="fa fa-instagram icon-md icon-carmine-pink"></span>
-        </a>
         <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
-          <span class="fa fa-google-plus"></span>
+          <span class="fa fa-instagram"></span>
         </a>
         <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
           <span class="fa fa-twitter"></span>
@@ -575,6 +591,10 @@
       </form>
     </div>
   </div>
+</div>
+<div class="d-none d-md-flex ending row justify-content-center">
+  &copy;&nbsp;<a href="mailto:office@go-park.ro" target="_blank" style="color:#fff"> &nbsp;Softspot &nbsp;</a> 2017. All
+  rights reserved
 </div>
 <div class="ending row justify-content-center">
   <div class="col-12 col-md-8 col-md-offset-2 text-center mg-md">

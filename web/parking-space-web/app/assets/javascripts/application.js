@@ -25,6 +25,7 @@
 //= require angular-sanitize/angular-sanitize
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-ui-bootstrap/dist/ui-bootstrap
+//= require angular-cookies/angular-cookies.min
 //= require angular-easyfb/build/angular-easyfb.min
 //= require cleave.js/dist/cleave-angular.min
 //= require ng-file-upload/dist/ng-file-upload.min
