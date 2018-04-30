@@ -184,7 +184,7 @@ angular.module('ParkingSpaceMobile.directives', [])
             '              </h1>' +
             '          </div>' +
             '</div>' +
-            ' <div class="ps-modal pt-2 text-center" ng-show="showFullImage" ng-init="showFullImage=false">' +
+            ' <div class="ps-modal image pt-2 text-center" ng-show="showFullImage" ng-init="showFullImage=false">' +
             '    <cl-image public-id="{{space.file1}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
             '    <cl-image public-id="{{space.file2}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
             '    <cl-image public-id="{{space.file3}}" class="img-fluid mb-1"></cl-image>' +

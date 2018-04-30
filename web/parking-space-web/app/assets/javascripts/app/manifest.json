@@ -1,0 +1,16 @@
+{
+  "name": "Go-Park - modul smart de a parca",
+  "short_name": "Go-Park",
+  "start_url": "/app/index.html",
+  "theme_color": "#07111c",
+  "background_color": "#fcfdfe",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/P_letter_sq.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

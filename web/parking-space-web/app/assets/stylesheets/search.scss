@@ -401,6 +401,12 @@ div.daterangepicker {
     &.disp {
       flex-direction: column;
     }
+
+    &.large-icon {
+      width: 200px;
+      height: 200px;
+      border: 1px solid $gray-300;
+    }
   }
 }
 
@@ -475,13 +481,15 @@ div.daterangepicker {
     p {
       a {
         color: $gray-400;
+        font-size: 1em;
       }
+      margin-bottom: 4px;
     }
   }
 
   a {
     color: $gray-400;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   ul {

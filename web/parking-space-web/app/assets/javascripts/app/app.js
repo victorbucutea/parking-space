@@ -8,13 +8,30 @@ angular.module('ParkingSpaceMobile', [
     'cleave.js',
     'ngFileUpload',
     'ngCookies',
-    'ui.router',
     'ui.bootstrap.buttons',
+    'ui.router',
     'cloudinary',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
     'ParkingSpaceMobile.services'])
+
+// todo map should keep initial position after navigation
+// todo fix location information
+    // todo add back ui bootstrap but only for select button
+    .run(function (ENV) {
+        if ('serviceWorker' in navigator) {
+            // Use the window load event to keep the page load performant
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js', {scope: '/app'});
+            });
+        }
+
+        let deferredPrompt;
+
+
+
+    })
 
     .run(function (ENV, $http, $rootScope) {
 
@@ -264,6 +281,9 @@ angular.module('ParkingSpaceMobile', [
                     },
                     "my-menu": {
                         templateUrl: "templates/nav-bar.html"
+                    },
+                    'left-side-menu': {
+                        templateUrl: "templates/my-posts-side.html"
                     }
                 }
             })
@@ -307,13 +327,16 @@ angular.module('ParkingSpaceMobile', [
                     },
                     'my-menu': {
                         templateUrl: "templates/nav-bar.html"
+                    },
+                    'left-side-menu': {
+                        templateUrl: "templates/my-offers-side.html"
                     }
                 }
             })
             .state('home.myoffers.pay', {
                 url: '/pay',
                 views: {
-                    'pay':{
+                    'pay': {
                         templateUrl: "templates/pay.html"
 
                     }
@@ -324,15 +347,18 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.account', {
-                url:"/account",
+                url: "/account",
                 views: {
                     'content': {
                         templateUrl: "templates/account.html"
+                    },
+                    'left-side-menu': {
+                        templateUrl: "templates/account-side.html"
                     }
                 }
             })
             .state('home.account.payments', {
-                url:"/payments",
+                url: "/payments",
                 views: {
                     'financial': {
                         templateUrl: "templates/payments.html"
@@ -340,7 +366,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.account.withdrawals', {
-                url:"/withdrawals",
+                url: "/withdrawals",
                 views: {
                     'financial': {
                         templateUrl: "templates/withdrawals.html"
@@ -348,7 +374,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             });
 
-        $urlRouterProvider.otherwise("/home/map/search/");
+        $urlRouterProvider.otherwise("/home/map/search");
 
     })
 

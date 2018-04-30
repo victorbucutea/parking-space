@@ -2,6 +2,7 @@ angular.module('ParkingSpaceMobile.controllers')
     .controller('LoginCtrl', ['$rootScope', '$stateParams', '$scope', '$http', 'parameterService', 'ENV', 'userService', 'ezfb', '$state',
         function ($rootScope, $stateParams, $scope, $http, parameterService, ENV, userService, ezfb, $state) {
 
+
             $scope.login = function () {
                 let user = $scope.userName;
                 let password = $scope.password;

@@ -4,7 +4,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
     ['$rootScope', '$scope', '$document', '$stateParams', 'parameterService', '$state', 'userService',
         function ($rootScope, $scope, $document, $stateParams, parameterService, $state, userService) {
 
-            $rootScope.desktopScreen = $(document).width() > 1140;
+            $rootScope.desktopScreen = $(document).width() > 991;
 
             $scope.errMsg = [];
             $scope.notifMsg = [];
@@ -33,7 +33,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
             };
 
             $scope.closeMenu = function () {
-                $('#drawer').css('left', '-100%');
+                $('#drawer').css('left', '-105%');
                 drawer.css('opacity', '0');
                 setTimeout(function () {
                     drawer.hide()
@@ -135,5 +135,21 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 $state.go('home.map.search').then(() => {
                     $rootScope.$broadcast('selectSpace', space);
                 });
+            };
+
+
+
+            $scope.requestFullScreen = function() {
+                let doc = window.document;
+                let docEl = doc.documentElement;
+
+                let requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+                let cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+                if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                    requestFullScreen.call(docEl);
+                } else {
+                    cancelFullScreen.call(doc);
+                }
             }
         }]);

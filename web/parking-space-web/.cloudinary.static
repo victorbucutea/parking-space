@@ -46,6 +46,7 @@ images/bg_business_sm.png	bg_business_sm-3e1e05fe961cc14c25e013938bb16f67	152078
 images/bg_business_xs.png	bg_business_xs-fdbb05ffb67ede92675764f4ae4c85a8	1520788326	1520788325	390	652
 images/bg_sm.png	bg_sm-322e735ef6f007854c231fbdedcd4f9e	1520788328	1520788328	768	585
 images/bg_xs.png	bg_xs-8d9665e6b7403a2f1e04450cd26c405f	1520788331	1520788330	390	652
+images/crayon_circle_blue.png	crayon_circle_blue-72b2a0ab253cefba9e0227248dd475ad	1524423707	1524423707	150	202
 images/credit_cards2.jpg	credit_cards2-64701141027dce7e790c3720c7f2244a	1520788332	1520788332	174	25
 images/google-play-badge.png	google-play-badge-7b8134c3029886bf8470d3c5e297aaf0	1520788334	1520788334	646	250
 images/locate.png	locate-d49630324df1c679544ce3d2dd1b5789	1520788335	1520788335	84	84
@@ -56,6 +57,9 @@ images/logo_sm_dark.png	logo_sm_dark-d5421d283b82a923560ceca316700b14	1520788340
 images/map_screenshot.png	map_screenshot-39664e4bf6c14d282491f11ef141ff4d	1520788346	1520788345	329	317
 images/marker_on_map_mdpi.png	marker_on_map_mdpi-d3eaf173301f1e159cf50f49d9a81fa9	1520788347	1520788347	80	111
 images/phone_and_sms_xs.png	phone_and_sms_xs-73c42f2c2d62bf7e0bf27e45795a26a3	1520788348	1520788347	100	169
+images/phone_blue.png	phone_blue-f044db50e830bd8b45575df4592952d5	1524423710	1524423709	150	274
+images/phone_pay_blue.png	phone_pay_blue-a88547086b3600cd91eaf3f25d3646ba	1524423711	1524423710	150	274
+images/phone_post_space_blue.png	phone_post_space_blue-58d57cb1273ea087dbb55c85d1ab3730	1524423712	1524423712	150	274
 images/powered_by_google.png	powered_by_google-f127e368d62ad92dacab340de5af50e8	1520788349	1520788349	144	18
 images/sensor.png	sensor-054505523c857e6f98de435e1c8b96cc	1520788352	1520788351	432	313
 images/sensorxhdpi.png	sensorxhdpi-b4868b32c614381d0c8005ef46061034	1520788353	1520785397	171	109
@@ -63,5 +67,6 @@ images/t-bar-installation.jpg	t-bar-installation-2ce8a8f3aba625ff351b97ad56514ae
 images/t-bar-physical.jpg	t-bar-physical-622104edd3e3c9c0d6b7bfd4eecb21e9	1520788358	1520785404	500	500
 images/t-bar-remote.jpg	t-bar-remote-35ca27738d19feabcbed9835f4cbc0e1	1520788360	1520785405	500	500
 images/t-barxhdpi.png	t-barxhdpi-d1642938f9d319b71451cddeb96d7fdd	1520788361	1520785407	201	118
+images/underline_blue.png	underline_blue-33359b40d802457c21e9cc2037b8dbb8	1524423713	1524423713	350	27
 images/useravatar_blue.png	useravatar_blue-8179dd04f0e7662187c04b3ae2f7accc	1522490082	1522490084	40	40
 images/useravatar_blue_lg.png	useravatar_blue_lg-72c7a1ceaf306148f92ee6358e84b1d4	1522490084	1522490085	200	200

@@ -1,6 +1,6 @@
 <div ng-controller="AccountCtrl">
 
-    <div class="hamburger">
+    <div class="hamburger d-lg-none">
         <span ng-click="openMenu()">
             <i class="pac-nav fa fa-bars fa-2x "></i>
         </span>
@@ -32,7 +32,7 @@
 
                 <form name="withdrawForm">
                     <div class="form-row">
-                        <div class="form-group col-2">
+                        <div class="form-group col-2 col-sm-3">
                             <label for="sum" class="labe">Suma transfer</label>
                             <input type="number" ng-model="sum" class="form-control form-control-lg" id="sum">
                             <small ng-show="isSumInvalid" class="text-danger"> Suma nu poate depăși {{account.amount}} {{account.currency}}</small>

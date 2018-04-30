@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Go Park App</title>
+  <title>Go Park - Parcări smart </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#07111c">
+  <link rel="manifest" href="<%= asset_path 'app/manifest.json' %>"/>
+  <link rel="icon" type="image/png" href="<%= image_path 'favicon.png' %>"/>
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=geometry,places&language=ro" type="text/javascript"></script>
   <script src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
   <script src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
   <script src="https://js.braintreegateway.com/web/3.31.0/js/payment-request.js"></script>
-
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body ng-app="ParkingSpaceMobile">
-
+<noscript>Your browser does not support JavaScript!</noscript>
 <!-- Main nav menu -->
 <nav id="navbar" class="d-none d-md-flex navbar navbar-dark navbar-expand-lg">
   <a class="navbar-brand ml-3" href="#">
-    <img width="100" src="<%= image_path 'logo_sm_dark.png' %>"/>
+    <img width="80" src="<%= image_path 'logo_sm_dark.png' %>"/>
   </a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -40,22 +46,23 @@
       </li>
     </ul>
 
-    <div class="navbar-form form-inline">
+    <div class="navbar-form text-right">
       <a ui-sref="home.map.search.myaccount" class="px-4">
-        <img src="<%= image_url ('useravatar_blue.png') %>" class="" height="35">
+        <img src="<%= image_path ('useravatar_blue.png') %>" class="" height="35">
       </a>
     </div>
   </div>
 </nav>
 <!-- End Main nav menu -->
 
-
-<ui-view></ui-view>
+<div style="min-height: 80vh">
+  <ui-view></ui-view>
+</div>
 
 
 <!-- Footer -->
 
-<div class="footer mt-5 d-none d-md-block" id="footer">
+<div class="footer d-none d-md-block" id="footer">
   <div class="row no-gutters align-items-center justify-content-center">
     <div class="col-md-4 ">
       <div class="row">
@@ -107,7 +114,7 @@
       </div>
     </div>
     <div class="col-md-4 p-2 contact-form">
-      <form method="POST" action="http://formspree.io/office@go-park.ro">
+      <form method="POST" action="https://formspree.io/office@go-park.ro">
         <div class="form-group">
           <input required type="email" name="email" class="form-control" placeholder="Email">
         </div>

@@ -1,4 +1,4 @@
-<div ng-controller="MainCtrl" style="height: 100vh">
+<div ng-controller="MainCtrl" class="full-height">
 
 
   <!-- Notification messages -->
@@ -31,14 +31,14 @@
   </div>
 
 
-  <div class="row no-gutters pos-relative full-height">
+  <div class="row no-gutters" ui-sref-active="{'menu-hidden':'home.login'}">
 
     <!-- Navigation drawer menu -->
-    <div id="drawer" class="menu d-flex flex-column" ng-click="closeMenu()">
+    <div id="drawer" class="menu d-flex flex-column col-auto col-md-12" ng-click="closeMenu()">
       <div class="logo p-5 d-md-none text-center " ui-sref="home.map.search">
         <img src="<%= image_path 'logo_sm_dark.png' %>">
       </div>
-      <ul>
+      <ul class="d-md-flex m-md-0 justify-content-md-end ">
         <li ui-sref="home.map.search" ui-sref-active="selected">
           <i class="fa fa-map-o"></i>
           Hartă
@@ -61,22 +61,25 @@
           <!--<span class="badge badge-warning badge-pill">14</span>-->
         </li>
       </ul>
-      <ul class="terms border-top " ui-sref-active="selected" ui-sref="home.map.search.terms">
+      <ul class="terms border-top d-md-none " ui-sref-active="selected" ui-sref="home.map.search.terms">
         <li>
           <i class="fa fa-file"></i> Termeni si condiții Go-Park
         </li>
       </ul>
     </div>
     <div class="drawer" ng-click="closeMenu()"></div>
-
     <!-- End navigation drawer menu -->
 
-    <!-- left side menu -->
-    <div ng-if="desktopScreen"  class="d-none d-lg-block col-lg-auto left-side-menu" >
-      <ui-view name="left-side-menu"></ui-view>
+  </div>
+  <div class="row pos-relative no-gutters justify-content-center">
+    <!-- left side details -->
+    <div class="d-none d-lg-block col-lg-4" id="left-side-menu" ui-sref-active="{'menu-hidden':'home.login', 'menu-hidden-2':'home.register'}">
+      <ui-view ng-if="desktopScreen" name="left-side-menu"></ui-view>
     </div>
-    <!-- End left side menu -->
-    <div class="col scroll">
+    <!-- End left side details -->
+
+
+    <div class="col-md-12 col-lg-8 scroll">
       <ui-view name="my-menu"></ui-view>
 
       <ui-view name="content"></ui-view>

@@ -84,6 +84,12 @@ map {
 
 }
 
+@include media-breakpoint-down(sm) {
+  .add-btn, .center-btn, .info-btn {
+    position: fixed;
+  }
+}
+
 .filter-instruction-circle {
   position: absolute;
   top: 76px;
@@ -117,6 +123,8 @@ map {
   left: 0;
 }
 
+
+
 #pac-container {
   background-color: $white;
   font-size: 16px;
@@ -130,6 +138,11 @@ map {
   right: 0;
   left: 0;
   max-width: 700px;
+
+  @include media-breakpoint-down(sm){
+    position: fixed;
+  }
+
 
   #pac-input {
     padding-right: 17%;
@@ -236,6 +249,10 @@ map {
   width: 100%;
   z-index: 3;
   overflow: scroll;
+
+  &.image {
+    position: fixed;
+  }
 
   > div:first-child {
     border-top: 4px solid $red;
@@ -826,7 +843,7 @@ parking-spot-info-box {
 .menu {
   position: fixed;
   z-index: 3;
-  left: -100%;
+  left: -105%;
   background: $blue-90;
   color: $blue-800;
   height: 100%;
@@ -837,6 +854,7 @@ parking-spot-info-box {
   @include media-breakpoint-up(md) {
     position: static;
     box-shadow: none;
+    background-color: $white;
   }
 
   .logo {
@@ -853,6 +871,7 @@ parking-spot-info-box {
     list-style-type: none;
     padding: 0;
 
+
     li {
       padding: 14px 20px;
       font-size: 1.2em;
@@ -861,6 +880,35 @@ parking-spot-info-box {
         background-color: $blue-700;
         color: $blue-100;
         text-shadow: 2px 2px $blue-800;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    @include media-breakpoint-up(md) {
+      padding: 0 15px;
+
+      li {
+        font-size: 1.1em;
+        border-bottom: 3px solid $white;
+        color: $blue-700;
+        padding: $sm-font-size 20px;
+
+        &:hover {
+          color: $blue-800;
+
+        }
+
+        &.selected {
+          background-color: $blue-90;
+          color: $blue-800;
+          border-bottom: 3px solid $red;
+          transition: border-bottom-width;
+          text-shadow: none;
+        }
+
       }
     }
   }
@@ -898,6 +946,15 @@ parking-spot-info-box {
   }
 }
 
+.img-shadow {
+  box-shadow: 4px 4px 0 0 #ced4da;
+  border-radius: 14px;
+}
+
+.menu-hidden, .menu-hidden-2 {
+  display: none !important;
+}
+
 .add-place-instruction {
   position: absolute;
   bottom: 60px;
@@ -906,8 +963,9 @@ parking-spot-info-box {
 
 .rent-place-instruction {
   position: absolute;
-  top: 35%;
-  left: 50%;
+  right: 0;
+  width: 50%;
+  bottom: 0;
 }
 
 .center-map-to-location {
@@ -932,19 +990,11 @@ parking-spot-info-box {
 .fa-twitter-square {
   color: #5EA9DD;
   position: absolute;
-  bottom: 42%;
-  left: 26%;
 }
 
 .full-height {
   height: 100%;
 }
-
-.left-side-menu {
-  max-width: 30%;
-  position: static;
-}
-
 
 .html-marker {
   background: #fff;

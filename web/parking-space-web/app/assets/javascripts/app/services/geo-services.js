@@ -4,23 +4,35 @@
 
 angular.module('ParkingSpaceMobile.services')
 
-    .service('geolocationService',['$rootScope', function ($rootScope) {
-        var _this = this;
+    .service('geolocationService', ['$rootScope', function ($rootScope) {
+        let _this = this;
+        _this.errorShowCounter = 0;
 
         function onError(error) {
             console.error('code: ' + error.code + ', message: ' + error.message, error);
-            $rootScope.$emit("http.warning","Locația dvs. nu a fost găsită. Recomandăm " +
-                "folosirea locației.")
+            _this.error = error;
+            if (error.code !== 1) {
+                // TIMEOUT or position unavailable
+                // fail silently because is unlikely to keep app open until he reaches gps signal
+                // or it might be he enables location, in which case we won't have an error anymore
+            } else {
+                // PERMISSION DENIED
+                // show a warning once every 5 minutes to remind user to enable location
+                if (_this.errorShowCounter % 3 === 0) {
+                    $rootScope.$emit("http.warning", "Pentru a găsi locurile din apropriere, permiteți " +
+                        "folosirea locației din meniul browser-ului.");
+                }
+                _this.errorShowCounter++;
+            }
         }
 
+        let onSuccess = function (position) {
+            if (position) {
+                _this.position = position;
+            }
+        };
+
         this.initCurrentLocation = function (highAccuracy) {
-
-            var onSuccess = function (position) {
-                if (position) {
-                    _this.position = position;
-                }
-            };
-
             navigator.geolocation.getCurrentPosition(onSuccess, onError, {
                 timeout: 5000,
                 enableHighAccuracy: highAccuracy
@@ -42,7 +54,7 @@ angular.module('ParkingSpaceMobile.services')
     }])
 
 
-    .service('geocoderService', ['$rootScope',function ($rootScope) {
+    .service('geocoderService', ['$rootScope', function ($rootScope) {
         this.getAddress = function (lat, lng, clbk) {
             var latLng = {
                 'latLng': new google.maps.LatLng(lat, lng)

@@ -3,25 +3,20 @@
 <head>
   <title>Go Park</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="icon" type="image/png" href="<%= image_path 'favicon.png' %>"/>
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700&amp;subset=latin-ext" rel="stylesheet">
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=places&language=ro"></script>
-  <!--<link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,600,700&amp;subset=latin-ext" rel="stylesheet">-->
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body ng-app="ParkingSpace" ng-controller="MainCtrl">
 
-<% unless current_user.nil? %>
-  <script> current_user = '<%= current_user.email%>'; </script>
-<% end %>
-
 <!-- Navigation Block -->
 <nav id="navbar" class="navbar navbar-dark navbar-expand-lg">
   <a class="navbar-brand ml-3" href="#">
     <img width="100" src="<%= image_url 'logo_sm_dark.png' %>"/>
-
   </a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -45,9 +40,9 @@
     </ul>
 
     <div class="navbar-form form-inline">
-      <a href="/app/index.html#!/home/login" class="btn btn-outline-secondary">
-        <i class="fa fa-user"></i> Înregistrare
-      </a>
+      <a href="/app/index.html#!/home/map/search" class="btn btn-outline-secondary">
+        <i class="fa fa-user"></i> ÎNTRĂ ÎN CONT
+      </a>§§
     </div>
   </div>
 
@@ -537,7 +532,7 @@
             <img width="120" src="<%= image_path 'logo_sm_dark.png' %>">
           </a>
         </div>
-        <div class="col-6 parking-list p-3">
+        <div class="col-6 parking-list pt-3">
           <h4> Parcare București</h4>
           <div class="">
             <p><a href="/">Parcare Aeroport</a></p>
@@ -595,12 +590,6 @@
 <div class="d-none d-md-flex ending row justify-content-center">
   &copy;&nbsp;<a href="mailto:office@go-park.ro" target="_blank" style="color:#fff"> &nbsp;Softspot &nbsp;</a> 2017. All
   rights reserved
-</div>
-<div class="ending row justify-content-center">
-  <div class="col-12 col-md-8 col-md-offset-2 text-center mg-md">
-    &copy; <a href="mailto:office@go-park.ro" target="_blank" style="color:#fff">Softspot</a> 2017.
-    All rights reserved
-  </div>
 </div>
 <!-- Footer - bloc-8 END -->
 

@@ -190,7 +190,9 @@ angular.module('ParkingSpaceMobile.services')
                 errorMessages = _this.buildErrorMessages(data);
                 $rootScope.$emit('http.error', errorMessages);
                 $state.go('home.login',$state.params);
-            } else {
+            } else if (status === -1 ) {
+                $rootScope.$emit('http.error', 'Eroare de conexiune. Ești conectat la internet?');
+            }else {
                 $rootScope.$emit('http.error', 'Connectivity error.');
             }
         }

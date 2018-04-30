@@ -42,9 +42,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             }
 
 
-            if ($state.current.name === 'home.map.search' && $cookies.get('instructionsShown') !== 'true') {
+            if ($state.current.name === 'home.map.search' && localStorage.getItem('instructionsShown') !== 'true') {
                 $state.go('.instructions');
-                $cookies.put('instructionsShown','true');
+                localStorage.setItem('instructionsShown','true');
             }
 
             let drawSpaces = function () {
