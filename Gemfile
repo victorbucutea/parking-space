@@ -21,7 +21,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 
-# gem 'webpacker', '~> 3.5'
+gem 'webpacker', '~> 3.5', require: false
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
