@@ -29,8 +29,6 @@ angular.module('ParkingSpaceMobile', [
 
         let deferredPrompt;
 
-
-
     })
 
     .run(['$http','$rootScope', function ($http, $rootScope) {
@@ -492,7 +490,6 @@ angular.module('ParkingSpaceMobile', [
             icon: 'fa-krw'
         }
     ])
-
     .constant('uom', {
         metric: {
             name: 'meters',
@@ -502,13 +499,6 @@ angular.module('ParkingSpaceMobile', [
             name: 'feets',
             abr: 'ft'
         }
-    })
-
-    .constant('df', function (dt) {
-        return moment(dt).format("YYYY-MM-DD[T]HH:mm:ss.SSS[Z]");
-    })
-    .constant('rdf', function (dt) {
-        return moment(dt, "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]").toDate();
     })
 ;
 
