@@ -10,10 +10,10 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=geometry,places&language=ro" type="text/javascript"></script>
-  <script src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
-  <script src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
-  <script src="https://js.braintreegateway.com/web/3.31.0/js/payment-request.js"></script>
+  <script async src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
+  <script async src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
+  <script async src="https://js.braintreegateway.com/web/3.31.0/js/payment-request.js"></script>
+  <link rel="preload" href="<%= asset_path 'fontawesome-webfont.woff2' %>" as="font" type="font/woff2" crossorigin>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>

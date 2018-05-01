@@ -273,12 +273,9 @@ angular.module('ParkingSpaceMobile.directives', [])
             '   required> </select>' +
             '</div>' +
             '</div>',
-            controller: function ($scope) {
-                $scope.currencies = currencies;
-            },
 
             link: function ($scope, element, attrs) {
-
+                $scope.currencies = currencies;
 
                 $scope.increase = function () {
                     if (!$scope.bidAmount) {
@@ -379,7 +376,8 @@ angular.module('ParkingSpaceMobile.directives', [])
             '   </cl-image>' +
             '</div>',
 
-            controller: function ($scope, $rootScope, Upload, $timeout, cloudinary) {
+            controller: ['$scope', '$rootScope', 'Upload', '$timeout', 'cloudinary' ,
+                function ($scope, $rootScope, Upload, $timeout, cloudinary) {
                 if (!$scope.control)
                     $scope.control = {};
 
@@ -412,7 +410,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                     return upload;
                 };
 
-            },
+            }],
             link: function ($scope, elm) {
 
                 $(elm).find('.ps-modal').click((evt) => {
