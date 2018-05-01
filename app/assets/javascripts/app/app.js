@@ -19,7 +19,7 @@ angular.module('ParkingSpaceMobile', [
 // todo map should keep initial position after navigation
 // todo fix location information
     // todo add back ui bootstrap but only for select button
-    .run(function (ENV) {
+    .run(function () {
         if ('serviceWorker' in navigator) {
             // Use the window load event to keep the page load performant
             window.addEventListener('load', () => {
@@ -33,7 +33,7 @@ angular.module('ParkingSpaceMobile', [
 
     })
 
-    .run(function (ENV, $http, $rootScope) {
+    .run(['$http','$rootScope', function ($http, $rootScope) {
 
         if (!window.google || !window.google.maps) return;
 
@@ -113,9 +113,9 @@ angular.module('ParkingSpaceMobile', [
         window.HtmlMarker = HtmlMarker;
 
 
-    })
+    }])
 
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('home', {
                 url: '/home',
@@ -376,13 +376,13 @@ angular.module('ParkingSpaceMobile', [
 
         $urlRouterProvider.otherwise("/home/map/search");
 
-    })
+    }])
 
-    .config(function ($compileProvider) {
+    .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
-    })
+    }])
 
-    .config(function (ezfbProvider) {
+    .config(['ezfbProvider',function (ezfbProvider) {
         var myInitFunction = function ($window, $rootScope) {
             $window.FB.init({
                 appId: '1725456304415807',
@@ -391,16 +391,16 @@ angular.module('ParkingSpaceMobile', [
         };
 
         ezfbProvider.setInitFunction(myInitFunction);
-    })
+    }])
 
-    .config(function (cloudinaryProvider) {
+    .config(['cloudinaryProvider', function (cloudinaryProvider) {
         cloudinaryProvider
             .set("cloud_name", "hbrl7w3by")
             .set("secure", true)
             .set("upload_preset", "ixih1eoo");
-    })
+    }])
 
-    .config(function ($httpProvider) {
+    .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push(function ($q) {
             return {
                 'request': function (config) {
@@ -421,7 +421,7 @@ angular.module('ParkingSpaceMobile', [
         });
 
         $httpProvider.useApplyAsync(true);
-    })
+    }])
 
     .config(function () {
         window.isMobileOrTablet = function () {
