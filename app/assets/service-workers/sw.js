@@ -20,6 +20,14 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
+    new RegExp('.*/.woff2'),
+    workbox.strategies.staleWhileRevalidate({
+        // Use a custom cache name
+        cacheName: 'img-cache',
+    })
+);
+
+workbox.routing.registerRoute(
     new RegExp('.*\.css'),
     workbox.strategies.staleWhileRevalidate({
         // Use a custom cache name
