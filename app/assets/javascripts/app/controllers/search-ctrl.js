@@ -50,12 +50,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
             let drawSpaces = function () {
 
-                if (installPrompt){
+                if (window.installPrompt){
                     // prompt user to install the app
                     $rootScope.$emit('http.notif','Pentru un acces simplu la un ' +
                         'loc de parcare, adaugă un shortcut pe ecranul principal. ')
                     setTimeout(function () {
-                        installPrompt.prompt();
+                        window.installPrompt.prompt();
                     }, 2000);
                 }
 
