@@ -2,10 +2,12 @@ self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/wo
 self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-routing.prod.js');
 self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-strategies.prod.js');
 
-self.addEventListener("fetch", function(event) {});
+self.addEventListener("fetch", function(event) {
+    console.log(' fetch event triggered');
+});
 
 workbox.routing.registerRoute(
-    new RegExp('.*\.js[^o]'),
+    new RegExp('.*\.js[^o][^n]'),
     workbox.strategies.staleWhileRevalidate({
         // Use a custom cache name
         cacheName: 'js-cache',

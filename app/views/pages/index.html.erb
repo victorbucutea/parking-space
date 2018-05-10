@@ -9,7 +9,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=geometry,places&language=ro" type="text/javascript"></script>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <link rel="preload" href="<%= asset_path 'fontawesome-webfont.woff2' %>">
+  <link rel="preload"  as="font" type="font/woff2" crossorigin  href="<%= asset_path 'fontawesome-webfont.woff2' %>">
   <%= csrf_meta_tags %>
 </head>
 <body ng-app="ParkingSpace" ng-controller="MainCtrl">
