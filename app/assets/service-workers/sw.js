@@ -1,8 +1,8 @@
 
 self.skipWaiting();
 
-self.addEventListener('fetch', function () {
-    console.log('fetch')
+self.addEventListener('fetch', function (evt) {
+    console.log('fetch',evt)
 });
 /*
 self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-core.prod.js');
