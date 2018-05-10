@@ -18,7 +18,6 @@ angular.module('ParkingSpaceMobile', [
 
 // todo map should keep initial position after navigation
 // todo fix location information
-    // todo add back ui bootstrap but only for select button
     .run(function () {
         if ('serviceWorker' in navigator) {
             // Use the window load event to keep the page load performant
@@ -27,7 +26,13 @@ angular.module('ParkingSpaceMobile', [
             });
         }
 
-        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            window.installPrompt = deferredPrompt;
+        });
 
     })
 

@@ -7,6 +7,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
 
         $scope.calculateAddress = function () {
+
             let mapCenter = $rootScope.map.getCenter();
 
             let space = $scope.spaceEdit;
@@ -54,6 +55,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
         } else {
             $scope.calculateAddress();
         }
+
 
         $scope.showSched = function () {
             $('#schedule').slideToggle(200);

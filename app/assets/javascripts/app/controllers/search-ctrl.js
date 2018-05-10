@@ -15,6 +15,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             }
 
 
+
             if ($stateParams.lat && $stateParams.lng) {
                 $rootScope.map.setCenter(new google.maps.LatLng($stateParams.lat, $stateParams.lng));
             }
@@ -44,10 +45,20 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
             if ($state.current.name === 'home.map.search' && localStorage.getItem('instructionsShown') !== 'true') {
                 $state.go('.instructions');
-                localStorage.setItem('instructionsShown','true');
+                localStorage.setItem('instructionsShown', 'true');
             }
 
             let drawSpaces = function () {
+
+                if (installPrompt){
+                    // prompt user to install the app
+                    $rootScope.$emit('http.notif','Pentru un acces simplu la un ' +
+                        'loc de parcare, adaugă un shortcut pe ecranul principal. ')
+                    setTimeout(function () {
+                        installPrompt.prompt();
+                    }, 2000);
+                }
+
                 let bnds = $rootScope.map.getBounds().toJSON();
                 parkingSpaceService.getAvailableSpaces(bnds, function (spaces) {
                     if (!spaces || spaces.length === 0) {
