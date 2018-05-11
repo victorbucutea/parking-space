@@ -8,7 +8,7 @@ self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/wo
 
 
 workbox.routing.registerRoute(
-    /.*\.js[^o]/,
+    /.*\.js[^o]?/,
     workbox.strategies.staleWhileRevalidate({
         // Use a custom cache name
         cacheName: 'js-cache',
