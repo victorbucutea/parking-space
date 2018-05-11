@@ -1,10 +1,7 @@
 
 self.skipWaiting();
 
-self.addEventListener('fetch', function (evt) {
-    console.log('fetch',evt)
-});
-/*
+
 self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-core.prod.js');
 self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-routing.prod.js');
 self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-strategies.prod.js');
@@ -42,7 +39,7 @@ workbox.routing.registerRoute(
         // Use a custom cache name
         cacheName: 'html-cache',
     })
-);*/
+);
 
 /*
 self.addEventListener('message', function (ev) {
