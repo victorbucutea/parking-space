@@ -69,7 +69,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
                     replaceById(savedSpace, $scope.spaces);
                     $scope.loading = false;
-                    $state.go('home.map.search');
+                    $state.go('home.search');
                 });
             };
 

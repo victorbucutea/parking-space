@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     post "/users/sign_in_fb" => "sessions#sign_in_fb", :as => "sign_in_fb"
     post "/users/validate_code" => "registrations#validate_code", :as => "validate_code"
     post "/users/send_new_code" => "registrations#send_new_code", :as => "send_new_code"
+    post "/users/register_for_notifications" => "registrations#register_for_notifications", :as => "register_for_notifications"
   end
 
   post '/notif' => 'notifications#notif', :as => 'notif'

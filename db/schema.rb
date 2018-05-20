@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180310162346) do
+ActiveRecord::Schema.define(version: 20180518174123) do
 
   create_table "accounts", force: :cascade do |t|
     t.decimal "amount"
@@ -128,6 +128,9 @@ ActiveRecord::Schema.define(version: 20180310162346) do
     t.boolean "phone_no_confirm"
     t.string "phone_confirm_code"
     t.string "payment_id"
+    t.boolean "notif_approved"
+    t.string "p256dh"
+    t.string "notif_auth"
     t.index ["device_id"], name: "index_users_on_device_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["license"], name: "index_users_on_license"

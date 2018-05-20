@@ -98,6 +98,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 $scope.mapSpaces = val;
             });
 
+
             $scope.nextOffer = function (space) {
                 let free = 'Se eliberează ';
                 let freeUntil = 'Liber pentru următoarele ';
@@ -132,7 +133,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
 
 
             $scope.selectSpace = function (space) {
-                $state.go('home.map.search').then(() => {
+                $state.go('home.search').then(() => {
                     $rootScope.$broadcast('selectSpace', space);
                 });
             };
@@ -151,5 +152,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 } else {
                     cancelFullScreen.call(doc);
                 }
+            }
+
+            $scope.logout = function () {
+                userService.logout();
             }
         }]);

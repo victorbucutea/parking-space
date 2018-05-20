@@ -7,10 +7,13 @@ angular.module('ParkingSpace.controllers').controller('SearchAddressCtrl',
     ['$scope', '$rootScope', '$document', 'geoService', function ($scope, $rootScope, $document, geoService) {
 
 
-        geoService.getCurrentPosition((result, position) => {
-            $scope.currentAddress = result;
-            $scope.currentPosition = position;
-        });
+
+        $scope.centerOnPosition = function() {
+            geoService.getCurrentPosition((result, position) => {
+                $scope.currentAddress = result;
+                $scope.currentPosition = position;
+            });
+        }
 
         $scope.shouldSuggest = (addr) => {
             return (addr && addr.length > 3);
@@ -91,7 +94,7 @@ angular.module('ParkingSpace.controllers').controller('SearchAddressCtrl',
 
 
         $scope.search = function () {
-            let location = '/app/index.html#!/home/map/search?';
+            let location = '/app/index.html#!/home/search?';
             if (!$scope.searchLocation ){
                 window.location = location;
                 return;

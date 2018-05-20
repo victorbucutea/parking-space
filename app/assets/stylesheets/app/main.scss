@@ -21,12 +21,17 @@ map {
   height: 100%;
 }
 
+.map-loading {
+  position: fixed;
+  width: 100%;
+}
+
 .info-btn {
   position: absolute;
   bottom: 160px;
   z-index: 2;
   right: 32px;
-  box-shadow: 2px 6px 20px 2px $gray-600;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -39,7 +44,7 @@ map {
   bottom: 98px;
   z-index: 2;
   right: 32px;
-  box-shadow: 2px 6px 20px 2px $gray-600;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -50,7 +55,7 @@ map {
 .add-btn {
   background-color: $blue-800;
   padding: 0;
-  box-shadow: 2px 6px 20px 2px $gray-600;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   border-radius: 28px;
   position: absolute;
   bottom: 24px;
@@ -103,7 +108,7 @@ map {
 .marker-instruction-circle {
   position: absolute;
   bottom: 42%;
-  left: 26%;
+  right: 55%;
 }
 
 .btn-instruction-circle {
@@ -130,7 +135,7 @@ map {
   font-size: 16px;
   width: 90%;
   margin: $big-measure-unit auto;
-  box-shadow: 2px 8px 20px 2px $gray-600;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   border-radius: 3px;
   position: absolute;
   top: 0;
@@ -1009,7 +1014,7 @@ parking-spot-info-box {
 
   &.help {
     top: 41%;
-    left: 30%;
+    right: 55%;
     font-size: 1.5em;
   }
 
@@ -1064,6 +1069,8 @@ parking-spot-info-box {
     z-index: 2;
   }
 }
+
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

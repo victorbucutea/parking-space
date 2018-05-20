@@ -8,12 +8,14 @@ angular.module('ParkingSpaceMobile.controllers')
                 let password = $scope.password;
 
                 userService.login(user, password, function () {
-                    $state.go('home.map.search', $stateParams);
+                    $state.go('home.search', $stateParams);
                 })
             };
 
             $scope.lat= $stateParams.lat;
             $scope.lng= $stateParams.lng;
+
+
 
             $scope.recoverPassword = function () {
                 $('#recoverPassword').hide();
@@ -34,7 +36,7 @@ angular.module('ParkingSpaceMobile.controllers')
                             userService.loginFb(authResponse.userID, authResponse.accessToken, res.email,
                                 function (resp) {
                                     // user successfully logged in
-                                    $state.go('home.map.search', $stateParams);
+                                    $state.go('home.search', $stateParams);
                                 }, function (err, status) {
 
                                     if (status === 422) {

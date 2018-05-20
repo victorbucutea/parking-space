@@ -1,14 +1,20 @@
-'use strict';
-
 angular.module('ParkingSpaceMobile.directives', [])
 
-    .directive('map', function () {
+    .directive('map', ['$rootScope', function ($rootScope) {
         return {
             restrict: 'E',
             scope: {
-                onCreate: '&'
+                onCreate: '&',
+                onError: '&',
             },
             link: function ($scope, $element, $attr) {
+                // bad internet, a message should be shown
+                // to warn the user. No sense to initialize the map.
+                if (!window.google || !window.google.maps) {
+                    $scope.onError();
+                    return;
+                }
+
 
 
                 function initialize() {
@@ -38,7 +44,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                 initialize();
             }
         };
-    })
+    }])
 
     .directive('productTable', function () {
         return {
@@ -99,6 +105,11 @@ angular.module('ParkingSpaceMobile.directives', [])
             '       ng-click="address=\'\'" ' +
             '       ng-show="address.length > 3"></i>\n',
             link: function ($scope, elm, attr) {
+                // bad internet, a message should be shown
+                // to warn the user. No sense to initialize the map.
+                if (!window.google || !window.google.maps) return;
+
+
                 let input = $(elm).find('#pac-input')[0];
                 let searchBox = new google.maps.places.Autocomplete(input);
 
@@ -131,7 +142,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('searchCenterIcon', ['$rootScope', function ( $rootScope) {
+    .directive('searchCenterIcon', ['$rootScope', function ($rootScope) {
         return {
             scope: {
                 shown: '='
@@ -143,6 +154,12 @@ angular.module('ParkingSpaceMobile.directives', [])
             '               class="search-center-icon animated bounce"' +
             '               </div>',
             link: function ($scope, $element, $attr) {
+
+                // bad internet, a message should be shown
+                // to warn the user. No sense to initialize the map.
+                if (!window.google || !window.google.maps) {
+                    return;
+                }
 
                 let start = google.maps.event.addListener($rootScope.map, 'dragstart', () => {
                     $('#searchCenterIcon').addClass('shadow');
@@ -376,41 +393,41 @@ angular.module('ParkingSpaceMobile.directives', [])
             '   </cl-image>' +
             '</div>',
 
-            controller: ['$scope', '$rootScope', 'Upload', '$timeout', 'cloudinary' ,
+            controller: ['$scope', '$rootScope', 'Upload', '$timeout', 'cloudinary',
                 function ($scope, $rootScope, Upload, $timeout, cloudinary) {
-                if (!$scope.control)
-                    $scope.control = {};
+                    if (!$scope.control)
+                        $scope.control = {};
 
-                $scope.control.uploadPic = function (file, successClbk, errClbk) {
-                    if (!file) return;
+                    $scope.control.uploadPic = function (file, successClbk, errClbk) {
+                        if (!file) return;
 
-                    let cloudName = cloudinary.config().cloud_name;
-                    let upload = Upload.upload({
-                        url: 'https://api.cloudinary.com/v1_1/' + cloudName + '/upload',
-                        data: {
-                            upload_preset: cloudinary.config().upload_preset,
-                            file: file
-                        }
-                    });
-
-
-                    upload.then(function (response) {
-                    }, function (response) {
-                        if (response.status > 0) {
-                            let msg = response.status + ': ' + response.data;
-                            $rootScope.emit('http.error', ' Error while uploading image:' + msg);
-                        }
-                    }, function (evt) {
-                        // Math.min is to fix IE which reports 200% sometimes
-                        let progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                        $scope.progress = progress;
-                    });
+                        let cloudName = cloudinary.config().cloud_name;
+                        let upload = Upload.upload({
+                            url: 'https://api.cloudinary.com/v1_1/' + cloudName + '/upload',
+                            data: {
+                                upload_preset: cloudinary.config().upload_preset,
+                                file: file
+                            }
+                        });
 
 
-                    return upload;
-                };
+                        upload.then(function (response) {
+                        }, function (response) {
+                            if (response.status > 0) {
+                                let msg = response.status + ': ' + response.data;
+                                $rootScope.emit('http.error', ' Error while uploading image:' + msg);
+                            }
+                        }, function (evt) {
+                            // Math.min is to fix IE which reports 200% sometimes
+                            let progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                            $scope.progress = progress;
+                        });
 
-            }],
+
+                        return upload;
+                    };
+
+                }],
             link: function ($scope, elm) {
 
                 $(elm).find('.ps-modal').click((evt) => {

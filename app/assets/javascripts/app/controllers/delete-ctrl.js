@@ -9,7 +9,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('DeleteParkingSpaceC
     $scope.deleteSpace = function () {
         let parkingSpaceId = $stateParams.parking_space_id;
         parkingSpaceService.deleteSpace(parkingSpaceId);
-        $state.go('home.map.search');
+        $state.go('home.search');
     };
 
 }]);

@@ -17,8 +17,8 @@ angular.module('ParkingSpaceMobile.services')
                 // or it might be he enables location, in which case we won't have an error anymore
             } else {
                 // PERMISSION DENIED
-                // show a warning once every 5 minutes to remind user to enable location
-                if (_this.errorShowCounter % 3 === 0) {
+                // show a warning once every 5 times to remind user to enable location
+                if (_this.errorShowCounter % 5 === 0) {
                     $rootScope.$emit("http.warning", "Pentru a găsi locurile din apropriere, permiteți " +
                         "folosirea locației din meniul browser-ului.");
                 }

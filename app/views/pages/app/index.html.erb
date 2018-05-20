@@ -21,6 +21,8 @@
 </head>
 <body ng-app="ParkingSpaceMobile">
 <noscript>Your browser does not support JavaScript!</noscript>
+
+<script> window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(ENV['WEBPUSH_PUBLIC_KEY']).bytes %>); </script>
 <!-- Main nav menu -->
 <nav id="navbar" class="d-none d-md-flex navbar navbar-dark navbar-expand-lg">
   <a class="navbar-brand ml-3" href="#">
@@ -37,7 +39,7 @@
         <a ng-click="scrollTo('faq')" class="nav-link px-3">Caută loc</a>
       </li>
       <li class="nav-item text-right">
-        <a ui-sref="home.map.search.help" class="nav-link px-3">Cum funcționează?</a>
+        <a ui-sref="home.search.help" class="nav-link px-3">Cum funcționează?</a>
       </li>
       <li class="nav-item text-right">
         <a href="/?rent" class="nav-link px-3">Cumpără dispozitiv parcare</a>
@@ -48,7 +50,7 @@
     </ul>
 
     <div class="navbar-form text-right">
-      <a ui-sref="home.map.search.myaccount" class="px-4">
+      <a ui-sref="home.search.myaccount" class="px-4">
         <img src="<%= image_path ('useravatar_blue.png') %>" class="" height="35">
       </a>
     </div>

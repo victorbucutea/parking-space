@@ -111,9 +111,10 @@ module PayApi
   end
 
   def register_payment(result, prop)
+    user = prop.parking_space.user
     if result.success?
       begin
-        account = current_user.account
+        account = user.account
         if current_user.account.nil?
           account = Account.new
           account.amount = prop.amount

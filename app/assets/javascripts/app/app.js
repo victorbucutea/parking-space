@@ -19,13 +19,13 @@ angular.module('ParkingSpaceMobile', [
 // todo map should keep initial position after navigation
 // todo fix location information
     .run(function () {
+        // install service worker
         if ('serviceWorker' in navigator) {
             // Use the window load event to keep the page load performant
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js', {scope: '/app'});
             });
         }
-
 
         window.addEventListener('beforeinstallprompt', (e) => {
             // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -34,34 +34,9 @@ angular.module('ParkingSpaceMobile', [
             // Stash the event so it can be triggered later.
             window.installPrompt = e;
         });
-
-
-        Notification.requestPermission(function(status) {
-            console.log('Notification permission status:', status);
-        });
-
-        if (Notification.permission === 'granted') {
-            navigator.serviceWorker.getRegistration().then(function(reg) {
-                var options = {
-                    body: 'Here is a notification body!',
-                    icon: 'images/example.png',
-                    vibrate: [100, 50, 100],
-                    data: {
-                        dateOfArrival: Date.now(),
-                        primaryKey: 1
-                    },
-                    actions: [
-                        {action: 'explore', title: 'Explore this new world',
-                            icon: 'images/checkmark.png'}
-                    ]
-                };
-                reg.showNotification('Hello world!', options);
-            })
-        }
-
     })
 
-    .run(['$http','$rootScope', function ($http, $rootScope) {
+    .run(['$http', '$rootScope', function ($http, $rootScope) {
 
         if (!window.google || !window.google.maps) return;
 
@@ -143,7 +118,7 @@ angular.module('ParkingSpaceMobile', [
 
     }])
 
-    .config(['$stateProvider', '$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('home', {
                 url: '/home',
@@ -179,11 +154,11 @@ angular.module('ParkingSpaceMobile', [
                     lng: null
                 }
             })
-            .state('home.map', {
-                url: '/map',
+            .state('home.search', {
+                url: '/search?lat&lng&zoom',
                 views: {
                     'content': {
-                        templateUrl: "templates/map.html"
+                        templateUrl: "templates/search.html"
                     },
                     "my-menu": {
                         templateUrl: "templates/nav-bar.html"
@@ -191,14 +166,6 @@ angular.module('ParkingSpaceMobile', [
                     "left-side-menu": {
                         templateUrl: "templates/left-side-menu.html"
                     }
-                }
-            })
-            .state('home.map.search', {
-                url: '/search?lat&lng&zoom',
-                views: {
-                    'map-controls': {
-                        templateUrl: "templates/search.html"
-                    },
                 },
                 params: {
                     lat: null,
@@ -206,7 +173,7 @@ angular.module('ParkingSpaceMobile', [
                     zoom: null
                 }
             })
-            .state('home.map.search.help', {
+            .state('home.search.help', {
                 url: '/help',
                 views: {
                     'help': {
@@ -214,7 +181,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.instructions', {
+            .state('home.search.instructions', {
                 url: '/instructions',
                 views: {
                     'help': {
@@ -222,7 +189,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.confirm-phone', {
+            .state('home.search.confirm-phone', {
                 url: '/confirm-phone',
                 views: {
                     'place-bid': {
@@ -230,7 +197,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.terms', {
+            .state('home.search.terms', {
                 url: '/terms',
                 views: {
                     'place-bid': {
@@ -238,7 +205,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.post-bids', {
+            .state('home.search.post-bids', {
                 url: '/post-offer',
                 views: {
                     'place-bid': {
@@ -246,7 +213,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.post-bids.pay', {
+            .state('home.search.post-bids.pay', {
                 url: '/pay',
                 views: {
                     'pay': {
@@ -258,7 +225,7 @@ angular.module('ParkingSpaceMobile', [
                     space: null
                 }
             })
-            .state('home.map.search.review-bids', {
+            .state('home.search.review-bids', {
                 url: '/review-bid',
                 views: {
                     'place-bid': {
@@ -266,7 +233,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.post', {
+            .state('home.search.post', {
                 url: '/post',
                 views: {
                     'place-bid': {
@@ -274,7 +241,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.review-bids.delete', {
+            .state('home.search.review-bids.delete', {
                 url: '/delete/{parking_space_id}',
                 views: {
                     'action': {
@@ -282,7 +249,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.review-bids.edit', {
+            .state('home.search.review-bids.edit', {
                 url: '/edit/{parking_space_id}',
                 views: {
                     'action': {
@@ -290,7 +257,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.myaccount', {
+            .state('home.search.myaccount', {
                 url: '/myaccount',
                 views: {
                     'place-bid': {
@@ -402,7 +369,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             });
 
-        $urlRouterProvider.otherwise("/home/map/search");
+        $urlRouterProvider.otherwise("/home/search");
 
     }])
 
@@ -410,7 +377,7 @@ angular.module('ParkingSpaceMobile', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
     }])
 
-    .config(['ezfbProvider',function (ezfbProvider) {
+    .config(['ezfbProvider', function (ezfbProvider) {
         var myInitFunction = function ($window, $rootScope) {
             $window.FB.init({
                 appId: '1725456304415807',

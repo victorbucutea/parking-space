@@ -9,20 +9,51 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService,
                   parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams) {
 
-            if (!$rootScope.map) {
+
+            let dragListenHandle = null;
+
+            $scope.mapCreated = function (map, overlay, geocoder) {
+                $('#mapBlanket').fadeOut();
+                $rootScope.map = map;
+                $rootScope.overlay = overlay;
+                $rootScope.geocoder = geocoder;
+
+                // center on request params if need be
+                if ($stateParams.lat && $stateParams.lng) {
+                    let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
+                    map.setZoom(17);
+                    map.setCenter(pos);
+                    return;
+                }
+
+                geolocationService.getCurrentLocation(function (position) {
+                    let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    map.setCenter(pos);
+                });
+
+                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
+
+                if ($stateParams.lat && $stateParams.lng) {
+                    $rootScope.map.setCenter(new google.maps.LatLng($stateParams.lat, $stateParams.lng));
+                }
+
+                if ($stateParams.zoom) {
+                    $rootScope.map.setZoom($stateParams.zoom)
+                }
+            };
+
+            $scope.mapError = function(){
+                $('#mapBlanket').fadeOut();
                 $rootScope.$emit('http.error', 'Nu se poate inițializa harta. Ești conectat la internet? ');
+            };
+
+            // bad internet, a message should be shown
+            // to warn the user. No sense to initialize the map.
+            if (!window.google || !window.google.maps) {
                 return;
             }
 
 
-
-            if ($stateParams.lat && $stateParams.lng) {
-                $rootScope.map.setCenter(new google.maps.LatLng($stateParams.lat, $stateParams.lng));
-            }
-
-            if ($stateParams.zoom) {
-                $rootScope.map.setZoom($stateParams.zoom)
-            }
 
 
             if (!sessionStorage.getItem("current_user")) {
@@ -43,13 +74,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             }
 
 
-            if ($state.current.name === 'home.map.search' && localStorage.getItem('instructionsShown') !== 'true') {
+            if ($state.current.name === 'home.search' && localStorage.getItem('instructionsShown') !== 'true') {
                 $state.go('.instructions');
                 localStorage.setItem('instructionsShown', 'true');
             }
 
             let drawSpaces = function () {
-
 
                 let bnds = $rootScope.map.getBounds().toJSON();
                 parkingSpaceService.getAvailableSpaces(bnds, function (spaces) {
@@ -78,8 +108,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     })
                 });
             };
-
-            let dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
 
 
             $scope.$watch('selectedLocation', newVal => {
@@ -128,9 +156,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
 
             $scope.$on('$stateChangeStart', function (event, toState) {
-                if (toState.name.indexOf('home.map.search') === -1) {
+                if (toState.name.indexOf('home.search') === -1) {
                     google.maps.event.removeListener(dragListenHandle);
-                } else if (toState.name === 'home.map.search') {
+                } else if (toState.name === 'home.search') {
                     drawSpaces();
                     $scope.placingSpot = null;
                 }
