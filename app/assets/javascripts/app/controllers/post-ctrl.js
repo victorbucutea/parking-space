@@ -2,8 +2,8 @@
  * Created by 286868 on 04.04.2015.
  */
 angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl',
-    ['$scope', '$rootScope', '$state', '$q', 'geocoderService', 'parameterService', '$stateParams', 'replaceById', 'parkingSpaceService', '$compile',
-        function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, $compile) {
+    ['$scope', '$rootScope', '$state', '$q', 'geocoderService', 'parameterService', '$stateParams', 'replaceById', 'parkingSpaceService',
+        function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, ) {
 
 
             $scope.calculateAddress = function () {
@@ -81,7 +81,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 let target = evt.currentTarget;
                 let idxToRemove = $('#thumb1').find('.btn').index(target);
                 delete uploadedFiles[name];
-                $scope.spaceEdit['file' + (idxToRemove + 1)] = null;
+                let fileAttr = target.dataset.fileId;
+                $scope.spaceEdit[fileAttr] = null;
                 owl.trigger('remove.owl.carousel', idxToRemove).trigger('refresh.owl.carousel');
             };
 
@@ -173,19 +174,19 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 [1, 2, 3].forEach((idx) => {
                     let file = newVal['file' + idx];
                     if (!file) return;
-                    uploadedFiles[file] = file;
 
                     let div = '<div>' +
                         '<img src="https://res.cloudinary.com/hbwkmonnw/image/upload/' + file + '" ' +
                         'onmouseup="showThumbnail(event)" ' +
                         'onmousedown="startThumbnail(event)" ' +
-                        'onmousemove="stopThumbnail()" class="img-thumbnail"/>' +
+                        'onmousemove="stopThumbnail()" ' +
+                        'class="img-thumbnail"/>' +
                         '<div id="uploadProgressCont" class="progress-container">\n' +
                         '    <div id="uploadProgressBar-' + file + '"' +
                         '         style="width: 0" class="progress-bar">' +
                         '    </div>' +
                         '</div>' +
-                        '<button class="btn btn-link btn-block" onclick="removeFile(\'' + file + '\',event)">' +
+                        '<button data-file-id="'+('file' + idx) +'" class="btn btn-link btn-block" onclick="removeFile(\'' + file + '\',event)">' +
                         ' <i class="fa fa-trash"></i> Șterge' +
                         '</button>' +
                         '</div>';
@@ -228,24 +229,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                             let data = uploadedFiles[f];
                             if (data.submit)
                                 clbks.push(data.submit());
-                            else {
-                                clbks.push($q.defer().resolve(data));
-                            }
                         }
                     }
 
                     $q.all(clbks).then((response) => {
 
-                        response.forEach((resp) => {
-                            [1, 2, 3].forEach((i) => {
-                                let attr = 'file' + (i);
+                        response.forEach((resp, idx) => {
+                            for (let i = 1; i <= 3; i++) {
+                                let attr = 'file' + i;
                                 if (!$scope.spaceEdit[attr]) {
                                     $scope.spaceEdit[attr] = resp.public_id;
-                                } else {
-                                    $scope.spaceEdit[attr] = resp;
-                                } // else if space has attribute, it means it was there from DB
-                            });
+                                    break;
+                                }
+                            }
                         });
+
+
                         parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
                             $rootScope.$emit('spaceSave', savedSpace);
                             $scope.loading = false;

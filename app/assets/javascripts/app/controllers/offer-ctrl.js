@@ -5,7 +5,7 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
     ['$rootScope', 'paymentService','$state', '$scope', 'offerService', 'parkingSpaceService', 'replaceById' ,
-        function ($rootScope, paymentService,$state, $scope, offerService, parkingSpaceService, replaceById) {
+        function ($rootScope, paymentService, $state, $scope, offerService, parkingSpaceService, replaceById) {
 
     $scope.bid = {};
 
