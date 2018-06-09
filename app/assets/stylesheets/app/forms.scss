@@ -4,6 +4,19 @@
   textarea {
     height: 116px;
   }
+
+  .owl-item {
+    .thumb-img {
+      max-height: 35vh;
+      box-shadow: 4px 4px 0 $gray-400;
+      width: auto;
+
+    }
+  }
+
+  .separator {
+    align-self: stretch;
+  }
 }
 
 .was-validated {
@@ -13,6 +26,7 @@
       box-shadow: 2px 2px 0 0 transparentize($red, .6);
     }
   }
+
 }
 
 .input-group, .form-control {
@@ -25,8 +39,6 @@
   }
 
 }
-
-
 
 .register {
 

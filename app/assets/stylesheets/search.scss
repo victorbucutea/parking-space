@@ -38,13 +38,13 @@ nav {
 
 .find-block {
   height: 100vh;
-  background: cloudinary_url("bg.png");
+  background: image_url("bg.png");
   max-height: 700px;
 }
 
 @include media-breakpoint-down(md) {
   .find-block {
-    background: cloudinary_url("bg_sm.png");
+    background: image_url("bg_sm.png");
     background-size: 100%;
     background-repeat: no-repeat;
   }
@@ -52,7 +52,7 @@ nav {
 
 @include media-breakpoint-down(sm) {
   .find-block {
-    background: cloudinary_url("bg_xs.png");
+    background: image_url("bg_xs.png");
     background-size: 100%;
     background-repeat: no-repeat;
   }
@@ -60,7 +60,7 @@ nav {
 
 @include media-breakpoint-up(lg) {
   .find-block {
-    background: cloudinary_url("bg.png");
+    background: image_url("bg.png");
     background-size: 100%;
     background-repeat: no-repeat;
   }

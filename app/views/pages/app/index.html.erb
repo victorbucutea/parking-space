@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Go Park - Parcări smart </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta name="theme-color" content="#07111c">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,6 +14,7 @@
   <script async src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
   <script async src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
   <script async src="https://js.braintreegateway.com/web/3.31.0/js/payment-request.js"></script>
+
   <link rel="preload" href="<%= asset_path 'fontawesome-webfont.woff2' %>" as="font" type="font/woff2" crossorigin>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -22,7 +23,12 @@
 <body ng-app="ParkingSpaceMobile">
 <noscript>Your browser does not support JavaScript!</noscript>
 
+
 <script> window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(ENV['WEBPUSH_PUBLIC_KEY']).bytes %>); </script>
+<script> window.cloudinaryName = "<%= ENV['CLOUDINARY_NAME'] %>"; </script>
+<script> window.cloudinaryPreset = "<%= ENV['CLOUDINARY_PRESET'] %>"; </script>
+
+
 <!-- Main nav menu -->
 <nav id="navbar" class="d-none d-md-flex navbar navbar-dark navbar-expand-lg">
   <a class="navbar-brand ml-3" href="#">

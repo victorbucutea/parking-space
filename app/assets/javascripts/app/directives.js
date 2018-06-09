@@ -330,115 +330,6 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     }])
 
-    .directive('uploadImage', function () {
-        return {
-            restrict: 'E',
-            scope: {
-                imageFile: '=',
-                label: '=',
-                optional: '=',
-                control: '=',
-                uploadedFile: '='
-            },
-            template:
-            ' ' +
-            '<div class="parking-sign justify-content-center d-flex flex-column" ' +
-            '       ngf-drop ' +
-            '       ngf-select ' +
-            '       ng-class="{secondary: optional}" ' +
-            '       ng-hide="imageFile || uploadedFile"' +
-            '       ng-model="imageFile" ' +
-            '       accept="image/*"' +
-            '       ngf-max-size="4MB"' +
-            '       ngf-model-invalid="invalidFile">' +
-            '   <i class="fa fa-camera fa-3x"></i>' +
-            '   <i class="text" ng-bind="label"></i>' +
-            '</div>' +
-
-            '<div ngf-thumbnail="imageFile" ' +
-            '       ngf-as-background="true" ' +
-            '       ng-click="showThumbnail=true"' +
-            '       class="parking-sign">' +
-            '</div>' +
-
-            '<div class="parking-sign " ng-show="uploadedFile && !imageFile" style="overflow: auto">' +
-            '   <cl-image public-id="{{uploadedFile}}" ' +
-            '       style="max-width:100%;"' +
-            '       ng-click="showThumbnail=true">' +
-            '   </cl-image>' +
-            '</div>' +
-
-            '<div id="uploadProgressCont" class="progress-container">' +
-            '   <div id="uploadProgressBar" ' +
-            '        style="width: {{progress}}%" ' +
-            '        class="progress-bar"' +
-            '        ng-init="progress=0">' +
-            '   </div>' +
-            '</div>' +
-            ' <div class="invalid-feedback" style="display:block" ng-show="invalidFile.$error">' +
-            ' Dim. nu poate fi mai mare de 4MB</div> ' +
-            '</div>' +
-            '<button class="btn btn-link btn-change-photo" ' +
-            '        ng-show="imageFile"' +
-            '        ng-click="imageFile = null">Șterge</button>' +
-
-            '<button class="btn btn-link btn-change-photo" ' +
-            '        ng-show="uploadedFile"' +
-            '        ng-click="uploadedFile = null">Șterge</button>' +
-
-            '<div class="ps-modal p-3" ng-show="showThumbnail">' +
-            '   <img  class="img-fluid animated zoomIn" ngf-thumbnail="imageFile" >' +
-            '   <cl-image public-id="{{uploadedFile}}" ' +
-            '             class="img-fluid">' +
-            '   </cl-image>' +
-            '</div>',
-
-            controller: ['$scope', '$rootScope', 'Upload', '$timeout', 'cloudinary',
-                function ($scope, $rootScope, Upload, $timeout, cloudinary) {
-                    if (!$scope.control)
-                        $scope.control = {};
-
-                    $scope.control.uploadPic = function (file, successClbk, errClbk) {
-                        if (!file) return;
-
-                        let cloudName = cloudinary.config().cloud_name;
-                        let upload = Upload.upload({
-                            url: 'https://api.cloudinary.com/v1_1/' + cloudName + '/upload',
-                            data: {
-                                upload_preset: cloudinary.config().upload_preset,
-                                file: file
-                            }
-                        });
-
-
-                        upload.then(function (response) {
-                        }, function (response) {
-                            if (response.status > 0) {
-                                let msg = response.status + ': ' + response.data;
-                                $rootScope.emit('http.error', ' Error while uploading image:' + msg);
-                            }
-                        }, function (evt) {
-                            // Math.min is to fix IE which reports 200% sometimes
-                            let progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                            $scope.progress = progress;
-                        });
-
-
-                        return upload;
-                    };
-
-                }],
-            link: function ($scope, elm) {
-
-                $(elm).find('.ps-modal').click((evt) => {
-                    evt.stopPropagation();
-                    $scope.showThumbnail = false;
-                    $scope.$evalAsync();
-                })
-            }
-        }
-    })
-
     .directive('currency', ['currencies', function (currencies) {
         return {
             restrict: 'E',
@@ -554,7 +445,6 @@ angular.module('ParkingSpaceMobile.directives', [])
                         }, function (start, end, label) {
                             $scope.dateModel = start.toDate();
                             $scope.$evalAsync();
-                            elm.removeClass('is-invalid');
                         });
 
                     }

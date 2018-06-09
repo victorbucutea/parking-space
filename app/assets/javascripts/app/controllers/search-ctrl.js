@@ -18,10 +18,17 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $rootScope.overlay = overlay;
                 $rootScope.geocoder = geocoder;
 
+
+                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
+
                 // center on request params if need be
                 if ($stateParams.lat && $stateParams.lng) {
                     let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
-                    map.setZoom(17);
+                    if ($stateParams.zoom) {
+                        map.setZoom(parseInt($stateParams.zoom));
+                    } else {
+                        map.setZoom(17);
+                    }
                     map.setCenter(pos);
                     return;
                 }
@@ -31,18 +38,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     map.setCenter(pos);
                 });
 
-                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
-
-                if ($stateParams.lat && $stateParams.lng) {
-                    $rootScope.map.setCenter(new google.maps.LatLng($stateParams.lat, $stateParams.lng));
-                }
-
-                if ($stateParams.zoom) {
-                    $rootScope.map.setZoom($stateParams.zoom)
-                }
             };
 
-            $scope.mapError = function(){
+            $scope.mapError = function () {
                 $('#mapBlanket').fadeOut();
                 $rootScope.$emit('http.error', 'Nu se poate inițializa harta. Ești conectat la internet? ');
             };
@@ -52,8 +50,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             if (!window.google || !window.google.maps) {
                 return;
             }
-
-
 
 
             if (!sessionStorage.getItem("current_user")) {
@@ -79,6 +75,31 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 localStorage.setItem('instructionsShown', 'true');
             }
 
+            function addMarker(space) {
+                let nearestOffer = space.offers.find((of) => {
+                    if (!of.owner_is_current_user) return false;
+                    return moment(of.end_date).isAfter(moment());
+                });
+                let htmlMarker = new HtmlMarker(space, $scope, nearestOffer);
+                $rootScope.markers.push(htmlMarker);
+            }
+
+            function removeMarker(id) {
+                $rootScope.markers.forEach(function (d) {
+                    if (d.space.id === id)
+                        d.setMap();//clear marker
+                });
+            }
+
+            $rootScope.$on('spaceSave', (evt, space) => {
+                removeMarker(space.id);
+                addMarker(space);
+            });
+
+            $rootScope.$on('spaceDelete', (evt, id) => {
+                removeMarker(id);
+            });
+
             let drawSpaces = function () {
 
                 let bnds = $rootScope.map.getBounds().toJSON();
@@ -97,14 +118,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     $rootScope.$emit('spaces', spaces);
 
                     spaces.forEach(function (space) {
-                        // search for first offer for current user
-                        // ( they should be sorted by creation date in parking_space_controller
-                        let nearestOffer = space.offers.find((of) => {
-                            if (!of.owner_is_current_user) return false;
-                            return moment(of.end_date).isAfter(moment());
-                        });
-                        let htmlMarker = new HtmlMarker(space, $scope, nearestOffer);
-                        $rootScope.markers.push(htmlMarker);
+                        addMarker(space);
                     })
                 });
             };
@@ -159,7 +173,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 if (toState.name.indexOf('home.search') === -1) {
                     google.maps.event.removeListener(dragListenHandle);
                 } else if (toState.name === 'home.search') {
-                    drawSpaces();
                     $scope.placingSpot = null;
                 }
             });

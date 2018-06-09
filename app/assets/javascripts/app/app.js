@@ -4,13 +4,9 @@ angular.module('ParkingSpaceMobile.controllers', []);
 angular.module('ParkingSpaceMobile', [
     'config',
     'ezfb',
-    'ngSanitize',
     'cleave.js',
-    'ngFileUpload',
-    'ngCookies',
     'ui.bootstrap.buttons',
     'ui.router',
-    'cloudinary',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
@@ -54,6 +50,7 @@ angular.module('ParkingSpaceMobile', [
         HtmlMarker.prototype = new google.maps.OverlayView();
 
         HtmlMarker.prototype.onRemove = function () {
+            if (!this._div) return;
             this._div.parentElement.removeChild(this._div);
             this._div = null;
         };
@@ -114,7 +111,6 @@ angular.module('ParkingSpaceMobile', [
             this._div.style.top = position.y - 45 + 'px';
         };
         window.HtmlMarker = HtmlMarker;
-
 
     }])
 
@@ -388,12 +384,6 @@ angular.module('ParkingSpaceMobile', [
         ezfbProvider.setInitFunction(myInitFunction);
     }])
 
-    .config(['cloudinaryProvider', function (cloudinaryProvider) {
-        cloudinaryProvider
-            .set("cloud_name", "hbrl7w3by")
-            .set("secure", true)
-            .set("upload_preset", "ixih1eoo");
-    }])
 
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push(function ($q) {

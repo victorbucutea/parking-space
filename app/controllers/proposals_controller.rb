@@ -7,6 +7,8 @@ class ProposalsController < ApplicationController
   include NotificationApi
 
   before_action :authenticate_user!
+  before_action :set_proposal, only: [ :pay, :reject,:cancel,:approve]
+
 
 
   def show
@@ -19,8 +21,6 @@ class ProposalsController < ApplicationController
   end
 
   def pay
-    @proposal = Proposal.find(params[:proposal_id])
-
     if @proposal.user.id != current_user.id
       render json: {Error: 'Cannot pay an offer which doesn\'t belong to the current user'}, status: :unprocessable_entity
       return
@@ -60,7 +60,6 @@ class ProposalsController < ApplicationController
   end
 
   def reject
-    @proposal = Proposal.find(params[:proposal_id])
 
     respond_to do |format|
       if @proposal.reject
@@ -125,5 +124,9 @@ class ProposalsController < ApplicationController
   def proposal_params
     params.require(:proposal).permit(:phone_number, :title_message, :bid_amount, :bid_currency, :bidder_name,
                                      :start_date, :end_date, :approval_status, :parking_space_id, :created_at, :nonce, :payment_id)
+  end
+
+  def set_proposal
+    @proposal = Proposal.find(params[:proposal_id])
   end
 end

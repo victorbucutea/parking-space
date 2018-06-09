@@ -28,8 +28,10 @@ class RegistrationsController < Devise::RegistrationsController
   def register_for_notifications
     current_user.notif_registration_id = params[:endpoint]
     current_user.notif_approved = params[:notif_approved]
-    current_user.notif_auth = params[:keys][:auth]
-    current_user.p256dh = params[:keys][:p256dh]
+    if !params[:keys].nil?
+      current_user.notif_auth = params[:keys][:auth]
+      current_user.p256dh = params[:keys][:p256dh]
+    end
     if current_user.save
       render json: {message: 'OK'}, status: 200
     end
@@ -57,7 +59,7 @@ class RegistrationsController < Devise::RegistrationsController
         :merchant_id => ENV['MERCHANT_ID'],
         :public_key => ENV['MERCHANT_PUB_KEY'],
         :private_key => ENV['MERCHANT_PRIV_KEY'],
-        )
+    )
     token = gateway.client_token
     if current_user.payment_id.nil?
       token_str = token.generate

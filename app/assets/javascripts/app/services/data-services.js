@@ -444,6 +444,7 @@ angular.module('ParkingSpaceMobile.services', [])
                         else
                             $rootScope.$emit('http.notif', "Te rugăm acceptă " +
                                 "pentru a primi notificări în timp real despre oferta ta.");
+
                         notifAsked = true;
                     }
 
@@ -453,7 +454,6 @@ angular.module('ParkingSpaceMobile.services', [])
                             userVisibleOnly: true,
                             applicationServerKey: window.vapidPublicKey
                         }).then(function (sub) {
-                            //if (!registered) {
                             // user accepted
                             let subStr = JSON.stringify(sub);
                             subJson = JSON.parse(subStr);

@@ -48,6 +48,26 @@ animate-sass@^0.6.6:
   version "0.6.6"
   resolved "https://registry.yarnpkg.com/animate-sass/-/animate-sass-0.6.6.tgz#8a490dbbca452c1de063c7f083f9ffcdab882f0e"
 
+blueimp-canvas-to-blob@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.5.0.tgz#5679ac32f6a2835821f0c3ad661719ff85a9236b"
+
+blueimp-file-upload@^9.11.2, blueimp-file-upload@^9.21.0:
+  version "9.21.0"
+  resolved "https://registry.yarnpkg.com/blueimp-file-upload/-/blueimp-file-upload-9.21.0.tgz#bf7bfc3e28970e8be0f8789f68026e0dca98f6e0"
+  optionalDependencies:
+    blueimp-canvas-to-blob "3.5.0"
+    blueimp-load-image "2.12.2"
+    blueimp-tmpl "3.6.0"
+
+blueimp-load-image@2.12.2:
+  version "2.12.2"
+  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.12.2.tgz#6a17598aab858d4fbf01543e0631141b51057c87"
+
+blueimp-tmpl@3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.6.0.tgz#a4910975d042e2bc03ba77f0e62d04f1548a524c"
+
 bootstrap-daterangepicker@^2.1.25:
   version "2.1.25"
   resolved "https://registry.yarnpkg.com/bootstrap-daterangepicker/-/bootstrap-daterangepicker-2.1.25.tgz#fcd8ba0b755a054d330d7a3b7c4dd8bb855cffb7"
@@ -55,9 +75,9 @@ bootstrap-daterangepicker@^2.1.25:
     jquery ">=1.10"
     moment "^2.9.0"
 
-bootstrap@4.0.0-beta.2:
-  version "4.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.0.0-beta.2.tgz#4d67d2aa2219f062cd90bc1247e6747b9e8fd051"
+bootstrap@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.1.1.tgz#3aec85000fa619085da8d2e4983dfd67cf2114cb"
 
 braintree-web@^3.31.0:
   version "3.31.0"
@@ -90,6 +110,13 @@ cloudinary-core@^2.4.0:
   dependencies:
     lodash ">=3.0"
 
+cloudinary-jquery-file-upload@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/cloudinary-jquery-file-upload/-/cloudinary-jquery-file-upload-2.5.0.tgz#21f53330fa1f714ae7cad33e0e873954a8de6b0b"
+  dependencies:
+    blueimp-file-upload "^9.11.2"
+    jquery "^2.2.4"
+
 cloudinary_ng@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/cloudinary_ng/-/cloudinary_ng-1.1.1.tgz#fc96d553cd36d4a0c7f9ef391dfa4c8925356210"
@@ -114,15 +141,31 @@ inject-stylesheet@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/inject-stylesheet/-/inject-stylesheet-1.0.0.tgz#f673047458ee58f109fee4cfb66b09f362ccc261"
 
+jquery.iframe-transport@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/jquery.iframe-transport/-/jquery.iframe-transport-1.0.0.tgz#98abae85beace1cc362645e7a87360ff9418175f"
+
 jquery.scrollto@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz#e7580d9c7ac46ef5bb25319483f6f45713fd7c6c"
   dependencies:
     jquery ">=1.8"
 
-jquery@>=1.10, jquery@>=1.8, jquery@>=1.8.3, jquery@^3.2.1:
+jquery.ui.widget@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/jquery.ui.widget/-/jquery.ui.widget-1.10.3.tgz#2ceecfc64995412643eeb9508d2197ea93c02fb3"
+
+jquery@>=1.10, jquery@>=1.8, jquery@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
+
+jquery@>=1.8.3:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+
+jquery@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
 
 lodash@>=3.0:
   version "4.17.4"
@@ -140,9 +183,9 @@ ng-file-upload@^12.2.13:
   version "12.2.13"
   resolved "https://registry.yarnpkg.com/ng-file-upload/-/ng-file-upload-12.2.13.tgz#01800f3872e526f95310f8477e99e4f12d0d8d14"
 
-owl.carousel@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/owl.carousel/-/owl.carousel-2.2.0.tgz#f3598d01e60757bc107b2b3c61231b1140cf360c"
+owl.carousel@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/owl.carousel/-/owl.carousel-2.3.4.tgz#6c53dc8d24304b790e4f27a1dc4a655e973ccdc9"
   dependencies:
     jquery ">=1.8.3"
 

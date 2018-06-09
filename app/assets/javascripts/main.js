@@ -7,7 +7,6 @@ angular.module('ParkingSpace.filters', []);
 
 angular.module('ParkingSpace', [
     'ui.router',
-    'ngSanitize',
     'ParkingSpace.controllers',
     'ParkingSpace.directives',
     'ParkingSpace.filters',

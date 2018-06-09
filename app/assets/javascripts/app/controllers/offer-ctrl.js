@@ -78,6 +78,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
 
             offerService.placeOffer(bid, $scope.selectedSpace.id, function (bid) {
                 $scope.selectedSpace.offers.push(bid);
+                $rootScope.$emit('spaceSave',$scope.selectedSpace);
             });
 
 
@@ -88,6 +89,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
     $scope.cancelOffer = function (offer) {
         offerService.cancelOffer($scope.selectedSpace.id, offer, function (bid) {
             replaceById(bid, $scope.selectedSpace.offers);
+            $rootScope.$emit('spaceSave',$scope.selectedSpace);
             $state.go("^");
         });
     };
@@ -110,11 +112,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
         if (!offer.approved) {
             offerService.acceptOffer(space.id, offer, function (result) {
                 replaceById(result, space.offers);
+                $rootScope.$emit('spaceSave',$scope.selectedSpace);
                 $scope.selOffer = result;
             });
         } else {
             offerService.rejectOffer(space.id, offer, function (result) {
                 replaceById(result, space.offers);
+                $rootScope.$emit('spaceSave',$scope.selectedSpace);
                 $scope.selOffer = result;
             });
         }

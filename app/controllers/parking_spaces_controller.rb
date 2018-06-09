@@ -101,7 +101,7 @@ class ParkingSpacesController < ApplicationController
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-    if current_user.id != @parking_space.id
+    if current_user.id != @parking_space.user.id
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end

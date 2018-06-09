@@ -128,8 +128,6 @@ map {
   left: 0;
 }
 
-
-
 #pac-container {
   background-color: $white;
   font-size: 16px;
@@ -144,10 +142,9 @@ map {
   left: 0;
   max-width: 700px;
 
-  @include media-breakpoint-down(sm){
+  @include media-breakpoint-down(sm) {
     position: fixed;
   }
-
 
   #pac-input {
     padding-right: 17%;
@@ -424,37 +421,35 @@ map {
   overflow-y: scroll;
 }
 
-.open-offers-list {
-  margin-top: $lg-jumbo-measure-unit;
+.add-photo {
+  border: 1px dashed;
+  box-shadow: none;
+  margin: auto;
+  border-radius: 8px;
+  text-align: center;
+  height: 118px;
+  color: $blue-400;
 }
 
-.post-space-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: $white;
-  z-index: 2;
-
-  &.inline {
-    position: relative;
-    margin-top: $xxbig-measure-unit;
-
-    .post-space {
-      width: 81%;
-      margin: auto;
-      background-color: $blue;
-    }
+.owl-carousel .img-thumbnail {
+  border: 0;
+  padding: 0;
+  &:hover {
+    box-shadow: 5px 5px $gray-400;
+    cursor: pointer;
   }
+}
 
-  .post-space {
-    border-radius: 5px;
-    background-color: #333;
-    color: $white;
-    text-align: center;
-    font-size: 16px;
-    padding: $sm-measure-unit;
-    margin: $measure-unit;
-  }
+.small .invalid-feedback {
+  font-size: 1.2em;
+}
+
+.progress-container {
+  margin-top: 2px !important;
+}
+
+.open-offers-list {
+  margin-top: $lg-jumbo-measure-unit;
 }
 
 .space-detail-title {
@@ -876,7 +871,6 @@ parking-spot-info-box {
     list-style-type: none;
     padding: 0;
 
-
     li {
       padding: 14px 20px;
       font-size: 1.2em;
@@ -1069,8 +1063,6 @@ parking-spot-info-box {
     z-index: 2;
   }
 }
-
-
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

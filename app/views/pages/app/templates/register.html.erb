@@ -13,11 +13,13 @@
 
           <div class="form-group">
             <div class="input-group mt-3 input-group-lg">
-            <span class="input-group-addon">
-              <img width="25" src="<%= image_path 'app/flags/Romania.png' %>">
-              &nbsp;
-              {{ selectedCountry.prefix || '+40'}}
-            </span>
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                     <img width="25" src="<%= image_path 'app/flags/Romania.png' %>">
+                                  &nbsp;
+                                  {{ selectedCountry.prefix || '+40'}}
+                </span>
+              </div>
               <input class="phone-number form-control" type="text" id="phoneNo"
                      autocorrect="off" autocapitalize="none"
                      placeholder="Nr. mobil (e.g. 727 333 444)" ng-model="phoneNumber" name="phoneNumber"
@@ -113,8 +115,8 @@
                      pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
             </div>
             <div class="ps-control-buttons">
-                <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
-                <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Anulare</a>
+              <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
+              <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Anulare</a>
             </div>
           </div>
         </div>
