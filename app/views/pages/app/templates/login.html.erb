@@ -10,22 +10,22 @@
 
     <div class="col-10 col-sm-7 col-md-6 col-xl-4 text-center">
       <h3>Bine ai venit !</h3>
+      <form name="loginForm" id="loginForm" novalidate="novalidate">
+        <div class="form-group">
+          <input type="email" class="user-name form-control form-control-lg" placeholder="Email" ng-model="userName" name="user" required/>
+        </div>
 
-      <div class="form-group">
-        <input type="email" class="user-name form-control form-control-lg" placeholder="Email" ng-model="userName" name="user" required/>
-      </div>
-
-      <div class="form-group">
-        <input type="password" class="password form-control  form-control-lg" placeholder="Parolă" ng-model="password" name="pw" required/>
-      </div>
-      <a onclick="$('#recoverPassword').show();" class="recover-pw-link">Recuperare parolă</a>
+        <div class="form-group">
+          <input type="password" class="password form-control  form-control-lg" placeholder="Parolă" ng-model="password" name="pw" required/>
+        </div>
+        <a onclick="$('#recoverPassword').show();" class="recover-pw-link">Recuperare parolă</a>
 
 
-      <button class="btn btn-lg mt-5 btn-block btn-danger" ng-click="login()">
-        <i class="fa fa-spinner loading-spinner fa-spin"></i>
-        Login
-      </button>
-
+        <button class="btn btn-lg mt-5 btn-block btn-danger" ng-click="login()">
+          <i class="fa fa-spinner loading-spinner fa-spin"></i>
+          Login
+        </button>
+      </form>
       <div class="my-4 my-sm-5 ">sau</div>
 
       <button class="btn btn-lg btn-block btn-primary" ng-click="loginWithFb()">
@@ -37,21 +37,23 @@
       </button>
 
       <div id="recoverPassword" class="ps-dialog">
-        <div class="ps-dialog-content">
-          <div class="ps-question">
-            <div class="py-2">
-              Te rugăm introdu adresa de email
+        <form id="recoverPwForm" name="recoverPwForm" novalidate="novalidate">
+          <div class="ps-dialog-content">
+            <div class="ps-question">
+              <div class="py-2">
+                Te rugăm introdu adresa de email
+              </div>
+              <input type="email" class="form-control"
+                     placeholder="Email" ng-model="recoveryEmail" name="email" required
+                     minlength="5"
+                     pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
             </div>
-            <input type="email" class="form-control"
-                   placeholder="Email" ng-model="recoveryEmail" name="email" required
-                   minlength="5"
-                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+            <div class="ps-control-buttons">
+              <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
+              <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Înapoi</a>
+            </div>
           </div>
-          <div class="ps-control-buttons">
-            <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
-            <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Înapoi</a>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

@@ -73,11 +73,11 @@ class RegistrationsController < Devise::RegistrationsController
   protected
 
 # my custom fields are :full_name, :phone_number,
-# :country, :notif_registration_id
+# :country
   def configure_permitted_parameters
     permitted = [:full_name, :license, :phone_number, :phone_validation_code,
                  :country, :email, :password, :password_confirmation, :notif_approved,
-                 :notif_registration_id, :endpoint, :p256dh, :auth, :keys]
+                 :endpoint, :p256dh, :auth, :keys]
     devise_parameter_sanitizer.permit(:sign_up, keys: permitted)
     devise_parameter_sanitizer.permit(:account_update, keys: permitted)
     devise_parameter_sanitizer.permit(:sign_in, keys: permitted)

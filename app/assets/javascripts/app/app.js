@@ -373,9 +373,9 @@ angular.module('ParkingSpaceMobile', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
     }])
 
-    .config(['ezfbProvider', function (ezfbProvider) {
-        var myInitFunction = function ($window, $rootScope) {
-            $window.FB.init({
+    .config(['ezfbProvider', function ( ezfbProvider) {
+        let myInitFunction = function () {
+            window.FB.init({
                 appId: '1725456304415807',
                 version: 'v2.6'
             });
@@ -386,7 +386,7 @@ angular.module('ParkingSpaceMobile', [
 
 
     .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.interceptors.push(function ($q) {
+        $httpProvider.interceptors.push(function () {
             return {
                 'request': function (config) {
                     let loading = $('#loading-progress');

@@ -9,10 +9,10 @@ en:
     failure:
       already_authenticated: "You are already signed in."
       inactive: "Your account is not activated yet."
-      invalid: "Invalid %{authentication_keys} or password."
+      invalid: "%{authentication_keys} inexistent sau parolă greșită"
       locked: "Your account is locked."
       last_attempt: "You have one more attempt before your account is locked."
-      not_found_in_database: "Invalid %{authentication_keys} or password."
+      not_found_in_database: "%{authentication_keys} inexistent sau parolă greșită"
       timeout: "Your session expired. Please sign in again to continue."
       unauthenticated: "Te rugăm să te autentifici înainte de a continua"
       unconfirmed: "You have to confirm your email address before continuing."
@@ -54,7 +54,7 @@ en:
       already_confirmed: "was already confirmed, please try signing in"
       confirmation_period_expired: "needs to be confirmed within %{period}, please request a new one"
       expired: "has expired, please request a new one"
-      not_found: "not found"
+      not_found: "Email inexistent"
       not_locked: "was not locked"
       not_saved:
         one: "Nu se poate salva %{resource}:"

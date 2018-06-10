@@ -15,8 +15,6 @@ Rails.application.routes.draw do
     post "/users/register_for_notifications" => "registrations#register_for_notifications", :as => "register_for_notifications"
   end
 
-  post '/notif' => 'notifications#notif', :as => 'notif'
-
   resources :parameters
 
   resources :accounts do

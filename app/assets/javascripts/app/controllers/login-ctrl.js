@@ -4,6 +4,11 @@ angular.module('ParkingSpaceMobile.controllers')
 
 
             $scope.login = function () {
+                if (!$scope.loginForm.$valid) {
+                    $('#loginForm').addClass('was-validated');
+                    return;
+                }
+
                 let user = $scope.userName;
                 let password = $scope.password;
 
@@ -18,6 +23,11 @@ angular.module('ParkingSpaceMobile.controllers')
 
 
             $scope.recoverPassword = function () {
+                if (!$scope.recoverPwForm.$valid) {
+                    $('#recoverPwForm').addClass('was-validated');
+                    return;
+                }
+
                 $('#recoverPassword').hide();
                 userService.recoverPassword($scope.recoveryEmail, function () {
                 });
