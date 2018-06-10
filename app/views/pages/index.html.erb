@@ -3,6 +3,10 @@
 <head>
   <title>Go Park</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+  <meta name="Description" content="Gaseste un loc de parcare in orasul aglomerat.
+   Go-Park va pune la dispozitie locuri private, garaje, alei de parcare, instituții publice, companii etc.">
+
   <link rel="icon" type="image/png" href="<%= image_path 'favicon.png' %>"/>
 
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700&amp;subset=latin-ext" rel="stylesheet">
@@ -26,8 +30,8 @@
 
   <div class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
     <ul class="navbar-nav" >
-      <li class="nav-item text-right" ui-sref="main" ui-sref-active="active">
-        <a class="nav-link">Caută loc</a>
+      <li class="nav-item text-right" ui-sref="main" ui-sref-active="active" >
+        <a class="nav-link" >Caută loc</a>
       </li>
       <li class="nav-item text-right">
         <a ng-click="scrollTo('faq')" class="nav-link">Cum funcționează?</a>
@@ -595,8 +599,19 @@
 <!-- Footer - bloc-8 END -->
 
 
-<!-- Google Analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120614921-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
 
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-120614921-1');
+</script>
 <!-- Google Analytics END -->
 
 </body>
