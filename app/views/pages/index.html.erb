@@ -44,7 +44,7 @@
       </li>
     </ul>
 
-    <div class="navbar-form form-inline">
+    <div class="navbar-form text-right">
       <a href="/app/index.html#!/home/search" class="btn btn-outline-secondary">
         <i class="fa fa-user"></i> ÎNTRĂ ÎN CONT
       </a>§§
@@ -94,7 +94,7 @@
 
                 <a class="dropdown-item py-2" ng-repeat="address in addresses" ng-click="selectAddr(address)">
                   <i class="fa fa-map-marker res-marker"></i>
-                  <span ng-bind-html="address.addrMatch"></span>
+                  <span ng-bind-html="address.addrMatch | to_trusted"></span>
                 </a>
                 <a class="dropdown-item no-item" ng-hide="addresses.length">( nici un rezultat ) </a>
                 <img class="dropdown-item pull-right" style="width:auto" src="<%= image_path 'powered_by_google.png' %>">
