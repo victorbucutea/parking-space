@@ -13,7 +13,6 @@ angular.module('ParkingSpaceMobile', [
     'ParkingSpaceMobile.services'])
 
 // todo map should keep initial position after navigation
-// todo fix location information
     .run(function () {
         // install service worker
         if ('serviceWorker' in navigator) {
@@ -373,7 +372,7 @@ angular.module('ParkingSpaceMobile', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
     }])
 
-    .config(['ezfbProvider', function ( ezfbProvider) {
+    .config(['ezfbProvider', function (ezfbProvider) {
         let myInitFunction = function () {
             window.FB.init({
                 appId: '1725456304415807',

@@ -1,14 +1,16 @@
 <div class="animated zoomIn mt-4" ng-controller="WithdrawalsCtrl">
 
     <h4 class="text-center"> Listă retrageri </h4>
-    <div class="no-items-msg loading-finished-withd"> Nu ai efectuat nici o retragere.</div>
 
+    <div class="bids-area mt-4 mt-md-5 pb-3 panel " >
 
-    <div class="bids-area mt-4 mt-md-5 pb-3 panel ">
-        <div class="no-items-msg" ng-hide="withdrawals.length">
+        <div class="no-items-msg loading-finished-withd"> Nu ai efectuat nici o retragere.</div>
+
+        <div class="no-items-msg loading-withd">
             <i class="fa fa-spin fa-2x text-secondary fa-spinner"></i>
         </div>
-        <div class="bid-table " ng-show="withdrawals.length">
+
+        <div class="bid-table "  ng-show="withdrawals.length">
 
             <div class="offer d-flex justify-content-between" ng-repeat="withd in withdrawals"
                  ng-click="selectWithd(withd)" ng-class="{selected: selWithd == withd}">

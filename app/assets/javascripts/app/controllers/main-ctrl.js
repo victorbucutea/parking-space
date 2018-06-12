@@ -10,10 +10,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
             $scope.notifMsg = [];
             $scope.warningMsg = [];
             $scope.warningMsgHtml = [];
+
             let notifArea = $('.notification-area');
             let drawer = $('.drawer');
 
-            notifArea.on('mousedown', function (evt) {
+            let removeMsgs = function (evt) {
                 $scope.errMsg = [];
                 $scope.notifMsg = [];
                 $scope.warningMsg = [];
@@ -23,7 +24,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                     notifArea.removeClass('zoomOut').addClass('zoomIn');
                     $scope.$evalAsync()
                 }, 300);
-                evt.preventDefault();
+                if (evt)
+                    evt.preventDefault();
+            };
+
+            notifArea.on('mousedown', function (evt) {
+                removeMsgs(evt)
             });
 
             $scope.openMenu = function () {
@@ -50,7 +56,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
 
             $scope.dateFilter = {start: new Date(), stop: moment().add(1, 'M').toDate()};
 
-
             let addMsg = function (type, msg) {
                 if (msg instanceof Array) {
                     msg.forEach((text) => {
@@ -61,20 +66,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                     if (type.indexOf(msg) === -1)
                         type.push(msg);
                 }
+
+                setTimeout(() => {
+                    removeMsgs();
+                }, 7000);
             };
 
 
             $rootScope.$on('http.error', function (event, data) {
                 addMsg($scope.errMsg, data);
             });
-
             $rootScope.$on('http.warning', function (event, data) {
                 addMsg($scope.warningMsg, data);
             });
             $rootScope.$on('http.warning.html', function (event, data) {
                 addMsg($scope.warningMsgHtml, data);
             });
-
             $rootScope.$on('http.notif', function (event, data) {
                 addMsg($scope.notifMsg, data);
             });
@@ -139,8 +146,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
             };
 
 
-
-            $scope.requestFullScreen = function() {
+            $scope.requestFullScreen = function () {
                 let doc = window.document;
                 let docEl = doc.documentElement;
 
@@ -152,9 +158,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 } else {
                     cancelFullScreen.call(doc);
                 }
-            }
-
-            $scope.logout = function () {
-                userService.logout();
-            }
+            };
         }]);

@@ -86,7 +86,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
             function removeMarker(id) {
                 $rootScope.markers.forEach(function (d) {
-                    if (d.space.id === id)
+                    if (d.space.id == id)
                         d.setMap();//clear marker
                 });
             }
