@@ -176,7 +176,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                     if (!file) return;
 
                     let div = '<div>' +
-                        '<img src="https://res.cloudinary.com/hbwkmonnw/image/upload/' + file + '" ' +
+                        '<img src="https://res.cloudinary.com/'+ window.cloudinaryName + '/image/upload/' + file + '" ' +
                         'onmouseup="showThumbnail(event)" ' +
                         'onmousedown="startThumbnail(event)" ' +
                         'onmousemove="stopThumbnail()" ' +

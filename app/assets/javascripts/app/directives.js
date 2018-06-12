@@ -237,8 +237,8 @@ angular.module('ParkingSpaceMobile.directives', [])
             template: ' ' +
             '<div class="space-summary-content py-2 d-flex d-sm-none align-items-center" ng-click="showFullImage = true">' +
             '          <div class="d-flex">' +
-            '            <cl-image public-id="{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail"></cl-image>' +
-            '            <cl-image public-id="{{space.file2}}" ng-show="space.file2" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
             '          </div>' +
             '          <div class="ml-3">' +
             '            <h4 class="text-truncate">{{space.price | units }}.' +
@@ -250,16 +250,19 @@ angular.module('ParkingSpaceMobile.directives', [])
             '          </div>' +
             '</div>' +
             ' <div class="ps-modal p-1 " ng-show="showFullImage">' +
-            '    <cl-image public-id="{{space.file1}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file2}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file3}}" class="img-fluid mb-1"></cl-image>' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file3}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
             '    <span>{{space.description}}</span>' +
             ' </div>',
             scope: {
                 space: '='
             },
             link: function ($scope, elm) {
-
+                $scope.cloudName = window.cloudinaryName ;
                 $(elm).find('.ps-modal').click((evt) => {
                     evt.stopPropagation();
                     $scope.showFullImage = false;
@@ -339,11 +342,11 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
             link: function ($scope) {
 
-                var display = function (newVal) {
+                let display = function (newVal) {
                     if (!newVal)
                         return;
 
-                    var currency = $.grep(currencies, function (cur) {
+                    let currency = $.grep(currencies, function (cur) {
                         return newVal === cur.name;
                     });
 
