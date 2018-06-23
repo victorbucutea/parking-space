@@ -435,6 +435,8 @@ map {
 .owl-carousel .img-thumbnail {
   border: 0;
   padding: 0;
+  max-width: 100% !important;
+  max-height: 30vh !important;
   &:hover {
     box-shadow: 5px 5px $gray-400;
     cursor: pointer;

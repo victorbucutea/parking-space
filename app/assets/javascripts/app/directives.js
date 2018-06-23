@@ -388,7 +388,6 @@ angular.module('ParkingSpaceMobile.directives', [])
             template = '<input ' +
                 '       type="datetime-local" ' +
                 '       class="form-control"' +
-                '       min="' + moment().startOf('h').format('YYYY-MM-DD[T]HH:mm:ss.ms') + '"' +
                 '       ng-model="dateModel"' +
                 '       required>';
         }

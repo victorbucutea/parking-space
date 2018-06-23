@@ -174,6 +174,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 [1, 2, 3].forEach((idx) => {
                     let file = newVal['file' + idx];
                     if (!file) return;
+                    uploadedFiles[file] = {};
 
                     let div = '<div>' +
                         '<img src="https://res.cloudinary.com/'+ window.cloudinaryName + '/image/upload/' + file + '" ' +
