@@ -27,21 +27,6 @@ angular.module('ParkingSpaceMobile', [
         });
     })
 
-    .run(function ($rootScope, $location) {
-
-        // register listener to watch route changes
-        $rootScope.$on("$stateChangeStart", function (evt, next, current) {
-            console.log(next);
-            let params = (new URL(document.location)).searchParams;
-            // no logged user, we should be going to #login
-            if (params.get("code")) {
-                //it's a redirect from DB
-                $location.path("/home/login");
-            }
-            // not going to #login, we should redirect now
-        });
-    })
-
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push(function () {
             return {
@@ -49,19 +34,6 @@ angular.module('ParkingSpaceMobile', [
                     let loading = $('#loading-progress');
                     loading.removeClass('loading-done');
                     loading.css('width', '100%');
-
-                    let params = (new URL(document.location)).searchParams;
-                    // no logged user, we should be going to #login
-                    if (params.get("code")) {
-
-                        console.log("login succeeded");
-                        // call loginStatus and get user details
-
-                    } else if (params.get("error")) {
-                        console.log("login error");
-                        // redirect to login page
-
-                    }
                     return config;
                 },
                 'response': function (response) {
