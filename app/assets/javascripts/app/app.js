@@ -1,6 +1,3 @@
-'use strict';
-angular.module('ParkingSpaceMobile.controllers', []);
-
 angular.module('ParkingSpaceMobile', [
     'config',
     'ezfb',
@@ -12,7 +9,6 @@ angular.module('ParkingSpaceMobile', [
     'ParkingSpaceMobile.filters',
     'ParkingSpaceMobile.services'])
 
-// todo map should keep initial position after navigation
     .run(function () {
         // install service worker
         if ('serviceWorker' in navigator) {
@@ -30,6 +26,57 @@ angular.module('ParkingSpaceMobile', [
             window.installPrompt = e;
         });
     })
+
+    .run(function ($rootScope, $location) {
+
+        // register listener to watch route changes
+        $rootScope.$on("$stateChangeStart", function (evt, next, current) {
+            console.log(next);
+            let params = (new URL(document.location)).searchParams;
+            // no logged user, we should be going to #login
+            if (params.get("code")) {
+                //it's a redirect from DB
+                $location.path("/home/login");
+            }
+            // not going to #login, we should redirect now
+        });
+    })
+
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push(function () {
+            return {
+                'request': function (config) {
+                    let loading = $('#loading-progress');
+                    loading.removeClass('loading-done');
+                    loading.css('width', '100%');
+
+                    let params = (new URL(document.location)).searchParams;
+                    // no logged user, we should be going to #login
+                    if (params.get("code")) {
+
+                        console.log("login succeeded");
+                        // call loginStatus and get user details
+
+                    } else if (params.get("error")) {
+                        console.log("login error");
+                        // redirect to login page
+
+                    }
+                    return config;
+                },
+                'response': function (response) {
+                    let loading = $('#loading-progress');
+                    loading.addClass('loading-done');
+                    setTimeout(() => {
+                        loading.css('width', 0);
+                    }, 500);
+                    return response;
+                }
+            };
+        });
+
+        $httpProvider.useApplyAsync(true);
+    }])
 
     .run(['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -121,7 +168,7 @@ angular.module('ParkingSpaceMobile', [
                 templateUrl: 'templates/home.html'
             })
             .state('home.login', {
-                url: '/login',
+                url: '/login?fbLogin',
                 views: {
                     'content': {
                         templateUrl: "templates/login.html"
@@ -129,7 +176,8 @@ angular.module('ParkingSpaceMobile', [
                 },
                 params: {
                     lng: null,
-                    lat: null
+                    lat: null,
+                    fbLogin: null
                 }
             })
             .state('home.register', {
@@ -364,7 +412,16 @@ angular.module('ParkingSpaceMobile', [
                 }
             });
 
-        $urlRouterProvider.otherwise("/home/search");
+        $urlRouterProvider.otherwise(function ($injector, $location) {
+            if ($location.$$hash.indexOf("token") !== -1 && $location.$$hash.indexOf("state") !== -1) {
+                // sucessful response from fb
+                return "/home/login?fbLogin=ok";
+            } else if ($location.absUrl().indexOf("error") !== -1 &&
+                $location.absUrl().indexOf("error_code") !== -1) {
+                return "/home/login?fbLogin=err";
+            }
+            return "/home/search";
+        });
 
     }])
 
@@ -381,30 +438,6 @@ angular.module('ParkingSpaceMobile', [
         };
 
         ezfbProvider.setInitFunction(myInitFunction);
-    }])
-
-
-    .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.interceptors.push(function () {
-            return {
-                'request': function (config) {
-                    let loading = $('#loading-progress');
-                    loading.removeClass('loading-done');
-                    loading.css('width', '100%');
-                    return config;
-                },
-                'response': function (response) {
-                    let loading = $('#loading-progress');
-                    loading.addClass('loading-done');
-                    setTimeout(() => {
-                        loading.css('width', 0);
-                    }, 500);
-                    return response;
-                }
-            };
-        });
-
-        $httpProvider.useApplyAsync(true);
     }])
 
     .config(function () {
@@ -487,4 +520,7 @@ angular.module('ParkingSpaceMobile', [
         }
     })
 ;
+'use strict';
+
+angular.module('ParkingSpaceMobile.controllers', []);
 

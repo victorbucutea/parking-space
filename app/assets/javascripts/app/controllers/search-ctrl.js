@@ -5,10 +5,12 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl',
     ['geocoderService', 'notificationService', 'userService', '$rootScope', '$scope', 'parkingSpaceService',
-        'parameterService', 'geolocationService', '$state', 'currencyFactory', 'offerService', '$stateParams',
+        'parameterService', 'geolocationService', '$state', 'currencyFactory', 'offerService', '$stateParams','ezfb',
         function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService,
-                  parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams) {
+                  parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams, ezfb) {
 
+
+// todo map should keep initial position after navigation
 
             let dragListenHandle = null;
 

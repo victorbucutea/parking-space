@@ -17,9 +17,8 @@ angular.module('ParkingSpaceMobile.controllers')
                 })
             };
 
-            $scope.lat= $stateParams.lat;
-            $scope.lng= $stateParams.lng;
-
+            $scope.lat = $stateParams.lat;
+            $scope.lng = $stateParams.lng;
 
 
             $scope.recoverPassword = function () {
@@ -33,11 +32,21 @@ angular.module('ParkingSpaceMobile.controllers')
                 });
             };
 
+            window.ezFB = ezfb;
+
+
+            $scope.goToFb = function () {
+                let curLoc = location.origin + location.pathname;
+
+                window.location = 'https://www.facebook.com/v3.0/dialog/oauth?' +
+                    'client_id=1725456304415807' +
+                    '&redirect_uri=' + curLoc +
+                    '&state=no_state_needed' +
+                    '&response_type=token';
+            };
 
             $scope.loginWithFb = function () {
-
-
-                ezfb.login(function (loginRes) {
+                ezfb.getLoginStatus().then(function (loginRes) {
                     let authResponse = loginRes.authResponse;
                     if (authResponse) {
 
@@ -65,7 +74,7 @@ angular.module('ParkingSpaceMobile.controllers')
                                     } else {
                                         // display error message
                                         $rootScope.$emit('http.error',
-                                            'Error while logging in with facebook. Please try again.');
+                                            'Eroare la autentificarea facebook. Vă rugăm încercați din nou.');
                                         $state.go("home.login", {
                                             fromFb: true,
                                             lat: $stateParams.lat,
@@ -77,9 +86,15 @@ angular.module('ParkingSpaceMobile.controllers')
 
                     } else {
                         $rootScope.$emit('http.error',
-                            'Error while logging into facebook. Please try again.');
+                            'Eroare la autentificarea facebook. Vă rugăm încercați din nou.');
                     }
                 }, {scope: 'public_profile,email,user_location'})
             };
+
+
+            // it's a redirect from fb page
+            if ($state.params.fbLogin) {
+                $scope.loginWithFb();
+            }
 
         }]);
