@@ -186,8 +186,10 @@ angular.module('ParkingSpaceMobile.directives', [])
             template:
             '<div class="parking-spot-details p-0 p-md-2 d-flex ">' +
             '          <div ng-click="showFullImage=true" class="d-flex" style="overflow: hidden">' +
-            '            <cl-image public-id="{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail"></cl-image>' +
-            '            <cl-image public-id="{{space.file2}}" ng-show="space.file2" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}"' +
+            '                ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '                ng-show="space.file2" class="img-thumbnail p-0 thumbnail">' +
             '          </div>' +
             '          <div class="ml-3" >' +
             '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
@@ -202,9 +204,14 @@ angular.module('ParkingSpaceMobile.directives', [])
             '          </div>' +
             '</div>' +
             ' <div class="ps-modal image pt-2 text-center" ng-show="showFullImage" ng-init="showFullImage=false">' +
-            '    <cl-image public-id="{{space.file1}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file2}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file3}}" class="img-fluid mb-1"></cl-image>' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn"' +
+            '         ng-show="space.file2">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file3}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn"' +
+            '         ng-show="space.file3">' +
             '    <span>{{space.description}}</span>' +
             ' </div>',
             scope: {
@@ -213,6 +220,7 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
             link: function ($scope, elm) {
 
+                $scope.cloudName = window.cloudinaryName ;
                 $(elm).find('.parking-spot-details').click(evt => {
                     let isRoot = $(evt.currentTarget).hasClass('parking-spot-details');
                     if (isRoot && !$scope.thumbnailModal) {
@@ -237,8 +245,10 @@ angular.module('ParkingSpaceMobile.directives', [])
             template: ' ' +
             '<div class="space-summary-content py-2 d-flex d-sm-none align-items-center" ng-click="showFullImage = true">' +
             '          <div class="d-flex">' +
-            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
-            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
+            '               ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '               ng-show="space.file2" class="img-thumbnail p-0 thumbnail">' +
             '          </div>' +
             '          <div class="ml-3">' +
             '            <h4 class="text-truncate">{{space.price | units }}.' +

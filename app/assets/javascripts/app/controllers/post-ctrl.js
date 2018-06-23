@@ -190,7 +190,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                         ' <i class="fa fa-trash"></i> Șterge' +
                         '</button>' +
                         '</div>';
-                    owl.trigger('add.owl.carousel', [div, 0]).trigger('refresh.owl.carousel');
+                    owl.trigger('add.owl.carousel', [div, idx]).trigger('refresh.owl.carousel');
                 });
             });
 
