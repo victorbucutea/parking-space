@@ -7,6 +7,7 @@ self.addEventListener('activate', function (event) {
                 cacheNames.filter(function (cacheName) {
                     return true;
                 }).map(function (cacheName) {
+                    console.log('deleting cache ', cacheName);
                     return caches.delete(cacheName);
                 })
             );
@@ -45,7 +46,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    /.*\.html/,
+    /.*html$/,
     workbox.strategies.staleWhileRevalidate({
         // Use a custom cache name
         cacheName: 'html-cache',
