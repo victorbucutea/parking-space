@@ -1036,7 +1036,7 @@ parking-spot-info-box {
 
   &:before {
     content: '';
-    background-image: image-url('app/p_logo_icon.png');
+    background-image: image_url('app/p_logo_icon.png');
     display: inline-block;
     width: 17px;
     height: 23px;
@@ -1070,5 +1070,5 @@ parking-spot-info-box {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  margin: 0; /* <-- Apparently some margin is still there even though it's hidden */
 }
