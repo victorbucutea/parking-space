@@ -85,6 +85,7 @@ map {
   &.help {
     bottom: 13%;
     right: 18%;
+    position: absolute;
   }
 
 }
@@ -92,6 +93,25 @@ map {
 @include media-breakpoint-down(sm) {
   .add-btn, .center-btn, .info-btn {
     position: fixed;
+  }
+}
+
+.realtime-notif {
+  background-color: $warning;
+  transition: max-height ease-in-out .5s;
+  max-height: 0;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width:100%;
+  z-index: 10;
+
+  .notif-close:hover {
+    cursor: pointer;
+  }
+
+  &.slide-in {
+    max-height: 6em;
   }
 }
 
@@ -150,7 +170,7 @@ map {
   #pac-input {
     padding-right: 17%;
     padding-left: 3%;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   .input-group, .form-control {
@@ -203,14 +223,42 @@ map {
   right: 1rem;
 }
 
-.pac-item {
-  line-height: $xxxbig-measure-unit;
-  font-size: 1.2em;
-  font-family: $font-family;
-  border: none;
+@include media-breakpoint-down(sm) {
 
-  .pac-item-query {
-    font-size: inherit;
+  .container.search-block:focus-within {
+    position: absolute;
+    top: 0;
+    background-color: transparentize($gray-300, 0.2);
+    height: 100%;
+    right: 0;
+    left: 0;
+    margin: 0 !important;
+  }
+
+}
+
+.pac-container {
+  border-radius: 4px;
+  font-size: 1.1em;
+
+  .pac-item {
+    line-height: $xxxbig-measure-unit;
+    font-size: 1.2em;
+    font-family: $font-family;
+    border: none;
+    padding: 4px;
+
+    .pac-item-query {
+      font-size: inherit;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+    .pac-icon {
+      margin-left: 5px;
+      transform: scale(1.8);
+    }
   }
 }
 

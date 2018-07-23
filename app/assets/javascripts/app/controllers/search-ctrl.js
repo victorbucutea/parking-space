@@ -5,12 +5,10 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl',
     ['geocoderService', 'notificationService', 'userService', '$rootScope', '$scope', 'parkingSpaceService',
-        'parameterService', 'geolocationService', '$state', 'currencyFactory', 'offerService', '$stateParams','ezfb',
+        'parameterService', 'geolocationService', '$state', 'currencyFactory', 'offerService', '$stateParams',
         function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService,
-                  parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams, ezfb) {
+                  parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams) {
 
-
-// todo map should keep initial position after navigation
 
             let dragListenHandle = null;
 
@@ -35,10 +33,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     return;
                 }
 
-                geolocationService.getCurrentLocation(function (position) {
-                    let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    map.setCenter(pos);
-                });
+                /*
+                do not try this, as it will cause user to refuse location the minute app starts
+
+                 geolocationService.getCurrentLocation(function (position) {
+                     let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                     map.setCenter(pos);
+                 });*/
 
             };
 
@@ -54,7 +55,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             }
 
 
-            if (!sessionStorage.getItem("current_user")) {
+            let item = sessionStorage.getItem("current_user");
+            if (!item) {
                 userService.getUser(function (user) {
                     if (!user) return;
                     let userjson = JSON.stringify(user);
@@ -65,14 +67,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     }
                 });
             } else {
-                let user = JSON.parse(sessionStorage.getItem("current_user"));
+                let user = JSON.parse(item);
                 if (!user.phone_no_confirm) {
                     $state.go('.confirm-phone');
                 }
             }
 
 
-            if ($state.current.name === 'home.search' && localStorage.getItem('instructionsShown') !== 'true') {
+            if ($state.current.name === 'home.search'
+                    && localStorage.getItem('instructionsShown') !== 'true'
+                    && JSON.parse(item).phone_no_confirm) {
                 $state.go('.instructions');
                 localStorage.setItem('instructionsShown', 'true');
             }
@@ -156,10 +160,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $scope.spaceEdit = {};
                 angular.copy($scope.space, $scope.spaceEdit);
                 $scope.spaceEdit.title = "";
-                geolocationService.getCurrentLocation(function (position) {
-                    $scope.spaceEdit.recorded_from_lat = position.coords.latitude;
-                    $scope.spaceEdit.recorded_from_long = position.coords.longitude;
-                });
                 $state.go('.post');
             };
 

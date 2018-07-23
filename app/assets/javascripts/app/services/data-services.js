@@ -1,4 +1,4 @@
-angular.module('ParkingSpaceMobile.services', [])
+angular.module('ParkingSpaceMobile.services')
 
     .service('parkingSpaceService',
         ['$rootScope', '$http', 'userService', 'errorHandlingService', 'notificationService',

@@ -1,4 +1,4 @@
-angular.module('ParkingSpaceMobile.directives', [])
+angular.module('ParkingSpaceMobile.directives')
 
     .directive('map', ['$rootScope', function ($rootScope) {
         return {

@@ -14,7 +14,7 @@ en:
       last_attempt: "You have one more attempt before your account is locked."
       not_found_in_database: "%{authentication_keys} inexistent sau parolă greșită"
       timeout: "Your session expired. Please sign in again to continue."
-      unauthenticated: "Te rugăm să te autentifici înainte de a continua"
+      unauthenticated: "Pentru a putea rezerva locuri de parcare te rugăm să te autentifici."
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:

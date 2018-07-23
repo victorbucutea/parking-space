@@ -44,6 +44,7 @@
 
   h2, h3 {
     border-bottom: 1px solid $gray;
+    border-top: 1px solid $gray;
   }
 
   .invalid-field-list {
@@ -58,6 +59,18 @@
     display: block;
     margin: auto;
     text-align: right;
+  }
+
+  .btn-fb {
+
+    background-color: #4267b2;
+    border-color: #4267b2;
+
+    svg {
+      height: 24px;
+      width: 24px;
+      float: left;
+    }
   }
 
 }

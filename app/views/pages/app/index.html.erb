@@ -11,7 +11,6 @@
   <link rel="manifest" href="<%= asset_path 'app/manifest.json' %>"/>
   <link rel="icon" type="image/png" href="<%= image_path 'favicon.png' %>"/>
 
-
   <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=geometry,places&language=ro" type="text/javascript"></script>
   <script async src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
   <script async src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
@@ -33,7 +32,7 @@
 
 <!-- Main nav menu -->
 <nav id="navbar" class="d-none d-md-flex navbar navbar-dark navbar-expand-lg">
-  <a class="navbar-brand ml-3" href="#">
+  <a class="navbar-brand ml-3" href="/">
     <img width="80" src="<%= image_path 'logo_sm_dark.png' %>"/>
   </a>
 
@@ -47,10 +46,10 @@
         <a ng-click="scrollTo('faq')" class="nav-link px-3">Caută loc</a>
       </li>
       <li class="nav-item text-right">
-        <a ui-sref="home.search.help" class="nav-link px-3">Cum funcționează?</a>
+        <a ui-sref="home.search.help" class="nav-link px-3">Cum vând loc privat?</a>
       </li>
       <li class="nav-item text-right">
-        <a href="/?rent" class="nav-link px-3">Cumpără dispozitiv parcare</a>
+        <a ui-sref="home.search.instructions" class="nav-link px-3">Cum rezerv?</a>
       </li>
       <li class="nav-item text-right">
         <a href="/#!/business" class="nav-link px-3">Soluții parcări publice </a>

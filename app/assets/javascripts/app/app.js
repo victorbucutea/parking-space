@@ -1,5 +1,6 @@
+'use strict';
+
 angular.module('ParkingSpaceMobile', [
-    'config',
     'ezfb',
     'cleave.js',
     'ui.bootstrap.buttons',
@@ -140,7 +141,7 @@ angular.module('ParkingSpaceMobile', [
                 templateUrl: 'templates/home.html'
             })
             .state('home.login', {
-                url: '/login?fbLogin',
+                url: '/login?fbLogin&lat&lng',
                 views: {
                     'content': {
                         templateUrl: "templates/login.html"
@@ -428,6 +429,13 @@ angular.module('ParkingSpaceMobile', [
                 return false;
             }
         };
+        window.isIos = function () {
+            return (
+                navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i));
+        };
     })
     .constant('currencies', [
         {
@@ -492,7 +500,9 @@ angular.module('ParkingSpaceMobile', [
         }
     })
 ;
-'use strict';
 
 angular.module('ParkingSpaceMobile.controllers', []);
+angular.module('ParkingSpaceMobile.services', []);
+angular.module('ParkingSpaceMobile.directives', []);
+angular.module('ParkingSpaceMobile.filters', []);
 

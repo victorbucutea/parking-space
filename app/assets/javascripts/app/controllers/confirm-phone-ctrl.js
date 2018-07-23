@@ -28,9 +28,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('ConfirmPhoneCtrl',
 
 
     $scope.resendCode = function(){
+        if (!$scope.phoneConfirmation.$valid) {
+            $('#phoneConfirmation').addClass('was-validated');
+            return;
+        }
         userService.resendCode('+40'+$scope.user.phoneNumber,(data) => {
             $rootScope.$emit('http.notif','Codul a fost trimis!')
-        })
+        });
 
     };
 
