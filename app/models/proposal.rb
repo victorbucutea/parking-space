@@ -1,5 +1,5 @@
 class Proposal < ActiveRecord::Base
-  scope :with_messages, ->(prop_id) {includes(:messages).find(prop_id)}
+
   scope :for_space, ->(sp_id) {where('proposals.parking_space_id = ? ', sp_id)}
   scope :price_above, ->(price) {where('proposals.bid_amount >= ? ', price)}
 

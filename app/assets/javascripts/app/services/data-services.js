@@ -29,26 +29,42 @@ angular.module('ParkingSpaceMobile.services')
                             lon_min: latMinMax.west,
                             lon_max: latMinMax.east,
                         }
-                    })
-                        .then(function (response) {
-                            let data = response.data;
-                            if (data) {
-                                data.forEach(function (p_space) {
-                                    p_space.space_availability_start = new Date(p_space.space_availability_start);
-                                    p_space.space_availability_stop = new Date(p_space.space_availability_stop);
-                                    p_space.daily_start = new Date(p_space.daily_start);
-                                    p_space.daily_stop = new Date(p_space.daily_stop);
-                                });
+                    }).then(function (response) {
+                        let data = response.data;
+                        let clusteredSpaces = [];
+                        if (data) {
+                            let clusters = {};
+                            data.forEach(function (p_space) {
+                                p_space.space_availability_start = new Date(p_space.space_availability_start);
+                                p_space.space_availability_stop = new Date(p_space.space_availability_stop);
+                                p_space.daily_start = new Date(p_space.daily_start);
+                                p_space.daily_stop = new Date(p_space.daily_stop);
+
+                                let lat = Math.round(p_space.location_lat * 10000) / 10000;
+                                let lng = Math.round(p_space.location_long * 10000) / 10000;
+                                let key = lat + "-" + lng;
+                                if (clusters[key]) {
+                                    // we have another lat/lng combination with the same 4 digits (11m)
+                                    if (!clusters[key].siblings) clusters[key].siblings = [];
+                                    clusters[key].siblings.push(p_space);
+
+                                } else {
+                                    clusters[key] = p_space;
+                                }
+                            });
+                            for (geokey in clusters) {
+                                clusteredSpaces.push(clusters[geokey]);
                             }
-                            if (clbk)
-                                clbk(data);
-                        }, function (errorResponse) {
-                            if (!errClbk) {
-                                errorHandlingService.handle(errorResponse.data, errorResponse.status);
-                            } else {
-                                errClbk(errorResponse.data, errorResponse.status);
-                            }
-                        });
+                        }
+                        if (clbk)
+                            clbk(clusteredSpaces);
+                    }, function (errorResponse) {
+                        if (!errClbk) {
+                            errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                        } else {
+                            errClbk(errorResponse.data, errorResponse.status);
+                        }
+                    });
                 };
 
                 this.getMySpaces = function (clbk) {
@@ -68,7 +84,7 @@ angular.module('ParkingSpaceMobile.services')
                         });
                 };
 
-                this.getSpace = function (parkingSpaceId, clbk) {
+                this.getSpace = function (parkingSpaceId, clbk, errClbk) {
 
                     $http.get('/parking_spaces/' + parkingSpaceId + ".json")
                         .then(function (response) {
@@ -84,6 +100,7 @@ angular.module('ParkingSpaceMobile.services')
                                 clbk(data);
                         }, function (errorResponse) {
                             errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                            if (errClbk) errClbk(errorResponse);
                         });
                 };
 

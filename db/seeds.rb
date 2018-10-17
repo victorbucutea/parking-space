@@ -55,3 +55,16 @@ ParameterValue.create!([
                           {parameter_id: 1,key: 'tr', value: 3   , value2: 'Try', value3: '+90', value4: 'Turkey'},
                           {parameter_id: 1,key: 'kr', value: 1000, value2: 'Krw', value3: '+82', value4: 'South Korea'}
                        ])
+
+
+Role.delete_all
+
+Role.create!( [ { id: 1, identifier: 'sensor_admin'}] )
+
+User.where(email: 'sensor@go-park.ro' ).destroy_all
+
+user = User.new
+user.email = 'sensor@go-park.ro'
+user.password = 'Vic10Buc@'
+user.password_confirmation = 'Vic10Buc@'
+user.save!

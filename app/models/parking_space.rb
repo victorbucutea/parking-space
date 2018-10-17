@@ -5,6 +5,7 @@ class ParkingSpace < ActiveRecord::Base
   include ActiveModel::Dirty
 
   enum legal_type: [:public_parking, :private_parking]
+  enum source_type: [:user_source, :sensor_source]
   scope :not_expired, -> {  where('parking_spaces.space_availability_stop >= ? ',Time.now)}
   scope :active, ->  { where('parking_spaces.space_availability_start <= ? ',Time.now )}
   scope :within_boundaries, -> (attrs) {
@@ -15,6 +16,7 @@ class ParkingSpace < ActiveRecord::Base
   }
 
   has_many :proposals, :dependent => :destroy
+
 
   belongs_to :user
 

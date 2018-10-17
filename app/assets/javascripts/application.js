@@ -29,5 +29,7 @@
 //= require jquery.ui.widget/jquery.ui.widget
 //= require blueimp-file-upload/js/jquery.iframe-transport
 //= require blueimp-file-upload/js/jquery.fileupload
+//= require pusher-js/dist/web/pusher.min.js
+
 //= require main
 //= require_tree .

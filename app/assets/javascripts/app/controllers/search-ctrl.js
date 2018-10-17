@@ -75,8 +75,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
 
             if ($state.current.name === 'home.search'
-                    && localStorage.getItem('instructionsShown') !== 'true'
-                    && JSON.parse(item).phone_no_confirm) {
+                && localStorage.getItem('instructionsShown') !== 'true'
+                && JSON.parse(item).phone_no_confirm) {
                 $state.go('.instructions');
                 localStorage.setItem('instructionsShown', 'true');
             }
@@ -145,9 +145,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $scope.selectedSpace = data.elm.space;
                 let owned = $scope.selectedSpace.owner_is_current_user;
                 if (owned) {
-                    $state.go('.review-bids');
+                    $state.go('.review-bids', {spaceId: $scope.selectedSpace.id});
                 } else {
-                    $state.go('.post-bids');
+                    $state.go('.post-bids', {spaceId: $scope.selectedSpace.id});
                 }
             };
 

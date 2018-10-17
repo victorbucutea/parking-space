@@ -1,0 +1,43 @@
+<div class="sensor-fleet" ng-controller="SensorFleetCtrl">
+  <h2>Sensor fleet</h2>
+
+
+  <div class="list-group my-4">
+
+    <div ng-repeat="sensor in sensors" ui-sref=".sensor({sensorId: sensor.id})" class="list-group-item list-group-item-action ">
+      <div class="list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+          <h5> {{sensor.sensor_location.parking_space_name || 'No location' }} </h5>
+          <div>
+            <span class="small"> {{sensor.sensor_location.address }}</span>
+          </div>
+          <div>
+            <span class="small"> {{sensor.lat}} x {{ sensor.lng }}</span>
+          </div>
+        </div>
+        <div class="p-2">
+          <span> {{sensor.location_text }} </span>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+          <h3> {{sensor.perimeters.length }}</h3>
+          <div> Perimeters</div>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+          <h3 class="text-success"> {{available(sensor) }}</h3>
+          <span class="text-success"> Free spaces</span>
+        </div>
+
+        <img ng-show="sensor.snapshot" height="100" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}">
+        <span ng-hide="sensor.snapshot" class="fa-stack fa-2x">
+          <i class="fa fa-camera fa-stack-1x"></i>
+          <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Edit sensor modal -->
+  <ui-view name="detail"></ui-view>
+
+</div>

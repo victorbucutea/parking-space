@@ -251,11 +251,12 @@ angular.module('ParkingSpaceMobile.directives')
             '               ng-show="space.file2" class="img-thumbnail p-0 thumbnail">' +
             '          </div>' +
             '          <div class="ml-3">' +
-            '            <h4 class="text-truncate">{{space.price | units }}.' +
+            '            <h4 class="text-truncate small"><i class="fa fa-car"></i> {{space.title}}</h4>' +
+                '            <p class="text-truncate">{{space.address_line_1}}</p>' +
+                '            <h4 class="text-truncate">{{space.price | units }}.' +
             '              <small>{{space.price | subunits}}</small>' +
             '              {{space.currency}}/h' +
             '            </h4>' +
-            '            <p class="text-truncate">{{space.address_line_1}}</p>' +
             '            <u class="text-secondary">Mai multe ...</u>' +
             '          </div>' +
             '</div>' +

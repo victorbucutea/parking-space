@@ -74,16 +74,19 @@ angular.module('ParkingSpaceMobile', [
             this._div = null;
         };
 
-        //init your html element here
         HtmlMarker.prototype.onAdd = function () {
             let _this = this;
             let div = document.createElement('DIV');
+
             div.className = "html-marker";
-            if (!this.space.public) {
-                div.className = "html-marker private";
-                if (this.space.owner_is_current_user) {
-                    div.className += " owner";
-                }
+            if (this.space.owner_is_current_user) {
+                div.className += " owner";
+            }
+            if (this.space.from_user) {
+                div.className += " private";
+            }
+            if (this.space.from_sensor) {
+                div.className += " public";
             }
             $(div).on('click touchstart', function (evt) {
                 _this.scope.markerClick({elm: _this});
@@ -91,9 +94,20 @@ angular.module('ParkingSpaceMobile', [
                 evt.stopPropagation();
             });
             if (!this.nearestOffer) {
-                div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' <small> / h </small> </div>';
+                div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' ' +
+                    '   <small> / h </small> ' +
+                    '</div>';
             } else {
                 this.markReservationActive(div);
+            }
+
+            if (this.space.from_sensor) {
+                div.innerHTML = '<div> 1 loc' +
+                    '    <br/>' +
+                    '   <small class="text-secondary">' +
+                    '        ' + this.space.price + ' ' + this.currency + ' / h ' +
+                    '   </small>'+
+                '</div>';
             }
             let panes = this.getPanes();
             panes.overlayImage.appendChild(div);
@@ -117,8 +131,13 @@ angular.module('ParkingSpaceMobile', [
 
 
             let rezHtml =
-                '<div>' + this.price + ' ' + this.currency + ' <small> / h </small>  <br/>' +
-                '<small class="text-secondary"> <i class="fa fa-flash"></i> Rez. ' + text + ' </small>' +
+                '<div>' + this.price + ' ' + this.currency + '' +
+                '   <small> / h </small> ' +
+                '   <br/>' +
+                '   <small class="text-secondary">' +
+                '       <i class="fa fa-flash"></i> ' +
+                '       Rez. ' + text + ' ' +
+                '   </small>' +
                 '</div>';
             div.innerHTML = rezHtml;
         };
@@ -222,11 +241,14 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.search.post-bids', {
-                url: '/post-offer',
+                url: '/post-offer?spaceId',
                 views: {
                     'place-bid': {
                         templateUrl: "templates/post-offer.html"
                     }
+                },
+                params:{
+                    spaceId: null
                 }
             })
             .state('home.search.post-bids.pay', {
@@ -242,11 +264,14 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('home.search.review-bids', {
-                url: '/review-bid',
+                url: '/review-bid?spaceId',
                 views: {
                     'place-bid': {
                         templateUrl: "templates/review-offers.html"
                     }
+                },
+                params:{
+                    spaceId: null
                 }
             })
             .state('home.search.post', {

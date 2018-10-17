@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 ruby "2.4.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'puma', '3.11.3'
 gem 'rails', '5.1.4'
-gem 'thin'
 
 # Use sqlite3 as the database for Active Record
 group :development do
@@ -45,6 +45,7 @@ gem 'high_voltage', '~> 3.0.0'
 gem 'pushmeup'
 gem "braintree", "~> 2.83.0"
 gem "cloudinary"
+gem "pusher"
 gem 'serviceworker-rails'
 
 # Use debugger

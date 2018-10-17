@@ -103,7 +103,7 @@ map {
   overflow: hidden;
   position: fixed;
   bottom: 0;
-  width:100%;
+  width: 100%;
   z-index: 10;
 
   .notif-close:hover {
@@ -448,7 +448,7 @@ map {
 }
 
 .open-spaces-list {
-  margin-top: $lg-jumbo-measure-unit;
+  margin-top: $lg-jumbo-measure-unit + $base-font-size;
 
   h1, h2, h3 {
     margin: 0;
@@ -663,12 +663,13 @@ parking-spot-info-box {
       font-size: 1.9em;
     }
   }
+
   .parking-spot-details {
     padding: $measure-unit 0;
 
     h1 {
       color: $red;
-      font-size: $xlg-font-size;
+      font-size: $lg-font-size;
       margin-top: $xsm-measure-unit;
     }
 
@@ -679,6 +680,7 @@ parking-spot-info-box {
 
     h2 {
       font-size: $lg-font-size;
+      margin-bottom: $sm-measure-unit;
     }
 
     img {
@@ -1082,7 +1084,7 @@ parking-spot-info-box {
     left: 16px;
   }
 
-  &:before {
+  &.public:before {
     content: '';
     background-image: image_url('app/p_logo_icon.png');
     display: inline-block;
@@ -1099,12 +1101,12 @@ parking-spot-info-box {
     width: auto;
     height: auto;
     margin: 2px;
-    font-family: 'fontawesome';
+    font-family: 'Fontawesome';
     color: $green;
     font-size: 20px;
   }
 
-  &.private.owner:before {
+  &.owner:before {
     content: '\f007';
   }
 
@@ -1112,6 +1114,79 @@ parking-spot-info-box {
     background-color: $blue-200;
     cursor: pointer;
     z-index: 2;
+  }
+}
+
+.location_map {
+  height: 30vh;
+}
+
+.list-group-item-action {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.edit-sensor-modal {
+  position: fixed;
+  > div:first-child {
+    max-width: 90%;
+  }
+
+  .sample-perimeter {
+    background-color: transparentize($warning, .8);
+  }
+
+  .parking-space-perimeter {
+    background-color: transparentize($success, .8);
+  }
+
+  .form-control.read-only {
+    background-color: #e9ecef;
+    pointer-events: none;
+  }
+
+  .was-validated .form-control.read-only.ng-invalid-required {
+    border-color: $danger;
+  }
+
+  .perimeter-canvas {
+    position: relative;
+
+    .drag {
+      position: absolute !important;
+      top: 0;
+      &:hover {
+        cursor: move;
+      }
+    }
+    .perimeter {
+      border: 2px solid #17ff4e;
+      width: 60px;
+      height: 60px;
+      color: #17ff4e;
+
+      &.sample {
+        border: 2px solid $warning;
+        color: $warning;
+      }
+    }
+
+  }
+
+}
+
+.sensor-fleet {
+
+  .online-status {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: $danger;
+
+    &.ok {
+      background-color: $success;
+    }
   }
 }
 
