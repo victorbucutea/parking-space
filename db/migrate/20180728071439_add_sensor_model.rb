@@ -35,7 +35,7 @@ class AddSensorModel < ActiveRecord::Migration[5.1]
 
 
 
-    add_reference :roles, :users, index: true
+    add_reference :roles, :user, index: true
     add_foreign_key :roles, :users
 
     add_reference :parking_perimeters, :parking_spaces, index: true
