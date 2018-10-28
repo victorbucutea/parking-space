@@ -27,10 +27,11 @@ preload_app!
 
 rackup      DefaultRackup
 environment ENV['RACK_ENV'] || 'development'
+port ENV['PORT'] || 3000
 
 # bind 'ssl://localhost:3001?key=server.key&cert=server.crt'
 
-# ssl_bind '0.0.0.0', ENV['PORT'] || 3000, {
+# ssl_bind '0.0.0.0', , {
 #     key: 'server.key',
 #     cert: 'server.crt'
 # }
