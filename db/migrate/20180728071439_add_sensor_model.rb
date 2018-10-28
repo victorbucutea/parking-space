@@ -3,7 +3,6 @@ class AddSensorModel < ActiveRecord::Migration[5.1]
 
     create_table :roles do |t|
       t.string :identifier
-      t.integer :users_id
     end
 
 
@@ -22,8 +21,6 @@ class AddSensorModel < ActiveRecord::Migration[5.1]
       t.string :snapshot
       t.string :location_text
       t.datetime :installation_date
-      t.integer :sensor_locations_id
-
       t.timestamps
     end
 
@@ -34,8 +31,6 @@ class AddSensorModel < ActiveRecord::Migration[5.1]
       t.decimal :bottom_right_y
       t.string :identifier
       t.string :snapshot
-      t.integer :sensors_id
-
     end
 
 
