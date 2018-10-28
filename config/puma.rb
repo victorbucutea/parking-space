@@ -1,4 +1,3 @@
-
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked webserver processes. If using threads and workers together
 # the concurrency of the application would be max `threads` * `workers`.
@@ -25,16 +24,15 @@ threads threads_count, threads_count
 #
 preload_app!
 
-rackup      DefaultRackup
+rackup DefaultRackup
 environment ENV['RACK_ENV'] || 'development'
-port ENV['PORT'] || 3000
+port ENV['PORT'] || 3001
 
 # bind 'ssl://localhost:3001?key=server.key&cert=server.crt'
 
-# ssl_bind '0.0.0.0', , {
-#     key: 'server.key',
-#     cert: 'server.crt'
-# }
+if (ENV['RACK_ENV'] || 'development') == 'development'
+  ssl_bind '0.0.0.0', ENV['PORT'] || 3000, {key: 'server.key', cert: 'server.crt'}
+end
 
 # If you are preloading your application and using Active Record, it's
 # recommended that you close any connections to the database before workers3

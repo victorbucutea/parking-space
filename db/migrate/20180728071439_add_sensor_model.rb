@@ -1,7 +1,5 @@
 class AddSensorModel < ActiveRecord::Migration[5.1]
   def change
-    remove_column :parking_spaces, :approved_proposal_id
-
 
     create_table :roles do |t|
       t.string :identifier
