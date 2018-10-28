@@ -30,10 +30,10 @@ environment ENV['RACK_ENV'] || 'development'
 
 # bind 'ssl://localhost:3001?key=server.key&cert=server.crt'
 
-ssl_bind '0.0.0.0', ENV['PORT'] || 3000, {
-    key: 'server.key',
-    cert: 'server.crt'
-}
+# ssl_bind '0.0.0.0', ENV['PORT'] || 3000, {
+#     key: 'server.key',
+#     cert: 'server.crt'
+# }
 
 # If you are preloading your application and using Active Record, it's
 # recommended that you close any connections to the database before workers3
