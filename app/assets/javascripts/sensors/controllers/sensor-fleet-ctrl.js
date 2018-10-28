@@ -9,7 +9,7 @@ angular.module('ParkingSpaceSensors.controllers')
 
         $scope.available = function (sensor) {
             if (!sensor.perimeters || !sensor.perimeters.length) {
-                return 0 ;
+                return 0;
             }
 
             let pspacecnt = 0;
@@ -20,7 +20,13 @@ angular.module('ParkingSpaceSensors.controllers')
             });
 
             return pspacecnt;
-        }
+        };
+
+
+        $scope.online = function (sensor) {
+            if (!sensor.last_touch_date) return false;
+            return moment(sensor.last_touch_date).isAfter(moment().subtract(3, 'minutes'));
+        };
 
 
     }]);

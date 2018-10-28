@@ -69,6 +69,8 @@ angular.module('ParkingSpaceSensors.services')
                 _this.getSensorsWithLocation = function (clbk) {
                     $http.get('/sensors/with_location.json').then((response) => {
                         let data = response.data;
+                        data.created_at = new Date(data.created_at);
+                        data.updated_at = new Date(data.updated_at);
                         if (clbk) {
                             clbk(data);
                         }
@@ -185,6 +187,9 @@ angular.module('ParkingSpaceSensors.services')
                 _this.getPerimeters = function (sensorId, clbk) {
                     $http.get('/sensors/' + sensorId + '/perimeters.json').then((response) => {
                         let data = response.data;
+                        data.created_at = new Date(data.created_at);
+                        data.updated_at = new Date(data.updated_at);
+                        data.last_touch_date = new Date(data.last_touch_date);
                         if (clbk) {
                             clbk(data);
                         }

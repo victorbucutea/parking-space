@@ -76,7 +76,6 @@ class SensorsController < ApplicationController
   # PATCH/PUT /sensors/1.json
   def update
     respond_to do |format|
-      @sensor.increment_hit_count
       if @sensor.update(sensor_params)
         format.json {render :show, status: :ok, location: @sensor}
       else
@@ -93,6 +92,7 @@ class SensorsController < ApplicationController
 
   def perimeters
     @sensor = Sensor.find(params[:sensor_id])
+    @sensor.increment_hit_count
     respond_to do |format|
       format.json {render :'sensors/show_perimeters', status: :ok}
     end
@@ -153,7 +153,7 @@ class SensorsController < ApplicationController
   def permiter_params(perim_params)
     perim_params.permit(
         :top_left_y, :top_left_x, :bottom_right_y, :bottom_right_x, :price,
-        :identifier, :description, :perimeter_type
+        :identifier, :description, :perimeter_type, :lat, :lng
     )
   end
 end

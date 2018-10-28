@@ -2,6 +2,54 @@ angular.module('ParkingSpaceSensors.controllers')
     .controller('SensorCtrl', ['$scope', '$state', 'sensorService', '$rootScope',
         function ($scope, $state, sensorService, $rootScope) {
 
+            $scope.initMap = function (perim) {
+
+                let modal = $('#perimeterModal-' + perim.id);
+
+                modal.slideToggle(function () {
+                    if (modal.data('map')){
+                        return;
+                    }
+                    modal.data('map',true);
+                    let lat = 44.412;
+                    let lng = 26.113;
+                    if (perim.lat) lat = perim.lat;
+                    if (perim.lng) lng = perim.lng;
+                    console.log(lat, lng);
+
+                    let mapOptions = {
+                        center: new google.maps.LatLng(lat, lng),
+                        zoom: 14,
+                        minZoom: 13,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        streetViewControl: false,
+                        rotateControl: false,
+                        disableDefaultUI: true,
+                    };
+
+
+                    let map = new google.maps.Map($('#perimeterMap-' + perim.id)[0], mapOptions);
+                    let marker = new google.maps.Marker({
+                        draggable: true,
+                        map: map,
+                        position: new google.maps.LatLng(lat, lng)
+
+                    });
+
+
+                    google.maps.event.addListener(marker, 'dragend', function (event) {
+                        let pos = this.position;
+                        let loc = perim;
+                        if (loc) {
+                            loc.lat = pos.lat();
+                            loc.lng = pos.lng();
+                            $scope.$apply();
+                        }
+                    });
+                });
+            };
+
+
             let factorWidth = 1;
             let factorHeight = 1;
 
@@ -36,7 +84,6 @@ angular.module('ParkingSpaceSensors.controllers')
             if ($state.params.sensorId) {
                 sensorService.getPerimeters($state.params.sensorId, (data) => {
                     $scope.sensor = data;
-                    $scope.snapshotUrl = 'https://res.cloudinary.com/' + window.cloudinaryName + '/image/upload/' + data.snapshot;
                     $scope.perimeters = data.perimeters;
                     $scope.perimeters.forEach(initPositions);
                     $scope.samplePerimeter = data.sample_perimeter; //there should be only one
@@ -163,6 +210,7 @@ angular.module('ParkingSpaceSensors.controllers')
                 $scope.takingSnapshot = true;
                 sensorService.takeSnapshot($scope.sensor, (data) => {
                     $scope.snapshotUrl = data.url;
+                    $scope.sensor.snapshot = data.public_id;
                     $scope.takingSnapshot = false;
                     $scope.$apply();
                 }, () => {
@@ -231,12 +279,20 @@ angular.module('ParkingSpaceSensors.controllers')
                 });
             };
 
-            $scope.getLogs = function(){
-                sensorService.getSensorLogs($scope.sensor ,$scope.no_of_lines, (data) => {
+            $scope.getLogs = function () {
+                sensorService.getSensorLogs($scope.sensor, $scope.no_of_lines, (data) => {
                     $scope.sensor_log = data.sensor_log;
                     $scope.deploy_log = data.deploy_log;
                     $scope.$apply();
                 })
+            };
+
+            $scope.snapshotUrl = function () {
+                let data = $scope.sensor;
+                if (!$scope.sensor) return '';
+                else
+                    return 'https://res.cloudinary.com/' + window.cloudinaryName + '/image/upload/' + data.snapshot;
+
             };
 
             $scope.disconnect = function () {
@@ -273,4 +329,5 @@ angular.module('ParkingSpaceSensors.controllers')
             $scope.height = function (per) {
                 return (per.bottomRightY - per.topLeftY) / factorHeight + 'px';
             }
-        }]);
+        }])
+;

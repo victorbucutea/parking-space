@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181016163502) do
+ActiveRecord::Schema.define(version: 20181028163609) do
 
   create_table "accounts", force: :cascade do |t|
     t.decimal "amount"
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 20181016163502) do
     t.integer "perimeter_type"
     t.integer "sensor_id"
     t.float "price"
+    t.decimal "lat"
+    t.decimal "lng"
     t.index ["parking_space_id"], name: "index_parking_perimeters_on_parking_space_id"
     t.index ["sensor_id"], name: "index_parking_perimeters_on_sensor_id"
   end
@@ -154,6 +156,7 @@ ActiveRecord::Schema.define(version: 20181016163502) do
     t.boolean "active"
     t.boolean "hook_active"
     t.integer "hit_count"
+    t.datetime "last_touch_date"
     t.index ["sensor_location_id"], name: "index_sensors_on_sensor_location_id"
   end
 

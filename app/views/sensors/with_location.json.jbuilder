@@ -1,7 +1,10 @@
 json.array! @sensors do |sensor|
   json.extract! sensor, :id, :deviceid, :location_text, :title_message,
                 :lat, :lng, :snapshot, :installation_date, :hook_active, :active,
-                :module_info, :created_at, :updated_at
+                :module_info, :created_at, :updated_at, :last_touch_date
+  unless sensor.last_touch_date.nil?
+    json.is_connected sensor.last_touch_date.to_time > 3.minutes.ago
+  end
   unless sensor.sensor_location.nil?
     json.sensor_location do
       json.extract! sensor.sensor_location, :id, :parking_space_name, :address, :name

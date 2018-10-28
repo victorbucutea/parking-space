@@ -10,6 +10,8 @@ angular.module('ParkingSpaceSensors.controllers')
                 rotateControl: false,
                 disableDefaultUI: true,
             };
+
+            $scope.cloudinaryName = window.cloudinaryName;
             let map = new google.maps.Map($('.location_map')[0], mapOptions);
             $scope.marker = new google.maps.Marker({
                 draggable: true

@@ -149,7 +149,7 @@
             <li class="list-group-item d-flex justify-content-between align-items-center ">
               <div> {{selectedSpace.title}}</div>
               <div>
-                <span ng-hide="sensor.snapshot" class="fa-stack fa-2x">
+                <span class="fa-stack fa-2x">
                      <i class="fa fa-camera fa-stack-1x"></i>
                      <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
                  </span>
@@ -157,7 +157,7 @@
               <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_lat}}"
                  class="btn btn-primary">
                 <i class="fa fa-location-arrow fa-2x"></i>
-                Navigate
+                Navighează
               </a>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center " ng-repeat="space in selectedSpace.siblings">
@@ -170,7 +170,7 @@
               </div>
               <a class="btn btn-primary " href="https://www.google.com/maps/dir/?api=1&destination={{space.location_lat}},{{space.location_lat}}">
                 <i class="fa fa-location-arrow fa-2x"></i>
-                Navigate
+                Navighează
               </a>
             </li>
           </ul>

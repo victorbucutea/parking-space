@@ -11,6 +11,8 @@ class Sensor < ActiveRecord::Base
     else
       self.hit_count = self.hit_count + 1
     end
+    self.last_touch_date = DateTime.now
+    save
   end
 
   def publish_spaces(params)
@@ -36,7 +38,7 @@ class Sensor < ActiveRecord::Base
         parking_space.source_type = 'sensor_source'
         parking_space.title = parking_perimeter.description
         parking_space.space_availability_start = DateTime.now
-        parking_space.space_availability_stop = DateTime.now + 2.minutes
+        parking_space.space_availability_stop = DateTime.now + 3.minutes
         parking_space.save!
         parking_perimeter.parking_space = parking_space
         parking_perimeter.save!

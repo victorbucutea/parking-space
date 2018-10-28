@@ -4,7 +4,7 @@
     <h3> Edit Sensor </h3>
 
     <div class="text-center perimeter-canvas">
-      <img style="width: 100%" id="scream" ng-src="{{snapshotUrl}}" crossorigin="anonymous">
+      <img style="width: 100%" id="scream" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}" crossorigin="anonymous">
 
       <!--  here be the place for draggable boxes -->
       <div ng-repeat="per in perimeters" class="drag per-drag-{{per.id}}"
@@ -17,6 +17,7 @@
           </button>
           <h3> {{per.id}} </h3>
         </div>
+
 
         <div ng-repeat-end ng-init="makeDraggable()"></div>
       </div>
@@ -63,7 +64,7 @@
     <hr/>
 
     <div class="p-3">
-      <ul class="nav nav-tabs" ng-init="selectedMenu = 2">
+      <ul class="nav nav-tabs" ng-init="selectedMenu = 0">
         <li class="nav-item">
           <a class="nav-link " ng-class="{active: (selectedMenu == 0) }" ng-click="selectedMenu = 0" href="">Perimeters</a>
         </li>
@@ -168,13 +169,33 @@
                   <input type="text" class="form-control read-only" ng-model="per.bottom_right_y" id="coords2" size="4" required>
                 </div>
               </div>
+              <div class="form-group form-row">
+                <label for="coords" class="col-sm-3">
+                  Lat x Lng
+                </label>
+                <div class="form-group form-inline col-sm-5">
+                  <input type="text" class="form-control " ng-model="per.lat" id="coords" size="4" required>
+                  <span class="mx-1"> x </span>
+                  <input type="text" class="form-control " ng-model="per.lng" id="coords" size="4" required>
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-link" ng-click="initMap(per)"> Choose on map </button>
+                </div>
+              </div>
             </div>
+
+
             <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center flex-wrap">
               <img id="snap-{{per.id}}" src="" class="img-thumbnail">
               <button class="btn btn-link" ng-click="snapshot()">
                 <i class="fa fa-question"></i>
                 Evaluate
               </button>
+            </div>
+
+
+            <div id="perimeterModal-{{per.id}}" class="col-12" style="display:none;">
+              <div id="perimeterMap-{{per.id}}" style="height: 480px; width: 100%"></div>
             </div>
           </div>
 
@@ -196,15 +217,17 @@
       <form name="sensorForm" id="sensorForm" novalidate ng-show="selectedMenu == 1">
         <div class="p-2">
           <div class="form-group row">
-            <label for="deviceid" class="col-sm-2 col-form-label">Device id</label>
+            <label for="deviceid" class="col-sm-2 col-form-label">Serial No.</label>
             <div class="col-sm-4">
               <input type="text" readonly class="form-control-plaintext" ng-model="sensor.deviceid" id="deviceid">
             </div>
           </div>
           <div class="form-group row">
-            <label for="locationText" class="col-sm-2 col-form-label">Location text</label>
+            <label for="locationText" class="col-sm-2 col-form-label">Location desc</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" ng-model="sensor.location_text" id="locationText">
+              <small class="form-text text-muted">Descriere interna locatiei senzorului.</small>
+
             </div>
           </div>
           <div class="form-group row">
@@ -216,13 +239,13 @@
           <div class="form-group row">
             <label for="creationDate" class="col-sm-2 col-form-label">Creation date</label>
             <div class="col-sm-10">
-              <input type="text" disabled class="form-control" ng-model="sensor.created_at" id="creationDate">
+              <input type="datetime-local" disabled class="form-control" ng-model="sensor.created_at" id="creationDate">
             </div>
           </div>
           <div class="form-group row">
-            <label for="updateDate" class="col-sm-2 col-form-label">Update date</label>
+            <label for="updateDate" class="col-sm-2 col-form-label">Last scan date</label>
             <div class="col-sm-10">
-              <input type="text" disabled class="form-control" ng-model="sensor.updated_at" id="updateDate">
+              <input type="datetime-local" disabled class="form-control" ng-model="sensor.last_touch_date" id="updateDate">
             </div>
           </div>
           <div class="form-group row">
@@ -335,6 +358,8 @@
             </small>
           </div>
         </div>
+
+        <button type="button" class="btn btn-secondary" ui-sref="^">Cancel</button>
 
       </form>
     </div>

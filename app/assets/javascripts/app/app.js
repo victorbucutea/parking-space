@@ -102,12 +102,14 @@ angular.module('ParkingSpaceMobile', [
             }
 
             if (this.space.from_sensor) {
-                div.innerHTML = '<div> 1 loc' +
+                let noOfSpaces = 1 + this.space.siblings.length;
+                let plural = noOfSpaces > 1 ? noOfSpaces + ' locuri' : noOfSpaces + ' loc';
+                div.innerHTML = '<div> ' + plural +
                     '    <br/>' +
                     '   <small class="text-secondary">' +
                     '        ' + this.space.price + ' ' + this.currency + ' / h ' +
-                    '   </small>'+
-                '</div>';
+                    '   </small>' +
+                    '</div>';
             }
             let panes = this.getPanes();
             panes.overlayImage.appendChild(div);
@@ -247,7 +249,7 @@ angular.module('ParkingSpaceMobile', [
                         templateUrl: "templates/post-offer.html"
                     }
                 },
-                params:{
+                params: {
                     spaceId: null
                 }
             })
@@ -270,7 +272,7 @@ angular.module('ParkingSpaceMobile', [
                         templateUrl: "templates/review-offers.html"
                     }
                 },
-                params:{
+                params: {
                     spaceId: null
                 }
             })
