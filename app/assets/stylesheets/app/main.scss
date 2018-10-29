@@ -233,6 +233,11 @@ map {
     right: 0;
     left: 0;
     margin: 0 !important;
+    max-width: inherit;
+
+    .form-group {
+      margin-top: 20px;
+    }
   }
 
 }
