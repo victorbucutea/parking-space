@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
-  before_action :set_account, only: [:index, :withdraw,:withdrawals]
+  before_action :authenticate_user!
+  before_action :set_account, only: [:index, :withdraw, :withdrawals]
 
 
   # GET /accounts/1
@@ -17,6 +18,16 @@ class AccountsController < ApplicationController
 
   def withdraw
     withdrawal = Withdrawal.new(account_params)
+
+    if @account.nil?
+      return render json: {Error: 'Nu puteți retrage momentan. Contactați serviciul clienți pentru detalii.'}, status: :unprocessable_entity
+    end
+
+    if withdrawal.amount <= 1
+      return render json: {Error: 'Nu puteți retrage suma de ' + withdrawal.amount.to_s}, status: :unprocessable_entity
+    end
+
+
     @account.amount -= withdrawal.amount
     if @account.save
       @account.withdrawals << withdrawal
@@ -28,6 +39,7 @@ class AccountsController < ApplicationController
 
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_account
     @account = Account.find_by_user_id current_user.id

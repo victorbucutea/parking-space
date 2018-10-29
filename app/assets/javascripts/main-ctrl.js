@@ -16,6 +16,10 @@ angular.module('ParkingSpace.controllers')
             ,200);
         }
 
+        setTimeout(() => {
+            $('#announcement').addClass('slide-in');
+        },5000);
+
 
         $scope.show = function (item) {
             $('#' + item).slideToggle(200);

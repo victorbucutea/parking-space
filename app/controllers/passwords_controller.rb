@@ -1,4 +1,6 @@
 class PasswordsController < Devise::PasswordsController
+  prepend_before_action :logout
+
   respond_to :json
 
   def after_resetting_password_path_for(resource)
@@ -9,5 +11,14 @@ class PasswordsController < Devise::PasswordsController
   def done
   end
 
+
+  # GET /resource/password/edit?reset_password_token=abcdef
+  def edit
+    super
+  end
+
+  def logout
+    sign_out
+  end
 
 end

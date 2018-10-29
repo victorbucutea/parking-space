@@ -1,4 +1,4 @@
-angular.module("ParkingSpaceMobile.filters", [])
+angular.module("ParkingSpaceMobile.filters")
 
     .filter('units', function () {
         return function (input, params) {
@@ -14,6 +14,12 @@ angular.module("ParkingSpaceMobile.filters", [])
 
 
     })
+    .filter('to_trusted', ['$sce', function($sce){
+        return function(text) {
+            return $sce.trustAsHtml(text);
+        };
+    }])
+
     .filter('subunits', function () {
         return function (input, params) {
             if (input === 0){

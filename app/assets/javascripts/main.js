@@ -1,19 +1,13 @@
 // init main modules
 
-angular.module('ParkingSpace.controllers', []);
-angular.module('ParkingSpace.directives', []);
-angular.module('ParkingSpace.services', []);
-angular.module('ParkingSpace.filters', []);
-
 angular.module('ParkingSpace', [
     'ui.router',
-    'ngSanitize',
     'ParkingSpace.controllers',
     'ParkingSpace.directives',
     'ParkingSpace.filters',
     'ParkingSpace.services'])
 
-    .config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('main', {
                 url: '/'
@@ -22,25 +16,23 @@ angular.module('ParkingSpace', [
                 url: '/app',
                 templateUrl: 'app/map/index'
             })
-            .state('buy',{
+            .state('buy', {
                 url: '/buy',
                 templateUrl: 'landing/buy'
             })
-            .state('buy-sensor',{
+            .state('buy-sensor', {
                 url: '/buy-sensor',
                 templateUrl: 'landing/buy-sensor'
             })
-            .state('business',{
+            .state('business', {
                 url: '/business',
                 templateUrl: 'landing/business'
-            })
-        ;
+            });
 
         $urlRouterProvider.otherwise('/')
-
     }])
 
-    .run(['$rootScope',function ($rootScope) {
+    .run(['$rootScope', function ($rootScope) {
 
         moment.locale('ro');
 
@@ -69,7 +61,7 @@ angular.module('ParkingSpace', [
                 // finished
                 $('[data-toggle="popover"]').popover({trigger: 'focus'});
 
-                if ($(window).width() < 420) {
+                if ($(window).width() < 460) {
                     $('.owl-carousel').owlCarousel({
                         margin: 0,
                         items: 1,
@@ -80,21 +72,21 @@ angular.module('ParkingSpace', [
                 }
 
                 $('.scroll-to-top').hide();
-                $( window ).scroll(function(arg) {
-                   if($(window).scrollTop() > 300 ){
-                       $('.scroll-to-top').show();
-                   } else {
-                       $('.scroll-to-top').hide();
-                   }
+                $(window).scroll(function (arg) {
+                    if ($(window).scrollTop() > 300) {
+                        $('.scroll-to-top').show();
+                    } else {
+                        $('.scroll-to-top').hide();
+                    }
                 });
             });
 
 
     }])
     .constant("GEOCODE_API_URL", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY")
-    .factory("countryBounds", () => {
-        let sw = new google.maps.LatLng({lat: 44.308127, lng: 20.146866});
-        let ne = new google.maps.LatLng({lat: 47.872144, lng: 29.617081});
-        return new google.maps.LatLngBounds(sw, ne);
-    })
-;
+   ;
+
+angular.module('ParkingSpace.controllers', []);
+angular.module('ParkingSpace.directives', []);
+angular.module('ParkingSpace.services', []);
+angular.module('ParkingSpace.filters', []);

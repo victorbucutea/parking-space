@@ -1,25 +1,17 @@
 'use strict';
-angular.module('ParkingSpaceMobile.controllers', []);
 
 angular.module('ParkingSpaceMobile', [
-    'config',
     'ezfb',
-    'ngSanitize',
     'cleave.js',
-    'ngFileUpload',
-    'ngCookies',
     'ui.bootstrap.buttons',
     'ui.router',
-    'cloudinary',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
     'ParkingSpaceMobile.services'])
 
-// todo map should keep initial position after navigation
-// todo fix location information
-    // todo add back ui bootstrap but only for select button
     .run(function () {
+        // install service worker
         if ('serviceWorker' in navigator) {
             // Use the window load event to keep the page load performant
             window.addEventListener('load', () => {
@@ -27,11 +19,39 @@ angular.module('ParkingSpaceMobile', [
             });
         }
 
-        let deferredPrompt;
-
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            console.log('prompting to install !');
+            e.prompt();
+            // Stash the event so it can be triggered later.
+            window.installPrompt = e;
+        });
     })
 
-    .run(['$http','$rootScope', function ($http, $rootScope) {
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push(function () {
+            return {
+                'request': function (config) {
+                    let loading = $('#loading-progress');
+                    loading.removeClass('loading-done');
+                    loading.css('width', '100%');
+                    return config;
+                },
+                'response': function (response) {
+                    let loading = $('#loading-progress');
+                    loading.addClass('loading-done');
+                    setTimeout(() => {
+                        loading.css('width', 0);
+                    }, 500);
+                    return response;
+                }
+            };
+        });
+
+        $httpProvider.useApplyAsync(true);
+    }])
+
+    .run(['$http', '$rootScope', function ($http, $rootScope) {
 
         if (!window.google || !window.google.maps) return;
 
@@ -49,20 +69,24 @@ angular.module('ParkingSpaceMobile', [
         HtmlMarker.prototype = new google.maps.OverlayView();
 
         HtmlMarker.prototype.onRemove = function () {
+            if (!this._div) return;
             this._div.parentElement.removeChild(this._div);
             this._div = null;
         };
 
-        //init your html element here
         HtmlMarker.prototype.onAdd = function () {
             let _this = this;
             let div = document.createElement('DIV');
+
             div.className = "html-marker";
-            if (!this.space.public) {
-                div.className = "html-marker private";
-                if (this.space.owner_is_current_user) {
-                    div.className += " owner";
-                }
+            if (this.space.owner_is_current_user) {
+                div.className += " owner";
+            }
+            if (this.space.from_user) {
+                div.className += " private";
+            }
+            if (this.space.from_sensor) {
+                div.className += " public";
             }
             $(div).on('click touchstart', function (evt) {
                 _this.scope.markerClick({elm: _this});
@@ -70,9 +94,22 @@ angular.module('ParkingSpaceMobile', [
                 evt.stopPropagation();
             });
             if (!this.nearestOffer) {
-                div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' <small> / h </small> </div>';
+                div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' ' +
+                    '   <small> / h </small> ' +
+                    '</div>';
             } else {
                 this.markReservationActive(div);
+            }
+
+            if (this.space.from_sensor) {
+                let noOfSpaces = 1 + this.space.siblings.length;
+                let plural = noOfSpaces > 1 ? noOfSpaces + ' locuri' : noOfSpaces + ' loc';
+                div.innerHTML = '<div> ' + plural +
+                    '    <br/>' +
+                    '   <small class="text-secondary">' +
+                    '        ' + this.space.price + ' ' + this.currency + ' / h ' +
+                    '   </small>' +
+                    '</div>';
             }
             let panes = this.getPanes();
             panes.overlayImage.appendChild(div);
@@ -96,8 +133,13 @@ angular.module('ParkingSpaceMobile', [
 
 
             let rezHtml =
-                '<div>' + this.price + ' ' + this.currency + ' <small> / h </small>  <br/>' +
-                '<small class="text-secondary"> <i class="fa fa-flash"></i> Rez. ' + text + ' </small>' +
+                '<div>' + this.price + ' ' + this.currency + '' +
+                '   <small> / h </small> ' +
+                '   <br/>' +
+                '   <small class="text-secondary">' +
+                '       <i class="fa fa-flash"></i> ' +
+                '       Rez. ' + text + ' ' +
+                '   </small>' +
                 '</div>';
             div.innerHTML = rezHtml;
         };
@@ -110,10 +152,9 @@ angular.module('ParkingSpaceMobile', [
         };
         window.HtmlMarker = HtmlMarker;
 
-
     }])
 
-    .config(['$stateProvider', '$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('home', {
                 url: '/home',
@@ -121,7 +162,7 @@ angular.module('ParkingSpaceMobile', [
                 templateUrl: 'templates/home.html'
             })
             .state('home.login', {
-                url: '/login',
+                url: '/login?fbLogin&lat&lng',
                 views: {
                     'content': {
                         templateUrl: "templates/login.html"
@@ -129,7 +170,8 @@ angular.module('ParkingSpaceMobile', [
                 },
                 params: {
                     lng: null,
-                    lat: null
+                    lat: null,
+                    fbLogin: null
                 }
             })
             .state('home.register', {
@@ -149,11 +191,11 @@ angular.module('ParkingSpaceMobile', [
                     lng: null
                 }
             })
-            .state('home.map', {
-                url: '/map',
+            .state('home.search', {
+                url: '/search?lat&lng&zoom',
                 views: {
                     'content': {
-                        templateUrl: "templates/map.html"
+                        templateUrl: "templates/search.html"
                     },
                     "my-menu": {
                         templateUrl: "templates/nav-bar.html"
@@ -161,14 +203,6 @@ angular.module('ParkingSpaceMobile', [
                     "left-side-menu": {
                         templateUrl: "templates/left-side-menu.html"
                     }
-                }
-            })
-            .state('home.map.search', {
-                url: '/search?lat&lng&zoom',
-                views: {
-                    'map-controls': {
-                        templateUrl: "templates/search.html"
-                    },
                 },
                 params: {
                     lat: null,
@@ -176,7 +210,7 @@ angular.module('ParkingSpaceMobile', [
                     zoom: null
                 }
             })
-            .state('home.map.search.help', {
+            .state('home.search.help', {
                 url: '/help',
                 views: {
                     'help': {
@@ -184,7 +218,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.instructions', {
+            .state('home.search.instructions', {
                 url: '/instructions',
                 views: {
                     'help': {
@@ -192,7 +226,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.confirm-phone', {
+            .state('home.search.confirm-phone', {
                 url: '/confirm-phone',
                 views: {
                     'place-bid': {
@@ -200,7 +234,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.terms', {
+            .state('home.search.terms', {
                 url: '/terms',
                 views: {
                     'place-bid': {
@@ -208,15 +242,18 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.post-bids', {
-                url: '/post-offer',
+            .state('home.search.post-bids', {
+                url: '/post-offer?spaceId',
                 views: {
                     'place-bid': {
                         templateUrl: "templates/post-offer.html"
                     }
+                },
+                params: {
+                    spaceId: null
                 }
             })
-            .state('home.map.search.post-bids.pay', {
+            .state('home.search.post-bids.pay', {
                 url: '/pay',
                 views: {
                     'pay': {
@@ -228,15 +265,18 @@ angular.module('ParkingSpaceMobile', [
                     space: null
                 }
             })
-            .state('home.map.search.review-bids', {
-                url: '/review-bid',
+            .state('home.search.review-bids', {
+                url: '/review-bid?spaceId',
                 views: {
                     'place-bid': {
                         templateUrl: "templates/review-offers.html"
                     }
+                },
+                params: {
+                    spaceId: null
                 }
             })
-            .state('home.map.search.post', {
+            .state('home.search.post', {
                 url: '/post',
                 views: {
                     'place-bid': {
@@ -244,7 +284,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.review-bids.delete', {
+            .state('home.search.review-bids.delete', {
                 url: '/delete/{parking_space_id}',
                 views: {
                     'action': {
@@ -252,7 +292,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.review-bids.edit', {
+            .state('home.search.review-bids.edit', {
                 url: '/edit/{parking_space_id}',
                 views: {
                     'action': {
@@ -260,7 +300,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.map.search.myaccount', {
+            .state('home.search.myaccount', {
                 url: '/myaccount',
                 views: {
                     'place-bid': {
@@ -372,7 +412,16 @@ angular.module('ParkingSpaceMobile', [
                 }
             });
 
-        $urlRouterProvider.otherwise("/home/map/search");
+        $urlRouterProvider.otherwise(function ($injector, $location) {
+            if ($location.$$hash.indexOf("token") !== -1 && $location.$$hash.indexOf("state") !== -1) {
+                // sucessful response from fb
+                return "/home/login?fbLogin=ok";
+            } else if ($location.absUrl().indexOf("error") !== -1 &&
+                $location.absUrl().indexOf("error_code") !== -1) {
+                return "/home/login?fbLogin=err";
+            }
+            return "/home/search";
+        });
 
     }])
 
@@ -380,45 +429,15 @@ angular.module('ParkingSpaceMobile', [
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
     }])
 
-    .config(['ezfbProvider',function (ezfbProvider) {
-        var myInitFunction = function ($window, $rootScope) {
-            $window.FB.init({
+    .config(['ezfbProvider', function (ezfbProvider) {
+        let myInitFunction = function () {
+            window.FB.init({
                 appId: '1725456304415807',
                 version: 'v2.6'
             });
         };
 
         ezfbProvider.setInitFunction(myInitFunction);
-    }])
-
-    .config(['cloudinaryProvider', function (cloudinaryProvider) {
-        cloudinaryProvider
-            .set("cloud_name", "hbrl7w3by")
-            .set("secure", true)
-            .set("upload_preset", "ixih1eoo");
-    }])
-
-    .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.interceptors.push(function ($q) {
-            return {
-                'request': function (config) {
-                    let loading = $('#loading-progress');
-                    loading.removeClass('loading-done');
-                    loading.css('width', '100%');
-                    return config;
-                },
-                'response': function (response) {
-                    let loading = $('#loading-progress');
-                    loading.addClass('loading-done');
-                    setTimeout(() => {
-                        loading.css('width', 0);
-                    }, 500);
-                    return response;
-                }
-            };
-        });
-
-        $httpProvider.useApplyAsync(true);
     }])
 
     .config(function () {
@@ -436,6 +455,13 @@ angular.module('ParkingSpaceMobile', [
             else {
                 return false;
             }
+        };
+        window.isIos = function () {
+            return (
+                navigator.userAgent.match(/webOS/i)
+                || navigator.userAgent.match(/iPhone/i)
+                || navigator.userAgent.match(/iPad/i)
+                || navigator.userAgent.match(/iPod/i));
         };
     })
     .constant('currencies', [
@@ -501,4 +527,9 @@ angular.module('ParkingSpaceMobile', [
         }
     })
 ;
+
+angular.module('ParkingSpaceMobile.controllers', []);
+angular.module('ParkingSpaceMobile.services', []);
+angular.module('ParkingSpaceMobile.directives', []);
+angular.module('ParkingSpaceMobile.filters', []);
 

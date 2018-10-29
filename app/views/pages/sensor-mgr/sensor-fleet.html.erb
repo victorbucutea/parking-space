@@ -1,0 +1,61 @@
+<div class="sensor-fleet" ng-controller="SensorFleetCtrl">
+  <h2>Sensor fleet</h2>
+
+
+  <div class="list-group my-4">
+
+    <div ng-repeat="sensor in sensors" ui-sref=".sensor({sensorId: sensor.id})" class="list-group-item list-group-item-action ">
+      <div class="list-group-item-action row align-items-center">
+        <div class="col-4">
+          <h5> {{sensor.sensor_location.parking_space_name || 'No location' }} </h5>
+          <div>
+            <span class="small"> {{sensor.sensor_location.address }}</span>
+          </div>
+          <div>
+            <span class="small"> {{sensor.lat}} x {{ sensor.lng }}</span>
+          </div>
+        </div>
+
+        <div class="p-2 col-2">
+          <span> {{sensor.location_text || 'No description'}} </span>
+        </div>
+
+        <div class=" col-2 d-flex flex-column align-items-center">
+          <h3> {{available(sensor) }} / {{sensor.perimeters.length }}</h3>
+          <span> Free spaces</span>
+        </div>
+
+        <img class="col-2" ng-show="sensor.snapshot" height="100" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}">
+        <span ng-hide="sensor.snapshot" class="fa-stack fa-2x col-2 ">
+          <i class="fa fa-camera fa-stack-1x"></i>
+          <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
+        </span>
+
+        <div class="d-flex flex-column align-items-center col-2">
+
+          <span ng-hide="online(sensor)" class="fa-stack ">
+            <i class="fa fa-bolt fa-stack-1x"></i>
+            <i class="fa fa-ban fa-stack-2x"></i>
+          </span>
+          <span ng-hide="online(sensor)">
+            Disconnected
+          </span>
+
+          <span ng-show="online(sensor)">
+              <i class="fa fa-plug fa-2x text-success"></i>
+          </span>
+          <span ng-show="online(sensor)">
+             Connected
+          </span>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Edit sensor modal -->
+  <ui-view name="detail"></ui-view>
+
+</div>

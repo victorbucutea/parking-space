@@ -1,12 +1,12 @@
-angular.module('ParkingSpaceMobile.services', [])
+angular.module('ParkingSpaceMobile.services')
 
     .service('parkingSpaceService',
-        ['$rootScope', '$http', 'ENV', 'userService', 'imageResizeFactory', 'errorHandlingService',
-            function ($rootScope, $http, ENV, userService, imageResizeFactory, errorHandlingService) {
+        ['$rootScope', '$http', 'userService', 'errorHandlingService', 'notificationService',
+            function ($rootScope, $http, userService, errorHandlingService, notificationService) {
 
 
                 this.getPhoneNumber = function (spaceId, clbk, errClbk) {
-                    $http.get(ENV + '/parking_spaces/' + spaceId + '/phone_number.json')
+                    $http.get('/parking_spaces/' + spaceId + '/phone_number.json')
                         .then(function (response) {
                             let data = response.data;
                             if (clbk)
@@ -22,38 +22,53 @@ angular.module('ParkingSpaceMobile.services', [])
 
                 this.getAvailableSpaces = function (latMinMax, clbk, errClbk) {
 
-
-                    $http.get(ENV + '/parking_spaces.json', {
+                    $http.get('/parking_spaces.json', {
                         params: {
                             lat_min: latMinMax.south,
                             lat_max: latMinMax.north,
                             lon_min: latMinMax.west,
                             lon_max: latMinMax.east,
                         }
-                    })
-                        .then(function (response) {
-                            let data = response.data;
-                            if (data) {
-                                data.forEach(function (p_space) {
-                                    p_space.space_availability_start = new Date(p_space.space_availability_start);
-                                    p_space.space_availability_stop = new Date(p_space.space_availability_stop);
-                                    p_space.daily_start = new Date(p_space.daily_start);
-                                    p_space.daily_stop = new Date(p_space.daily_stop);
-                                });
+                    }).then(function (response) {
+                        let data = response.data;
+                        let clusteredSpaces = [];
+                        if (data) {
+                            let clusters = {};
+                            data.forEach(function (p_space) {
+                                p_space.space_availability_start = new Date(p_space.space_availability_start);
+                                p_space.space_availability_stop = new Date(p_space.space_availability_stop);
+                                p_space.daily_start = new Date(p_space.daily_start);
+                                p_space.daily_stop = new Date(p_space.daily_stop);
+
+                                let lat = Math.round(p_space.location_lat * 10000) / 10000;
+                                let lng = Math.round(p_space.location_long * 10000) / 10000;
+                                let key = lat + "-" + lng;
+                                if (clusters[key]) {
+                                    // we have another lat/lng combination with the same 4 digits (11m)
+                                    if (!clusters[key].siblings) clusters[key].siblings = [];
+                                    clusters[key].siblings.push(p_space);
+
+                                } else {
+                                    clusters[key] = p_space;
+                                }
+                            });
+                            for (geokey in clusters) {
+                                clusteredSpaces.push(clusters[geokey]);
                             }
-                            if (clbk)
-                                clbk(data);
-                        }, function (errorResponse) {
-                            if (!errClbk) {
-                                errorHandlingService.handle(errorResponse.data, errorResponse.status);
-                            } else {
-                                errClbk(errorResponse.data, errorResponse.status);
-                            }
-                        });
+                        }
+                        if (clbk)
+                            clbk(clusteredSpaces);
+                    }, function (errorResponse) {
+                        if (!errClbk) {
+                            errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                        } else {
+                            errClbk(errorResponse.data, errorResponse.status);
+                        }
+                    });
                 };
 
                 this.getMySpaces = function (clbk) {
-                    $http.get(ENV + '/parking_spaces/myspaces.json')
+                    $http.get('/parking_spaces/myspaces.json')
                         .then(function (response) {
                             let data = response.data;
                             if (data) {
@@ -69,9 +84,9 @@ angular.module('ParkingSpaceMobile.services', [])
                         });
                 };
 
-                this.getSpace = function (parkingSpaceId, clbk) {
+                this.getSpace = function (parkingSpaceId, clbk, errClbk) {
 
-                    $http.get(ENV + '/parking_spaces/' + parkingSpaceId + ".json")
+                    $http.get('/parking_spaces/' + parkingSpaceId + ".json")
                         .then(function (response) {
                             let data = response.data;
                             if (data) {
@@ -85,11 +100,12 @@ angular.module('ParkingSpaceMobile.services', [])
                                 clbk(data);
                         }, function (errorResponse) {
                             errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                            if (errClbk) errClbk(errorResponse);
                         });
                 };
 
                 this.getMyOffers = function (clbk) {
-                    $http.get(ENV + '/parking_spaces/myoffers.json')
+                    $http.get('/parking_spaces/myoffers.json')
                         .then(function (response) {
                             let data = response.data;
                             if (clbk)
@@ -107,13 +123,14 @@ angular.module('ParkingSpaceMobile.services', [])
                     space.weekly_schedule = JSON.stringify(space.weekly_schedule);
                     let parking_space = {parking_space: space};
 
-                    let url = space.id ? ENV + '/parking_spaces/' + space.id + '.json' : ENV + '/parking_spaces.json';
+                    let url = space.id ? '/parking_spaces/' + space.id + '.json' : '/parking_spaces.json';
                     let restCall = space.id ? $http.put(url, parking_space) : $http.post(url, parking_space);
 
                     restCall.then(function (response) {
                         //TODO show mesage with direct dom manipulation
                         $rootScope.$emit('http.notif', 'Locul de parcare a fost postat!');
 
+                        notificationService.registerForNotifications();
                         let data = response.data;
                         if (clbk) {
                             clbk(data);
@@ -124,7 +141,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 };
 
                 this.deleteSpace = function (spaceId, clbk) {
-                    $http.delete(ENV + '/parking_spaces/' + spaceId + '.json')
+                    $http.delete('/parking_spaces/' + spaceId + '.json')
                         .then(function (res) {
                             let data = res.data;
                             $rootScope.$emit('http.notif', 'Locul de parcare a fost șters!');
@@ -137,37 +154,26 @@ angular.module('ParkingSpaceMobile.services', [])
 
                 };
 
-                this.markOffersAsRead = function (spaceId, clbk) {
-                    let url = ENV + '/parking_spaces/' + spaceId + '/mark_offers_as_read.json';
-                    $http.get(url).then(function (res) {
-                        let data = res.data;
-                        if (clbk) {
-                            clbk(data);
-                        }
-                    }, function (err) {
-                        errorHandlingService.handle(err.data, err.status);
-                    });
-
-                };
             }])
 
     .service('offerService',
-        ['$http', '$timeout', 'ENV', 'userService', '$rootScope', 'errorHandlingService',
-            function ($http, $timeout, ENV, userService, $rootScope, errorHandlingService) {
+        ['$http', '$timeout', 'userService', '$rootScope', 'errorHandlingService', 'notificationService',
+            function ($http, $timeout, userService, $rootScope, errorHandlingService, notificationService) {
 
                 this.placeOffer = function (bid, spaceId, clbk) {
                     bid.parking_space_id = spaceId;
-                    $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals.json', bid)
+                    $http.post('/parking_spaces/' + spaceId + '/proposals.json', bid)
                         .then(function (resp) {
                             let data = resp.data;
                             data.start_date = new Date(data.start_date);
                             data.end_date = new Date(data.end_date);
-                            if (data.approved)
+                            if (data.approved) {
                                 $rootScope.$emit('http.notif', 'Felicitări! Locul a fost rezervat pt. tine.' +
                                     ' Acum poți achita online sau poți contacta proprietarul.');
-                            else
+                                notificationService.registerForNotifications(true);
+                            } else {
                                 $rootScope.$emit('http.notif', 'Ofertă trimisă, însă nu a putut fi aprobată!');
-
+                            }
                             if (clbk)
                                 clbk(data);
                         }, function (err) {
@@ -176,7 +182,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 };
 
                 this.acceptOffer = function (spaceId, offer, clbk) {
-                    $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
+                    $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
                         .then(function (res) {
                             let data = res.data;
                             $rootScope.$emit('http.notif',
@@ -190,7 +196,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 };
 
                 this.rejectOffer = function (spaceId, offer, clbk) {
-                    $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
+                    $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
                         .then(function (res) {
                             let data = res.data;
                             $rootScope.$emit('http.notif',
@@ -205,7 +211,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 };
 
                 this.getOffer = function (offerId, clbk) {
-                    $http.get(ENV + '/parking_spaces/1/proposals/' + offerId + '.json')
+                    $http.get('/parking_spaces/1/proposals/' + offerId + '.json')
                         .then(function (res) {
                             let data = res.data;
                             if (clbk) {
@@ -217,7 +223,7 @@ angular.module('ParkingSpaceMobile.services', [])
                 };
 
                 this.cancelOffer = function (spaceId, offer, clbk) {
-                    $http.post(ENV + '/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
+                    $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
                         .then(function (res) {
                             let data = res.data;
                             $rootScope.$emit('http.notif',
@@ -230,23 +236,11 @@ angular.module('ParkingSpaceMobile.services', [])
                             errorHandlingService.handle(err.data, err.status);
                         })
                 };
-
-                this.markRead = function (postId, offers, clbk) {
-                    // execute call on server
-                    offers.forEach(function (x) {
-                        x.read = true;
-                    });
-
-                    if (clbk) {
-                        clbk(offers)
-                    }
-
-                };
             }])
 
     .service('parameterService',
-        ['$http', 'ENV',
-            function ($http, ENV) {
+        ['$http',
+            function ($http) {
 
                 /**
                  * provides back-end parameters
@@ -269,7 +263,7 @@ angular.module('ParkingSpaceMobile.services', [])
                         return;
                     }
 
-                    $http.get(ENV + '/parameters.json')
+                    $http.get('/parameters.json')
                         .then(function (res) {
                             let data = res.data;
                             _this.setParameters(data);
@@ -451,103 +445,75 @@ angular.module('ParkingSpaceMobile.services', [])
 
 
     .service('notificationService',
-        ['$rootScope', '$http', '$q', 'ENV', '$state',
-        function ($rootScope, $http, $q, ENV, $state) {
+        ['$rootScope', '$http', '$q', '$state',
+            function ($rootScope, $http, $q, $state) {
 
-        let _this = this;
-        _this.offerNotifications = [];
-        _this.parkingSpaceNotifications = [];
+                let _this = this;
+                let registered = false;
+                let notifAsked = false;
 
-        _this.registerForNotifications = function () {
+                _this.registerForNotifications = function (forOffers) {
 
-            let push = PushNotification.init({
-                android: {
-                    senderID: "1036383532323"
-                },
-                browser: {},
-                ios: {},
-                windows: {}
-            });
+                    if (!notifAsked && Notification.permission !== 'granted') {
+                        if (!forOffers)
+                            $rootScope.$emit('http.notif', "Pentru a primi oferte pentru locul tău " +
+                                "în timp real, te rugăm acceptă notificările.");
+                        else
+                            $rootScope.$emit('http.notif', "Te rugăm acceptă " +
+                                "pentru a primi notificări în timp real despre oferta ta.");
 
-            push.on('registration', function (data) {
-                let notifId = data.registrationId;
-                console.log("Obtained notification id: " + notifId);
-                $http.post(ENV + '/notif.json', {notif_registration_id: notifId}).then(
-                    function (data) {
-                        console.log('Successfully saved notification id!')
-                    },
-                    function (err) {
-                        console.log('Problem while saving notification id!', err)
+                        notifAsked = true;
+                    }
+
+                    // request notification permission from the user
+                    navigator.serviceWorker.ready.then(function (reg) {
+                        reg.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: window.vapidPublicKey
+                        }).then(function (sub) {
+                            // user accepted
+                            let subStr = JSON.stringify(sub);
+                            subJson = JSON.parse(subStr);
+                            subJson.notif_approved = true;
+                            $http.post('/users/register_for_notifications.json',
+                                subJson
+                            ).then(function () {
+                                registered = true;
+                            }).catch((e) => {
+                                console.warn('Unable to send endpoint url to server.' +
+                                    'Will retry on next open.');
+                            });
+
+                        }).catch(function (e) {
+
+                            if (Notification.permission === 'denied') {
+                                // user doesn't want notification
+                                $http.post('/users/register_for_notifications.json', {
+                                    notif_approved: false
+                                }).catch((e) => {
+                                    console.warn('Unable to send endpoint url to server.' +
+                                        'Will retry on next open.');
+                                });
+                            } else {
+                                // exception while subscribing
+                                console.error('Unable to subscribe to push', e);
+                            }
+
+                        });
                     });
-            });
+                };
 
-            push.on('notification', function (data) {
-                _this.showNotifications(data.additionalData);
-            });
+                _this.hideOfferNotifications = function () {
 
-            push.on('error', function (e) {
-                // e.message
-                console.error("Error while registering/receiving notifications", e, e.message);
-                $rootScope.$emit('http.error',
-                    'Cannot register for notifications! You won\'t receive any notifications'
-                )
-            });
-        };
+                };
+
+                _this.hideParkingSpaceNotifications = function () {
+
+                };
 
 
-        document.addEventListener('deviceready', function () {
-            _this.registerForNotifications();
-        });
+                _this.showNotifications = function (msg) {
 
+                };
 
-        _this.hideOfferNotifications = function () {
-            // hide notifications in 2 seconds
-            setTimeout(function () {
-                _this.offerNotifications = [];
-                if (!$rootScope.$$phase)
-                    $rootScope.$apply();
-            }, 10000);
-        };
-
-        _this.hideParkingSpaceNotifications = function () {
-            // hide notifications in 2 seconds
-            setTimeout(function () {
-                _this.parkingSpaceNotifications = [];
-                if (!$rootScope.$$phase)
-                    $rootScope.$apply();
-            }, 10000);
-        };
-
-
-        _this.showNotifications = function (msg) {
-            if (!msg) {
-                return;
-            }
-
-            msg.active = true;
-
-            if (msg.area === 'offer') {
-                _this.offerNotifications.push(msg);
-            } else if (msg.area === 'parking_space') {
-                _this.parkingSpaceNotifications.push(msg);
-            }
-
-
-            navigator.vibrate(800);
-
-
-            let state = $state.current.name;
-            let stateIsMyPosts = state.indexOf('home.myposts') !== -1;
-            let stateIsMyOffers = state.indexOf('home.myoffers') !== -1;
-            if (stateIsMyOffers || stateIsMyPosts) {
-                $state.reload();
-            }
-
-            // current state is 'search', we just show the notif baloon
-            if (!$rootScope.$$phase)
-                $rootScope.$apply();
-
-
-        };
-
-    }]);
+            }]);

@@ -6,54 +6,74 @@
     </a>
   </div>
 
+
+  <!-- Blanket shown when awaiting for login clbk -->
+  <div class="ps-modal" id="loadingBlanket" style="display: none;">
+    <section class="full-height d-flex justify-content-center align-items-center">
+      <div class=""><i class="fa fa-4x fa-spinner fa-spin mt-5 text-secondary"></i></div>
+    </section>
+  </div>
+
+
   <div id="login" class="row justify-content-center ">
 
     <div class="col-10 col-sm-7 col-md-6 col-xl-4 text-center">
-      <h3>Bine ai venit !</h3>
+      <h3 class="py-3 mb-3">Înainte de a rezerva locuri de parcare</h3>
+      <form name="loginForm" id="loginForm" novalidate="novalidate">
+        <div class="form-group">
+          <input type="email" class="user-name form-control form-control-lg" placeholder="Email" ng-model="userName" name="user" required/>
+          <div class="invalid-feedback">Introdu o adresă de email validă</div>
+        </div>
 
-      <div class="form-group">
-        <input type="email" class="user-name form-control form-control-lg" placeholder="Email" ng-model="userName" name="user" required/>
-      </div>
+        <div class="form-group">
+          <input type="password" class="password form-control  form-control-lg" placeholder="Parolă" ng-model="password" name="pw" required/>
+          <div class="invalid-feedback">Introdu parola</div>
 
-      <div class="form-group">
-        <input type="password" class="password form-control  form-control-lg" placeholder="Parolă" ng-model="password" name="pw" required/>
-      </div>
-      <a onclick="$('#recoverPassword').show();" class="recover-pw-link">Recuperare parolă</a>
+        </div>
+        <a onclick="$('#recoverPassword').show();" class="recover-pw-link">Recuperare parolă</a>
 
 
-      <button class="btn btn-lg mt-5 btn-block btn-danger" ng-click="login()">
-        <i class="fa fa-spinner loading-spinner fa-spin"></i>
-        Login
-      </button>
-
+        <button class="btn btn-lg mt-5 btn-block btn-danger" ng-click="login()">
+          <i class="fa fa-spinner loading-spinner fa-spin"></i>
+          Login
+        </button>
+      </form>
       <div class="my-4 my-sm-5 ">sau</div>
 
-      <button class="btn btn-lg btn-block btn-primary" ng-click="loginWithFb()">
-        <i class="fa fa-spinner loading-spinner fa-spin"></i> Login via Facebook
+      <button class="btn btn-lg btn-block btn-primary btn-fb" ng-click="goToFb()" >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 216" class="_5h0m" color="#FFFFFF"><path fill="#FFFFFF" d="
+          M204.1 0H11.9C5.3 0 0 5.3 0 11.9v192.2c0 6.6 5.3 11.9 11.9
+          11.9h103.5v-83.6H87.2V99.8h28.1v-24c0-27.9 17-43.1 41.9-43.1
+          11.9 0 22.2.9 25.2 1.3v29.2h-17.3c-13.5 0-16.2 6.4-16.2
+          15.9v20.8h32.3l-4.2 32.6h-28V216h55c6.6 0 11.9-5.3
+          11.9-11.9V11.9C216 5.3 210.7 0 204.1 0z"></path></svg>
+        &nbsp;<i class="fa fa-spinner loading-spinner fa-spin"></i> Log in With Facebook
       </button>
+
 
       <button class="btn btn-lg  btn-block btn-primary" ui-sref="home.register({lat:lat,lng:lng})">
         <i class="fa fa-spinner loading-spinner fa-spin"></i> Înregistrare
       </button>
 
+
       <div id="recoverPassword" class="ps-dialog">
-        <div class="ps-dialog-content">
-          <div class="ps-question">
-            <div class="py-2">
-              Te rugăm introdu adresa de email
+        <form id="recoverPwForm" name="recoverPwForm" novalidate="novalidate">
+          <div class="ps-dialog-content">
+            <div class="ps-question">
+              <div class="py-2">
+                Te rugăm introdu adresa de email
+              </div>
+              <input type="email" class="form-control"
+                     placeholder="Email" ng-model="recoveryEmail" name="email" required
+                     minlength="5"
+                     pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
             </div>
-            <input type="email" class="form-control"
-                   placeholder="Email" ng-model="recoveryEmail" name="email" required
-                   minlength="5"
-                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
-          </div>
-          <div class="ps-control-buttons">
-            <div class="p-2 d-flex justify-content-around">
+            <div class="ps-control-buttons">
               <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
-              <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Anulare</a>
+              <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Înapoi</a>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

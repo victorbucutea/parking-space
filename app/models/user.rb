@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   has_one :account
   has_many :parking_spaces
+  has_many :roles
 
 
   def password_required?

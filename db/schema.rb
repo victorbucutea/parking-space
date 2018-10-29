@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180310162346) do
+ActiveRecord::Schema.define(version: 20181028163609) do
 
   create_table "accounts", force: :cascade do |t|
     t.decimal "amount"
@@ -50,6 +50,24 @@ ActiveRecord::Schema.define(version: 20180310162346) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "parking_perimeters", force: :cascade do |t|
+    t.decimal "top_left_x"
+    t.decimal "top_left_y"
+    t.decimal "bottom_right_x"
+    t.decimal "bottom_right_y"
+    t.string "identifier"
+    t.string "snapshot"
+    t.integer "parking_space_id"
+    t.string "description"
+    t.integer "perimeter_type"
+    t.integer "sensor_id"
+    t.float "price"
+    t.decimal "lat"
+    t.decimal "lng"
+    t.index ["parking_space_id"], name: "index_parking_perimeters_on_parking_space_id"
+    t.index ["sensor_id"], name: "index_parking_perimeters_on_sensor_id"
+  end
+
   create_table "parking_spaces", force: :cascade do |t|
     t.decimal "location_lat"
     t.decimal "location_long"
@@ -57,7 +75,6 @@ ActiveRecord::Schema.define(version: 20180310162346) do
     t.decimal "recorded_from_long"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "approved_proposal_id"
     t.decimal "target_price"
     t.string "phone_number"
     t.string "owner_name"
@@ -76,6 +93,7 @@ ActiveRecord::Schema.define(version: 20180310162346) do
     t.time "daily_start"
     t.time "daily_stop"
     t.integer "user_id"
+    t.integer "source_type", default: 0
     t.index ["created_at"], name: "index_parking_spaces_on_created_at"
     t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
     t.index ["location_long"], name: "index_parking_spaces_on_location_long"
@@ -106,6 +124,42 @@ ActiveRecord::Schema.define(version: 20180310162346) do
     t.index ["user_id"], name: "index_proposals_on_user_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "identifier"
+    t.integer "users_id"
+    t.index ["users_id"], name: "index_roles_on_users_id"
+  end
+
+  create_table "sensor_locations", force: :cascade do |t|
+    t.decimal "location_lat"
+    t.decimal "location_long"
+    t.string "parking_space_name"
+    t.string "address"
+    t.string "deviceid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+  end
+
+  create_table "sensors", force: :cascade do |t|
+    t.string "deviceid"
+    t.string "title_message"
+    t.string "snapshot"
+    t.string "location_text"
+    t.datetime "installation_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "sensor_location_id"
+    t.decimal "lat"
+    t.decimal "lng"
+    t.string "module_info"
+    t.boolean "active"
+    t.boolean "hook_active"
+    t.integer "hit_count"
+    t.datetime "last_touch_date"
+    t.index ["sensor_location_id"], name: "index_sensors_on_sensor_location_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -128,6 +182,9 @@ ActiveRecord::Schema.define(version: 20180310162346) do
     t.boolean "phone_no_confirm"
     t.string "phone_confirm_code"
     t.string "payment_id"
+    t.boolean "notif_approved"
+    t.string "p256dh"
+    t.string "notif_auth"
     t.index ["device_id"], name: "index_users_on_device_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["license"], name: "index_users_on_license"

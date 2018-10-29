@@ -13,7 +13,7 @@
                 <button class="btn btn-link" ui-sref=".edit({parking_space_id: space.id})">
                     <i class="fa fa-edit"></i> Modifică
                 </button>
-                <button class="btn btn-link " ui-sref="home.map.search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
+                <button class="btn btn-link " ui-sref="home.search({lat:space.location_lat, lng:space.location_long,zoom: 19 })">
                     <i class="fa fa-map"></i>
                     Vezi harta
                 </button>
@@ -72,7 +72,7 @@
             Nu ai postat un loc, sau acestea au expirat.
             Ajută la descongestionarea traficului și rotunjește-ți veniturile
             <u>
-                <a ui-sref="home.map.search">
+                <a ui-sref="home.search">
                     postând un loc.
                 </a>
             </u>

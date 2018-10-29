@@ -5,11 +5,12 @@ json.extract! parking_space, :id, :location_lat, :location_long, :title,
               :owner_name, :updated_at, :created_at, :file1, :file2, :file3
 
 json.timestamp parking_space.created_at
-json.public parking_space.public_parking?
 json.price parking_space.target_price.to_f
 json.currency parking_space.target_price_currency
-json.owner_is_current_user parking_space.user.id == current_user.id
+json.owner_is_current_user parking_space.user.id == current_user.id unless parking_space.user.nil?
 json.expired parking_space.expired?
+json.from_sensor parking_space.sensor_source?
+json.from_user parking_space.user_source?
 if parking_space.owner.present?
   json.owner_phone_number parking_space.owner.phone_number
   json.owner_email parking_space.owner.email

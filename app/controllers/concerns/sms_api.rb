@@ -15,17 +15,20 @@ module SmsApi
   end
 
   def send_sms(destination_no, text)
+
     sms_message = SwaggerClient::Message.new # Message | Message properties
     sms_message.sender = "GoPark"
     sms_message.destination = destination_no.sub '+', ''
     sms_message.content = text
     sms_message.schedule = ""
     sms_message.tag = "offers"
-    begin
-      result = @sms_api.send_message(sms_message)
-      p result
-    rescue SwaggerClient::ApiError => e
-      puts "Exception when sending SMS : #{e} , #{e.response_body}"
+    Concurrent::Future.execute do
+      begin
+        @sms_api.send_message(sms_message)
+      rescue SwaggerClient::ApiError => e
+        puts "Exception when sending SMS : #{e} , #{e.response_body}"
+      end
     end
+
   end
 end

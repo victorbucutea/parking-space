@@ -17,7 +17,7 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
+    query_attrs = {lon_min: lon_min, lon_max:lon_max, lat_min: lat_min, lat_max: lat_max}
     @parking_spaces = ParkingSpace.not_expired.active
                           .includes(:proposals)
                           .within_boundaries(query_attrs)
@@ -101,7 +101,7 @@ class ParkingSpacesController < ApplicationController
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-    if current_user.id != @parking_space.id
+    if current_user.id != @parking_space.user.id
       render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
       return
     end

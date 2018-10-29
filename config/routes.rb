@@ -1,5 +1,22 @@
 Rails.application.routes.draw do
 
+
+  post 'sensor_auth/authenticate'
+
+  resources :sensor_locations
+
+  resources :sensors do
+    post 'publish_free_perimeters'
+    post 'save_perimeters'
+    post 'snapshot'
+    post 'perimeter_snapshot'
+    get 'perimeters'
+    collection do
+      get 'assigned'
+      get 'with_location'
+    end
+  end
+
   match "users*" => "registrations#cors_preflight_check", via: [:options]
 
   devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}
@@ -12,9 +29,8 @@ Rails.application.routes.draw do
     post "/users/sign_in_fb" => "sessions#sign_in_fb", :as => "sign_in_fb"
     post "/users/validate_code" => "registrations#validate_code", :as => "validate_code"
     post "/users/send_new_code" => "registrations#send_new_code", :as => "send_new_code"
+    post "/users/register_for_notifications" => "registrations#register_for_notifications", :as => "register_for_notifications"
   end
-
-  post '/notif' => 'notifications#notif', :as => 'notif'
 
   resources :parameters
 
@@ -47,6 +63,7 @@ Rails.application.routes.draw do
       resources :messages
     end
   end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

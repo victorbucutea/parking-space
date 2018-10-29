@@ -7,7 +7,7 @@ json.bid_price proposal.bid_amount.to_f
 json.bid_currency proposal.bid_currency
 json.start_date proposal.start_date
 json.end_date proposal.end_date
-json.owner_is_current_user proposal.user_id == current_user.device_id
+json.owner_is_current_user proposal.user_id == current_user.id
 json.read proposal.read
 json.paid proposal.paid?
 json.payment_date proposal.payment_date

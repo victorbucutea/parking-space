@@ -1,14 +1,20 @@
-'use strict';
+angular.module('ParkingSpaceMobile.directives')
 
-angular.module('ParkingSpaceMobile.directives', [])
-
-    .directive('map', function () {
+    .directive('map', ['$rootScope', function ($rootScope) {
         return {
             restrict: 'E',
             scope: {
-                onCreate: '&'
+                onCreate: '&',
+                onError: '&',
             },
             link: function ($scope, $element, $attr) {
+                // bad internet, a message should be shown
+                // to warn the user. No sense to initialize the map.
+                if (!window.google || !window.google.maps) {
+                    $scope.onError();
+                    return;
+                }
+
 
 
                 function initialize() {
@@ -38,7 +44,7 @@ angular.module('ParkingSpaceMobile.directives', [])
                 initialize();
             }
         };
-    })
+    }])
 
     .directive('productTable', function () {
         return {
@@ -99,6 +105,11 @@ angular.module('ParkingSpaceMobile.directives', [])
             '       ng-click="address=\'\'" ' +
             '       ng-show="address.length > 3"></i>\n',
             link: function ($scope, elm, attr) {
+                // bad internet, a message should be shown
+                // to warn the user. No sense to initialize the map.
+                if (!window.google || !window.google.maps) return;
+
+
                 let input = $(elm).find('#pac-input')[0];
                 let searchBox = new google.maps.places.Autocomplete(input);
 
@@ -131,7 +142,7 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     })
 
-    .directive('searchCenterIcon', ['$rootScope', function ( $rootScope) {
+    .directive('searchCenterIcon', ['$rootScope', function ($rootScope) {
         return {
             scope: {
                 shown: '='
@@ -143,6 +154,12 @@ angular.module('ParkingSpaceMobile.directives', [])
             '               class="search-center-icon animated bounce"' +
             '               </div>',
             link: function ($scope, $element, $attr) {
+
+                // bad internet, a message should be shown
+                // to warn the user. No sense to initialize the map.
+                if (!window.google || !window.google.maps) {
+                    return;
+                }
 
                 let start = google.maps.event.addListener($rootScope.map, 'dragstart', () => {
                     $('#searchCenterIcon').addClass('shadow');
@@ -169,8 +186,10 @@ angular.module('ParkingSpaceMobile.directives', [])
             template:
             '<div class="parking-spot-details p-0 p-md-2 d-flex ">' +
             '          <div ng-click="showFullImage=true" class="d-flex" style="overflow: hidden">' +
-            '            <cl-image public-id="{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail"></cl-image>' +
-            '            <cl-image public-id="{{space.file2}}" ng-show="space.file2" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}"' +
+            '                ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '                ng-show="space.file2" class="img-thumbnail p-0 thumbnail">' +
             '          </div>' +
             '          <div class="ml-3" >' +
             '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
@@ -185,9 +204,14 @@ angular.module('ParkingSpaceMobile.directives', [])
             '          </div>' +
             '</div>' +
             ' <div class="ps-modal image pt-2 text-center" ng-show="showFullImage" ng-init="showFullImage=false">' +
-            '    <cl-image public-id="{{space.file1}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file2}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file3}}" class="img-fluid mb-1"></cl-image>' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn"' +
+            '         ng-show="space.file2">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file3}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn"' +
+            '         ng-show="space.file3">' +
             '    <span>{{space.description}}</span>' +
             ' </div>',
             scope: {
@@ -196,6 +220,7 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
             link: function ($scope, elm) {
 
+                $scope.cloudName = window.cloudinaryName ;
                 $(elm).find('.parking-spot-details').click(evt => {
                     let isRoot = $(evt.currentTarget).hasClass('parking-spot-details');
                     if (isRoot && !$scope.thumbnailModal) {
@@ -220,29 +245,35 @@ angular.module('ParkingSpaceMobile.directives', [])
             template: ' ' +
             '<div class="space-summary-content py-2 d-flex d-sm-none align-items-center" ng-click="showFullImage = true">' +
             '          <div class="d-flex">' +
-            '            <cl-image public-id="{{space.file1}}" ng-show="space.file1" class="img-thumbnail p-0 thumbnail"></cl-image>' +
-            '            <cl-image public-id="{{space.file2}}" ng-show="space.file2" class="img-thumbnail p-0 thumbnail"></cl-image>' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
+            '               ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
+            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '               ng-show="space.file2" class="img-thumbnail p-0 thumbnail">' +
             '          </div>' +
             '          <div class="ml-3">' +
-            '            <h4 class="text-truncate">{{space.price | units }}.' +
+            '            <h4 class="text-truncate small"><i class="fa fa-car"></i> {{space.title}}</h4>' +
+                '            <p class="text-truncate">{{space.address_line_1}}</p>' +
+                '            <h4 class="text-truncate">{{space.price | units }}.' +
             '              <small>{{space.price | subunits}}</small>' +
             '              {{space.currency}}/h' +
             '            </h4>' +
-            '            <p class="text-truncate">{{space.address_line_1}}</p>' +
             '            <u class="text-secondary">Mai multe ...</u>' +
             '          </div>' +
             '</div>' +
             ' <div class="ps-modal p-1 " ng-show="showFullImage">' +
-            '    <cl-image public-id="{{space.file1}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file2}}" class="img-fluid mb-1 animated zoomIn"></cl-image>' +
-            '    <cl-image public-id="{{space.file3}}" class="img-fluid mb-1"></cl-image>' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
+            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file3}}" ' +
+            '         class="img-fluid mb-1 animated zoomIn">' +
             '    <span>{{space.description}}</span>' +
             ' </div>',
             scope: {
                 space: '='
             },
             link: function ($scope, elm) {
-
+                $scope.cloudName = window.cloudinaryName ;
                 $(elm).find('.ps-modal').click((evt) => {
                     evt.stopPropagation();
                     $scope.showFullImage = false;
@@ -313,115 +344,6 @@ angular.module('ParkingSpaceMobile.directives', [])
         }
     }])
 
-    .directive('uploadImage', function () {
-        return {
-            restrict: 'E',
-            scope: {
-                imageFile: '=',
-                label: '=',
-                optional: '=',
-                control: '=',
-                uploadedFile: '='
-            },
-            template:
-            ' ' +
-            '<div class="parking-sign justify-content-center d-flex flex-column" ' +
-            '       ngf-drop ' +
-            '       ngf-select ' +
-            '       ng-class="{secondary: optional}" ' +
-            '       ng-hide="imageFile || uploadedFile"' +
-            '       ng-model="imageFile" ' +
-            '       accept="image/*"' +
-            '       ngf-max-size="4MB"' +
-            '       ngf-model-invalid="invalidFile">' +
-            '   <i class="fa fa-camera fa-3x"></i>' +
-            '   <i class="text" ng-bind="label"></i>' +
-            '</div>' +
-
-            '<div ngf-thumbnail="imageFile" ' +
-            '       ngf-as-background="true" ' +
-            '       ng-click="showThumbnail=true"' +
-            '       class="parking-sign">' +
-            '</div>' +
-
-            '<div class="parking-sign " ng-show="uploadedFile && !imageFile" style="overflow: auto">' +
-            '   <cl-image public-id="{{uploadedFile}}" ' +
-            '       style="max-width:100%;"' +
-            '       ng-click="showThumbnail=true">' +
-            '   </cl-image>' +
-            '</div>' +
-
-            '<div id="uploadProgressCont" class="progress-container">' +
-            '   <div id="uploadProgressBar" ' +
-            '        style="width: {{progress}}%" ' +
-            '        class="progress-bar"' +
-            '        ng-init="progress=0">' +
-            '   </div>' +
-            '</div>' +
-            ' <div class="invalid-feedback" style="display:block" ng-show="invalidFile.$error">' +
-            ' Dim. nu poate fi mai mare de 4MB</div> ' +
-            '</div>' +
-            '<button class="btn btn-link btn-change-photo" ' +
-            '        ng-show="imageFile"' +
-            '        ng-click="imageFile = null">Șterge</button>' +
-
-            '<button class="btn btn-link btn-change-photo" ' +
-            '        ng-show="uploadedFile"' +
-            '        ng-click="uploadedFile = null">Șterge</button>' +
-
-            '<div class="ps-modal p-3" ng-show="showThumbnail">' +
-            '   <img  class="img-fluid animated zoomIn" ngf-thumbnail="imageFile" >' +
-            '   <cl-image public-id="{{uploadedFile}}" ' +
-            '             class="img-fluid">' +
-            '   </cl-image>' +
-            '</div>',
-
-            controller: ['$scope', '$rootScope', 'Upload', '$timeout', 'cloudinary' ,
-                function ($scope, $rootScope, Upload, $timeout, cloudinary) {
-                if (!$scope.control)
-                    $scope.control = {};
-
-                $scope.control.uploadPic = function (file, successClbk, errClbk) {
-                    if (!file) return;
-
-                    let cloudName = cloudinary.config().cloud_name;
-                    let upload = Upload.upload({
-                        url: 'https://api.cloudinary.com/v1_1/' + cloudName + '/upload',
-                        data: {
-                            upload_preset: cloudinary.config().upload_preset,
-                            file: file
-                        }
-                    });
-
-
-                    upload.then(function (response) {
-                    }, function (response) {
-                        if (response.status > 0) {
-                            let msg = response.status + ': ' + response.data;
-                            $rootScope.emit('http.error', ' Error while uploading image:' + msg);
-                        }
-                    }, function (evt) {
-                        // Math.min is to fix IE which reports 200% sometimes
-                        let progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-                        $scope.progress = progress;
-                    });
-
-
-                    return upload;
-                };
-
-            }],
-            link: function ($scope, elm) {
-
-                $(elm).find('.ps-modal').click((evt) => {
-                    evt.stopPropagation();
-                    $scope.showThumbnail = false;
-                    $scope.$evalAsync();
-                })
-            }
-        }
-    })
-
     .directive('currency', ['currencies', function (currencies) {
         return {
             restrict: 'E',
@@ -431,11 +353,11 @@ angular.module('ParkingSpaceMobile.directives', [])
             },
             link: function ($scope) {
 
-                var display = function (newVal) {
+                let display = function (newVal) {
                     if (!newVal)
                         return;
 
-                    var currency = $.grep(currencies, function (cur) {
+                    let currency = $.grep(currencies, function (cur) {
                         return newVal === cur.name;
                     });
 
@@ -467,7 +389,6 @@ angular.module('ParkingSpaceMobile.directives', [])
             template = '<input ' +
                 '       type="datetime-local" ' +
                 '       class="form-control"' +
-                '       min="' + moment().startOf('h').format('YYYY-MM-DD[T]HH:mm:ss.ms') + '"' +
                 '       ng-model="dateModel"' +
                 '       required>';
         }
@@ -537,7 +458,6 @@ angular.module('ParkingSpaceMobile.directives', [])
                         }, function (start, end, label) {
                             $scope.dateModel = start.toDate();
                             $scope.$evalAsync();
-                            elm.removeClass('is-invalid');
                         });
 
                     }

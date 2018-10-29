@@ -31,22 +31,31 @@
 
     <hr class="my-4"/>
 
-    <form name="phoneConfirmation">
-      <div class="form-group">
-        <label for="phoneNumber">Număr telefon:</label>
-        <div class="input-group input-group-lg">
-            <span class="input-group-addon" onclick="$('#editPhoneNumber').show()">
+    <form name="phoneConfirmation" id="phoneConfirmation" novalidate="novalidate">
+      <div class="form-row">
+        <div class="col-12">
+          <label for="phoneNumber">Număr telefon:</label>
+          <div class="input-group input-group-lg">
+            <div class="input-group-prepend" onclick="$('#editPhoneNumber').show()">
+               <span class="input-group-text">
               <img width="25" src="<%= image_path 'app/flags/Romania.png' %>">
               &nbsp;
               {{ selectedCountry.prefix || '+40'}}
-            </span>
-          <input class="phone-number form-control" type="text" id="phoneNumber"
-                 ng-model="user.phoneNumber"
-                 name="phoneNumber"
-                 cleave="options.phoneNumber"
-                 pattern="[0-9]{3}[\. ]*[0-9]{3}[\. ]*[0-9]{3}"/>
+               </span>
+            </div>
+            <input class="phone-number form-control" type="text" id="phoneNumber"
+                   autocorrect="off" autocapitalize="none"
+                   ng-model="user.phoneNumber"
+                   name="phoneNumber"
+                   cleave="options.phoneNumber"
+                   pattern="7[0-9]{2}[\. ]*[0-9]{3}[\. ]*[0-9]{3}"/>
+            <div class="invalid-tooltip" style="left:20%">
+              e.g. 722.333.444
+            </div>
+          </div>
+
+          <small class="form-text text-muted">(e.g. 727.123.456)</small>
         </div>
-        <small class="form-text text-muted">(e.g. 727.123.456) </small>
       </div>
       <div class="d-flex justify-content-center">
         <button class="btn btn-info" ng-click="resendCode()">Trimite cod nou</button>

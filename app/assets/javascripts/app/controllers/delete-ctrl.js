@@ -4,12 +4,15 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('DeleteParkingSpaceCtrl',
-    ['$scope', 'parkingSpaceService', '$state', '$stateParams', function ($scope, parkingSpaceService, $state, $stateParams) {
+    ['$scope', 'parkingSpaceService', '$state', '$stateParams', '$rootScope',
+        function ($scope, parkingSpaceService, $state, $stateParams, $rootScope) {
 
     $scope.deleteSpace = function () {
         let parkingSpaceId = $stateParams.parking_space_id;
-        parkingSpaceService.deleteSpace(parkingSpaceId);
-        $state.go('home.map.search');
+        parkingSpaceService.deleteSpace(parkingSpaceId, () => {
+            $rootScope.$emit('spaceDelete',parkingSpaceId)
+        });
+        $state.go('home.search');
     };
 
 }]);

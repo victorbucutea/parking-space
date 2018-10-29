@@ -1,23 +1,36 @@
-<div ng-controller="SearchParkingSpaceCtrl" class="map-controls">
+<div class="full-height" ng-controller="SearchParkingSpaceCtrl" >
+
+
+
+
+
+  <!-- map -->
+  <div id="map">
+    <map on-create="mapCreated(map, overlay, geocoder)" on-error="mapError()"></map>
+  </div>
+
+
+
+  <div class="map-controls" >
 
     <ui-view name="place-bid"></ui-view>
 
     <search-center-icon shown="placingSpot"></search-center-icon>
 
     <button class="info-btn btn btn-info" ui-sref=".instructions">
-        <i class="fa fa-question"></i>
+      <i class="fa fa-question"></i>
     </button>
 
 
     <button class="center-btn btn btn-secondary" ng-click="centerMap()">
-        <i class="fa fa-crosshairs"></i>
+      <i class="fa fa-crosshairs"></i>
     </button>
 
     <button class="btn btn-primary add-btn" ng-click="showPostSpace()" ng-class="{wide: placingSpot}">
        <span ng-hide="placingSpot">
            <i class="fa fa-plus"></i> <br/> Vinde
        </span>
-        <span ng-show="placingSpot">
+      <span ng-show="placingSpot">
             Continuă
             <i class="fa fa-arrow-right"></i>
         </span>
@@ -26,4 +39,6 @@
     <ui-view name="help"></ui-view>
 
 
+  </div>
+  <ui-view name="map-controls"></ui-view>
 </div>

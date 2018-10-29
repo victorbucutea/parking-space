@@ -5,7 +5,6 @@ require 'securerandom'
 class SessionsController < Devise::SessionsController
   clear_respond_to
   respond_to :json
-  after_action :after_login, :only => :create
 
   def sign_in_fb
     user = params[:user]
@@ -47,10 +46,4 @@ class SessionsController < Devise::SessionsController
     end
   end
 
-
-  def after_login
-    if session[:notif_registration_id]
-      current_user.update_attribute(:notif_registration_id, session[:notif_registration_id])
-    end
-  end
 end

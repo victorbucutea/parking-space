@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 ruby "2.4.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'puma', '3.11.3'
 gem 'rails', '5.1.4'
-gem 'thin'
 
 # Use sqlite3 as the database for Active Record
 group :development do
@@ -22,6 +22,9 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 
 gem 'webpacker', '~> 3.5', require: false
+gem 'webpush'
+gem 'concurrent-ruby', require: 'concurrent'
+gem 'sendgrid-ruby'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -38,19 +41,12 @@ gem 'high_voltage', '~> 3.0.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# gem 'aws-sdk', '~> 2'
 
 gem 'pushmeup'
 gem "braintree", "~> 2.83.0"
 gem "cloudinary"
+gem "pusher"
 gem 'serviceworker-rails'
-
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]

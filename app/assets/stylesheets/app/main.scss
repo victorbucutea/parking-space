@@ -21,12 +21,17 @@ map {
   height: 100%;
 }
 
+.map-loading {
+  position: fixed;
+  width: 100%;
+}
+
 .info-btn {
   position: absolute;
   bottom: 160px;
   z-index: 2;
   right: 32px;
-  box-shadow: 2px 6px 20px 2px $gray-600;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -39,7 +44,7 @@ map {
   bottom: 98px;
   z-index: 2;
   right: 32px;
-  box-shadow: 2px 6px 20px 2px $gray-600;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   cursor: pointer;
   width: 40px;
   height: 40px;
@@ -50,7 +55,7 @@ map {
 .add-btn {
   background-color: $blue-800;
   padding: 0;
-  box-shadow: 2px 6px 20px 2px $gray-600;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   border-radius: 28px;
   position: absolute;
   bottom: 24px;
@@ -80,6 +85,7 @@ map {
   &.help {
     bottom: 13%;
     right: 18%;
+    position: absolute;
   }
 
 }
@@ -87,6 +93,25 @@ map {
 @include media-breakpoint-down(sm) {
   .add-btn, .center-btn, .info-btn {
     position: fixed;
+  }
+}
+
+.realtime-notif {
+  background-color: $warning;
+  transition: max-height ease-in-out .5s;
+  max-height: 0;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+
+  .notif-close:hover {
+    cursor: pointer;
+  }
+
+  &.slide-in {
+    max-height: 6em;
   }
 }
 
@@ -103,7 +128,7 @@ map {
 .marker-instruction-circle {
   position: absolute;
   bottom: 42%;
-  left: 26%;
+  right: 55%;
 }
 
 .btn-instruction-circle {
@@ -123,14 +148,13 @@ map {
   left: 0;
 }
 
-
-
 #pac-container {
   background-color: $white;
   font-size: 16px;
   width: 90%;
   margin: $big-measure-unit auto;
-  box-shadow: 2px 8px 20px 2px $gray-600;
+  margin-top: $xxbig-measure-unit;
+  box-shadow: 2px 4px 6px 0 $gray-600;
   border-radius: 3px;
   position: absolute;
   top: 0;
@@ -139,15 +163,14 @@ map {
   left: 0;
   max-width: 700px;
 
-  @include media-breakpoint-down(sm){
+  @include media-breakpoint-down(sm) {
     position: fixed;
   }
-
 
   #pac-input {
     padding-right: 17%;
     padding-left: 3%;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 
   .input-group, .form-control {
@@ -200,14 +223,47 @@ map {
   right: 1rem;
 }
 
-.pac-item {
-  line-height: $xxxbig-measure-unit;
-  font-size: 1.2em;
-  font-family: $font-family;
-  border: none;
+@include media-breakpoint-down(sm) {
 
-  .pac-item-query {
-    font-size: inherit;
+  .container.search-block:focus-within {
+    position: absolute;
+    top: 0;
+    background-color: transparentize($gray-300, 0.2);
+    height: 100%;
+    right: 0;
+    left: 0;
+    margin: 0 !important;
+    max-width: inherit;
+
+    .form-group {
+      margin-top: 20px;
+    }
+  }
+
+}
+
+.pac-container {
+  border-radius: 4px;
+  font-size: 1.1em;
+
+  .pac-item {
+    line-height: $xxxbig-measure-unit;
+    font-size: 1.2em;
+    font-family: $font-family;
+    border: none;
+    padding: 4px;
+
+    .pac-item-query {
+      font-size: inherit;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+    .pac-icon {
+      margin-left: 5px;
+      transform: scale(1.8);
+    }
   }
 }
 
@@ -397,7 +453,7 @@ map {
 }
 
 .open-spaces-list {
-  margin-top: $lg-jumbo-measure-unit;
+  margin-top: $lg-jumbo-measure-unit + $base-font-size;
 
   h1, h2, h3 {
     margin: 0;
@@ -419,37 +475,37 @@ map {
   overflow-y: scroll;
 }
 
-.open-offers-list {
-  margin-top: $lg-jumbo-measure-unit;
+.add-photo {
+  border: 1px dashed;
+  box-shadow: none;
+  margin: auto;
+  border-radius: 8px;
+  text-align: center;
+  height: 118px;
+  color: $blue-400;
 }
 
-.post-space-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: $white;
-  z-index: 2;
-
-  &.inline {
-    position: relative;
-    margin-top: $xxbig-measure-unit;
-
-    .post-space {
-      width: 81%;
-      margin: auto;
-      background-color: $blue;
-    }
+.owl-carousel .img-thumbnail {
+  border: 0;
+  padding: 0;
+  max-width: 100% !important;
+  max-height: 30vh !important;
+  &:hover {
+    box-shadow: 5px 5px $gray-400;
+    cursor: pointer;
   }
+}
 
-  .post-space {
-    border-radius: 5px;
-    background-color: #333;
-    color: $white;
-    text-align: center;
-    font-size: 16px;
-    padding: $sm-measure-unit;
-    margin: $measure-unit;
-  }
+.small .invalid-feedback {
+  font-size: 1.2em;
+}
+
+.progress-container {
+  margin-top: 2px !important;
+}
+
+.open-offers-list {
+  margin-top: $lg-jumbo-measure-unit;
 }
 
 .space-detail-title {
@@ -612,12 +668,13 @@ parking-spot-info-box {
       font-size: 1.9em;
     }
   }
+
   .parking-spot-details {
     padding: $measure-unit 0;
 
     h1 {
       color: $red;
-      font-size: $xlg-font-size;
+      font-size: $lg-font-size;
       margin-top: $xsm-measure-unit;
     }
 
@@ -628,6 +685,7 @@ parking-spot-info-box {
 
     h2 {
       font-size: $lg-font-size;
+      margin-bottom: $sm-measure-unit;
     }
 
     img {
@@ -680,7 +738,7 @@ parking-spot-info-box {
 }
 
 .notification-area {
-  position: absolute;
+  position: fixed;
   top: 100px;
   z-index: 100;
   width: 100%;
@@ -871,7 +929,6 @@ parking-spot-info-box {
     list-style-type: none;
     padding: 0;
 
-
     li {
       padding: 14px 20px;
       font-size: 1.2em;
@@ -1009,7 +1066,7 @@ parking-spot-info-box {
 
   &.help {
     top: 41%;
-    left: 30%;
+    right: 55%;
     font-size: 1.5em;
   }
 
@@ -1032,9 +1089,9 @@ parking-spot-info-box {
     left: 16px;
   }
 
-  &:before {
+  &.public:before {
     content: '';
-    background-image: image-url('app/p_logo_icon.png');
+    background-image: image_url('app/p_logo_icon.png');
     display: inline-block;
     width: 17px;
     height: 23px;
@@ -1049,12 +1106,12 @@ parking-spot-info-box {
     width: auto;
     height: auto;
     margin: 2px;
-    font-family: 'fontawesome';
+    font-family: 'Fontawesome';
     color: $green;
     font-size: 20px;
   }
 
-  &.private.owner:before {
+  &.owner:before {
     content: '\f007';
   }
 
@@ -1065,8 +1122,81 @@ parking-spot-info-box {
   }
 }
 
+.location_map {
+  height: 30vh;
+}
+
+.list-group-item-action {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.edit-sensor-modal {
+  position: fixed;
+  > div:first-child {
+    max-width: 90%;
+  }
+
+  .sample-perimeter {
+    background-color: transparentize($warning, .8);
+  }
+
+  .parking-space-perimeter {
+    background-color: transparentize($success, .8);
+  }
+
+  .form-control.read-only {
+    background-color: #e9ecef;
+    pointer-events: none;
+  }
+
+  .was-validated .form-control.read-only.ng-invalid-required {
+    border-color: $danger;
+  }
+
+  .perimeter-canvas {
+    position: relative;
+
+    .drag {
+      position: absolute !important;
+      top: 0;
+      &:hover {
+        cursor: move;
+      }
+    }
+    .perimeter {
+      border: 2px solid #17ff4e;
+      width: 60px;
+      height: 60px;
+      color: #17ff4e;
+
+      &.sample {
+        border: 2px solid $warning;
+        color: $warning;
+      }
+    }
+
+  }
+
+}
+
+.sensor-fleet {
+
+  .online-status {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: $danger;
+
+    &.ok {
+      background-color: $success;
+    }
+  }
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  margin: 0; /* <-- Apparently some margin is still there even though it's hidden */
 }

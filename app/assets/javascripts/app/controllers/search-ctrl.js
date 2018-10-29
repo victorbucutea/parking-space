@@ -9,22 +9,54 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
         function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService,
                   parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams) {
 
-            if (!$rootScope.map) {
+
+            let dragListenHandle = null;
+
+            $scope.mapCreated = function (map, overlay, geocoder) {
+                $('#mapBlanket').fadeOut();
+                $rootScope.map = map;
+                $rootScope.overlay = overlay;
+                $rootScope.geocoder = geocoder;
+
+
+                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
+
+                // center on request params if need be
+                if ($stateParams.lat && $stateParams.lng) {
+                    let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
+                    if ($stateParams.zoom) {
+                        map.setZoom(parseInt($stateParams.zoom));
+                    } else {
+                        map.setZoom(17);
+                    }
+                    map.setCenter(pos);
+                    return;
+                }
+
+                /*
+                do not try this, as it will cause user to refuse location the minute app starts
+
+                 geolocationService.getCurrentLocation(function (position) {
+                     let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                     map.setCenter(pos);
+                 });*/
+
+            };
+
+            $scope.mapError = function () {
+                $('#mapBlanket').fadeOut();
                 $rootScope.$emit('http.error', 'Nu se poate inițializa harta. Ești conectat la internet? ');
+            };
+
+            // bad internet, a message should be shown
+            // to warn the user. No sense to initialize the map.
+            if (!window.google || !window.google.maps) {
                 return;
             }
 
 
-            if ($stateParams.lat && $stateParams.lng) {
-                $rootScope.map.setCenter(new google.maps.LatLng($stateParams.lat, $stateParams.lng));
-            }
-
-            if ($stateParams.zoom) {
-                $rootScope.map.setZoom($stateParams.zoom)
-            }
-
-
-            if (!sessionStorage.getItem("current_user")) {
+            let item = sessionStorage.getItem("current_user");
+            if (!item) {
                 userService.getUser(function (user) {
                     if (!user) return;
                     let userjson = JSON.stringify(user);
@@ -35,19 +67,47 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     }
                 });
             } else {
-                let user = JSON.parse(sessionStorage.getItem("current_user"));
+                let user = JSON.parse(item);
                 if (!user.phone_no_confirm) {
                     $state.go('.confirm-phone');
                 }
             }
 
 
-            if ($state.current.name === 'home.map.search' && localStorage.getItem('instructionsShown') !== 'true') {
+            if ($state.current.name === 'home.search'
+                && localStorage.getItem('instructionsShown') !== 'true'
+                && JSON.parse(item).phone_no_confirm) {
                 $state.go('.instructions');
-                localStorage.setItem('instructionsShown','true');
+                localStorage.setItem('instructionsShown', 'true');
             }
 
+            function addMarker(space) {
+                let nearestOffer = space.offers.find((of) => {
+                    if (!of.owner_is_current_user) return false;
+                    return moment(of.end_date).isAfter(moment());
+                });
+                let htmlMarker = new HtmlMarker(space, $scope, nearestOffer);
+                $rootScope.markers.push(htmlMarker);
+            }
+
+            function removeMarker(id) {
+                $rootScope.markers.forEach(function (d) {
+                    if (d.space.id == id)
+                        d.setMap();//clear marker
+                });
+            }
+
+            $rootScope.$on('spaceSave', (evt, space) => {
+                removeMarker(space.id);
+                addMarker(space);
+            });
+
+            $rootScope.$on('spaceDelete', (evt, id) => {
+                removeMarker(id);
+            });
+
             let drawSpaces = function () {
+
                 let bnds = $rootScope.map.getBounds().toJSON();
                 parkingSpaceService.getAvailableSpaces(bnds, function (spaces) {
                     if (!spaces || spaces.length === 0) {
@@ -64,19 +124,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     $rootScope.$emit('spaces', spaces);
 
                     spaces.forEach(function (space) {
-                        // search for first offer for current user
-                        // ( they should be sorted by creation date in parking_space_controller
-                        let nearestOffer = space.offers.find((of) => {
-                            if (!of.owner_is_current_user) return false;
-                            return moment(of.end_date).isAfter(moment());
-                        });
-                        let htmlMarker = new HtmlMarker(space, $scope, nearestOffer);
-                        $rootScope.markers.push(htmlMarker);
+                        addMarker(space);
                     })
                 });
             };
-
-            let dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
 
 
             $scope.$watch('selectedLocation', newVal => {
@@ -94,9 +145,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $scope.selectedSpace = data.elm.space;
                 let owned = $scope.selectedSpace.owner_is_current_user;
                 if (owned) {
-                    $state.go('.review-bids');
+                    $state.go('.review-bids', {spaceId: $scope.selectedSpace.id});
                 } else {
-                    $state.go('.post-bids');
+                    $state.go('.post-bids', {spaceId: $scope.selectedSpace.id});
                 }
             };
 
@@ -109,10 +160,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $scope.spaceEdit = {};
                 angular.copy($scope.space, $scope.spaceEdit);
                 $scope.spaceEdit.title = "";
-                geolocationService.getCurrentLocation(function (position) {
-                    $scope.spaceEdit.recorded_from_lat = position.coords.latitude;
-                    $scope.spaceEdit.recorded_from_long = position.coords.longitude;
-                });
                 $state.go('.post');
             };
 
@@ -125,10 +172,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
 
             $scope.$on('$stateChangeStart', function (event, toState) {
-                if (toState.name.indexOf('home.map.search') === -1) {
+                if (toState.name.indexOf('home.search') === -1) {
                     google.maps.event.removeListener(dragListenHandle);
-                } else if (toState.name === 'home.map.search') {
-                    drawSpaces();
+                } else if (toState.name === 'home.search') {
                     $scope.placingSpot = null;
                 }
             });

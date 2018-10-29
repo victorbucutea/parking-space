@@ -35,11 +35,11 @@
 
     <!-- Navigation drawer menu -->
     <div id="drawer" class="menu d-flex flex-column col-auto col-md-12" ng-click="closeMenu()">
-      <div class="logo p-5 d-md-none text-center " ui-sref="home.map.search">
+      <div class="logo p-5 d-md-none text-center " ui-sref="home.search">
         <img src="<%= image_path 'logo_sm_dark.png' %>">
       </div>
       <ul class="d-md-flex m-md-0 justify-content-md-end ">
-        <li ui-sref="home.map.search" ui-sref-active="selected">
+        <li ui-sref="home.search" ui-sref-active="selected">
           <i class="fa fa-map-o"></i>
           Hartă
         </li>
@@ -51,7 +51,7 @@
           <i class="fa fa-calendar"></i>
           Rezervările mele
         </li>
-        <li ui-sref="home.map.search.myaccount" ui-sref-active="selected" class="d-md-none">
+        <li ui-sref="home.search.myaccount" ui-sref-active="selected" class="d-md-none">
           <i class="fa fa-user"></i>
           Setări utilzator
         </li>
@@ -61,7 +61,7 @@
           <!--<span class="badge badge-warning badge-pill">14</span>-->
         </li>
       </ul>
-      <ul class="terms border-top d-md-none " ui-sref-active="selected" ui-sref="home.map.search.terms">
+      <ul class="terms border-top d-md-none " ui-sref-active="selected" ui-sref="home.search.terms">
         <li>
           <i class="fa fa-file"></i> Termeni si condiții Go-Park
         </li>
@@ -79,10 +79,17 @@
     <!-- End left side details -->
 
 
-    <div class="col-md-12 col-lg-8 scroll">
+    <div class="col-md-12 col-lg-8 scroll" style="overflow: visible">
       <ui-view name="my-menu"></ui-view>
 
-      <ui-view name="content"></ui-view>
+      <ui-view name="content">
+
+        <!-- map loading blanket  -->
+        <h1 class="full-height map-loading d-flex align-items-center justify-content-center" id="mapBlanket">
+          <i class="fa fa-2x fa-spinner fa-spin text-secondary"></i>
+        </h1>
+
+      </ui-view>
     </div>
   </div>
 </div>

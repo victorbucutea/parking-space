@@ -9,9 +9,9 @@
         <div class="panel">
             <h4 class="text-center"> Balanță cont </h4>
             <h1 class="text-center display-4 text-primary">
-                {{account.amount | units}}.<small>{{account.amount | subunits}}</small> {{account.currency}}
+                <b>{{account.amount | units}}</b>.<small>{{account.amount | subunits}}</small> {{account.currency}}
             </h1>
-            <h6 class="text-center "> (in curs de retragere 0.00 Ron) </h6>
+            <h6 class="text-center small "> (in curs de retragere 0.00 Ron) </h6>
             <div class="mt-3 d-flex justify-content-around flex-wrap">
                 <button class="btn btn-link btn-lg animated zoomIn" ui-sref="home.account">
                     <i class="fa fa-credit-card"></i> Retrage banii
@@ -28,11 +28,11 @@
             </div>
         </div>
         <ui-view name="financial">
-            <div class="animated zoomIn mt-4">
+            <div class="animated zoomIn my-4">
 
                 <form name="withdrawForm">
                     <div class="form-row">
-                        <div class="form-group col-2 col-sm-3">
+                        <div class="form-group  col-3">
                             <label for="sum" class="labe">Suma transfer</label>
                             <input type="number" ng-model="sum" class="form-control form-control-lg" id="sum">
                             <small ng-show="isSumInvalid" class="text-danger"> Suma nu poate depăși {{account.amount}} {{account.currency}}</small>

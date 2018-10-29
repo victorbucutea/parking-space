@@ -1,4 +1,4 @@
-<div class="register mb-5" ng-class="{'ps-modal p-3': inside}" ng-controller="RegisterCtrl">
+<div class="register" ng-class="{'ps-modal p-3 mb-0': inside, 'mb-5': !inside}" ng-controller="RegisterCtrl">
   <div class="container" ng-class="{'animated zoomIn': inside}">
     <div class="text-center p-4 p-md-5">
       <img width="150" src="<%= image_path 'useravatar_blue_lg.png' %>">
@@ -9,55 +9,65 @@
       <div class="col-11">
         <form id="registerForm" name="registerForm" novalidate="novalidate">
 
-          <div ng-if="::!inside">
-            <h3 ng-hide="fromFb" class="text-center"> Avem nevoie de câteva detalii </h3>
-            <h3 ng-show="fromFb" class="text-center"> Doar câteva detalii {{firstName}} </h3>
+
+          <div ng-show="fromFb" class="py-3 p-md-4">
+            <code> Nr. de înmatriculare </code>și <code>nr. de telefon</code>
+            sunt necesare pentru a rezerva parcari publice sau private. Dacă s-ar
+            putea mai simplu, am face-o.
           </div>
 
-          <div class="form-group">
-            <div class="input-group mt-3 input-group-lg">
-            <span class="input-group-addon">
-              <img width="25" src="<%= image_path 'app/flags/Romania.png' %>">
-              &nbsp;
-              {{ selectedCountry.prefix || '+40'}}
-            </span>
-              <input class="phone-number form-control" type="text" id="phoneNo"
-                     autocorrect="off" autocapitalize="none"
-                     placeholder="Nr. mobil" ng-model="phoneNumber" name="phoneNumber"
-                     required minlength="5"
-                     cleave="options.phoneNumber"
-                     pattern="[0-9]{3}[\. ]*[0-9]{3}[\. ]*[0-9]{3}"
-                     data-toggle="tooltip"
-                     data-placement="bottom"
-                     ng-readonly="::inside"
-                     title="(e.g. 727 333 444)"/>
-            </div>
-            <div ng-if="::inside" class="text-center">
-              <button class="btn btn-info btn-sm mt-2" ui-sref="home.map.search.confirm-phone">
-                <i class="fa fa-spinner loading-spinner fa-spin"></i>
-                Schimbă nr. telefon
-              </button>
-              <hr/>
+          <div class="form-row">
+            <div class="col-12 mb-3">
+              <div class="input-group mt-3 input-group-lg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                       <img width="25" src="<%= image_path 'app/flags/Romania.png' %>">
+                                    &nbsp;
+                                    {{ selectedCountry.prefix || '+40'}}
+                  </span>
+                </div>
+                <input class="phone-number form-control" type="text" id="phoneNo"
+                       autocorrect="off" autocapitalize="none"
+                       value="7"
+                       placeholder="Nr. mobil (e.g. 727 333 444)" ng-model="phoneNumber" name="phoneNumber"
+                       required minlength="5"
+                       cleave="options.phoneNumber"
+                       pattern="7[0-9]{2}[\. ]*[0-9]{3}[\. ]*[0-9]{3}"
+                       ng-readonly="::inside"/>
+
+                <div class="invalid-tooltip" style="left:20%">
+                  e.g. 722.333.444
+                </div>
+              </div>
+              <div ng-if="::inside" class="text-center">
+                <button class="btn btn-info btn-sm mt-2" ui-sref="home.search.confirm-phone">
+                  <i class="fa fa-spinner loading-spinner fa-spin"></i>
+                  Schimbă nr. telefon
+                </button>
+                <hr/>
+              </div>
+
             </div>
           </div>
 
 
-          <div class="form-group">
-            <input type="text" class="form-control form-control-lg"
-                   placeholder="Nr. înmatriculare"
-                   ng-model="licensePlate" name="licensePlate"
-                   required minlength="6"
-                   pattern="^[A-Za-z]{1,2}[\- ]*[0-9]{1,3}[\- ]*[A-Za-z]{3}$"
-                   ng-blur="repairLicenseFormat()"
-                   data-toggle="tooltip"
-                   data-placement="bottom"
-                   title="(e.g. B 10 INM) "/>
+          <div class="form-row">
+            <div class="col-12 mb-3">
+              <input type="text" class="form-control form-control-lg"
+                     placeholder="Nr. înmatriculare (e.g. B 10 INM) "
+                     ng-model="licensePlate" name="licensePlate"
+                     required minlength="6"
+                     pattern="^[A-Za-z]{1,2}[\- ]*[0-9]{1,3}[\- ]*[A-Za-z]{3}$"
+                     ng-blur="repairLicenseFormat()"/>
+              <div class="invalid-tooltip">Nr de înamtriculare (e.g. B 10 AAA)</div>
+            </div>
           </div>
 
           <div ng-hide="fromFb">
             <div class="form-group">
               <input type="email" class="form-control form-control-lg"
-                     placeholder="Email" ng-disabled="::inside" ng-model="email" name="email" required minlength="5"
+                     placeholder="Email" ng-disabled="::inside" ng-model="email" name="email"
+                     required minlength="5"
                      pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"/>
             </div>
 
@@ -65,22 +75,20 @@
               <input type="text" class="form-control form-control-lg" placeholder="Nume și prenume"
                      ng-model="firstName" name="firstName" required
                      minlength="5"/>
-              <div ng-if="::inside" class="text-right">
-                <button class="btn btn-link btn-sm mb-2 " ng-click="recoverPassword()">
-                  <i class="fa fa-spinner loading-spinner fa-spin"></i>
-                  Resetează parola
-                </button>
-              </div>
             </div>
 
 
-
-
-            <div class="form-group" ng-if="::!inside">
+            <div class="form-group mb-0" ng-if="::!inside">
               <input type="password" class="form-control form-control-lg" placeholder="Parolă"
                      ng-model="pw" name="pw"
                      ng-required="!fromFb"
                      minlength="8"/>
+            </div>
+            <div class="text-right">
+              <button class="btn btn-link mb-3 " onclick="$('#recoverPassword').show()">
+                <i class="fa fa-spinner loading-spinner fa-spin"></i>
+                Resetează parola
+              </button>
             </div>
 
           </div>
@@ -88,7 +96,7 @@
           <div class="text-center d-flex justify-content-around">
             <button ng-if="::!inside" class="btn btn-primary btn-lg" ng-click="register()">
               <i class="fa fa-spinner loading-spinner fa-spin"></i>
-              Înregistrare
+              Ok, caută loc de parcare
             </button>
 
             <button ng-if="::inside" class="btn btn-primary btn-lg" ng-click="register()">
@@ -99,17 +107,29 @@
 
             <button class="btn btn-lg btn-secondary" ng-click="back()">
               <i class="fa fa-spinner loading-spinner fa-spin"></i>
-              Înapoi
+              <i class="fa fa-angle-double-left  "></i>
             </button>
           </div>
 
-          <div ng-show="fromFb" class="py-3 p-md-4 small">
-            P.S. Numărul de înmatriculare și nr. de telefon
-            sunt necesare pentru a rezerva parcari publice sau private. Dacă s-ar
-            putea mai simplu, am face-o.
-          </div>
-
         </form>
+
+        <div id="recoverPassword" class="ps-dialog">
+          <div class="ps-dialog-content">
+            <div class="ps-question">
+              <div class="py-2">
+                Te rugăm introdu adresa de email
+              </div>
+              <input type="email" class="form-control"
+                     placeholder="Email" ng-model="recoveryEmail" name="email" required
+                     minlength="5"
+                     pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+            </div>
+            <div class="ps-control-buttons">
+              <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
+              <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Anulare</a>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>

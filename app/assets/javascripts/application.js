@@ -22,14 +22,14 @@
 //= require owl.carousel/dist/owl.carousel.min
 //= require iban/iban.js
 //= require angular/angular.min
-//= require angular-sanitize/angular-sanitize
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-ui-bootstrap/src/buttons/buttons
-//= require angular-cookies/angular-cookies.min
 //= require angular-easyfb/build/angular-easyfb.min
 //= require cleave.js/dist/cleave-angular.min
-//= require ng-file-upload/dist/ng-file-upload.min
-//= require cloudinary-core/cloudinary-core-shrinkwrap.min
-//= require cloudinary_ng/js/angular.cloudinary
+//= require jquery.ui.widget/jquery.ui.widget
+//= require blueimp-file-upload/js/jquery.iframe-transport
+//= require blueimp-file-upload/js/jquery.fileupload
+//= require pusher-js/dist/web/pusher.min.js
+
 //= require main
 //= require_tree .

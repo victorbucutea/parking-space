@@ -2,18 +2,20 @@
 <html>
 <head>
   <title>Go Park - Parcări smart </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta name="theme-color" content="#07111c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="Description" content="Gaseste un loc de parcare in orasul aglomerat.
+     Go-Park va pune la dispozitie locuri private, garaje, alei de parcare, instituții publice, companii etc.">
   <link rel="manifest" href="<%= asset_path 'app/manifest.json' %>"/>
   <link rel="icon" type="image/png" href="<%= image_path 'favicon.png' %>"/>
 
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=geometry,places&language=ro" type="text/javascript"></script>
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=geometry,places&language=ro" type="text/javascript"></script>
   <script async src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
   <script async src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
   <script async src="https://js.braintreegateway.com/web/3.31.0/js/payment-request.js"></script>
+
   <link rel="preload" href="<%= asset_path 'fontawesome-webfont.woff2' %>" as="font" type="font/woff2" crossorigin>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -21,9 +23,16 @@
 </head>
 <body ng-app="ParkingSpaceMobile">
 <noscript>Your browser does not support JavaScript!</noscript>
+
+
+<script> window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(ENV['WEBPUSH_PUBLIC_KEY']).bytes %>); </script>
+<script> window.cloudinaryName = "<%= ENV['CLOUDINARY_NAME'] %>"; </script>
+<script> window.cloudinaryPreset = "<%= ENV['CLOUDINARY_PRESET'] %>"; </script>
+
+
 <!-- Main nav menu -->
 <nav id="navbar" class="d-none d-md-flex navbar navbar-dark navbar-expand-lg">
-  <a class="navbar-brand ml-3" href="#">
+  <a class="navbar-brand ml-3" href="/">
     <img width="80" src="<%= image_path 'logo_sm_dark.png' %>"/>
   </a>
 
@@ -37,10 +46,10 @@
         <a ng-click="scrollTo('faq')" class="nav-link px-3">Caută loc</a>
       </li>
       <li class="nav-item text-right">
-        <a ui-sref="home.map.search.help" class="nav-link px-3">Cum funcționează?</a>
+        <a ui-sref="home.search.help" class="nav-link px-3">Cum vând loc privat?</a>
       </li>
       <li class="nav-item text-right">
-        <a href="/?rent" class="nav-link px-3">Cumpără dispozitiv parcare</a>
+        <a ui-sref="home.search.instructions" class="nav-link px-3">Cum rezerv?</a>
       </li>
       <li class="nav-item text-right">
         <a href="/#!/business" class="nav-link px-3">Soluții parcări publice </a>
@@ -48,7 +57,7 @@
     </ul>
 
     <div class="navbar-form text-right">
-      <a ui-sref="home.map.search.myaccount" class="px-4">
+      <a ui-sref="home.search.myaccount" class="px-4">
         <img src="<%= image_path ('useravatar_blue.png') %>" class="" height="35">
       </a>
     </div>
@@ -133,6 +142,21 @@
 </div>
 
 <!-- end footer -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120614921-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-120614921-1');
+</script>
+<!-- Google Analytics END -->
 
 </body>
 </html>

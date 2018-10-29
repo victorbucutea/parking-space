@@ -1,0 +1,368 @@
+<div class="ps-modal edit-sensor-modal" ng-controller="SensorCtrl">
+
+  <div class="mt-3 p-2">
+    <h3> Edit Sensor </h3>
+
+    <div class="text-center perimeter-canvas">
+      <img style="width: 100%" id="scream" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}" crossorigin="anonymous">
+
+      <!--  here be the place for draggable boxes -->
+      <div ng-repeat="per in perimeters" class="drag per-drag-{{per.id}}"
+           style="top: {{ top(per) }} ; left:{{left(per)}}">
+
+        <div class="per-res-{{per.id}} perimeter p-2"
+             style="width: {{ width(per) }} ; height:{{ height(per) }} ">
+          <button class="btn btn-outline-success btn-block" ng-click="preSavePerimeter(per, 1)">
+            Ok
+          </button>
+          <h3> {{per.id}} </h3>
+        </div>
+
+
+        <div ng-repeat-end ng-init="makeDraggable()"></div>
+      </div>
+
+
+      <!-- here be the sample perimiter-->
+      <div ng-if="samplePerimeter" class="drag per-drag-{{samplePerimeter.id}}"
+           style="top:{{top(samplePerimeter)}} ; left: {{ left(samplePerimeter)}}">
+
+        <div class="per-res-{{samplePerimeter.id}} perimeter sample p-2"
+             style="width: {{ width(samplePerimeter) }} ; height: {{ height(samplePerimeter) }}">
+          <button class="btn btn-outline-warning btn-block" ng-click="preSavePerimeter(samplePerimeter,0)">
+            Save
+          </button>
+          <h3> {{samplePerimeter.id}} </h3>
+        </div>
+
+        <div ng-repeat-end ng-init="makeDraggable()"></div>
+      </div>
+
+    </div>
+
+    <div class="mt-3 text-center">
+      <button class="btn btn-primary" ng-disabled="!connected || takingSnapshot" ng-click="takeSnapshot()">
+        <i class="fa fa-spin fa-spinner" ng-show="takingSnapshot"> </i>
+        <i class="fa fa-camera" ng-hide="takingSnapshot"></i> Take new parking lot snapshot
+
+      </button>
+      <hr/>
+      <button class="btn btn-primary" ng-click="connectToSensor()" ng-disabled="connecting || connected">
+        <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
+        <i class="fa fa-bolt"></i> Connect to sensor
+      </button>
+      <div class="form-text text-muted">
+        {{status}}
+      </div>
+      <button class="btn btn-sm btn-warning mt-2" ng-click="disconnect()" ng-show="connecting || connected">
+        Disconnect
+      </button>
+
+
+    </div>
+
+    <hr/>
+
+    <div class="p-3">
+      <ul class="nav nav-tabs" ng-init="selectedMenu = 0">
+        <li class="nav-item">
+          <a class="nav-link " ng-class="{active: (selectedMenu == 0) }" ng-click="selectedMenu = 0" href="">Perimeters</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" ng-class="{active: (selectedMenu == 1) }" ng-click="selectedMenu = 1" href="">Sensor
+            details</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" ng-class="{active: (selectedMenu == 2) }" ng-click="selectedMenu = 2" href="">Sensor
+            modules</a>
+        </li>
+      </ul>
+
+      <form name="perForm" id="perForm" novalidate ng-show="selectedMenu == 0 ">
+        <div class="d-flex p-2 justify-content-around">
+          <button class="btn btn-outline-success" ng-click="newPerimeter()">
+            <i class="fa fa-square"></i> New parking space perimeter
+          </button>
+          <button class="btn  btn-outline-warning  " ng-click="newSamplePerimeter()">
+            <i class="fa fa-square"></i> New sample perimeter
+          </button>
+        </div>
+
+        <div class="p-2 my-2 animated slideInLeft sample-perimeter" ng-if="samplePerimeter">
+          <div class="form-row">
+            <div class="col-sm-8">
+              <h4> Sample perimeter {{samplePerimeter.id}} </h4>
+              <div class="form-group row">
+                <label for="desc" class="col-sm-3 col-form-label"> Description </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" ng-model="samplePerimeter.description" id="desc" required>
+                  <small class="form-text ">Descriere a locului de parcare vizibila de catre client.</small>
+                </div>
+              </div>
+              <div class="form-group form-row">
+                <label for="coords" class="col-sm-3">
+                  Top Left (px)
+                </label>
+                <div class="form-group form-inline col-sm-9">
+                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.top_left_x" id="coords" size="4" required>
+                  <span class="mx-1"> X </span>
+                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.top_left_y" id="coords" size="4" required>
+                </div>
+                <label for="coords2" class="col-sm-3">
+                  Bottom Right (px)
+                </label>
+                <div class="form-group form-inline col-sm-9">
+                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.bottom_right_x" id="coords2" size="4" required>
+                  <span class="mx-1"> X </span>
+                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.bottom_right_y" id="coords2" size="4" required>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center ">
+              <img id="snap-{{samplePerimeter.id}}" src="" class="img-thumbnail">
+              <button class="btn btn-link" ng-click="snapshot()">
+                <i class="fa fa-question"></i>
+                Evaluate
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <h3 ng-show="!samplePerimeter && !perimeters.length"> No perimeters </h3>
+        <div class=" p-2 animated slideInLeft parking-space-perimeter" ng-repeat="per in perimeters">
+          <div class="form-row">
+            <div class="col-sm-8">
+              <h4> ID {{per.id}} </h4>
+              <div class="form-group row">
+                <label for="desc" class="col-sm-3 col-form-label"> Description </label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" ng-model="per.description" id="desc" required>
+                  <small class="form-text ">Descriere a locului de parcare vizibila de catre client.</small>
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="price" class="col-sm-3 col-form-label"> Price </label>
+                <div class="col-sm-3">
+                  <input type="number" class="form-control" ng-model="per.price" id="price" required>
+                  <small class="form-text ">Price per h</small>
+                </div>
+                <div class="col-sm-3">
+                  <span class=""> Ron / h </span>
+                </div>
+              </div>
+              <div class="form-row">
+                <label for="coords" class="col-form-label col-sm-3">
+                  Top Left (px)
+                </label>
+                <div class="form-group col-sm-9 form-inline">
+                  <input type="text" class="form-control read-only" ng-model="per.top_left_x" id="coords" size="4" required>
+                  <span class="mx-1"> X </span>
+                  <input type="text" class="form-control read-only" ng-model="per.top_left_y" id="coords" size="4" required>
+                </div>
+                <label for="coords2" class="col-form-label col-sm-3">
+                  Bottom Right (px)
+                </label>
+                <div class="form-group col-sm-9 form-inline">
+                  <input type="text" class="form-control read-only" ng-model="per.bottom_right_x" id="coords2" size="4" required>
+                  <span class="mx-1"> X </span>
+                  <input type="text" class="form-control read-only" ng-model="per.bottom_right_y" id="coords2" size="4" required>
+                </div>
+              </div>
+              <div class="form-group form-row">
+                <label for="coords" class="col-sm-3">
+                  Lat x Lng
+                </label>
+                <div class="form-group form-inline col-sm-5">
+                  <input type="text" class="form-control " ng-model="per.lat" id="coords" size="4" required>
+                  <span class="mx-1"> x </span>
+                  <input type="text" class="form-control " ng-model="per.lng" id="coords" size="4" required>
+                </div>
+                <div class="col-sm-3">
+                  <button class="btn btn-link" ng-click="initMap(per)"> Choose on map </button>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center flex-wrap">
+              <img id="snap-{{per.id}}" src="" class="img-thumbnail">
+              <button class="btn btn-link" ng-click="snapshot()">
+                <i class="fa fa-question"></i>
+                Evaluate
+              </button>
+            </div>
+
+
+            <div id="perimeterModal-{{per.id}}" class="col-12" style="display:none;">
+              <div id="perimeterMap-{{per.id}}" style="height: 480px; width: 100%"></div>
+            </div>
+          </div>
+
+          <button class="btn btn-link " ng-click="delete(per)">
+            <i class="fa fa-trash"></i>
+            Delete
+          </button>
+          <hr ng-show="!$last" class="my-1"/>
+        </div>
+        <div class="my-3">
+          <button class="btn btn-primary" ng-disabled="loading" ng-click="savePerimeters()">
+            <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+            Save All Perimeters
+          </button>
+          <button class="btn btn-secondary" ui-sref="^"> Cancel</button>
+        </div>
+      </form>
+
+      <form name="sensorForm" id="sensorForm" novalidate ng-show="selectedMenu == 1">
+        <div class="p-2">
+          <div class="form-group row">
+            <label for="deviceid" class="col-sm-2 col-form-label">Serial No.</label>
+            <div class="col-sm-4">
+              <input type="text" readonly class="form-control-plaintext" ng-model="sensor.deviceid" id="deviceid">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="locationText" class="col-sm-2 col-form-label">Location desc</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" ng-model="sensor.location_text" id="locationText">
+              <small class="form-text text-muted">Descriere interna locatiei senzorului.</small>
+
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="titleMessage" class="col-sm-2 col-form-label">Title message</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" ng-model="sensor.title_message" id="titleMessage">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="creationDate" class="col-sm-2 col-form-label">Creation date</label>
+            <div class="col-sm-10">
+              <input type="datetime-local" disabled class="form-control" ng-model="sensor.created_at" id="creationDate">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="updateDate" class="col-sm-2 col-form-label">Last scan date</label>
+            <div class="col-sm-10">
+              <input type="datetime-local" disabled class="form-control" ng-model="sensor.last_touch_date" id="updateDate">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="updateDate" class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-10">
+              <button type="button" ng-show="sensor.active" ng-class="{'btn-success': sensor.active}" class="btn">Active</button>
+              <button type="button" ng-hide="sensor.active" ng-class="{'btn-secondary': !sensor.active}" class="btn">Inactive</button>
+              <small class="form-text text-muted">
+                An inactive sensor will skip publishing spaces, but retain all other functionality.
+              </small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="updateDate" class="col-sm-2 col-form-label">Hook</label>
+            <div class="col-sm-10">
+              <button type="button" ng-show="sensor.hook_active" ng-class="{'btn-success': sensor.hook_active}" class="btn">Active</button>
+              <button type="button" ng-hide="sensor.hook_active" ng-class="{'btn-secondary': !sensor.hook_active}" class="btn">Inactive</button>
+              <small class="form-text text-muted">
+                An active hook triggers agent to ask for a console connection ( take snaphots, update module,etc. )
+              </small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="updateDate" class="col-sm-2 col-form-label">Hit count</label>
+            <div class="col-sm-10">
+              <input type="text" readonly class="form-control-plaintext" ng-model="sensor.hit_count" id="deviceid">
+              <small class="form-text text-muted">
+                Number of times agent has contacted server.
+              </small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-10">
+              <button type="button" class="btn btn-primary" ng-click="saveSensor()">Save sensor</button>
+              <button type="button" class="btn btn-secondary" ui-sref="^">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <form name="moduleForm" id="moduleForm" novalidate ng-show="selectedMenu == 2">
+        <div class="form-group row mt-3 ">
+          <label for="modules" class="col-sm-2 col-form-label">Modules</label>
+          <div class="col-sm-10">
+              <pre class="card mb-0" ng-bind="sensor.module_info" ng-show="sensor.module_info" id="modules">
+              </pre>
+            <input type="text" readonly class="form-control-plaintext" ng-hide="sensor.module_info" value="(no modules)" id="deviceid">
+            <small class="form-text text-muted">
+              List of modules installed on the sensor.
+            </small>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="module_upload" class="col-sm-2 col-form-label">Module upload</label>
+          <div class="col-sm-10">
+
+            <div class="input-group mb-1" id="uploadContainer">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="uploadModule" ng-disabled="!connected"
+                       name="file" style="z-index: auto">
+                <label class="custom-file-label text-truncate" for="uploadModule">
+                  Choose file or drop file here
+                </label>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text btn" ng-click="uploadModule()">Upload</span>
+              </div>
+            </div>
+
+            <small class="form-text text-muted" ng-show="!connected">
+              Connect to sensor to be able to upload modules
+            </small>
+            <div class="progress-container mb-3">
+              <div class="progress-bar" id="progressBar" style="width: 0;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="module_upload" class="col-sm-2 col-form-label">Deploy log</label>
+          <div class="col-sm-10">
+            <pre class="card py-2">
+              <span ng-hide="deploy_log">Deploy log ...</span>
+              <span ng-show="deploy_log">{{deploy_log}}</span>
+            </pre>
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <label for="module_upload" class="col-sm-2 col-form-label">Sensor log</label>
+          <div class="col-sm-10">
+            <pre class="card py-2">
+              <span ng-hide="sensor_log">Sensor log ...</span>
+              <span ng-show="sensor_log">{{sensor_log}}</span>
+            </pre>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="module_upload" class="col-sm-2 col-form-label"></label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input type="number" class="form-control" ng-model="no_of_lines">
+              <div class="input-group-append">
+                <button class="btn btn-secondary" ng-init="no_of_lines=1000" ng-click="getLogs()" ng-disabled="!connected">
+                  Get last {{no_of_lines}} chars of logs
+                </button>
+              </div>
+            </div>
+            <small class="form-text text-muted">
+              You must be connected to access this functionality
+            </small>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary" ui-sref="^">Cancel</button>
+
+      </form>
+    </div>
+
+  </div>
+</div>
