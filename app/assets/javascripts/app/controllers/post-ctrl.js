@@ -113,7 +113,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
             });
 
             $('#fileupload').fileupload({
-                url: 'https://api.cloudinary.com/v1_1/' + window.cloudinaryName + '/image/upload',
+                url: 'https://api.cloudinary.com/v1_1/' + window.cloudinaryName + '/image/upload/',
                 dataType: 'json',
                 dropZone: $('#dropZone'),
                 imageOrientation: true,
@@ -177,7 +177,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                     uploadedFiles[file] = {};
 
                     let div = '<div>' +
-                        '<img src="https://res.cloudinary.com/'+ window.cloudinaryName + '/image/upload/' + file + '" ' +
+                        '<img src="https://res.cloudinary.com/'+ window.cloudinaryName + '/image/upload/q_auto,f_auto,w_768/' + file + '" ' +
                         'onmouseup="showThumbnail(event)" ' +
                         'onmousedown="startThumbnail(event)" ' +
                         'onmousemove="stopThumbnail()" ' +

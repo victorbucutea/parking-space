@@ -173,12 +173,20 @@ map {
     font-size: 1.1em;
   }
 
+  &:focus-within {
+    .input-group, .form-control {
+      height: initial;
+    }
+  }
+
   .input-group, .form-control {
     padding: 7px;
     box-shadow: none;
     border: none;
     border-radius: 5px;
     padding-left: 17%;
+    overflow: hidden;
+    height: calc(2.875rem + 2px)
   }
 
   .addon {
@@ -226,7 +234,7 @@ map {
 @include media-breakpoint-down(sm) {
 
   .container.search-block:focus-within {
-    position: absolute;
+    position: fixed;
     top: 0;
     background-color: transparentize($gray-300, 0.2);
     height: 100%;
@@ -305,6 +313,7 @@ map {
   width: 100%;
   z-index: 3;
   overflow: scroll;
+  height: 100vh;
 
   &.image {
     position: fixed;
@@ -496,6 +505,10 @@ map {
   }
 }
 
+.owl-carousel  .owl-item img {
+  width: auto;
+}
+
 .small .invalid-feedback {
   font-size: 1.2em;
 }
@@ -521,6 +534,7 @@ bid-amount {
   input.form-control {
     font-size: 3em;
     line-height: 1.3;
+    height: initial;
   }
 
   a {

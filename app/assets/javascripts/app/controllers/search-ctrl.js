@@ -19,7 +19,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $rootScope.geocoder = geocoder;
 
 
-                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', drawSpaces);
+                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', scheduleDrawSpaces);
+
+                $rootScope.map.addListener('click', function (evt) {
+                    // to avoid mobile ggl autocomplete keeping focus when clicking on map
+                    $('#pac-input').blur();
+                });
 
                 // center on request params if need be
                 if ($stateParams.lat && $stateParams.lng) {
@@ -30,16 +35,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                         map.setZoom(17);
                     }
                     map.setCenter(pos);
-                    return;
                 }
 
-                /*
-                do not try this, as it will cause user to refuse location the minute app starts
-
-                 geolocationService.getCurrentLocation(function (position) {
-                     let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                     map.setCenter(pos);
-                 });*/
 
             };
 
@@ -106,7 +103,18 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 removeMarker(id);
             });
 
+            let ongoingDrawSpacesReq;
+            let scheduleDrawSpaces = () => {
+                if (ongoingDrawSpacesReq) {
+                    clearTimeout(ongoingDrawSpacesReq);
+                }
+                ongoingDrawSpacesReq = setTimeout(() => {
+                    drawSpaces();
+                }, 2000);
+            };
+
             let drawSpaces = function () {
+
 
                 let bnds = $rootScope.map.getBounds().toJSON();
                 parkingSpaceService.getAvailableSpaces(bnds, function (spaces) {

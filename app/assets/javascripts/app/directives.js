@@ -16,7 +16,6 @@ angular.module('ParkingSpaceMobile.directives')
                 }
 
 
-
                 function initialize() {
                     let mapOptions = {
                         center: new google.maps.LatLng(44.412, 26.113),
@@ -55,35 +54,35 @@ angular.module('ParkingSpaceMobile.directives')
             },
             template:
 
-            '<table class="table table-hover table-sm">' +
-            '<thead>' +
-            '    <tr>' +
-            '        <th>Produs</th>' +
-            '        <th class="text-center">Pret</th>' +
-            '        <th class="text-center">Pret cu TVA</th>' +
-            '    </tr>' +
-            '</thead>' +
-            '<tbody>' +
-            '    <tr>' +
-            '        <td><em>Închirere spatiu </em></td>' +
-            '        <td class="text-center">{{offer.amount }} {{space.currency}}</td>' +
-            '        <td class="text-center">{{offer.amount_with_vat}} {{space.currency}}</td>' +
-            '    </tr>' +
-            '    <tr>' +
-            '        <td><em>Comision(8% + 2.5)</em></h4></td>' +
-            '        <td class="text-center">{{offer.comision}} {{space.currency}}</td>' +
-            '        <td class="text-center">{{offer.comision_with_vat}} {{space.currency}}</td>' +
-            '    </tr>' +
-            '    <tr>' +
-            '        <td>   </td>' +
-            '        <td class="text-right"><h5><strong>Total: </strong></h5></td>' +
-            '        <td class="text-center text-danger">' +
-            '           <h5><strong>' +
-            '               {{ offer.amount_with_vat - 0 + offer.comision_with_vat }} {{space.currency}} ' +
-            '           </strong></h5>' +
-            '</td>' +
-            '    </tr>' +
-            '</tbody></table>'
+                '<table class="table table-hover table-sm">' +
+                '<thead>' +
+                '    <tr>' +
+                '        <th>Produs</th>' +
+                '        <th class="text-center">Pret</th>' +
+                '        <th class="text-center">Pret cu TVA</th>' +
+                '    </tr>' +
+                '</thead>' +
+                '<tbody>' +
+                '    <tr>' +
+                '        <td><em>Închirere spatiu </em></td>' +
+                '        <td class="text-center">{{offer.amount }} {{space.currency}}</td>' +
+                '        <td class="text-center">{{offer.amount_with_vat}} {{space.currency}}</td>' +
+                '    </tr>' +
+                '    <tr>' +
+                '        <td><em>Comision(8% + 2.5)</em></h4></td>' +
+                '        <td class="text-center">{{offer.comision}} {{space.currency}}</td>' +
+                '        <td class="text-center">{{offer.comision_with_vat}} {{space.currency}}</td>' +
+                '    </tr>' +
+                '    <tr>' +
+                '        <td>   </td>' +
+                '        <td class="text-right"><h5><strong>Total: </strong></h5></td>' +
+                '        <td class="text-center text-danger">' +
+                '           <h5><strong>' +
+                '               {{ offer.amount_with_vat - 0 + offer.comision_with_vat }} {{space.currency}} ' +
+                '           </strong></h5>' +
+                '</td>' +
+                '    </tr>' +
+                '</tbody></table>'
         }
     })
 
@@ -95,15 +94,15 @@ angular.module('ParkingSpaceMobile.directives')
                 placeHolder: '='
             },
             template: '' +
-            '<input type="text" ' +
-            '        id="pac-input" ' +
-            '        class="form-control form-control-lg"' +
-            '        ng-model="address"' +
-            '        ng-keyup="cancel($event)"' +
-            '        placeholder="{{placeHolder}}">' +
-            '  <i class="fa fa-close clear-btn" ' +
-            '       ng-click="address=\'\'" ' +
-            '       ng-show="address.length > 3"></i>\n',
+                '<input type="text" ' +
+                '        id="pac-input" ' +
+                '        class="form-control form-control-lg"' +
+                '        ng-model="address"' +
+                '        ng-keyup="cancel($event)"' +
+                '        placeholder="{{placeHolder}}">' +
+                '  <i class="fa fa-close clear-btn" ' +
+                '       ng-click="address=\'\'" ' +
+                '       ng-show="address.length > 3"></i>\n',
             link: function ($scope, elm, attr) {
                 // bad internet, a message should be shown
                 // to warn the user. No sense to initialize the map.
@@ -149,10 +148,10 @@ angular.module('ParkingSpaceMobile.directives')
             },
             restrict: 'E',
             template: '<div ' +
-            '               ng-show="shown"' +
-            '               id="searchCenterIcon" ' +
-            '               class="search-center-icon animated bounce"' +
-            '               </div>',
+                '               ng-show="shown"' +
+                '               id="searchCenterIcon" ' +
+                '               class="search-center-icon animated bounce"' +
+                '               </div>',
             link: function ($scope, $element, $attr) {
 
                 // bad internet, a message should be shown
@@ -184,43 +183,43 @@ angular.module('ParkingSpaceMobile.directives')
         return {
             restrict: 'E',
             template:
-            '<div class="parking-spot-details p-0 p-md-2 d-flex ">' +
-            '          <div ng-click="showFullImage=true" class="d-flex" style="overflow: hidden">' +
-            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}"' +
-            '                ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
-            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
-            '                ng-show="space.file2" class="img-thumbnail p-0 thumbnail">' +
-            '          </div>' +
-            '          <div class="ml-3" >' +
-            '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
-            '              <p>{{space.address_line_1}} ' +
-            '                     <br  />' +
-            '                 {{space.address_line_2}} ' +
-            '              </p>' +
-            '              <h1>' +
-            '                  {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
-            '                  <currency val="space.currency"></currency> / h' +
-            '              </h1>' +
-            '          </div>' +
-            '</div>' +
-            ' <div class="ps-modal image pt-2 text-center" ng-show="showFullImage" ng-init="showFullImage=false">' +
-            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
-            '         class="img-fluid mb-1 animated zoomIn">' +
-            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
-            '         class="img-fluid mb-1 animated zoomIn"' +
-            '         ng-show="space.file2">' +
-            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file3}}" ' +
-            '         class="img-fluid mb-1 animated zoomIn"' +
-            '         ng-show="space.file3">' +
-            '    <span>{{space.description}}</span>' +
-            ' </div>',
+                '<div class="parking-spot-details p-0 p-md-2 d-flex ">' +
+                '          <div ng-click="showFullImage=true" class="d-flex" style="overflow: hidden">' +
+                '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.file1}}"' +
+                '                ng-if="space.file1" class="img-thumbnail p-0 thumbnail">' +
+                '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.file2}}" ' +
+                '                ng-if="space.file2" class="img-thumbnail p-0 thumbnail">' +
+                '          </div>' +
+                '          <div class="ml-3" >' +
+                '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
+                '              <p>{{space.address_line_1}} ' +
+                '                     <br  />' +
+                '                 {{space.address_line_2}} ' +
+                '              </p>' +
+                '              <h1>' +
+                '                  {{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
+                '                  <currency val="space.currency"></currency> / h' +
+                '              </h1>' +
+                '          </div>' +
+                '</div>' +
+                ' <div class="ps-modal image pt-2 text-center d-flex flex-nowrap align-items-center" ng-if="showFullImage && space.file1" ng-init="showFullImage=false">' +
+                '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_1024/{{space.file1}}" ' +
+                '         class="img-fluid p-3 animated zoomIn max-height">' +
+                '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_1024/{{space.file2}}" ' +
+                '         class="img-fluid p-3 animated zoomIn max-height"' +
+                '         ng-if="space.file2">' +
+                '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_1024/{{space.file3}}" ' +
+                '         class="img-fluid p-3 animated zoomIn max-height"' +
+                '         ng-if="space.file3">' +
+                '    <span>{{space.description}}</span>' +
+                ' </div>',
             scope: {
                 space: '=',
                 thumbnailModal: '='
             },
             link: function ($scope, elm) {
 
-                $scope.cloudName = window.cloudinaryName ;
+                $scope.cloudName = window.cloudinaryName;
                 $(elm).find('.parking-spot-details').click(evt => {
                     let isRoot = $(evt.currentTarget).hasClass('parking-spot-details');
                     if (isRoot && !$scope.thumbnailModal) {
@@ -229,59 +228,23 @@ angular.module('ParkingSpaceMobile.directives')
                     }
                 });
 
-                $(elm).find('.ps-modal').click((evt) => {
-                    evt.stopPropagation();
-                    $scope.showFullImage = false;
-                    $scope.$evalAsync();
+                $scope.$watch('showFullImage', function (newValue, oldValue) {
+                    if (newValue)
+                        $(elm).find('.ps-modal').click((evt) => {
+                            evt.stopPropagation();
+                            $scope.showFullImage = false;
+                            $scope.$evalAsync();
+                        });
+                    else {
+                        $(elm).find('.ps-modal').off('click')
+                    }
                 });
 
+
             }
         }
     })
 
-    .directive('smallParkingSpotInfoBox', function () {
-        return {
-            restrict: 'E',
-            template: ' ' +
-            '<div class="space-summary-content py-2 d-flex d-sm-none align-items-center" ng-click="showFullImage = true">' +
-            '          <div class="d-flex">' +
-            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
-            '               ng-show="space.file1" class="img-thumbnail p-0 thumbnail">' +
-            '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
-            '               ng-show="space.file2" class="img-thumbnail p-0 thumbnail">' +
-            '          </div>' +
-            '          <div class="ml-3">' +
-            '            <h4 class="text-truncate small"><i class="fa fa-car"></i> {{space.title}}</h4>' +
-                '            <p class="text-truncate">{{space.address_line_1}}</p>' +
-                '            <h4 class="text-truncate">{{space.price | units }}.' +
-            '              <small>{{space.price | subunits}}</small>' +
-            '              {{space.currency}}/h' +
-            '            </h4>' +
-            '            <u class="text-secondary">Mai multe ...</u>' +
-            '          </div>' +
-            '</div>' +
-            ' <div class="ps-modal p-1 " ng-show="showFullImage">' +
-            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file1}}" ' +
-            '         class="img-fluid mb-1 animated zoomIn">' +
-            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file2}}" ' +
-            '         class="img-fluid mb-1 animated zoomIn">' +
-            '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/{{space.file3}}" ' +
-            '         class="img-fluid mb-1 animated zoomIn">' +
-            '    <span>{{space.description}}</span>' +
-            ' </div>',
-            scope: {
-                space: '='
-            },
-            link: function ($scope, elm) {
-                $scope.cloudName = window.cloudinaryName ;
-                $(elm).find('.ps-modal').click((evt) => {
-                    evt.stopPropagation();
-                    $scope.showFullImage = false;
-                    $scope.$evalAsync();
-                })
-            }
-        }
-    })
 
     .directive('bidAmount', ['currencies', function (currencies) {
         return {
@@ -291,19 +254,19 @@ angular.module('ParkingSpaceMobile.directives')
                 bidCurrency: '='
             },
             template:
-            ' <div class="row no-gutters align-items-center">' +
-            '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
-            '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
-            '<input type="number" maxlength="3" ng-model="bidAmount" class="form-control" required>' +
-            '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
-            '</div>' +
-            '<div class="col-4 col-sm-5 col-md-5">' +
-            '<select ng-model="bidCurrency" ' +
-            '   ng-options="bidCurrency.name as bidCurrency.label for bidCurrency in currencies" ' +
-            '   class="form-control form-control-lg"' +
-            '   required> </select>' +
-            '</div>' +
-            '</div>',
+                ' <div class="row no-gutters align-items-center">' +
+                '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
+                '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
+                '<input type="number" maxlength="3" ng-model="bidAmount" class="form-control" required>' +
+                '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
+                '</div>' +
+                '<div class="col-4 col-sm-5 col-md-5">' +
+                '<select ng-model="bidCurrency" ' +
+                '   ng-options="bidCurrency.name as bidCurrency.label for bidCurrency in currencies" ' +
+                '   class="form-control form-control-lg"' +
+                '   required> </select>' +
+                '</div>' +
+                '</div>',
 
             link: function ($scope, element, attrs) {
                 $scope.currencies = currencies;

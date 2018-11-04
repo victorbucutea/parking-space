@@ -456,6 +456,7 @@ angular.module('ParkingSpaceMobile', [
                 return false;
             }
         };
+
         window.isIos = function () {
             return (
                 navigator.userAgent.match(/webOS/i)
