@@ -158,11 +158,27 @@ angular.module('ParkingSpaceSensors.services')
                     });
                 };
 
-                _this.getSensorLogs = function(sensor,no_of_lines, clbk, errClbk) {
-                    _this.channel.trigger("client-get-log-" + sensor.id,  JSON.stringify({no_of_lines:no_of_lines}));
+
+                _this.getSensorLogs = function (sensor, no_of_lines, clbk, errClbk) {
+                    _this.channel.trigger("client-get-log-" + sensor.id, JSON.stringify({no_of_lines: no_of_lines}));
                     _this.channel.unbind('client-get-log-ready-' + sensor.id);
                     _this.channel.bind('client-get-log-ready-' + sensor.id, function (data) {
                         if (clbk) clbk(data);
+                    });
+                };
+
+
+                _this.restartModule = function (sensor, module, clbk, errClbk) {
+                    _this.channel.trigger("client-restart-" + sensor.id, JSON.stringify({module_name: module}));
+                    _this.channel.unbind('client-restart-ready-' + sensor.id);
+                    _this.channel.bind('client-restart-ready-' + sensor.id, function (data) {
+                        if (clbk) clbk(data);
+                    });
+
+                    _this.channel.unbind('client-restart-err-' + sensor.id);
+                    _this.channel.bind('client-restart-err-' + sensor.id, function (data) {
+                        $rootScope.$emit('http.error', 'Eroare la restart:' + data.err);
+                        if (errClbk) errClbk(data);
                     });
                 };
 
@@ -190,6 +206,13 @@ angular.module('ParkingSpaceSensors.services')
                         data.created_at = new Date(data.created_at);
                         data.updated_at = new Date(data.updated_at);
                         data.last_touch_date = new Date(data.last_touch_date);
+                        let modules = data.module_info.split("\n");
+                        data.modules = [];
+                        modules.forEach((m) => {
+                            if (!m) return;
+                            let arr = m.trim().split(" ");
+                            data.modules.push( {idx: arr[0], name: arr[1], version: arr[2]})
+                        });
                         if (clbk) {
                             clbk(data);
                         }

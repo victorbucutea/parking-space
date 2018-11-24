@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20181028163609) do
     t.string "description"
     t.integer "perimeter_type"
     t.integer "sensor_id"
-    t.float "price"
+    t.decimal "price"
     t.decimal "lat"
     t.decimal "lng"
     t.index ["parking_space_id"], name: "index_parking_perimeters_on_parking_space_id"
@@ -116,8 +116,8 @@ ActiveRecord::Schema.define(version: 20181028163609) do
     t.string "message_from_device_id"
     t.datetime "start_date", null: false
     t.datetime "end_date", null: false
-    t.datetime "payment_date"
     t.integer "payment_status"
+    t.datetime "payment_date"
     t.integer "user_id"
     t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
     t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"
@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 20181028163609) do
 
   create_table "roles", force: :cascade do |t|
     t.string "identifier"
-    t.integer "users_id"
-    t.index ["users_id"], name: "index_roles_on_users_id"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_roles_on_user_id"
   end
 
   create_table "sensor_locations", force: :cascade do |t|

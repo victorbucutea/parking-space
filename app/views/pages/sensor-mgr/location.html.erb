@@ -126,7 +126,7 @@
               </label>
               <div class="col-sm-9">
                 <select class="form-control form-control-sm" id="sensor_name" required
-                        ng-options="sensor as sensor.location_text for sensor in sensors track by sensor.id"
+                        ng-options="sensor as sensor.title_message for sensor in sensors track by sensor.id"
                         ng-model="newSensor">
                   <option value="" selected="selected"> -- choose sensor --</option>
                 </select>

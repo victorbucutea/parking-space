@@ -245,6 +245,7 @@ angular.module('ParkingSpaceSensors.controllers')
                 })
             };
 
+
             $('#uploadModule').fileupload({
                 url: 'https://api.cloudinary.com/v1_1/' + window.cloudinaryName + '/raw/upload',
                 dropZone: $('#uploadContainer'),
@@ -262,6 +263,7 @@ angular.module('ParkingSpaceSensors.controllers')
                 }
             });
 
+
             $scope.uploadModule = function () {
                 let fileName = $scope.file.files[0].name;
                 $scope.file.submit().then((response) => {
@@ -277,6 +279,17 @@ angular.module('ParkingSpaceSensors.controllers')
                     $rootScope.$emit('http.error', errTxt);
                     $scope.$apply();
                 });
+            };
+
+            $scope.restartModule = function(mod){
+                sensorService.restartModule($scope.sensor,mod.name, function (data) {
+                    $rootScope.$emit('http.notif', 'Module successfully restarted. ');
+                    $scope.$apply();
+                }, (err) => {
+                    let errTxt = err.responseJSON.error.message;
+                    $rootScope.$emit('http.error', errTxt);
+                    $scope.$apply();
+                })
             };
 
             $scope.getLogs = function () {
