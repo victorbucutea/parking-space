@@ -7,43 +7,43 @@ class SessionsController < Devise::SessionsController
   respond_to :json
 
   def sign_in_fb
-    user = params[:user]
-    token = user[:token]
-    email = user[:email]
-    id = user[:id]
+    token = params[:user][:token]
     access_token = Rails.application.secrets.fb_app_secret
-    url = APP_CONFIG['fb_debug_token_url']
+    url = APP_CONFIG['fb_graph_me_url']
 
     #validate user token
-    response = RestClient.get url, {params: {input_token: token, access_token: access_token}}
+    response = RestClient.get url, {params: {fields: 'id,name,email', access_token: token}}
     data = JSON.parse response.body
 
-    if id == data['data']['user_id']
-      #token belongs to user
-      # authenticate user without pw
-      user = User.find_by_email(email)
+    email = data['email']
+    name = data['name']
+    id = data['id']
 
-      if user.nil?
-        # user is new, he needs to sign up
-        # return a status to indicate that we need to redirect to
-        # additional info page for the rest of the details
-        respond_to do |format|
-          format.json { render json: {Error: 'User does not exist'}, status: :unprocessable_entity }
-        end
-      else
-        password = SecureRandom.gen_random 32
-        # make user unable to authenticate outside fb
-        user.reset_password password ,password
-        sign_in :user, user
-        respond_to do |format|
-          format.json { render json: {Status: "OK",user: user} , status: :created }
-        end
+    #token belongs to user
+    # authenticate user without pw
+    user = User.find_by_email(email)
+
+    if user.nil?
+      # user is new, he needs to sign up
+      # return a status to indicate that we need to redirect to
+      # additional info page for the rest of the details
+      respond_to do |format|
+        format.json {render json: {Error: 'User does not exist',
+                                   email: email,
+                                   id: id,
+                                   name: name},
+                            status: :unprocessable_entity}
       end
-
     else
-      # token does not belong to user
-      # return an error
+      password = ('a'..'Z').to_a.shuffle[0, 34].join
+      # make user unable to authenticate outside fb
+      user.reset_password password, password
+      sign_in :user, user
+      respond_to do |format|
+        format.json {render json: {Status: 'OK', user: user}, status: :created}
+      end
     end
+
   end
 
 end

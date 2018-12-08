@@ -1,6 +1,6 @@
 defaults: &defaults
   android_gcm_url: https://gcm-http.googleapis.com/gcm/send
-  fb_debug_token_url: https://graph.facebook.com/debug_token
+  fb_graph_me_url: https://graph.facebook.com/me
   app_name: 'Go-Park'
   vat: 0.21
   comision_fixed: 2.5

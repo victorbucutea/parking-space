@@ -1,7 +1,7 @@
 angular.module('ParkingSpaceMobile.controllers')
     .controller('LoginCtrl',
-        ['$rootScope', '$stateParams', '$scope', '$http', 'parameterService', 'userService', 'ezfb', '$state',
-            function ($rootScope, $stateParams, $scope, $http, parameterService, userService, ezfb, $state) {
+        ['$rootScope', '$stateParams', '$scope', '$http', 'parameterService', 'userService', '$state',
+            function ($rootScope, $stateParams, $scope, $http, parameterService, userService, $state) {
 
 
                 if (!$state.params.fbLogin) {
@@ -28,6 +28,7 @@ angular.module('ParkingSpaceMobile.controllers')
                     let password = $scope.password;
 
                     userService.login(user, password, function () {
+                        $scope.loading = true;
                         $state.go('home.search', $stateParams);
                     })
                 };
@@ -52,10 +53,18 @@ angular.module('ParkingSpaceMobile.controllers')
                     });
                 };
 
+                $scope.logout = function () {
+                    userService.logout();
+                };
+
+                let blanket = $('#loadingBlanket');
 
                 $scope.goToFb = function () {
                     let curLoc = location.origin + location.pathname;
-
+                    $scope.loadingFb = true;
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
                     window.location = 'https://www.facebook.com/v3.0/dialog/oauth?' +
                         'client_id=1725456304415807' +
                         '&redirect_uri=' + curLoc +
@@ -64,54 +73,42 @@ angular.module('ParkingSpaceMobile.controllers')
                 };
 
                 $scope.loginWithFb = function () {
-                    $('#loadingBlanket').show();
-                    ezfb.getLoginStatus().then(function (loginRes) {
-                        let authResponse = loginRes.authResponse;
-                        let latLng = JSON.parse(sessionStorage.getItem('latLng')) || {};
-                        if (authResponse) {
-                            ezfb.api('/me?fields=email,location{location},name', function (res) {
-                                // attempt to login via fb
-                                userService.loginFb(authResponse.userID, authResponse.accessToken, res.email,
-                                    function (resp) {
-                                        // user successfully logged in
-                                        $('#loadingBlanket').hide();
+                    $scope.loadingFb = true;
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
+                    let accessToken = sessionStorage.getItem("fb_token");
+                    let latLng = JSON.parse(sessionStorage.getItem('latLng')) || {};
 
-                                        $state.go('home.search', latLng);
-                                    }, function (err, status) {
-                                        $('#loadingBlanket').hide();
-                                        if (status === 422) {
-                                            // user does not exist
-                                            // go to additional info page
-                                            $state.go("home.register", {
-                                                fromFb: true,
-                                                email: res.email,
-                                                firstName: res.name,
-                                                fbId: authResponse.userID,
-                                                token: loginRes.authResponse.accessToken,
-                                                lat: latLng.lat,
-                                                lng: latLng.lng
-                                            });
+                    userService.loginFb(accessToken,
+                        function (resp) {
+                            // user successfully logged in
+                            $state.go('home.search', latLng);
+                        }, function (err, status) {
+                            if (status === 422) {
+                                // user does not exist
+                                // go to additional info page
+                                $state.go("home.register", {
+                                    fromFb: true,
+                                    email: err.email,
+                                    firstName: err.name,
+                                    fbId: err.id,
+                                    token: accessToken,
+                                    lat: latLng.lat,
+                                    lng: latLng.lng
+                                });
 
-                                        } else {
-                                            // display error message
-                                            $rootScope.$emit('http.error',
-                                                'Eroare la autentificarea facebook. Vă rugăm încercați din nou.');
-                                            $state.go("home.login", {
-                                                fromFb: true,
-                                                lat: latLng.lat,
-                                                lng: latLng.lng
-                                            });
-                                        }
-                                    });
-                            });
-
-                        } else {
-                            $('#loadingBlanket').hide();
-
-                            $rootScope.$emit('http.error',
-                                'Eroare la autentificarea facebook. Vă rugăm încercați din nou.');
-                        }
-                    }, {scope: 'public_profile,email,user_location'})
+                            } else {
+                                // display error message
+                                $rootScope.$emit('http.error',
+                                    'Eroare la autentificarea facebook. Vă rugăm încercați din nou.');
+                                $state.go("home.login", {
+                                    fromFb: true,
+                                    lat: latLng.lat,
+                                    lng: latLng.lng
+                                });
+                            }
+                        });
                 };
 
 
@@ -119,5 +116,4 @@ angular.module('ParkingSpaceMobile.controllers')
                 if ($state.params.fbLogin) {
                     $scope.loginWithFb();
                 }
-
             }]);

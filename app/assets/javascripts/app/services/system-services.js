@@ -90,8 +90,8 @@ angular.module('ParkingSpaceMobile.services')
                         })
                 };
 
-                _this.loginFb = function (id, token, email, clbk, errClbk) {
-                    $http.post('/users/sign_in_fb.json', {user: {id: id, email: email, token: token, remember_me: 1}})
+                _this.loginFb = function (token, clbk, errClbk) {
+                    $http.post('/users/sign_in_fb.json', {user: {token: token, remember_me: 1}})
                         .then(function (rs) {
                             let user = rs.data.user;
                             $rootScope.$emit('http.notif', 'Bine ai venit ' + user.full_name + '!');

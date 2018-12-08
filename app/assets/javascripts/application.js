@@ -24,7 +24,6 @@
 //= require angular/angular.min
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-ui-bootstrap/src/buttons/buttons
-//= require angular-easyfb/build/angular-easyfb.min
 //= require cleave.js/dist/cleave-angular.min
 //= require jquery.ui.widget/jquery.ui.widget
 //= require blueimp-file-upload/js/jquery.iframe-transport

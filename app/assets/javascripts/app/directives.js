@@ -245,7 +245,6 @@ angular.module('ParkingSpaceMobile.directives')
         }
     })
 
-
     .directive('bidAmount', ['currencies', function (currencies) {
         return {
             restrict: 'E',

@@ -12,6 +12,7 @@ angular.module('ParkingSpace.directives')
             document.body.appendChild(s);
             window.gmapLoaded = true;
         }
+
         window.gmapLoaded = false;
 
         function lazyLoadApi(key) {
@@ -31,19 +32,19 @@ angular.module('ParkingSpace.directives')
                 cssClass: '='
             },
             template: '' +
-            '<input type="text" ' +
-            '        id="pac-input" ' +
-            '        class="form-control form-control-lg"' +
-            '        ng-model="address"' +
-            '        ng-keyup="cancel($event)"' +
-            '        placeholder="{{placeHolder}}">' +
-            '  <i class="fa fa-close clear-btn" ' +
-            '       ng-click="address=\'\'" ' +
-            '       ng-show="address.length > 3"></i>\n',
+                '<input type="text" ' +
+                '        id="pac-input" ' +
+                '        class="form-control form-control-lg"' +
+                '        ng-model="address"' +
+                '        ng-keyup="cancel($event)"' +
+                '        placeholder="{{placeHolder}}">' +
+                '  <i class="fa fa-close clear-btn" ' +
+                '       ng-click="address=\'\'" ' +
+                '       ng-show="address.length > 3"></i>\n',
             link: function ($scope, elm, attr) {
                 function initAutocomplete() {
-                    let input = $(elm).find('#pac-input')[0];
-                    let searchBox = new google.maps.places.Autocomplete(input);
+                    let input = $(elm).find('#pac-input');
+                    let options = {componentRestrictions: {country: 'ro'}}
 
                     // Bias the autocomplete object to bucharest for now
                     let bnds = new google.maps.Circle({
@@ -53,21 +54,26 @@ angular.module('ParkingSpace.directives')
                         },
                         radius: 35000 //35 km
                     });
+                    let searchBox = new google.maps.places.Autocomplete(input[0], options);
                     searchBox.setBounds(bnds.getBounds());
 
                     searchBox.addListener('place_changed', function () {
                         let place = searchBox.getPlace();
-                        $scope.selectedPlace({
-                            place: place.address_components,
-                            location: place.geometry.location
-                        });
+                        if (place)
+                            $scope.selectedPlace({
+                                place: place.address_components,
+                                location: place.geometry.location
+                            });
                         $scope.$apply();
                     });
 
+                    if ($(window).width() <= 768)
+                        input.focus(() => {
+                            $('body').scrollTo($('.search-block'));
+                        });
 
-                    $('.pac-container').addClass('main-search');
-                    let place = searchBox.getPlace();
                 }
+
 
                 if ($window.google && $window.google.maps) {
                     initAutocomplete();

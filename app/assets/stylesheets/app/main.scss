@@ -172,12 +172,12 @@ map {
     padding-left: 3%;
     font-size: 1.1em;
   }
-
+/*
   &:focus-within {
     .input-group, .form-control {
       height: initial;
     }
-  }
+  }*/
 
   .input-group, .form-control {
     padding: 7px;
@@ -231,7 +231,7 @@ map {
   right: 1rem;
 }
 
-@include media-breakpoint-down(sm) {
+/*@include media-breakpoint-down(sm) {
 
   .container.search-block:focus-within {
     position: fixed;
@@ -242,13 +242,14 @@ map {
     left: 0;
     margin: 0 !important;
     max-width: inherit;
+    z-index: 1;
 
     .form-group {
       margin-top: 20px;
     }
   }
 
-}
+}*/
 
 .pac-container {
   border-radius: 4px;

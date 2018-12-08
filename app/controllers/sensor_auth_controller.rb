@@ -5,10 +5,10 @@ class SensorAuthController < ApplicationController
   # POST
   def authenticate
     pusher_client = Pusher::Client.new(
-        app_id: ENV['PUSHER_APP_ID'],
-        key: ENV['PUSHER_KEY'],
-        secret: ENV['PUSHER_SECRET'],
-        cluster: 'eu'
+      app_id: ENV['PUSHER_APP_ID'],
+      key: ENV['PUSHER_KEY'],
+      secret: ENV['PUSHER_SECRET'],
+      cluster: 'eu'
     )
 
     # if current_user

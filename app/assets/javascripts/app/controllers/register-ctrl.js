@@ -4,8 +4,8 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
-    ['$rootScope', '$stateParams', '$scope', 'parameterService', 'userService', 'ezfb', '$state',
-        function ($rootScope, $stateParams, $scope, parameterService, userService, ezfb, $state) {
+    ['$rootScope', '$stateParams', '$scope', 'parameterService', 'userService',  '$state',
+        function ($rootScope, $stateParams, $scope, parameterService, userService, $state) {
 
             if (!$stateParams.inside) {
                 $('#drawer').attr('style', 'display: none !important');
@@ -86,8 +86,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                 backEndUser.phone_number = $scope.prefix + $scope.phoneNumber;
                 backEndUser.country = $scope.user.country;
                 backEndUser.email = $scope.email;
-                backEndUser.password = $scope.registerForm.pw.$viewValue;
-                backEndUser.password_confirmation = backEndUser.pw;
+                if( $scope.registerForm && $scope.registerForm.pw) {
+                    backEndUser.password = $scope.registerForm.pw.$viewValue;
+                    backEndUser.password_confirmation = backEndUser.pw;
+                }
                 backEndUser.license = $scope.licensePlate;
 
 

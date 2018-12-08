@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('ParkingSpaceMobile', [
-    'ezfb',
     'cleave.js',
     'ui.bootstrap.buttons',
     'ui.router',
@@ -413,12 +412,15 @@ angular.module('ParkingSpaceMobile', [
             });
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
+
             if ($location.$$hash.indexOf("token") !== -1 && $location.$$hash.indexOf("state") !== -1) {
+                let token = $location.$$hash.split("&")[1].split("=")[1];
+                sessionStorage.setItem("fb_token",token);
                 // sucessful response from fb
-                return "/home/login?fbLogin=ok";
+               return "/home/login?fbLogin=ok";
             } else if ($location.absUrl().indexOf("error") !== -1 &&
                 $location.absUrl().indexOf("error_code") !== -1) {
-                return "/home/login?fbLogin=err";
+               return "/home/login?fbLogin=err";
             }
             return "/home/search";
         });
@@ -427,17 +429,6 @@ angular.module('ParkingSpaceMobile', [
 
     .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
-    }])
-
-    .config(['ezfbProvider', function (ezfbProvider) {
-        let myInitFunction = function () {
-            window.FB.init({
-                appId: '1725456304415807',
-                version: 'v2.6'
-            });
-        };
-
-        ezfbProvider.setInitFunction(myInitFunction);
     }])
 
     .config(function () {
