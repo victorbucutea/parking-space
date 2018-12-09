@@ -172,12 +172,6 @@ map {
     padding-left: 3%;
     font-size: 1.1em;
   }
-/*
-  &:focus-within {
-    .input-group, .form-control {
-      height: initial;
-    }
-  }*/
 
   .input-group, .form-control {
     padding: 7px;
@@ -186,7 +180,14 @@ map {
     border-radius: 5px;
     padding-left: 17%;
     overflow: hidden;
-    height: calc(2.875rem + 2px)
+    height: calc(2.875rem + 2px);
+
+    &.date-filter {
+      height: auto;
+      padding: 7px 0 !important;
+      text-align: center;
+      font-size: 16px;
+    }
   }
 
   .addon {
@@ -204,6 +205,7 @@ map {
     vertical-align: middle;
 
   }
+
   span {
     position: absolute;
     top: -10px;
@@ -269,6 +271,7 @@ map {
     &:hover {
       cursor: pointer;
     }
+
     .pac-icon {
       margin-left: 5px;
       transform: scale(1.8);
@@ -327,6 +330,7 @@ map {
     margin: auto;
     box-shadow: 1px 1px 3px;
   }
+
   .list {
     overflow: hidden;
   }
@@ -374,9 +378,11 @@ map {
 
 .place-offer-modal {
   top: 150px;
+
   .list {
     margin-bottom: 0;
   }
+
   .item {
     font-size: $base-font-size;
   }
@@ -415,6 +421,7 @@ map {
     .ps-row:nth-child(2n+1) {
       background-color: $blue-90;
     }
+
     .ps-row {
       margin: 0;
       padding: 5px 0;
@@ -500,13 +507,14 @@ map {
   padding: 0;
   max-width: 100% !important;
   max-height: 30vh !important;
+
   &:hover {
     box-shadow: 5px 5px $gray-400;
     cursor: pointer;
   }
 }
 
-.owl-carousel  .owl-item img {
+.owl-carousel .owl-item img {
   width: auto;
 }
 
@@ -570,6 +578,7 @@ bid-amount {
 .slider-tabs-menu {
   text-align: center;
   padding: 0;
+
   > li {
     border: 0 none;
     padding: 0;
@@ -579,6 +588,7 @@ bid-amount {
     &.active {
       background-color: $white;
       position: relative;
+
       > a {
         color: $dflt-font-color;
       }
@@ -588,6 +598,7 @@ bid-amount {
       padding: $measure-unit;
       display: block;
       color: $white;
+
       &:hover {
         cursor: pointer;
       }
@@ -597,6 +608,7 @@ bid-amount {
 
 .select-pill {
   @extend .slider-tabs-menu;
+
   > li {
     background-color: $white;
     padding: $xsm-measure-unit;
@@ -604,6 +616,7 @@ bid-amount {
     a {
       color: $dflt-font-color;
       padding: $sm-measure-unit;
+
       &.active {
         background-color: #555;
         color: $white;
@@ -679,6 +692,7 @@ parking-spot-info-box {
 
   &.left-side {
     font-size: .9em;
+
     .parking-spot-details h1 {
       font-size: 1.9em;
     }
@@ -771,6 +785,7 @@ parking-spot-info-box {
       list-style-type: none;
       margin: 0;
       padding: 0;
+
       li {
         font-weight: bold;
       }
@@ -869,6 +884,7 @@ parking-spot-info-box {
 
       &.selected {
         background-color: darken($blue-90, 10%);
+
         .offer-price {
           background-color: $blue-700;
           color: $white;
@@ -1149,6 +1165,7 @@ parking-spot-info-box {
 
 .edit-sensor-modal {
   position: fixed;
+
   > div:first-child {
     max-width: 90%;
   }
@@ -1176,10 +1193,12 @@ parking-spot-info-box {
     .drag {
       position: absolute !important;
       top: 0;
+
       &:hover {
         cursor: move;
       }
     }
+
     .perimeter {
       border: 2px solid #17ff4e;
       width: 60px;
