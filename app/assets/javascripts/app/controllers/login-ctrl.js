@@ -54,7 +54,9 @@ angular.module('ParkingSpaceMobile.controllers')
                 };
 
                 $scope.logout = function () {
-                    userService.logout();
+                    userService.logout(() => {
+                        $state.go('home.login');
+                    });
                 };
 
                 let blanket = $('#loadingBlanket');

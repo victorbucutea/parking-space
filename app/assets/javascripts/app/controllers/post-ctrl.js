@@ -3,7 +3,7 @@
  */
 angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl',
     ['$scope', '$rootScope', '$state', '$q', 'geocoderService', 'parameterService', '$stateParams', 'replaceById', 'parkingSpaceService',
-        function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService, ) {
+        function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService,) {
 
 
             $scope.calculateAddress = function () {
@@ -117,7 +117,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 dataType: 'json',
                 dropZone: $('#dropZone'),
                 imageOrientation: true,
-                formData: {upload_preset: window.cloudinaryPreset},
+                formData: {upload_preset: window.cloudinaryPreset, folder: 'spaces'},
                 add: function (e, data) {
 
                     if (!(/(\.|\/)(jpe?g|png)$/i).test(data.files[0].name)) {
@@ -177,7 +177,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                     uploadedFiles[file] = {};
 
                     let div = '<div>' +
-                        '<img src="https://res.cloudinary.com/'+ window.cloudinaryName + '/image/upload/q_auto,f_auto,w_768/' + file + '" ' +
+                        '<img src="https://res.cloudinary.com/' + window.cloudinaryName + '/image/upload/q_auto,f_auto,w_768/' + file + '" ' +
                         'onmouseup="showThumbnail(event)" ' +
                         'onmousedown="startThumbnail(event)" ' +
                         'onmousemove="stopThumbnail()" ' +
@@ -187,7 +187,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                         '         style="width: 0" class="progress-bar">' +
                         '    </div>' +
                         '</div>' +
-                        '<button data-file-id="'+('file' + idx) +'" class="btn btn-link btn-block" onclick="removeFile(\'' + file + '\',event)">' +
+                        '<button data-file-id="' + ('file' + idx) + '" class="btn btn-link btn-block" onclick="removeFile(\'' + file + '\',event)">' +
                         ' <i class="fa fa-trash"></i> Șterge' +
                         '</button>' +
                         '</div>';

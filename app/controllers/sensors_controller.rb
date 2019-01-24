@@ -92,7 +92,7 @@ class SensorsController < ApplicationController
 
   def perimeters
     @sensor = Sensor.find(params[:sensor_id])
-    @sensor.increment_hit_count
+    @sensor.do_heartbeat
     respond_to do |format|
       format.json {render :'sensors/show_perimeters', status: :ok}
     end
@@ -101,10 +101,28 @@ class SensorsController < ApplicationController
   # POST /sensors/1/save_perimeters.json
   def save_perimeters
     @sensor = Sensor.find(params[:sensor_id])
-    @sensor.parking_perimeters.destroy_all
     pers = params[:perimeters]
+
+
+    @sensor.parking_perimeters.each do |per|
+      exists = false;
+      pers.each do |incoming|
+        exists = true if incoming[:id] == per.id
+      end
+      per.destroy unless exists
+    end
+
+
     pers.each do |per|
-      perimeter = ParkingPerimeter.new(permiter_params(per))
+
+      if per[:id].nil? || per[:id] <= 0
+        perimeter = ParkingPerimeter.new(permiter_params(per))
+        perimeter.save
+      else
+        perimeter = ParkingPerimeter.find(per[:id])
+        perimeter.update(permiter_params(per))
+      end
+
       @sensor.parking_perimeters << perimeter
     end
 
@@ -153,7 +171,8 @@ class SensorsController < ApplicationController
   def permiter_params(perim_params)
     perim_params.permit(
         :top_left_y, :top_left_x, :bottom_right_y, :bottom_right_x, :price,
-        :identifier, :description, :perimeter_type, :lat, :lng
+        :identifier, :description, :perimeter_type, :lat, :lng, :correlation_threshold
     )
   end
+
 end

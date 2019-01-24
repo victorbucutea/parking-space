@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181028163609) do
+ActiveRecord::Schema.define(version: 2019_01_10_165246) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.decimal "amount"
@@ -64,6 +67,7 @@ ActiveRecord::Schema.define(version: 20181028163609) do
     t.decimal "price"
     t.decimal "lat"
     t.decimal "lng"
+    t.decimal "correlation_threshold"
     t.index ["parking_space_id"], name: "index_parking_perimeters_on_parking_space_id"
     t.index ["sensor_id"], name: "index_parking_perimeters_on_sensor_id"
   end
@@ -157,6 +161,7 @@ ActiveRecord::Schema.define(version: 20181028163609) do
     t.boolean "hook_active"
     t.integer "hit_count"
     t.datetime "last_touch_date"
+    t.integer "console_hit_count"
     t.index ["sensor_location_id"], name: "index_sensors_on_sensor_location_id"
   end
 

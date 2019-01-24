@@ -108,10 +108,13 @@ angular.module('ParkingSpaceMobile.services')
                         })
                 };
 
-                _this.logout = function (errClbk) {
+                _this.logout = function (clbk, errClbk) {
                     $http['delete']('/users/sign_out.json', {})
                         .then(function (res) {
                             sessionStorage.removeItem('current_user');
+                            if (clbk) {
+                                clbk(res);
+                            }
                         }, function (err) {
                             if (!errClbk)
                                 errorHandlingService.handle(err.data, err.status);

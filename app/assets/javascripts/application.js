@@ -23,6 +23,7 @@
 //= require iban/iban.js
 //= require angular/angular.min
 //= require angular-ui-router/release/angular-ui-router.min
+//= require angular-filter/dist/angular-filter
 //= require angular-ui-bootstrap/src/buttons/buttons
 //= require cleave.js/dist/cleave-angular.min
 //= require jquery.ui.widget/jquery.ui.widget

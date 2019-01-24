@@ -7,13 +7,14 @@ json.array! @sensors do |sensor|
   end
   unless sensor.sensor_location.nil?
     json.sensor_location do
-      json.extract! sensor.sensor_location, :id, :parking_space_name, :address, :name
+      json.extract! sensor.sensor_location, :id, :parking_space_name, :address,
+                    :name
     end
   end
   unless sensor.parking_perimeters.nil?
     json.perimeters do
       json.array! sensor.parking_perimeters do |perim|
-        json.extract! perim, :id, :snapshot, :identifier, :description, :price
+        json.extract! perim, :id, :snapshot, :identifier, :description, :price, :correlation_threshold
         unless perim.parking_space.nil?
           json.parking_space do
             json.extract! perim.parking_space, :id, :title

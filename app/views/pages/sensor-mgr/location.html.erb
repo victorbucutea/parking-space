@@ -80,7 +80,7 @@
         <div ng-repeat="sensor in assignedSensors" class="list-group-item ">
           <div class="list-group-item-action d-flex justify-content-between">
             <div ui-sref=".sensor({sensorId: sensor.id})">
-              <h5> {{sensor.location_text }} </h5>
+              <h5> {{sensor.location_desc }} </h5>
               <span class="small"> {{sensor.lat}} x {{ sensor.lng }}</span>
             </div>
             <img height="100" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}">
@@ -126,7 +126,7 @@
               </label>
               <div class="col-sm-9">
                 <select class="form-control form-control-sm" id="sensor_name" required
-                        ng-options="sensor as sensor.title_message for sensor in sensors track by sensor.id"
+                        ng-options="sensor as sensor.id + ' ' + sensor.location_text + ' ' + sensor.title_message for sensor in sensors track by sensor.id"
                         ng-model="newSensor">
                   <option value="" selected="selected"> -- choose sensor --</option>
                 </select>

@@ -353,7 +353,7 @@ map {
   .space-detail-content {
     overflow: auto;
     border-bottom: 1px solid $gray-500;
-    border-top: 1px solid $gray-500;
+    //border-top: 1px solid $gray-500;
   }
 
   .space-summary-content {
@@ -466,6 +466,22 @@ map {
 
   &.shadow {
     box-shadow: 2px 2px 12px 1px $gray-700;
+  }
+}
+
+.max-zoom-spaces {
+  top: 24%;
+
+  .ps-dialog-content {
+    width: 50%;
+  }
+
+  ul {
+    padding: 10px;
+
+    li {
+      padding: 10px
+    }
   }
 }
 
@@ -1105,6 +1121,7 @@ parking-spot-info-box {
     border-left: 1px solid $gray-400;
     margin-left: 5px;
     padding-left: 5px;
+    font-size: .9em;
 
   }
 
@@ -1178,6 +1195,16 @@ parking-spot-info-box {
     background-color: transparentize($success, .8);
   }
 
+  .corr-val {
+    color: #fff;
+    font-size: 1.5em;
+    border: 1px solid gray;
+    padding: 4px 15px;
+    background: $gray-600;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+
   .form-control.read-only {
     background-color: #e9ecef;
     pointer-events: none;
@@ -1190,6 +1217,12 @@ parking-spot-info-box {
   .perimeter-canvas {
     position: relative;
 
+    .perim-buttons {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+    }
+
     .drag {
       position: absolute !important;
       top: 0;
@@ -1200,14 +1233,24 @@ parking-spot-info-box {
     }
 
     .perimeter {
-      border: 2px solid #17ff4e;
+      border: 2px solid $pink;
       width: 60px;
       height: 60px;
-      color: #17ff4e;
+      color: $pink;
 
       &.sample {
         border: 2px solid $warning;
         color: $warning;
+      }
+
+      &.occupied {
+        border: 2px solid #f13222;
+        color: #f13222;
+      }
+
+      &.free {
+        border: 2px solid #17ff4e;
+        color: #17ff4e;
       }
     }
 

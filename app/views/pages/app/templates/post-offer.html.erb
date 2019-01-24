@@ -29,6 +29,7 @@
 
 
     <div class="bids-area" ng-hide="selectedSpace.from_sensor">
+
       <!-- table of offers when parking space owner != current user -->
       <div class="existing-offers mt-2 mt-sm-4 panel p-3" ng-class="{canceled:bid.rejected}" ng-repeat="bid in selectedSpace.userOffers">
         <div class="row" ng-click="show('offerDetails'+'-'+$index)">
@@ -43,7 +44,8 @@
               <del>Rezervare anulată</del>
             </h5>
             <h5 class="font-weight-light">
-              <small>({{bid.start_date | moment: 'D MMM HH:mm'}} - {{bid.end_date | moment: 'D MMM HH:mm'}})
+              <small>
+                ({{bid.start_date | moment: 'D MMM HH:mm'}} - {{bid.end_date | moment: 'D MMM HH:mm'}})
               </small>
             </h5>
           </div>
@@ -156,20 +158,7 @@
               </div>
               <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_lat}}"
                  class="btn btn-primary">
-                <i class="fa fa-location-arrow fa-2x"></i>
-                Navighează
-              </a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center " ng-repeat="space in selectedSpace.siblings">
-              <div> {{space.title}}</div>
-              <div>
-                <span ng-hide="sensor.snapshot" class="fa-stack fa-2x">
-                     <i class="fa fa-camera fa-stack-1x"></i>
-                     <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
-                 </span>
-              </div>
-              <a class="btn btn-primary " href="https://www.google.com/maps/dir/?api=1&destination={{space.location_lat}},{{space.location_lat}}">
-                <i class="fa fa-location-arrow fa-2x"></i>
+                <i class="fa fa-location-arrow "></i>
                 Navighează
               </a>
             </li>

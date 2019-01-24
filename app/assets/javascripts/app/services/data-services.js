@@ -33,28 +33,23 @@ angular.module('ParkingSpaceMobile.services')
                         let data = response.data;
                         let clusteredSpaces = [];
                         if (data) {
-                            let clusters = {};
+                            let zoomLvl = $rootScope.map.zoom;
+                            let zoomFactor = (22 - zoomLvl) / 5;
+                            let latLngs = [];
+
                             data.forEach(function (p_space) {
                                 p_space.space_availability_start = new Date(p_space.space_availability_start);
                                 p_space.space_availability_stop = new Date(p_space.space_availability_stop);
                                 p_space.daily_start = new Date(p_space.daily_start);
                                 p_space.daily_stop = new Date(p_space.daily_stop);
-
-                                let lat = Math.round(p_space.location_lat * 10000) / 10000;
-                                let lng = Math.round(p_space.location_long * 10000) / 10000;
-                                let key = lat + "-" + lng;
-                                if (clusters[key]) {
-                                    // we have another lat/lng combination with the same 4 digits (11m)
-                                    if (!clusters[key].siblings) clusters[key].siblings = [];
-                                    clusters[key].siblings.push(p_space);
-
-                                } else {
-                                    clusters[key] = p_space;
-                                }
+                                latLngs.push(
+                                    [Number.parseFloat(p_space.location_lat),
+                                        Number.parseFloat(p_space.location_long),
+                                        p_space]);
                             });
-                            for (geokey in clusters) {
-                                clusteredSpaces.push(clusters[geokey]);
-                            }
+                            clusteredSpaces = geocluster(latLngs, zoomFactor);
+                            console.log(clusteredSpaces);
+
                         }
                         if (clbk)
                             clbk(clusteredSpaces);
@@ -86,7 +81,7 @@ angular.module('ParkingSpaceMobile.services')
 
                 this.getSpace = function (parkingSpaceId, clbk, errClbk) {
 
-                    $http.get('/parking_spaces/' + parkingSpaceId + ".json")
+                   return $http.get('/parking_spaces/' + parkingSpaceId + ".json")
                         .then(function (response) {
                             let data = response.data;
                             if (data) {
@@ -98,9 +93,12 @@ angular.module('ParkingSpaceMobile.services')
                             }
                             if (clbk)
                                 clbk(data);
+                            return data;
                         }, function (errorResponse) {
                             errorHandlingService.handle(errorResponse.data, errorResponse.status);
                             if (errClbk) errClbk(errorResponse);
+                            return errorResponse;
+
                         });
                 };
 

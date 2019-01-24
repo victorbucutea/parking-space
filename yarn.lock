@@ -26,6 +26,12 @@ angular-easyfb@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/angular-easyfb/-/angular-easyfb-1.5.2.tgz#ce5b1ac323a3441b2f5249a3b0e61addfca608f5"
 
+angular-filter@^0.5.17:
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/angular-filter/-/angular-filter-0.5.17.tgz#60c0c7380fd45872cb8f10801cfe07e154062935"
+  dependencies:
+    angular "*"
+
 angular-sanitize@^1.6.6:
   version "1.6.6"
   resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.6.6.tgz#0fd065a19931517fbece66596d325d72b6e06041"
@@ -39,6 +45,10 @@ angular-ui-router@^0.4.3:
   resolved "https://registry.yarnpkg.com/angular-ui-router/-/angular-ui-router-0.4.3.tgz#6c29546fe50b8d2f74614dcb8660d6fc40d6e167"
   dependencies:
     angular "^1.0.8"
+
+angular@*:
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.7.5.tgz#d1c1c01c6f5dc835638f3f9aa51012857bdac49e"
 
 angular@^1.0.8, angular@^1.6.6:
   version "1.6.6"
@@ -138,6 +148,10 @@ font-awesome@^4.7.0:
 framebus@2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/framebus/-/framebus-2.0.8.tgz#01c7ee5f765beb3f9a2e0390ca0b7088b2bf76d3"
+
+geocluster@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/geocluster/-/geocluster-0.1.1.tgz#37cf92121a0e57e4726015faf28cba5ba335d5c1"
 
 http-parser-js@>=0.4.0:
   version "0.4.13"

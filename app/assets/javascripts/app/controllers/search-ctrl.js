@@ -11,6 +11,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
 
             let dragListenHandle = null;
+            let zoomListenHandle = null;
 
             $scope.mapCreated = function (map, overlay, geocoder) {
                 $('#mapBlanket').fadeOut();
@@ -19,7 +20,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $rootScope.geocoder = geocoder;
 
 
-                dragListenHandle = google.maps.event.addListener($rootScope.map, 'idle', scheduleDrawSpaces);
+                dragListenHandle = google.maps.event.addListener($rootScope.map, 'dragend', scheduleDrawSpaces);
+                zoomListenHandle = google.maps.event.addListener($rootScope.map, 'zoom_changed', scheduleDrawSpaces);
+                scheduleDrawSpaces();
 
                 $rootScope.map.addListener('click', function (evt) {
                     // to avoid mobile ggl autocomplete keeping focus when clicking on map
@@ -79,24 +82,27 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             }
 
             function addMarker(space) {
-                let nearestOffer = space.offers.find((of) => {
-                    if (!of.owner_is_current_user) return false;
-                    return moment(of.end_date).isAfter(moment());
-                });
-                let htmlMarker = new HtmlMarker(space, $scope, nearestOffer);
+
+                let htmlMarker = new HtmlMarker(space, $scope);
                 $rootScope.markers.push(htmlMarker);
             }
 
             function removeMarker(id) {
                 $rootScope.markers.forEach(function (d) {
-                    if (d.space.id == id)
-                        d.setMap();//clear marker
+                    d.spaces.forEach((space) => {
+                        if (space.id == id)
+                            d.setMap();//clear marker
+                    })
+
                 });
             }
 
             $rootScope.$on('spaceSave', (evt, space) => {
                 removeMarker(space.id);
-                addMarker(space);
+                let cluster = geocluster([
+                    [Number.parseFloat(space.location_lat), Number.parseFloat(space.location_long), space]
+                ]);
+                addMarker(cluster[0]);
             });
 
             $rootScope.$on('spaceDelete', (evt, id) => {
@@ -110,11 +116,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 }
                 ongoingDrawSpacesReq = setTimeout(() => {
                     drawSpaces();
-                }, 2000);
+                }, 1000);
             };
 
             let drawSpaces = function () {
-
 
                 let bnds = $rootScope.map.getBounds().toJSON();
                 parkingSpaceService.getAvailableSpaces(bnds, function (spaces) {
@@ -145,13 +150,21 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             });
 
             $scope.$on('selectSpace', function (event, space) {
-                $scope.markerClick({elm: {space: space}});
+                $scope.markerClick(space);
             });
 
 
-            $scope.markerClick = function (data) {
-                $scope.selectedSpace = data.elm.space;
+            $scope.markerClick = function (data, isMultiple) {
+                $('#showMultipleSpaces').hide();
+                if (isMultiple) {
+                    $('#showMultipleSpaces').show();
+                    $scope.selectedSpaces = data;
+                    $scope.$apply();
+                    return;
+                }
+                $scope.selectedSpace = data;
                 let owned = $scope.selectedSpace.owner_is_current_user;
+
                 if (owned) {
                     $state.go('.review-bids', {spaceId: $scope.selectedSpace.id});
                 } else {
@@ -182,6 +195,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             $scope.$on('$stateChangeStart', function (event, toState) {
                 if (toState.name.indexOf('home.search') === -1) {
                     google.maps.event.removeListener(dragListenHandle);
+                    google.maps.event.removeListener(zoomListenHandle);
                 } else if (toState.name === 'home.search') {
                     $scope.placingSpot = null;
                 }

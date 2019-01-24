@@ -4,6 +4,7 @@ angular.module('ParkingSpaceMobile', [
     'cleave.js',
     'ui.bootstrap.buttons',
     'ui.router',
+    'angular.filter',
     'ParkingSpaceMobile.controllers',
     'ParkingSpaceMobile.directives',
     'ParkingSpaceMobile.filters',
@@ -54,14 +55,12 @@ angular.module('ParkingSpaceMobile', [
 
         if (!window.google || !window.google.maps) return;
 
-        function HtmlMarker(space, scope, nearestOffer) {
-            this.price = space.price;
-            this.space = space;
-            this.nearestOffer = nearestOffer;
-            this.currency = space.currency;
-            this.noOfPlaces = 1;
+        function HtmlMarker(cluster, scope) {
+            this.spaces = cluster.elements.map((elm) => {
+                return elm[2];
+            });
             this.scope = scope;
-            this.pos = new google.maps.LatLng(space.location_lat, space.location_long);
+            this.pos = new google.maps.LatLng(cluster.centroid[0], cluster.centroid[1]);
             this.setMap($rootScope.map);
         }
 
@@ -78,48 +77,74 @@ angular.module('ParkingSpaceMobile', [
             let div = document.createElement('DIV');
 
             div.className = "html-marker";
-            if (this.space.owner_is_current_user) {
+            let noOfSpaces = this.spaces.length;
+            let owned = noOfSpaces === this.spaces.filter((e) => {
+                return e.owner_is_current_user
+            }).length;
+            let from_user = noOfSpaces === this.spaces.filter((e) => {
+                return e.from_user
+            }).length;
+
+            if (owned) {
                 div.className += " owner";
             }
-            if (this.space.from_user) {
+
+            let noOfSp = noOfSpaces + (noOfSpaces === 1 ? ' loc' : ' locuri');
+            div.innerHTML = '<div>' + noOfSp +
+                '    <br/>' +
+                '   <small class="text-secondary">' +
+                '        ' + this.getPrice() + ' / h ' +
+                '   </small>' +
+                '</div>';
+
+            if (from_user) {
                 div.className += " private";
-            }
-            if (this.space.from_sensor) {
+                if (noOfSpaces === 1) {
+                    this.markReservationActive(div);
+                }
+            } else {
                 div.className += " public";
             }
+
+
             $(div).on('click touchstart', function (evt) {
-                _this.scope.markerClick({elm: _this});
+                if (noOfSpaces > 1) {
+                    let zoom = _this.getMap().getZoom();
+                    if (zoom >= 20) {
+                        _this.scope.markerClick(_this.spaces, true);
+                        return;
+                    }
+                    _this.getMap().setCenter(_this.pos);
+                    _this.getMap().setZoom(zoom + 2);
+
+                    return;
+                }
+                _this.scope.markerClick(_this.spaces[0]);
                 evt.preventDefault();
                 evt.stopPropagation();
             });
-            if (!this.nearestOffer) {
-                div.innerHTML = '<div>' + this.price + ' ' + this.currency + ' ' +
-                    '   <small> / h </small> ' +
-                    '</div>';
-            } else {
-                this.markReservationActive(div);
-            }
 
-            if (this.space.from_sensor) {
-                let noOfSpaces = 1 + this.space.siblings.length;
-                let plural = noOfSpaces > 1 ? noOfSpaces + ' locuri' : noOfSpaces + ' loc';
-                div.innerHTML = '<div> ' + plural +
-                    '    <br/>' +
-                    '   <small class="text-secondary">' +
-                    '        ' + this.space.price + ' ' + this.currency + ' / h ' +
-                    '   </small>' +
-                    '</div>';
-            }
             let panes = this.getPanes();
             panes.overlayImage.appendChild(div);
             this._div = div;
         };
 
         HtmlMarker.prototype.markReservationActive = function (div) {
-            let st = moment(this.nearestOffer.start_date);
-            let end = moment(this.nearestOffer.end_date);
+            if (this.spaces > 1) return;
+
+            let space = this.spaces[0];
+
+            let nearestOffer = space.offers.find((of) => {
+                if (!of.owner_is_current_user) return false;
+                return moment(of.end_date).isAfter(moment());
+            });
+
+            if (!nearestOffer) return;
+
+            let st = moment(nearestOffer.start_date);
+            let end = moment(nearestOffer.end_date);
             let now = moment();
-            let text = '';
+            let text;
             if (end.isBefore(now)) {
                 return;
             }
@@ -132,7 +157,7 @@ angular.module('ParkingSpaceMobile', [
 
 
             let rezHtml =
-                '<div>' + this.price + ' ' + this.currency + '' +
+                '<div>' + this.getPrice() +
                 '   <small> / h </small> ' +
                 '   <br/>' +
                 '   <small class="text-secondary">' +
@@ -140,7 +165,23 @@ angular.module('ParkingSpaceMobile', [
                 '       Rez. ' + text + ' ' +
                 '   </small>' +
                 '</div>';
+
             div.innerHTML = rezHtml;
+        };
+
+        HtmlMarker.prototype.getPrice = function () {
+            let prices = [];
+            let curr;
+            this.spaces.forEach((space) => {
+                prices.push(space.price);
+                curr = space.currency;
+            });
+            prices.sort();
+            if (prices[0] === prices[prices.length - 1]) {
+                return prices[0] + " " + curr;
+            } else {
+                return prices[0] + "-" + prices[prices.length - 1] + " " + curr;
+            }
         };
 
         HtmlMarker.prototype.draw = function () {
@@ -152,6 +193,158 @@ angular.module('ParkingSpaceMobile', [
         window.HtmlMarker = HtmlMarker;
 
     }])
+
+    .config( function() {
+
+        if (typeof(Number.prototype.toRad) === "undefined") Number.prototype.toRad = function(){ return this * Math.PI / 180; };
+
+
+        function geocluster(elements, bias){
+            if (!(this instanceof geocluster)) return new geocluster(elements, bias);
+            return this._cluster(elements, bias);
+        };
+
+        // geodetic distance approximation
+        geocluster.prototype._dist = function(lat1, lon1, lat2, lon2) {
+            var dlat = (lat2 - lat1).toRad();
+            var dlon = (lon2 - lon1).toRad();
+            var a = (Math.sin(dlat/2) * Math.sin(dlat/2) + Math.sin(dlon/2) * Math.sin(dlon/2) * Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()));
+            return (Math.round(((2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))) * 6371)*100)/100);
+        };
+
+        geocluster.prototype._centroid = function(set) {
+            return set.reduce(function(s, e){
+                return [(s[0]+e[0]),(s[1]+e[1])];
+            }, [0,0]).map(function(e){
+                return (e/set.length);
+            });
+        }
+
+        geocluster.prototype._clean = function(data) {
+            return data.map(function(cluster){
+                return [cluster.centroid, cluster.elements];
+            });
+        };
+
+        geocluster.prototype._cluster = function(elements, bias) {
+
+            var self = this;
+
+            // set bias to 1 on default
+            if ((typeof bias !== "number") || isNaN(bias)) bias = 1;
+
+            var tot_diff = 0;
+            var diffs = [];
+            var diff;
+
+            // calculate sum of differences
+            for (let i = 1; i < elements.length; i++) {
+                diff = self._dist(elements[i][0], elements[i][1], elements[i-1][0], elements[i-1][1]);
+                tot_diff += diff;
+                diffs.push(diff);
+            }
+
+            // calculate mean diff
+            var mean_diff = (tot_diff / diffs.length);
+            var diff_variance = 0;
+
+            // calculate variance total
+            diffs.forEach(function(diff){
+                diff_variance += Math.pow(diff - mean_diff, 2);
+            });
+
+            // derive threshold from stdev and bias
+            var diff_stdev = Math.sqrt(diff_variance / diffs.length);
+            var threshold = (diff_stdev * bias);
+
+            var cluster_map = [];
+
+            // generate random initial cluster map
+            cluster_map.push({
+                centroid: elements[Math.floor(Math.random() * elements.length)],
+                elements: []
+            });
+
+            // loop elements and distribute them to clusters
+            var changing = true;
+            while (changing === true) {
+
+                var new_cluster = false;
+                var cluster_changed = false;
+
+                // iterate over elements
+                elements.forEach(function(e, ei){
+
+                    var closest_dist = Infinity;
+                    var closest_cluster = null;
+
+                    // find closest cluster
+                    cluster_map.forEach(function(cluster, ci){
+
+                        // distance to cluster
+                        let dist = self._dist(e[0], e[1], cluster_map[ci].centroid[0], cluster_map[ci].centroid[1]);
+
+                        if (dist < closest_dist) {
+                            closest_dist = dist;
+                            closest_cluster = ci;
+                        }
+
+                    });
+
+                    // is the closest distance smaller than the stddev of elements?
+                    if (closest_dist < threshold || closest_dist === 0) {
+
+                        // put element into existing cluster
+                        cluster_map[closest_cluster].elements.push(e);
+
+                    } else {
+
+                        // create a new cluster with this element
+                        cluster_map.push({
+                            centroid: e,
+                            elements: [e]
+                        });
+
+                        new_cluster = true;
+
+                    }
+
+                });
+
+                // delete empty clusters from cluster_map
+                cluster_map = cluster_map.filter(function(cluster){
+                    return (cluster.elements.length > 0);
+                });
+
+                // calculate the clusters centroids and check for change
+                cluster_map.forEach(function(cluster, ci){
+                    var centroid = self._centroid(cluster.elements);
+                    if (centroid[0] !== cluster.centroid[0] || centroid[1] !== cluster.centroid[1]) {
+                        cluster_map[ci].centroid = centroid;
+                        cluster_changed = true;
+                    }
+                });
+
+                // loop cycle if clusters have changed
+                if (!cluster_changed && !new_cluster) {
+                    changing = false;
+                } else {
+                    // remove all elements from clusters and run again
+                    if (changing) cluster_map = cluster_map.map(function(cluster){
+                        cluster.elements = [];
+                        return cluster;
+                    });
+                }
+
+            }
+
+            // compress result
+            return cluster_map;
+
+        };
+
+        window.geocluster = geocluster;
+    })
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -415,12 +608,12 @@ angular.module('ParkingSpaceMobile', [
 
             if ($location.$$hash.indexOf("token") !== -1 && $location.$$hash.indexOf("state") !== -1) {
                 let token = $location.$$hash.split("&")[1].split("=")[1];
-                sessionStorage.setItem("fb_token",token);
+                sessionStorage.setItem("fb_token", token);
                 // sucessful response from fb
-               return "/home/login?fbLogin=ok";
+                return "/home/login?fbLogin=ok";
             } else if ($location.absUrl().indexOf("error") !== -1 &&
                 $location.absUrl().indexOf("error_code") !== -1) {
-               return "/home/login?fbLogin=err";
+                return "/home/login?fbLogin=err";
             }
             return "/home/search";
         });
@@ -442,8 +635,7 @@ angular.module('ParkingSpaceMobile', [
                 || navigator.userAgent.match(/Windows Phone/i)
             ) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         };

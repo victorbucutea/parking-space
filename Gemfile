@@ -1,19 +1,18 @@
 source 'https://rubygems.org'
 
-ruby "2.5.1"
+ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'puma', '3.12.0'
-gem 'rails', '5.1.4'
 
-# Use sqlite3 as the database for Active Record
+gem 'rails', '5.2.1'
+
+gem 'pg', '~>0.20'
 group :development do
   gem 'thin'
-  gem 'sqlite3'
 end
 
 group :production do
-  gem 'pg', '~>0.20'
+  gem 'puma', '3.12.0'
   gem 'rails_12factor'
 end
 
@@ -23,10 +22,10 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 
-gem 'webpacker', '~> 3.5', require: false
-gem 'webpush'
 gem 'concurrent-ruby', require: 'concurrent'
 gem 'sendgrid-ruby'
+gem 'webpacker', '~> 3.5', require: false
+gem 'webpush'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -34,8 +33,8 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 
 gem 'devise'
-gem 'rest-client'
 gem 'json'
+gem 'rest-client'
 gem 'swagger_client_go_park'
 
 gem 'high_voltage', '~> 3.0.0'
@@ -44,10 +43,11 @@ gem 'high_voltage', '~> 3.0.0'
 # gem 'bcrypt', '~> 3.1.7'
 
 
+
+gem 'braintree', '~> 2.83.0'
+gem 'cloudinary'
+gem 'pusher'
 gem 'pushmeup'
-gem "braintree", "~> 2.83.0"
-gem "cloudinary"
-gem "pusher"
 gem 'serviceworker-rails'
 
 # Use debugger

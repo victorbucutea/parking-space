@@ -1,7 +1,4 @@
-<div class="full-height" ng-controller="SearchParkingSpaceCtrl" >
-
-
-
+<div class="full-height" ng-controller="SearchParkingSpaceCtrl">
 
 
   <!-- map -->
@@ -10,8 +7,7 @@
   </div>
 
 
-
-  <div class="map-controls" >
+  <div class="map-controls">
 
     <ui-view name="place-bid"></ui-view>
 
@@ -37,6 +33,20 @@
     </button>
 
     <ui-view name="help"></ui-view>
+
+    <div id="showMultipleSpaces" class="ps-dialog animated zoomIn">
+      <div class="ps-dialog-content max-zoom-spaces pt-3">
+        <h5 class="text-center"> Alege un loc</h5>
+        <ul>
+          <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center " ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
+            <div> {{space.title}}</div>  <small class="text-secondary">  {{space.price + ' ' + space.currency}} / h  </small>
+          </li>
+        </ul>
+        <div class="ps-control-buttons">
+          <a tabindex class="btn btn-primary" onclick="$('#showMultipleSpaces').hide()">Ok</a>
+        </div>
+      </div>
+    </div>
 
 
   </div>

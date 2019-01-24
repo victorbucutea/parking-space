@@ -4,59 +4,65 @@
     <h3> Edit Sensor </h3>
 
     <div class="text-center perimeter-canvas">
-      <img style="width: 100%" id="scream" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}" crossorigin="anonymous">
+      <img style="width: 100%" id="scream" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}" class="perim-img" crossorigin="anonymous">
 
       <!--  here be the place for draggable boxes -->
-      <div ng-repeat="per in perimeters" class="drag per-drag-{{per.id}}"
+      <div ng-repeat="per in perimeters" class="drag per-drag-{{per.id}}" data-id="{{per.id}}"
            style="top: {{ top(per) }} ; left:{{left(per)}}">
 
-        <div class="per-res-{{per.id}} perimeter p-2"
+        <div class="per-res-{{per.id}} perimeter {{isOccupied(per)}}" data-id="{{per.id}}"
              style="width: {{ width(per) }} ; height:{{ height(per) }} ">
-          <button class="btn btn-outline-success btn-block" ng-click="preSavePerimeter(per, 1)">
-            Ok
-          </button>
-          <h3> {{per.id}} </h3>
+          <h5> {{per.id}} </h5>
+          <h5 ng-show="per.corrVal" class="small"> {{ per.corrVal }}</h5>
         </div>
 
 
-        <div ng-repeat-end ng-init="makeDraggable()"></div>
+        <div ng-repeat-end ng-init="makeDraggable(per)"></div>
       </div>
 
 
       <!-- here be the sample perimiter-->
       <div ng-if="samplePerimeter" class="drag per-drag-{{samplePerimeter.id}}"
-           style="top:{{top(samplePerimeter)}} ; left: {{ left(samplePerimeter)}}">
+           data-id="{{samplePerimeter.id}}" style="top:{{top(samplePerimeter)}} ; left: {{ left(samplePerimeter)}}">
 
-        <div class="per-res-{{samplePerimeter.id}} perimeter sample p-2"
-             style="width: {{ width(samplePerimeter) }} ; height: {{ height(samplePerimeter) }}">
-          <button class="btn btn-outline-warning btn-block" ng-click="preSavePerimeter(samplePerimeter,0)">
-            Save
-          </button>
+        <div class="per-res-{{samplePerimeter.id}} perimeter sample "
+             data-id="{{samplePerimeter.id}}" style="width: {{ width(samplePerimeter) }} ; height: {{ height(samplePerimeter) }}">
           <h3> {{samplePerimeter.id}} </h3>
         </div>
 
         <div ng-repeat-end ng-init="makeDraggable()"></div>
       </div>
 
+      <div class="d-flex p-2 justify-content-around perim-buttons" ng-show="selectedMenu == 0 ">
+        <button class="btn btn-outline-success" ng-click="newPerimeter()">
+          <i class="fa fa-square"></i> New parking space perimeter
+        </button>
+        <button class="btn  btn-outline-warning  " ng-click="newSamplePerimeter()">
+          <i class="fa fa-square"></i> New sample perimeter
+        </button>
+      </div>
     </div>
 
     <div class="mt-3 text-center">
-      <button class="btn btn-primary" ng-disabled="!connected || takingSnapshot" ng-click="takeSnapshot()">
-        <i class="fa fa-spin fa-spinner" ng-show="takingSnapshot"> </i>
-        <i class="fa fa-camera" ng-hide="takingSnapshot"></i> Take new parking lot snapshot
-
+      <button class="btn btn-primary" ng-disabled="connecting" ng-click="takeSnapshot()">
+        <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
+        <i class="fa fa-camera" ng-hide="connecting"></i> Take new parking lot snapshot
+      </button>
+      <button class="btn btn-secondary" ng-disabled=" connecting" ng-click="saveSnapshots()">
+        <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
+        <i class="fa fa-save" ng-hide="connecting"></i> Save snapshot and spaces
+      </button>
+      <form style="display:none">
+        <input type="file" name="file" id="fileElem" multiple accept="image/*" >
+      </form>
+      <button class="btn btn-warning" ng-disabled="connecting" ng-click="evaluate()">
+        <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
+        <i class="fa fa-bolt" ng-hide="connecting"></i> Evaluate
       </button>
       <hr/>
-      <button class="btn btn-primary" ng-click="connectToSensor()" ng-disabled="connecting || connected">
-        <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
-        <i class="fa fa-bolt"></i> Connect to sensor
-      </button>
       <div class="form-text text-muted">
         {{status}}
       </div>
-      <button class="btn btn-sm btn-warning mt-2" ng-click="disconnect()" ng-show="connecting || connected">
-        Disconnect
-      </button>
 
 
     </div>
@@ -78,119 +84,115 @@
         </li>
       </ul>
 
+      <!-- perimeters form -->
       <form name="perForm" id="perForm" novalidate ng-show="selectedMenu == 0 ">
-        <div class="d-flex p-2 justify-content-around">
-          <button class="btn btn-outline-success" ng-click="newPerimeter()">
-            <i class="fa fa-square"></i> New parking space perimeter
-          </button>
-          <button class="btn  btn-outline-warning  " ng-click="newSamplePerimeter()">
-            <i class="fa fa-square"></i> New sample perimeter
-          </button>
-        </div>
 
+        <!-- SAMPLE PERIMETER -->
         <div class="p-2 my-2 animated slideInLeft sample-perimeter" ng-if="samplePerimeter">
           <div class="form-row">
             <div class="col-sm-8">
               <h4> Sample perimeter {{samplePerimeter.id}} </h4>
               <div class="form-group row">
-                <label for="desc" class="col-sm-3 col-form-label"> Description </label>
+                <label for="desc" class="col-sm-3 col-form-label-sm"> Description </label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" ng-model="samplePerimeter.description" id="desc" required>
-                  <small class="form-text ">Descriere a locului de parcare vizibila de catre client.</small>
+                  <input type="text" class="form-control form-control-sm" ng-model="samplePerimeter.description" id="desc" required>
+                  <small class="form-text small">Descriere a locului de parcare vizibila de catre client.</small>
                 </div>
               </div>
               <div class="form-group form-row">
-                <label for="coords" class="col-sm-3">
+                <label for="coords" class="col-sm-3 col-form-label-sm">
                   Top Left (px)
                 </label>
                 <div class="form-group form-inline col-sm-9">
-                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.top_left_x" id="coords" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="samplePerimeter.top_left_x" id="coords" size="4" required>
                   <span class="mx-1"> X </span>
-                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.top_left_y" id="coords" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="samplePerimeter.top_left_y" id="coords" size="4" required>
                 </div>
-                <label for="coords2" class="col-sm-3">
+                <label for="coords2" class="col-sm-3 col-form-label-sm">
                   Bottom Right (px)
                 </label>
                 <div class="form-group form-inline col-sm-9">
-                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.bottom_right_x" id="coords2" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="samplePerimeter.bottom_right_x" id="coords2" size="4" required>
                   <span class="mx-1"> X </span>
-                  <input type="text" class="form-control read-only" ng-model="samplePerimeter.bottom_right_y" id="coords2" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="samplePerimeter.bottom_right_y" id="coords2" size="4" required>
                 </div>
               </div>
             </div>
             <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center ">
-              <img id="snap-{{samplePerimeter.id}}" src="" class="img-thumbnail">
-              <button class="btn btn-link" ng-click="snapshot()">
-                <i class="fa fa-question"></i>
-                Evaluate
-              </button>
+              <img id="snap-{{samplePerimeter.id}}" src="" class="perim-img w-100 img-thumbnail">
             </div>
           </div>
         </div>
 
+        <!--  PERIMETER list -->
         <h3 ng-show="!samplePerimeter && !perimeters.length"> No perimeters </h3>
         <div class=" p-2 animated slideInLeft parking-space-perimeter" ng-repeat="per in perimeters">
           <div class="form-row">
             <div class="col-sm-8">
               <h4> ID {{per.id}} </h4>
               <div class="form-group row">
-                <label for="desc" class="col-sm-3 col-form-label"> Description </label>
+                <label for="desc" class="col-sm-3 col-form-label-sm"> Description </label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" ng-model="per.description" id="desc" required>
+                  <input type="text" class="form-control form-control-sm" ng-model="per.description" id="desc" required>
                   <small class="form-text ">Descriere a locului de parcare vizibila de catre client.</small>
-
                 </div>
               </div>
               <div class="form-group row">
-                <label for="price" class="col-sm-3 col-form-label"> Price </label>
+                <label for="price" class="col-sm-3 col-form-label-sm"> Price </label>
                 <div class="col-sm-3">
-                  <input type="number" class="form-control" ng-model="per.price" id="price" required>
-                  <small class="form-text ">Price per h</small>
+                  <input type="number" class="form-control form-control-sm" ng-model="per.price" id="price" required>
+                  <small class="form-text ">Ron / h</small>
                 </div>
-                <div class="col-sm-3">
-                  <span class=""> Ron / h </span>
+                <div class="col-sm-3 ">
+                  <span class=" col-form-label-sm">  </span>
                 </div>
               </div>
               <div class="form-row">
-                <label for="coords" class="col-form-label col-sm-3">
+                <label for="coords" class="col-form-label-sm col-sm-3">
                   Top Left (px)
                 </label>
                 <div class="form-group col-sm-9 form-inline">
-                  <input type="text" class="form-control read-only" ng-model="per.top_left_x" id="coords" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="per.top_left_x" id="coords" size="4" required>
                   <span class="mx-1"> X </span>
-                  <input type="text" class="form-control read-only" ng-model="per.top_left_y" id="coords" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="per.top_left_y" id="coords" size="4" required>
                 </div>
-                <label for="coords2" class="col-form-label col-sm-3">
+                <label for="coords2" class="col-form-label-sm col-sm-3">
                   Bottom Right (px)
                 </label>
                 <div class="form-group col-sm-9 form-inline">
-                  <input type="text" class="form-control read-only" ng-model="per.bottom_right_x" id="coords2" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="per.bottom_right_x" id="coords2" size="4" required>
                   <span class="mx-1"> X </span>
-                  <input type="text" class="form-control read-only" ng-model="per.bottom_right_y" id="coords2" size="4" required>
+                  <input type="text" class="form-control form-control-sm read-only" ng-model="per.bottom_right_y" id="coords2" size="4" required>
                 </div>
               </div>
               <div class="form-group form-row">
-                <label for="coords" class="col-sm-3">
+                <label for="coords" class="col-sm-3 col-form-label-sm ">
                   Lat x Lng
                 </label>
                 <div class="form-group form-inline col-sm-5">
-                  <input type="text" class="form-control " ng-model="per.lat" id="coords" size="4" required>
+                  <input type="text" class="form-control form-control-sm " ng-model="per.lat" id="coords" size="4" required>
                   <span class="mx-1"> x </span>
-                  <input type="text" class="form-control " ng-model="per.lng" id="coords" size="4" required>
-                </div>
-                <div class="col-sm-3">
-                  <button class="btn btn-link" ng-click="initMap(per)"> Choose on map</button>
+                  <input type="text" class="form-control form-control-sm " ng-model="per.lng" id="coords" size="4" required>
+                  <small class="form-text">
+                    <button class="btn btn-link" ng-click="initMap(per)"> Choose on map</button>
+                  </small>
                 </div>
               </div>
+
             </div>
 
 
             <div class="col-sm-4 d-flex flex-column justify-content-center align-items-center flex-wrap">
-              <img id="snap-{{per.id}}" src="" class="img-thumbnail">
-              <button class="btn btn-link" ng-click="snapshot()">
-                <i class="fa fa-question"></i>
-                Evaluate
-              </button>
+              <img id="snap-{{per.id}}" src="" class="perim-img w-100 img-thumbnail">
+
+              <div class="corr-val"> {{per.corrVal}}</div>
+              <div class="form-group">
+                <label for="threshold" class=" col-form-label-sm">
+                  Corr. Threshold:
+                </label>
+                <input type="text" class="form-control form-control-sm" ng-model="per.correlation_threshold"
+                       id="threshold" required>
+              </div>
             </div>
 
 
@@ -294,7 +296,7 @@
               <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="jmod in sensor.modules ">
                 <pre>{{jmod.name}}</pre>
                 <small>{{jmod.version}}</small>
-                <button class="btn btn-sm btn-danger" ng-click="restartModule(jmod)" ng-disabled="!connected">Restart</button>
+                <button class="btn btn-sm btn-danger" ng-click="restartModule(jmod)" >Restart</button>
               </li>
             </ul>
             <input type="text" readonly class="form-control-plaintext" ng-hide="sensor.module_info" value="(no modules)" id="deviceid">
@@ -309,8 +311,8 @@
 
             <div class="input-group mb-1" id="uploadContainer">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="uploadModule" ng-disabled="!connected"
-                       name="file" style="z-index: auto">
+                <input type="file" class="custom-file-input" id="uploadModule"
+                       name="file" style="z-index: auto" ng-disabled="connecting">
                 <label class="custom-file-label text-truncate" for="uploadModule">
                   Choose file or drop file here
                 </label>
@@ -320,23 +322,13 @@
               </div>
             </div>
 
-            <small class="form-text text-muted" ng-show="!connected">
-              Connect to sensor to be able to upload modules
+            <small class="form-text text-muted" >
+              Uploads new module in cloud and launch update command
             </small>
             <div class="progress-container mb-3">
               <div class="progress-bar" id="progressBar" style="width: 0;"></div>
             </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="module_upload" class="col-sm-2 col-form-label">Deploy log</label>
-          <div class="col-sm-10">
-            <pre class="card py-2">
-              <span ng-hide="deploy_log">Deploy log ...</span>
-              <span ng-show="deploy_log">{{deploy_log}}</span>
-            </pre>
-          </div>
-
         </div>
         <div class="form-group row">
           <label for="module_upload" class="col-sm-2 col-form-label">Sensor log</label>
@@ -353,13 +345,14 @@
             <div class="input-group">
               <input type="number" class="form-control" ng-model="no_of_lines">
               <div class="input-group-append">
-                <button class="btn btn-secondary" ng-init="no_of_lines=1000" ng-click="getLogs()" ng-disabled="!connected">
+                <button class="btn btn-secondary" ng-disabled="connecting" ng-init="no_of_lines=1000" ng-click="getLogs()" >
+                  <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
                   Get last {{no_of_lines}} chars of logs
                 </button>
               </div>
             </div>
             <small class="form-text text-muted">
-              You must be connected to access this functionality
+              You must wait to be connected to access this functionality
             </small>
           </div>
         </div>
