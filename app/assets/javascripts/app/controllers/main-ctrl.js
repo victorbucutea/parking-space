@@ -106,8 +106,20 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 $scope.mapSpaces = val;
             });
 
+            $scope.zoomTo = function(space) {
+                let lat = space.location_lat;
+                let lng = space.location_long;
+                if (!lat) {
+                    console.log(space);
+                }
+                $rootScope.map.panTo(new google.maps.LatLng(lat, lng));
+            };
+
 
             $scope.nextOffer = function (space) {
+                if (space.from_sensor){
+                    return 'Parcare publică liberă';
+                }
                 let free = 'Se eliberează ';
                 let freeUntil = 'Liber pentru următoarele ';
 

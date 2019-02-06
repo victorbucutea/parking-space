@@ -115,7 +115,22 @@ angular.module('ParkingSpaceMobile', [
                         return;
                     }
                     _this.getMap().setCenter(_this.pos);
-                    _this.getMap().setZoom(zoom + 2);
+                    let lats = [];
+                    _this.spaces.forEach((sp) => {
+                        lats.push([sp.location_lat, sp.location_long, sp]);
+                    });
+                    let zoomLvl = $rootScope.map.zoom;
+                    let zoomFactor = (22 - zoomLvl) / 5;
+                    let zoomIn = 2;
+
+                    let cluster = geocluster(lats, (zoomFactor + 1));
+                    if (cluster.length >= 2 ){
+                        zoomIn += 2;
+                    }
+                    console.log(cluster);
+
+
+                    _this.getMap().setZoom(zoomLvl + zoomIn);
 
                     return;
                 }
@@ -194,39 +209,41 @@ angular.module('ParkingSpaceMobile', [
 
     }])
 
-    .config( function() {
+    .config(function () {
 
-        if (typeof(Number.prototype.toRad) === "undefined") Number.prototype.toRad = function(){ return this * Math.PI / 180; };
+        if (typeof (Number.prototype.toRad) === "undefined") Number.prototype.toRad = function () {
+            return this * Math.PI / 180;
+        };
 
 
-        function geocluster(elements, bias){
+        function geocluster(elements, bias) {
             if (!(this instanceof geocluster)) return new geocluster(elements, bias);
             return this._cluster(elements, bias);
         };
 
         // geodetic distance approximation
-        geocluster.prototype._dist = function(lat1, lon1, lat2, lon2) {
+        geocluster.prototype._dist = function (lat1, lon1, lat2, lon2) {
             var dlat = (lat2 - lat1).toRad();
             var dlon = (lon2 - lon1).toRad();
-            var a = (Math.sin(dlat/2) * Math.sin(dlat/2) + Math.sin(dlon/2) * Math.sin(dlon/2) * Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()));
-            return (Math.round(((2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))) * 6371)*100)/100);
+            var a = (Math.sin(dlat / 2) * Math.sin(dlat / 2) + Math.sin(dlon / 2) * Math.sin(dlon / 2) * Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()));
+            return (Math.round(((2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))) * 6371) * 100) / 100);
         };
 
-        geocluster.prototype._centroid = function(set) {
-            return set.reduce(function(s, e){
-                return [(s[0]+e[0]),(s[1]+e[1])];
-            }, [0,0]).map(function(e){
-                return (e/set.length);
+        geocluster.prototype._centroid = function (set) {
+            return set.reduce(function (s, e) {
+                return [(s[0] + e[0]), (s[1] + e[1])];
+            }, [0, 0]).map(function (e) {
+                return (e / set.length);
             });
         }
 
-        geocluster.prototype._clean = function(data) {
-            return data.map(function(cluster){
+        geocluster.prototype._clean = function (data) {
+            return data.map(function (cluster) {
                 return [cluster.centroid, cluster.elements];
             });
         };
 
-        geocluster.prototype._cluster = function(elements, bias) {
+        geocluster.prototype._cluster = function (elements, bias) {
 
             var self = this;
 
@@ -239,7 +256,7 @@ angular.module('ParkingSpaceMobile', [
 
             // calculate sum of differences
             for (let i = 1; i < elements.length; i++) {
-                diff = self._dist(elements[i][0], elements[i][1], elements[i-1][0], elements[i-1][1]);
+                diff = self._dist(elements[i][0], elements[i][1], elements[i - 1][0], elements[i - 1][1]);
                 tot_diff += diff;
                 diffs.push(diff);
             }
@@ -249,7 +266,7 @@ angular.module('ParkingSpaceMobile', [
             var diff_variance = 0;
 
             // calculate variance total
-            diffs.forEach(function(diff){
+            diffs.forEach(function (diff) {
                 diff_variance += Math.pow(diff - mean_diff, 2);
             });
 
@@ -273,13 +290,13 @@ angular.module('ParkingSpaceMobile', [
                 var cluster_changed = false;
 
                 // iterate over elements
-                elements.forEach(function(e, ei){
+                elements.forEach(function (e, ei) {
 
                     var closest_dist = Infinity;
                     var closest_cluster = null;
 
                     // find closest cluster
-                    cluster_map.forEach(function(cluster, ci){
+                    cluster_map.forEach(function (cluster, ci) {
 
                         // distance to cluster
                         let dist = self._dist(e[0], e[1], cluster_map[ci].centroid[0], cluster_map[ci].centroid[1]);
@@ -312,12 +329,12 @@ angular.module('ParkingSpaceMobile', [
                 });
 
                 // delete empty clusters from cluster_map
-                cluster_map = cluster_map.filter(function(cluster){
+                cluster_map = cluster_map.filter(function (cluster) {
                     return (cluster.elements.length > 0);
                 });
 
                 // calculate the clusters centroids and check for change
-                cluster_map.forEach(function(cluster, ci){
+                cluster_map.forEach(function (cluster, ci) {
                     var centroid = self._centroid(cluster.elements);
                     if (centroid[0] !== cluster.centroid[0] || centroid[1] !== cluster.centroid[1]) {
                         cluster_map[ci].centroid = centroid;
@@ -330,7 +347,7 @@ angular.module('ParkingSpaceMobile', [
                     changing = false;
                 } else {
                     // remove all elements from clusters and run again
-                    if (changing) cluster_map = cluster_map.map(function(cluster){
+                    if (changing) cluster_map = cluster_map.map(function (cluster) {
                         cluster.elements = [];
                         return cluster;
                     });

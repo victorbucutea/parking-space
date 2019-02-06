@@ -42,13 +42,11 @@ angular.module('ParkingSpaceMobile.services')
                                 p_space.space_availability_stop = new Date(p_space.space_availability_stop);
                                 p_space.daily_start = new Date(p_space.daily_start);
                                 p_space.daily_stop = new Date(p_space.daily_stop);
-                                latLngs.push(
-                                    [Number.parseFloat(p_space.location_lat),
-                                        Number.parseFloat(p_space.location_long),
-                                        p_space]);
+                                p_space.location_lat = Number.parseFloat(p_space.location_lat);
+                                p_space.location_long = Number.parseFloat(p_space.location_long);
+                                latLngs.push([p_space.location_lat,p_space.location_long, p_space]);
                             });
                             clusteredSpaces = geocluster(latLngs, zoomFactor);
-                            console.log(clusteredSpaces);
 
                         }
                         if (clbk)

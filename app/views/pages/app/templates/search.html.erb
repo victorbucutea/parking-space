@@ -39,7 +39,7 @@
         <h5 class="text-center"> Alege un loc</h5>
         <ul>
           <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center " ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
-            <div> {{space.title}}</div>  <small class="text-secondary">  {{space.price + ' ' + space.currency}} / h  </small>
+            <div> {{space.title}}</div>  <span class="text-secondary">  {{space.price + ' ' + space.currency}} / h  </span>
           </li>
         </ul>
         <div class="ps-control-buttons">

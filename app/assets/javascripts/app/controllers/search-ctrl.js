@@ -184,7 +184,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $state.go('.post');
             };
 
-            $scope.centerMap = function () {
+            $scope.centerMap = function (){
                 geolocationService.getCurrentLocation(function (position) {
                     let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     $rootScope.map.setCenter(pos);

@@ -10,20 +10,45 @@
       </u>
     </div>
   </div>
-  <div ng-repeat="space in mapSpaces" class="left-panel py-2 px-0">
-    <parking-spot-info-box space="space" class="left-side"></parking-spot-info-box>
-    <div class="m-0 offer-availability">
-      {{nextOffer(space)}}
+  <div ng-repeat="item in mapSpaces" class="left-panel py-2 px-0">
+    <div ng-if="item.elements.length == 1" ng-init="space = item.elements[0][2]">
+      <parking-spot-info-box space="space" ng-click="selectSpace(space)" class="left-side"></parking-spot-info-box>
+      <div class="m-0 offer-availability">
+        {{nextOffer(space)}}
+      </div>
+      <div class="mt-2 d-flex justify-content-around">
+        <button class="btn btn-outline-primary " ng-show="space.from_user && !space.owner_is_current_user" ng-click="selectSpace(space)">
+          <i class="fa fa-calendar"></i>
+          Rezervă
+        </button>
+        <button class="btn btn-outline-primary " ng-show="space.from_user && space.owner_is_current_user" ng-click="selectSpace(space)">
+          <i class="fa fa-pencil"></i>
+          Modifică
+        </button>
+        <button class="btn btn-link" ng-click="zoomTo(space)">
+          <i class="fa fa-map"></i>
+          Arată pe hartă
+        </button>
+      </div>
     </div>
-    <div class="mt-2 d-flex justify-content-around">
-      <button class="btn btn-outline-primary " ng-click="selectSpace(space)">
-        <i class="fa fa-calendar"></i>
-        Rezervă
-      </button>
-      <button class="btn btn-link" ui-sref="home.search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
-        <i class="fa fa-map"></i>
-        Vezi pe hartă
-      </button>
+    <div ng-if="item.elements.length > 1" class="p-3 border-bottom">
+      <h4> {{item.elements.length}} Locuri <br/>
+        <small class="text-muted">In apropiere de {{item.elements[0][2].address_line_1}}</small>
+      </h4>
+      <ul class="p-0">
+        <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center "
+            ng-repeat="space in item.elements" ng-click="selectSpace(space[2])">
+          <div> {{space[2].title}}</div>
+          <span class="text-secondary">  {{space[2].price + ' ' + space[2].currency}} / h  </span>
+        </li>
+      </ul>
+      <div class="mt-2 d-flex justify-content-around">
+        <button class="btn btn-link" ng-click="zoomTo(item.elements[0][2])">
+          <i class="fa fa-map"></i>
+          Arată pe hartă
+        </button>
+      </div>
     </div>
+
   </div>
 </div>

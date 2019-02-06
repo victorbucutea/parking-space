@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     post 'snapshot'
     post 'perimeter_snapshot'
     get 'perimeters'
+    get 'do_heartbeat'
     collection do
       get 'assigned'
       get 'with_location'

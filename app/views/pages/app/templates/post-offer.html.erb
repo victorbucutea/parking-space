@@ -141,31 +141,22 @@
 
 
     <div ng-show="selectedSpace.from_sensor">
-
-      <div class="panel my-3">
-        <h5 class="panel-title">
-          <a>Locuri libere</a>
-        </h5>
-        <div class="panel-body d-block">
-          <ul class="list-group ">
-            <li class="list-group-item d-flex justify-content-between align-items-center ">
-              <div> {{selectedSpace.title}}</div>
-              <div>
+      <ul class="list-group ">
+        <li class="list-group-item d-flex justify-content-between align-items-center ">
+          <div> {{selectedSpace.title}}</div>
+          <div>
                 <span class="fa-stack fa-2x">
                      <i class="fa fa-camera fa-stack-1x"></i>
                      <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
                  </span>
-              </div>
-              <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_lat}}"
-                 class="btn btn-primary">
-                <i class="fa fa-location-arrow "></i>
-                Navighează
-              </a>
-            </li>
-          </ul>
-        </div>
-
-      </div>
+          </div>
+          <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_lat}}"
+             class="btn btn-primary">
+            <i class="fa fa-location-arrow "></i>
+            Navighează
+          </a>
+        </li>
+      </ul>
     </div>
 
     <div class="row flex-nowrap ps-control-buttons">

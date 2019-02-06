@@ -1,7 +1,10 @@
 require 'pusher'
 
 class SensorsController < ApplicationController
-  before_action :set_sensor, only: [:show, :edit, :update, :destroy]
+  before_action :set_sensor, only: %i[show edit update destroy]
+  before_action :set_sensor_p, only: %i[snapshot new_perimeter perimeters
+                                        do_heartbeat publish_free_perimeters
+                                        save_perimeters]
 
   # GET /sensors
   # GET /sensors.json
@@ -60,11 +63,8 @@ class SensorsController < ApplicationController
   # POST /sensors
   # POST /sensors.json
   def snapshot
-    sensor_id = params[:sensor_id]
-    @sensor = Sensor.find(sensor_id)
-
-    Pusher.trigger('sensor_channel', "console_#{sensor_id}",
-                   {command: 'snapshot', params: {sensor: sensor_id}})
+    Pusher.trigger('sensor_channel', "console_#{@sensor.id}",
+                   {command: 'snapshot', params: {sensor: @sensor.id}})
 
     respond_to do |format|
       format.json {render :index, status: :ok}
@@ -87,11 +87,15 @@ class SensorsController < ApplicationController
 
   # GET /sensors/:sensor_id/new_perimeter
   def new_perimeter
-    @sensor = Sensor.find(params[:sensor_id])
   end
 
   def perimeters
-    @sensor = Sensor.find(params[:sensor_id])
+    respond_to do |format|
+      format.json {render :'sensors/show_perimeters', status: :ok}
+    end
+  end
+
+  def do_heartbeat
     @sensor.do_heartbeat
     respond_to do |format|
       format.json {render :'sensors/show_perimeters', status: :ok}
@@ -100,10 +104,7 @@ class SensorsController < ApplicationController
 
   # POST /sensors/1/save_perimeters.json
   def save_perimeters
-    @sensor = Sensor.find(params[:sensor_id])
     pers = params[:perimeters]
-
-
     @sensor.parking_perimeters.each do |per|
       exists = false;
       pers.each do |incoming|
@@ -134,8 +135,6 @@ class SensorsController < ApplicationController
 
   # POST /sensors/1/save_parking_spaces.json
   def publish_free_perimeters
-    @sensor = Sensor.find(params[:sensor_id])
-
     @sensor.publish_spaces(params)
     respond_to do |format|
       format.json {render 'sensors/show_perimeters', status: :created}
@@ -157,6 +156,11 @@ class SensorsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_sensor
     @sensor = Sensor.find(params[:id])
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_sensor_p
+    @sensor = Sensor.find(params[:sensor_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
