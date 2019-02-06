@@ -873,6 +873,15 @@ parking-spot-info-box {
   }
 }
 
+.ps-infobox-img {
+  width: 70%;
+  margin: auto;
+
+  @include media-breakpoint-down(md) {
+    width: 90%;
+  }
+}
+
 .bids-area {
 
   .bid-title {

@@ -12,7 +12,7 @@
   </div>
   <div ng-repeat="item in mapSpaces" class="left-panel py-2 px-0">
     <div ng-if="item.elements.length == 1" ng-init="space = item.elements[0][2]">
-      <parking-spot-info-box space="space" ng-click="selectSpace(space)" class="left-side"></parking-spot-info-box>
+      <parking-spot-info-box space="space"  class="left-side"></parking-spot-info-box>
       <div class="m-0 offer-availability">
         {{nextOffer(space)}}
       </div>

@@ -205,12 +205,12 @@ angular.module('ParkingSpaceMobile.directives')
                 '</div>' +
                 ' <div class="ps-modal image pt-2 text-center d-flex flex-nowrap align-items-center" ng-if="showFullImage && space.file1" ng-init="showFullImage=false">' +
                 '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_1024/{{space.file1}}" ' +
-                '         class="img-fluid p-3 animated zoomIn max-height">' +
+                '         class="ps-infobox-img p-3 animated zoomIn ">' +
                 '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_1024/{{space.file2}}" ' +
-                '         class="img-fluid p-3 animated zoomIn max-height"' +
+                '         class="ps-infobox-img p-3 animated zoomIn "' +
                 '         ng-if="space.file2">' +
                 '    <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_1024/{{space.file3}}" ' +
-                '         class="img-fluid p-3 animated zoomIn max-height"' +
+                '         class="ps-infobox-img p-3 animated zoomIn "' +
                 '         ng-if="space.file3">' +
                 '    <span>{{space.description}}</span>' +
                 ' </div>',
