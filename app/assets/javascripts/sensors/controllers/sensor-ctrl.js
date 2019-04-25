@@ -347,7 +347,8 @@ angular.module('ParkingSpaceSensors.controllers')
                 _this.pusher.bind_global(function (data, payload) {
                     console.log('event', data, payload);
                     if (payload.err) {
-                        $rootScope.$emit('http.error', 'Eroare la conectarea cu agentul:' + payload.err.message);
+                        let msg = payload.err.message ? payload.err.message : payload.err;
+                        $rootScope.$emit('http.error', 'Eroare la conectarea cu agentul:' + msg);
                         $scope.$apply();
                     }
                 });
@@ -397,6 +398,24 @@ angular.module('ParkingSpaceSensors.controllers')
                     $scope.$apply();
                 });
 
+                _this.channel.bind('client-perimeter-img-' + sensor.id, function (data) {
+                    $scope.status = 'Evaluate finished.';
+                    $scope.connecting = false;
+                    $scope.perimeters.forEach((per) => {
+                        if (typeof (data[per.id]) != "undefined") {
+                            per.corrVal = data[per.id];
+                        }
+                    });
+                    $scope.$apply();
+                });
+
+                _this.channel.bind('client-download-snapshots-' + sensor.id, function (data) {
+                    $scope.status = 'Beggining download of snapshots';
+                    $scope.connecting = false;
+                    window.location =  data.url;
+                    $scope.$apply();
+                });
+
                 _this.channel.bind('client-helo-' + sensor.id, function (data) {
                     if (_this.onHello) _this.onHello(data);
                 });
@@ -407,6 +426,10 @@ angular.module('ParkingSpaceSensors.controllers')
                     bindToCommands();
                 }
             });
+
+            $scope.downloadSnaphots = function () {
+                $scope.sendCommand('download-snapshots', $scope.sensor, {});
+            };
 
 
             $scope.takeSnapshot = function () {

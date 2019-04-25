@@ -48,17 +48,18 @@
         <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
         <i class="fa fa-camera" ng-hide="connecting"></i> Take new parking lot snapshot
       </button>
-      <button class="btn btn-secondary" ng-disabled=" connecting" ng-click="saveSnapshots()">
+      <a href="" style="display: none" id="downloadSnapshots"></a>
+      <button class="btn btn-secondary" ng-disabled=" connecting" ng-click="downloadSnaphots()">
         <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
-        <i class="fa fa-save" ng-hide="connecting"></i> Save snapshot and spaces
+        <i class="fa fa-save" ng-hide="connecting"></i> Download Snapshots
       </button>
       <form style="display:none">
         <input type="file" name="file" id="fileElem" multiple accept="image/*" >
       </form>
-      <button class="btn btn-warning" ng-disabled="connecting" ng-click="evaluate()">
+      <!--<button class="btn btn-warning" ng-disabled="connecting" ng-click="evaluate()">
         <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
         <i class="fa fa-bolt" ng-hide="connecting"></i> Evaluate
-      </button>
+      </button>-->
       <hr/>
       <div class="form-text text-muted">
         {{status}}
@@ -81,6 +82,9 @@
         <li class="nav-item">
           <a class="nav-link" ng-class="{active: (selectedMenu == 2) }" ng-click="selectedMenu = 2" href="">Sensor
             modules</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" ng-class="{active: (selectedMenu == 3) }" ng-click="selectedMenu = 3" href="">Images</a>
         </li>
       </ul>
 
@@ -360,6 +364,8 @@
         <button type="button" class="btn btn-secondary" ui-sref="^">Cancel</button>
 
       </form>
+
+
     </div>
 
   </div>
