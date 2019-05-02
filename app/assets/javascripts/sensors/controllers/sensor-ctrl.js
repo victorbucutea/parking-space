@@ -464,9 +464,8 @@ angular.module('ParkingSpaceSensors.controllers')
                         module_url: response.secure_url,
                         file_name: fileName
                     };
-                    if (isFile) {
-                        payload.as_file = true;
-                    }
+                    payload.as_file = !!isFile;
+
                     $scope.sendCommand('update-module', $scope.sensor, payload);
                 }, (err) => {
                     let errTxt = err.responseJSON.error.message;
