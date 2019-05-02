@@ -412,7 +412,7 @@ angular.module('ParkingSpaceSensors.controllers')
                 _this.channel.bind('client-download-snapshots-' + sensor.id, function (data) {
                     $scope.status = 'Beggining download of snapshots';
                     $scope.connecting = false;
-                    window.location =  data.url;
+                    window.location = data.url;
                     $scope.$apply();
                 });
 
@@ -456,20 +456,25 @@ angular.module('ParkingSpaceSensors.controllers')
             };
 
 
-            $scope.uploadModule = function () {
+            $scope.uploadModule = function (isFile) {
 
                 let fileName = $scope.file.files[0].name;
                 $scope.file.submit().then((response) => {
-                    $scope.sendCommand('update-module', $scope.sensor, {
+                    let payload = {
                         module_url: response.secure_url,
                         file_name: fileName
-                    });
+                    };
+                    if (isFile) {
+                        payload.as_file = true;
+                    }
+                    $scope.sendCommand('update-module', $scope.sensor, payload);
                 }, (err) => {
                     let errTxt = err.responseJSON.error.message;
                     $rootScope.$emit('http.error', errTxt);
                     $scope.$apply();
                 });
-            };
+            }
+            ;
 
             $scope.restartModule = function (mod) {
                 $scope.sendCommand('restart-module', $scope.sensor, {module_name: mod});
