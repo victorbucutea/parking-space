@@ -93,8 +93,7 @@ angular.module('ParkingSpace', [
 
 
     }])
-    .constant("GEOCODE_API_URL", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY")
-   ;
+    .constant("GEOCODE_API_URL", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY");
 
 angular.module('ParkingSpace.controllers', []);
 angular.module('ParkingSpace.directives', []);

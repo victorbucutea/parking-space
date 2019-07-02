@@ -410,7 +410,7 @@ angular.module('ParkingSpaceSensors.controllers')
                 });
 
                 _this.channel.bind('client-download-snapshots-' + sensor.id, function (data) {
-                    $scope.status = 'Beggining download of snapshots';
+                    $scope.status = 'Beginning download of snapshots';
                     $scope.connecting = false;
                     window.location = data.url;
                     $scope.$apply();
