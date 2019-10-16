@@ -32,9 +32,9 @@ angular-cookies@^1.6.10:
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/angular-cookies/-/angular-cookies-1.7.6.tgz#a8f9e81866cbc76d82a15b3a18a84099c9d6fc84"
 
-angular-easyfb@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/angular-easyfb/-/angular-easyfb-1.5.2.tgz#ce5b1ac323a3441b2f5249a3b0e61addfca608f5"
+angular-easyfb@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/angular-easyfb/-/angular-easyfb-1.6.0.tgz#5f1fa0227b9878abe191a644fe11b0059201b893"
 
 angular-filter@^0.5.17:
   version "0.5.17"

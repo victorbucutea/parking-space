@@ -363,6 +363,17 @@ angular.module('ParkingSpaceMobile', [
         window.geocluster = geocluster;
     })
 
+    .config(function() {
+        window.getJsonFromUrl = function(url) {
+            var result = {};
+            url.split("&").forEach(function(part) {
+                var item = part.split("=");
+                result[item[0]] = decodeURIComponent(item[1]);
+            });
+            return result;
+        }
+    })
+
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('home', {
@@ -624,7 +635,7 @@ angular.module('ParkingSpaceMobile', [
         $urlRouterProvider.otherwise(function ($injector, $location) {
 
             if ($location.$$hash.indexOf("token") !== -1 && $location.$$hash.indexOf("state") !== -1) {
-                let token = $location.$$hash.split("&")[1].split("=")[1];
+                let token = getJsonFromUrl($location.$$hash).access_token;
                 sessionStorage.setItem("fb_token", token);
                 // sucessful response from fb
                 return "/home/login?fbLogin=ok";

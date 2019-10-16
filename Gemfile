@@ -12,7 +12,7 @@ group :development do
 end
 
 group :production do
-  gem 'puma', '3.12.0'
+  gem 'puma'
   gem 'rails_12factor'
 end
 
@@ -41,7 +41,6 @@ gem 'high_voltage', '~> 3.0.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
 
 
 gem 'braintree', '~> 2.83.0'

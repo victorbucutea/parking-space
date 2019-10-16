@@ -87,6 +87,7 @@ angular.module('ParkingSpaceMobile.controllers')
                             // user successfully logged in
                             $state.go('home.search', latLng);
                         }, function (err, status) {
+                            $scope.loadingFb = false;
                             if (status === 422) {
                                 // user does not exist
                                 // go to additional info page
