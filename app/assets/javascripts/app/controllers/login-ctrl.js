@@ -67,7 +67,7 @@ angular.module('ParkingSpaceMobile.controllers')
                     if (!$scope.$$phase) {
                         $scope.$apply();
                     }
-                    window.location = 'https://www.facebook.com/v3.0/dialog/oauth?' +
+                    window.location = 'https://www.facebook.com/v4.0/dialog/oauth?' +
                         'client_id=1725456304415807' +
                         '&redirect_uri=' + curLoc +
                         '&state=no_state_needed' +
