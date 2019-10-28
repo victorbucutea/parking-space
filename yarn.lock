@@ -221,6 +221,10 @@ popper.js@1.12.3:
   version "1.12.3"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.12.3.tgz#e46a99c52e74e310411df505d820b61bdbe7eaee"
 
+popper.js@^1.0.2:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.0.tgz#2e1816bcbbaa518ea6c2e15a466f4cb9c6e2fbb3"
+
 promise-polyfill@8.1.0, promise-polyfill@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-8.1.0.tgz#30059da54d1358ce905ac581f287e184aedf995d"
@@ -239,6 +243,12 @@ restricted-input@1.2.7:
   resolved "https://registry.yarnpkg.com/restricted-input/-/restricted-input-1.2.7.tgz#e1298f5fd8c430cc2d8e6bb1175524023205cb34"
   dependencies:
     "@braintree/browser-detection" "^1.5.0"
+
+tooltip.js@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/tooltip.js/-/tooltip.js-1.3.3.tgz#2ad0d77bb6776a76e117eac0afcd3c7d3a237121"
+  dependencies:
+    popper.js "^1.0.2"
 
 tweetnacl-util@^0.15.0:
   version "0.15.0"

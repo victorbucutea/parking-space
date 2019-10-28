@@ -69,6 +69,19 @@ class RegistrationsController < Devise::RegistrationsController
     render json: {token: token_str}
   end
 
+  def employees
+    if params[:query].nil?
+      @users = []
+      return
+    end
+
+    # return employees of current user company
+    @users = User.with_query params[:query]
+    respond_to do |format|
+      format.json { render 'registrations/index', status: :ok }
+    end
+  end
+
 
   protected
 

@@ -27,9 +27,9 @@ angular.module('ParkingSpaceMobile.services')
                 return;
             }
             var i = 0;
-            var idx = 0;
+            var idx = collection.length;
             collection.forEach(function (colItem) {
-                if (colItem.id == item.id) {
+                if (colItem.id === item.id) {
                     idx = i;
                 }
                 i++;

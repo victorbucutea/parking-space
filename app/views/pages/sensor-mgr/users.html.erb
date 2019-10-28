@@ -1,0 +1,45 @@
+<div class="users-list pt-3" ng-controller="UsersCtrl">
+
+  <form novalidate id="userSearchForm" name="userSearchForm">
+    <div class="input-group my-4">
+      <input type="text" id="searchUsrTxt" class="form-control" ng-model="searchUserTxt"
+             placeholder="Search by username or email" >
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" ng-click="searchUser(searchUserTxt)">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Loc asignat</th>
+        <th scope="col">Drepturi</th>
+        <th scope="col">Actiuni</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in users">
+        <td>{{user.full_name}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.assignedSpace || 'N/A'}}</td>
+        <td>
+          <div ng-repeat="role in user.roles">
+            {{role.name}} - {{role.location.name}}
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-warning"> Asigneaza loc </button>
+          <button class="btn btn-sm btn-primary" ng-click="goEditRoles(user)"> Modifica drepturi </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ui-view name="details"></ui-view>
+
+</div>

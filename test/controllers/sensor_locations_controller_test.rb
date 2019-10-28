@@ -2,47 +2,47 @@ require 'test_helper'
 
 class SensorLocationsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @sensor_location = sensor_locations(:one)
+    @location = sensor_locations(:one)
   end
 
   test "should get index" do
-    get sensor_locations_url
+    get locations_url
     assert_response :success
   end
 
   test "should get new" do
-    get new_sensor_location_url
+    get new_location_url
     assert_response :success
   end
 
   test "should create sensor_location" do
     assert_difference('SensorLocation.count') do
-      post sensor_locations_url, params: { sensor_location: {  } }
+      post locations_url, params: {location: {  } }
     end
 
-    assert_redirected_to sensor_location_url(SensorLocation.last)
+    assert_redirected_to location_url(Location.last)
   end
 
   test "should show sensor_location" do
-    get sensor_location_url(@sensor_location)
+    get location_url(@location)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_sensor_location_url(@sensor_location)
+    get edit_location_url(@location)
     assert_response :success
   end
 
   test "should update sensor_location" do
-    patch sensor_location_url(@sensor_location), params: { sensor_location: {  } }
-    assert_redirected_to sensor_location_url(@sensor_location)
+    patch location_url(@location), params: {location: {  } }
+    assert_redirected_to location_url(@location)
   end
 
   test "should destroy sensor_location" do
     assert_difference('SensorLocation.count', -1) do
-      delete sensor_location_url(@sensor_location)
+      delete location_url(@location)
     end
 
-    assert_redirected_to sensor_locations_url
+    assert_redirected_to locations_url
   end
 end

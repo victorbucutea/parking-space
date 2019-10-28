@@ -1,0 +1,123 @@
+<!-- Here be perimeter edit form -->
+<div class="ps-modal perimeter-modal" ng-controller="PerimeterCtrl">
+  <div class=" my-4 p-4">
+    <h3 ng-hide="editablePer">No Perimeter selected</h3>
+    <form novalidate id="perForm" name="perForm" ng-show="editablePer">
+      <h4> Editare perimetru id {{editablePer.id}}</h4>
+
+      <div class="form-row form-group mt-3">
+        <label class="col-form-label col-sm-2" for="name"> Număr </label>
+        <div class="col-sm-10">
+          <input id="name" class="form-control" required ng-model="editablePer.identifier">
+          <small class="form-text ">Număr unic de identificare al parcării</small>
+        </div>
+      </div>
+
+      <div class="form-row form-group mt-3">
+        <label class="col-form-label col-sm-2" for="name"> Tip </label>
+        <div class="col-sm-10">
+          <select id="perimeter_types" class="form-control" required
+                  ng-options="type.name as type.name for type in section.perimeter_types"
+                  ng-model="editablePer.perimeter_type">
+            <option value="" ng-selected="true"> --- alege tip parcare --- </option>
+          </select>
+          <small class="form-text ">Alege daca locul va fi asignat direct unui angajat sau liber pentru rezervare.</small>
+        </div>
+      </div>
+
+      <!-- Subscriber form -->
+      <div ng-show="editablePer.perimeter_type == 'assigned_space' ">
+        <div class="form-row form-group mt-3">
+          <label class="col-form-label col-sm-2" for="name">
+            User
+          </label>
+          <div class="col-sm-10" ng-hide="editablePer.user">
+            <input id="ruleSearch" class="form-control form-control-sm" ng-model="userSearchTxt" >
+            <small class="form-text ">Angajatul caruia i se va asigna locul</small>
+            <div class="suggestion-container user" ng-show="userSearchTxt.length > 2">
+              <ul class="list-group">
+                <li class="list-group-item" ng-hide="users.length > 0">
+                  <small> No users found with that name. </small>
+                </li>
+                <li class="list-group-item list-group-item-action" ng-repeat="user in users"
+                    ng-click="selectUser(user)">
+                  <h5><span class="badge badge-light">{{user.full_name}} </span></h5>
+                  <small class="text-muted"> {{user.email}} </small>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-10" ng-show="editablePer.user">
+            <div class="input-group">
+            <input id="ruleSearch"  disabled class="form-control" ng-model="editablePer.user.full_name" >
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary" ng-click="editablePer.user = null"><i class="fa fa-pencil"></i> </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- employee form -->
+      <div class="form-row form-group mt-3" ng-hide="editablePer.perimeter_type == 'assigned_space' ">
+        <label class="col-form-label col-sm-2" for="name"> Reguli rezervare </label>
+        <div class="col-sm-10">
+          <h5 id="op-{{$index}}" ng-click="showOperatorTooltip(op)"
+              class="d-inline-block mx-1 expression-container"
+              ng-repeat="op in expression track by $index">
+            <span class="badge badge-dark b-main" title="{{op.description}}">{{op.name}}</span>
+            <span class="badge badge-dark b-close" ng-click="removeOperator($index)">
+              <i class="fa fa-close"></i>
+            </span>
+            <span class="badge badge-warning" ng-show="op == 'AND' && $index != 0">AND</span>
+            <span class="badge badge-success" ng-show="op == 'OR' && $index != 0">OR</span>
+
+            <div ng-repeat-end ng-init="initPopup()"></div>
+          </h5>
+          <div class="d-inline-block pos-relative" ng-show="addingOperator">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" ng-click="changeOperator()" type="button" id="button-addon1">{{operator}}</button>
+              </div>
+              <input id="ruleSearch" class="form-control form-control-sm" ng-model="ruleSearchTxt">
+              <div class="suggestion-container " ng-show="ruleSearchTxt.length > 2">
+                <ul class="list-group">
+                  <li class="list-group-item" ng-hide="rules.length > 0">
+                    <small> No Rules found with that name. </small>
+                  </li>
+                  <li class="list-group-item list-group-item-action" ng-repeat="rule in rules" ng-click="addOperator(rule)">
+                    <h5><span class="badge badge-dark">{{rule.name}} </span></h5>
+                    <small class="text-muted"> {{rule.description}} </small>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="d-inline-block">
+            <button class="btn btn-link p-2" ng-click="addingOperator =true" ng-hide="addingOperator">
+              <i class="fa fa-plus"></i> Adauga
+            </button>
+            <button class="btn btn-link p-2" ng-show="addingOperator" ng-click="addingOperator=false">
+              <i class="fa fa-remove"></i> Sterge
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" ng-click="savePerimeter()" ng-disabled="loading">
+        <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+        OK
+      </button>
+      <button class="btn btn-danger" ng-click="deletePerimeter()" ng-disabled="loading">
+
+        <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+        Șterge
+      </button>
+
+    </form>
+  </div>
+</div>

@@ -15,7 +15,7 @@ class SensorsController < ApplicationController
   # GET /sensors
   # GET /sensors/with_location.json
   def with_location
-    @sensors = Sensor.all.includes(:sensor_location).includes :parking_perimeters
+    @sensors = Sensor.all.includes(:location).includes :parking_perimeters
     respond_to do |format|
       format.json {render :with_location, status: :ok}
     end
@@ -106,7 +106,7 @@ class SensorsController < ApplicationController
   def save_perimeters
     pers = params[:perimeters]
     @sensor.parking_perimeters.each do |per|
-      exists = false;
+      exists = false
       pers.each do |incoming|
         exists = true if incoming[:id] == per.id
       end
@@ -175,7 +175,7 @@ class SensorsController < ApplicationController
   def permiter_params(perim_params)
     perim_params.permit(
         :top_left_y, :top_left_x, :bottom_right_y, :bottom_right_x, :price,
-        :identifier, :description, :perimeter_type, :lat, :lng, :correlation_threshold
+        :identifier, :description, :perimeter_type, :lat, :lng
     )
   end
 

@@ -1,8 +1,8 @@
 class Sensor < ActiveRecord::Base
 
-  scope :for_location, ->(loc_id) {where('sensors.sensor_location_id = ? ', loc_id)}
+  scope :for_location, ->(loc_id) {where('sensors.section_id = ? ', loc_id)}
 
-  belongs_to :sensor_location
+  belongs_to :sensor
   has_many :parking_perimeters, :dependent => :destroy
 
   def do_heartbeat
@@ -23,12 +23,9 @@ class Sensor < ActiveRecord::Base
 
     params[:free_perimeters].each do |p|
       parking_perimeter = ParkingPerimeter.find(p[:id])
-      sensor_location = parking_perimeter.sensor.sensor_location
+      sensor_location = parking_perimeter.sensor.section
       next if sensor_location.nil?
 
-      is_free = p[:evaluatedCorrelation] > parking_perimeter.correlation_threshold
-
-      next unless is_free
 
       parking_space = parking_perimeter.parking_space || ParkingSpace.new
       parking_space.owner_name = 'n/a'

@@ -1189,6 +1189,66 @@ parking-spot-info-box {
   }
 }
 
+.perimeter-modal {
+  z-index: 91;
+  position: fixed;
+  > div:first-child {
+    max-width: 80%;
+  }
+
+  .expression-container {
+    &:hover {
+      cursor: pointer;
+
+      .b-close {
+        display: inline-block;
+      }
+    }
+    .b-close {
+      display: none;
+
+    }
+  }
+
+  .tooltip {
+    opacity: 1;
+  }
+
+}
+
+.users-list {
+
+  table {
+
+    .btn-sm {
+      font-size: 80%;
+    }
+  }
+}
+
+
+.main-link:hover {
+  background-color: $blue-90;
+  cursor: pointer;
+}
+
+.suggestion-container {
+  position: absolute;
+  background-color: #fff;
+  width: 200%;
+  margin-top: -1px;
+  top: 100%;
+  box-shadow: 2px 2px 3px -1px #495057;
+
+  .list-group-item {
+    padding: 5px;
+  }
+
+  &.user {
+    width: 100%;
+  }
+}
+
 .edit-sensor-modal {
   position: fixed;
 
@@ -1242,24 +1302,26 @@ parking-spot-info-box {
     }
 
     .perimeter {
-      border: 2px solid $pink;
+      border: 2px solid $red;
       width: 60px;
       height: 60px;
-      color: $pink;
+      color: $red;
+      &.selected {
+        background-color: transparentize($red,.2);
+      }
 
       &.sample {
         border: 2px solid $warning;
         color: $warning;
       }
 
-      &.occupied {
-        border: 2px solid #f13222;
-        color: #f13222;
-      }
-
       &.free {
         border: 2px solid #17ff4e;
         color: #17ff4e;
+
+        &.selected {
+          background-color: rgba(21, 255, 73, 0.6);
+        }
       }
     }
 

@@ -18,7 +18,7 @@
   <%= csrf_meta_tags %>
 
 </head>
-<body ng-app="ParkingSpaceSensors" >
+<body ng-app="ParkingSpaceSensors" ng-controller="MainCtrl">
 
 
 <script> window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(ENV['WEBPUSH_PUBLIC_KEY']).bytes %>); </script>
@@ -26,27 +26,26 @@
 <script> window.cloudinaryPreset = "<%= ENV['CLOUDINARY_PRESET'] %>"; </script>
 
 
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Manager Senzori</a>
+  <a class="navbar-brand" href="#">Parking Manager {{company.short_name}}</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav" >
+    <ul class="navbar-nav">
       <li class="nav-item " ui-sref-active="active">
-        <a class="nav-link" ui-sref="location" href="">Locatii
+        <a class="nav-link" ui-sref="locations" href="">Locații
           <span class="sr-only">(current)</span>
         </a>
       </li>
       <li class="nav-item" ui-sref-active="active">
-        <a class="nav-link" ui-sref="sensor-fleet">Flota Senzori</a>
+        <a class="nav-link" ui-sref="users">Utilizatori</a>
       </li>
     </ul>
   </div>
 </nav>
 
-<div class="container " ng-controller="MainCtrl">
+<div class="container ">
 
   <!-- Notification messages -->
   <div class="notification-area animated zoomIn">
@@ -78,7 +77,21 @@
   </div>
 
 
-  <ui-view name="content"></ui-view>
+  <ui-view name="content">
+    <div class="d-flex align-items-center flex-column justify-content-around" style="height: 400px">
+      <img WIDTH="300" src="<%= image_path 'logosgebs.png' %>">
+      <div class="d-flex">
+        <div ui-sref="locations" class="m-2 main-link panel d-flex flex-column justify-content-center align-items-center" style="height: 200px">
+          <h4> Locatii parcare </h4>
+          <img class="img-fluid" style="height:60%" src="<%= image_path 'phone_map_blue.png' %>">
+        </div>
+        <div ui-sref="users" class="m-2 main-link panel d-flex flex-column justify-content-center align-items-center" style="height: 200px">
+          <h4> Utilizatori </h4>
+          <img class="img-fluid" style="height:60%" src="<%= image_path 'useravatar_blue_lg.png' %>">
+        </div>
+      </div>
+    </div>
+  </ui-view>
 
 
 </div>

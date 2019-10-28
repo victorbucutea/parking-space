@@ -8,6 +8,7 @@ angular.module('ParkingSpaceSensors', [
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
+            .state('main', {url:'/'})
             .state('sensor-fleet', {
                 url: '/sensor-fleet',
                 views: {
@@ -19,7 +20,6 @@ angular.module('ParkingSpaceSensors', [
                     locationId: null
                 }
             })
-
             .state('sensor-fleet.sensor', {
                 url: '/sensor?sensorId',
                 views: {
@@ -31,8 +31,7 @@ angular.module('ParkingSpaceSensors', [
                     sensorId: null
                 }
             })
-
-            .state('location', {
+            .state('locations', {
                 url: '/location?locationId',
                 views: {
                     'content': {
@@ -43,8 +42,7 @@ angular.module('ParkingSpaceSensors', [
                     locationId: null
                 }
             })
-
-            .state('location.sensor', {
+            .state('locations.sensor', {
                 url: '/sensor?sensorId',
                 views: {
                     'detail': {
@@ -54,14 +52,56 @@ angular.module('ParkingSpaceSensors', [
                 params: {
                     sensorId: null
                 }
+            })
+            .state('locations.section', {
+                url: '/section?sectionId',
+                views: {
+                    'detail': {
+                        templateUrl: 'section-edit.html'
+                    }
+                },
+                params: {
+                    section: null
+                }
+            })
+            .state('locations.section.perimeter', {
+                url: '/section/perimeter',
+                views: {
+                    'perimeter': {
+                        templateUrl: 'perimeter-edit.html'
+                    }
+                }
+            })
+            .state('users', {
+                url:"/users",
+                views: {
+                    'content': {
+                        templateUrl: 'users.html'
+                    }
+                },
+            })
+            .state('users.rights', {
+                url:"/rights",
+                views: {
+                    'details': {
+                        templateUrl: 'users-rights.html'
+                    }
+                }
+            })
+            .state('users.spaces', {
+                url:"/spaces",
+                views: {
+                    'content': {
+                        templateUrl: 'users-spaces.html'
+                    }
+                }
             });
 
-        $urlRouterProvider.otherwise('/location')
+        $urlRouterProvider.otherwise('/')
     }])
 
     .run(['$rootScope', function ($rootScope) {
         moment.locale('ro');
-
     }])
     .constant("GEOCODE_API_URL", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY")
 
@@ -71,9 +111,9 @@ angular.module('ParkingSpaceSensors', [
                 return;
             }
             var i = 0;
-            var idx = 0;
+            var idx = collection.length;
             collection.forEach(function (colItem) {
-                if (colItem.id == item.id) {
+                if (colItem.id === item.id) {
                     idx = i;
                 }
                 i++;

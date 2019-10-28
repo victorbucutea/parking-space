@@ -6,7 +6,10 @@
       <hr>
       <ul class="list-group">
         <li class="list-group-item" ng-repeat="loc in locations">
-          <a href ng-click="selectLocation(loc)"> {{loc.name}} </a>
+          <div><a href ng-click="selectLocation(loc)"> {{loc.name}} </a></div>
+          <div class="pl-4 text-truncate " ng-repeat="section in loc.sections" >
+            <a class="text-muted" href ui-sref=".section({sectionId:section.id})"> {{section.name}}</a>
+          </div>
         </li>
         <li class="list-group-item" ng-repeat-end>
           <a href ng-click="location = {}"> Create new ... </a>
@@ -28,12 +31,6 @@
         <div class="col-sm-8 ">
           <form novalidate id="locationForm" name="locationForm">
             <div class="form-row form-group">
-              <label class="col-form-label col-sm-2" for="address" required> Adresa </label>
-              <div class="col-sm-10">
-                <input id="address" class="form-control" required ng-model="location.address">
-              </div>
-            </div>
-            <div class="form-row form-group">
               <label class="col-form-label col-sm-2" for="name"> Nume </label>
               <div class="col-sm-10">
                 <input id="name" class="form-control" required ng-model="location.name">
@@ -42,11 +39,13 @@
 
             </div>
             <div class="form-row form-group">
-              <label class="col-form-label col-sm-2" for="soc_name"> Nume Societate </label>
+              <label class="col-form-label col-sm-2" for="address" required> Adresa </label>
               <div class="col-sm-10">
-                <input id="soc_name" class="form-control" required ng-model="location.parking_space_name">
+                <input id="address" class="form-control" required ng-model="location.address">
               </div>
             </div>
+
+
             <div class="form-row form-group">
               <label class="col-form-label col-sm-2" for="lat"> Lat </label>
               <div class="col-sm-10">
@@ -59,11 +58,11 @@
                 <input id="lng" class="form-control" required ng-model="location.location_long">
               </div>
             </div>
-            <button class="btn btn-primary" ng-click="saveSensorLocation()" ng-disabled="loading">
+            <button class="btn btn-primary" ng-click="saveLocation()" ng-disabled="loading">
               <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
               Salveaza
             </button>
-            <button class="btn btn-danger" ng-click="deleteSensorLocation()" ng-disabled="loading">
+            <button class="btn btn-danger" ng-click="deleteLocation()" ng-disabled="loading">
               <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
               Sterge
             </button>
@@ -75,69 +74,54 @@
         </div>
       </div>
 
-
+      <h3 class="mt-4 d-flex justify-content-between">
+        Sectiuni
+      </h3>
+      <hr>
       <div class="list-group my-4">
-        <div ng-repeat="sensor in assignedSensors" class="list-group-item ">
-          <div class="list-group-item-action d-flex justify-content-between">
-            <div ui-sref=".sensor({sensorId: sensor.id})">
-              <h5> {{sensor.location_desc }} </h5>
-              <span class="small"> {{sensor.lat}} x {{ sensor.lng }}</span>
+        <div ng-repeat="section in location.sections" class="list-group-item  list-group-item-action ">
+          <div class="row">
+            <div class="col-4">
+              <h5> {{section.name}} </h5>
             </div>
-            <img height="100" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}">
+            <div class="col-6">
+              {{section.description}}
+            </div>
+            <div class="col-2">
+              <button class="btn btn-link" ui-sref=".section({sectionId:section.id})">
+                <i class="fa fa-pencil"></i>
+                Editeaza
+              </button>
+            </div>
           </div>
-
-          <button class="btn btn-link" ng-click="unassignSensor(sensor)">
-            <i class="fa fa-trash"></i>
-            Dezasigneaza Senzor
-          </button>
         </div>
-
-        <div ng-repeat-end class="list-group-item  list-group-item-action">
-          <button class="btn btn-link" href="#" ng-hide="addNewSensor || !location.id" ng-click="assignNewSensor()"
-                  ng-disabled="loading">
-            <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
-            Asigneaza Senzor ...
-          </button>
-          <form novalidate id="newSensorForm" name="newSensorForm" ng-show="addNewSensor">
+        <div class="list-group-item" ng-show="newSection">
+          <form novalidate id="newSectionForm" name="newSectionForm">
             <div class="form-row">
               <label class="col-form-label col-sm-3" for="sensor_name">
-                Nume nou:
+                Nume:
               </label>
               <div class="col-sm-9">
-                <input class="form-control form-control-sm" required ng-model="newSensor.location_text" id="sensor_name">
+                <input class="form-control form-control-sm" required ng-model="newSection.name" id="sensor_name">
               </div>
             </div>
             <div class="form-row">
-              <label class="col-form-label col-sm-3" for="lat">
-                Lat x Lng:
-              </label>
-              <div class="col-sm-4">
-                <input class="form-control form-control-sm" ng-model="newSensor.lat" id="lat">
-              </div>
-              <div class="col-sm-1"> x</div>
-
-              <div class="col-sm-4">
-                <input class="form-control form-control-sm" ng-model="newSensor.lng" id="lng">
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="col-form-label col-sm-3" for="sensor_name">
-                Senzor:
+              <label class="col-form-label col-sm-3" for="sensor_desc">
+                Descriere:
               </label>
               <div class="col-sm-9">
-                <select class="form-control form-control-sm" id="sensor_name" required
-                        ng-options="sensor as sensor.id + ' ' + sensor.location_text + ' ' + sensor.title_message for sensor in sensors track by sensor.id"
-                        ng-model="newSensor">
-                  <option value="" selected="selected"> -- choose sensor --</option>
-                </select>
+                <input class="form-control form-control-sm" required ng-model="newSection.description" id="sensor_desc">
               </div>
             </div>
-            <button class="btn btn-sm btn-primary" ng-disabled="loading" ng-click="saveSensor()">
+            <button class="btn btn-sm btn-primary" ng-disabled="loading" ng-click="saveSection(newSection, location)">
               <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
               Salvează
             </button>
             <button class="btn btn-sm btn-secondary" ng-click="addNewSensor = null">Cancel</button>
           </form>
+        </div>
+        <div class="list-group-item list-group-item-action" ng-click="newSection = {}">
+          Creaza Secțiune nouă ...
         </div>
       </div>
     </div>

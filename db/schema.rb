@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_165246) do
+ActiveRecord::Schema.define(version: 2019_10_26_112521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,13 +18,36 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
   create_table "accounts", force: :cascade do |t|
     t.decimal "amount"
     t.string "currency"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
-  create_table "messages", force: :cascade do |t|
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.string "cui"
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "registry"
+    t.string "short_name"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.decimal "location_lat"
+    t.decimal "location_long"
+    t.string "parking_space_name"
+    t.string "address"
+    t.string "deviceid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_locations_on_company_id"
+  end
+
+  create_table "messages", id: :serial, force: :cascade do |t|
     t.string "deviceid"
     t.string "content"
     t.integer "proposal_id"
@@ -35,7 +58,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
   create_table "parameter_values", force: :cascade do |t|
     t.string "key"
     t.string "value"
-    t.integer "parameter_id"
+    t.bigint "parameter_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "value1"
@@ -60,16 +83,20 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
     t.decimal "bottom_right_y"
     t.string "identifier"
     t.string "snapshot"
-    t.integer "parking_space_id"
+    t.bigint "parking_space_id"
     t.string "description"
     t.integer "perimeter_type"
-    t.integer "sensor_id"
+    t.bigint "sensor_id"
     t.decimal "price"
     t.decimal "lat"
     t.decimal "lng"
-    t.decimal "correlation_threshold"
+    t.bigint "section_id"
+    t.string "rules_expression"
+    t.bigint "user_id"
     t.index ["parking_space_id"], name: "index_parking_perimeters_on_parking_space_id"
+    t.index ["section_id"], name: "index_parking_perimeters_on_section_id"
     t.index ["sensor_id"], name: "index_parking_perimeters_on_sensor_id"
+    t.index ["user_id"], name: "index_parking_perimeters_on_user_id"
   end
 
   create_table "parking_spaces", force: :cascade do |t|
@@ -96,7 +123,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
     t.string "weekly_schedule"
     t.time "daily_start"
     t.time "daily_stop"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.integer "source_type", default: 0
     t.index ["created_at"], name: "index_parking_spaces_on_created_at"
     t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
@@ -122,7 +149,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
     t.datetime "end_date", null: false
     t.integer "payment_status"
     t.datetime "payment_date"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
     t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"
     t.index ["user_id"], name: "index_proposals_on_user_id"
@@ -130,19 +157,34 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
 
   create_table "roles", force: :cascade do |t|
     t.string "identifier"
-    t.integer "user_id"
+    t.bigint "user_id"
+    t.bigint "company_id"
+    t.bigint "location_id"
+    t.index ["company_id"], name: "index_roles_on_company_id"
+    t.index ["location_id"], name: "index_roles_on_location_id"
     t.index ["user_id"], name: "index_roles_on_user_id"
   end
 
-  create_table "sensor_locations", force: :cascade do |t|
-    t.decimal "location_lat"
-    t.decimal "location_long"
-    t.string "parking_space_name"
-    t.string "address"
-    t.string "deviceid"
+  create_table "rules", force: :cascade do |t|
+    t.text "description"
+    t.string "name"
+    t.decimal "start"
+    t.decimal "stop"
+    t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
+  end
+
+  create_table "sections", force: :cascade do |t|
     t.string "name"
+    t.text "description"
+    t.string "map_polygon"
+    t.text "interior_map"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "location_id"
+    t.index ["location_id"], name: "index_sections_on_location_id"
   end
 
   create_table "sensors", force: :cascade do |t|
@@ -153,7 +195,6 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
     t.datetime "installation_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "sensor_location_id"
     t.decimal "lat"
     t.decimal "lng"
     t.string "module_info"
@@ -162,7 +203,8 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
     t.integer "hit_count"
     t.datetime "last_touch_date"
     t.integer "console_hit_count"
-    t.index ["sensor_location_id"], name: "index_sensors_on_sensor_location_id"
+    t.bigint "section_id"
+    t.index ["section_id"], name: "index_sensors_on_section_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -202,11 +244,25 @@ ActiveRecord::Schema.define(version: 2019_01_10_165246) do
     t.integer "status"
     t.string "status_message"
     t.datetime "processed_at"
-    t.integer "account_id"
+    t.bigint "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_withdrawals_on_account_id"
     t.index ["amount"], name: "index_withdrawals_on_amount"
   end
 
+  add_foreign_key "locations", "companies"
+  add_foreign_key "parking_perimeters", "parking_spaces"
+  add_foreign_key "parking_perimeters", "sections"
+  add_foreign_key "parking_perimeters", "sensors"
+  add_foreign_key "parking_perimeters", "users"
+  add_foreign_key "parking_spaces", "users"
+  add_foreign_key "proposals", "parking_spaces"
+  add_foreign_key "proposals", "users"
+  add_foreign_key "roles", "companies"
+  add_foreign_key "roles", "locations"
+  add_foreign_key "roles", "users"
+  add_foreign_key "sections", "locations"
+  add_foreign_key "sensors", "sections"
+  add_foreign_key "withdrawals", "accounts"
 end

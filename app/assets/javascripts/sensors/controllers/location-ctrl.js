@@ -1,6 +1,7 @@
 angular.module('ParkingSpaceSensors.controllers')
-    .controller('LocationCtrl', ['$scope', '$state', '$rootScope', '$document', 'sensorService', 'replaceById',
-        function ($scope, $state, $rootScope, $document, sensorService, replaceById) {
+    .controller('LocationCtrl',
+        ['$scope', '$state', '$rootScope', '$document', 'sensorService', 'locationService', 'replaceById',
+        function ($scope, $state, $rootScope, $document, sensorService,locationService,  replaceById) {
             let mapOptions = {
                 center: new google.maps.LatLng(44.412, 26.113),
                 zoom: 13,
@@ -28,7 +29,7 @@ angular.module('ParkingSpaceSensors.controllers')
             });
 
 
-            sensorService.getLocations((data) => {
+            locationService.getLocations((data) => {
                 $scope.locations = data;
             });
 
@@ -36,7 +37,7 @@ angular.module('ParkingSpaceSensors.controllers')
                 $scope.location = loc;
             };
 
-            $scope.saveSensorLocation = () => {
+            $scope.saveLocation = () => {
                 if (!$scope.locationForm.$valid) {
                     $('#locationForm').addClass('was-validated');
                     return;
@@ -44,7 +45,7 @@ angular.module('ParkingSpaceSensors.controllers')
 
                 $scope.loading = true;
 
-                sensorService.saveLocation($scope.location, (data) => {
+                locationService.saveLocation($scope.location, (data) => {
                     replaceById(data, $scope.locations);
                     $scope.location = data;
                 }).finally(() => {
@@ -53,30 +54,38 @@ angular.module('ParkingSpaceSensors.controllers')
 
             };
 
-            $scope.deleteSensorLocation = () => {
+            $scope.deleteLocation = () => {
                 let loc = $scope.location;
                 if (!loc.id) return;
-                sensorService.deleteLocation(loc.id, (data) => {
+                locationService.deleteLocation(loc.id, (data) => {
                     let idx = $scope.locations.indexOf(loc);
                     $scope.locations.splice(idx, 1);
                     $scope.location = {};
                 })
             };
 
-            let initAssignedSensors = function () {
-                if (!$scope.location && !$scope.location.id) {
-                    $scope.assignedSensors = [];
+            $scope.saveSection = (newSection, location) => {
+                if (!$scope.newSectionForm.$valid) {
+                    $('#newSectionForm').addClass('was-validated');
                     return;
                 }
-                sensorService.getAssignedSensors($scope.location.id, (data) => {
-                    $scope.assignedSensors = data;
+
+                $scope.newSection.location_id = location.id;
+
+                locationService.saveSection($scope.newSection, (resp) => {
+                    $scope.newSection =null;
+                    if (!location.sections) {
+                        location.sections = [];
+                    }
+                    location.sections.push(resp);
                 });
             };
+
+
 
             $scope.$watch('location', function (newVal) {
                 if (!newVal) return;
 
-                initAssignedSensors();
                 $scope.marker.setTitle(newVal.parking_space_name);
                 $scope.marker.setMap(map);
                 if (!newVal.location_lat || !newVal.location_long) {
@@ -90,37 +99,5 @@ angular.module('ParkingSpaceSensors.controllers')
                 map.setCenter(latLng);
             });
 
-            $scope.assignNewSensor = () => {
-                sensorService.getSensors((data) => {
-                    $scope.sensors = data;
-                    $scope.addNewSensor = true;
-                })
-            };
 
-            $scope.unassignSensor = (sensor) => {
-                sensor.sensor_location_id = null;
-                $scope.loading = true;
-                sensorService.saveSensor(sensor, (data) => {
-                    initAssignedSensors();
-                }).finally(() => {
-                    $scope.loading = false;
-                    $scope.addNewSensor = false;
-                })
-            };
-
-            $scope.saveSensor = () => {
-                if (!$scope.newSensorForm.$valid) {
-                    $('#newSensorForm').addClass('was-validated');
-                    return;
-                }
-
-                $scope.newSensor.sensor_location_id = $scope.location.id;
-                $scope.loading = true;
-                sensorService.saveSensor($scope.newSensor, (data) => {
-                    initAssignedSensors();
-                }).finally(() => {
-                    $scope.loading = false;
-                    $scope.addNewSensor = false;
-                })
-            }
         }]);

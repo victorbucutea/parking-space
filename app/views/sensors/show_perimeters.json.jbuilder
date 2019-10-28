@@ -6,7 +6,7 @@ json.perimeters do
     if perimeter.parking_space?
       json.extract! perimeter, :id, :top_left_x, :top_left_y, :bottom_right_x,
                     :bottom_right_y, :identifier, :snapshot, :description,
-                    :perimeter_type, :lat, :lng, :correlation_threshold
+                    :perimeter_type, :lat, :lng
       json.price perimeter.price.to_f unless perimeter.price.nil?
     end
   end
@@ -18,7 +18,7 @@ end
     json.sample_perimeter do
       json.extract! perimeter, :id, :top_left_x, :top_left_y, :bottom_right_x,
                     :bottom_right_y, :identifier, :snapshot, :description,
-                    :perimeter_type, :lat, :lng, :correlation_threshold
+                    :perimeter_type, :lat, :lng
     end
   end
 }

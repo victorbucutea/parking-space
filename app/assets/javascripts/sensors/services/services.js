@@ -5,60 +5,6 @@ angular.module('ParkingSpaceSensors.services')
             function ($rootScope, $http, errorHandlingService) {
 
                 let _this = this;
-
-                _this.saveLocation = function (location, clbk) {
-                    // massage space a to fit the back end model
-
-                    let locationObj = {sensor_location: location};
-
-                    let url = location.id ? '/sensor_locations/' + location.id + '.json' : '/sensor_locations.json';
-                    let restCall = location.id ? $http.put(url, locationObj) : $http.post(url, locationObj);
-
-                    return restCall.then(function (response) {
-                        $rootScope.$emit('http.notif', 'Locatia a fost salvata!');
-
-                        let data = response.data;
-                        if (clbk) {
-                            clbk(data);
-                        }
-                    }, function (error) {
-                        errorHandlingService.handle(error.data, error.status);
-                    })
-                };
-
-                _this.deleteLocation = function (locationId, clbk) {
-                    return $http.delete('/sensor_locations/' + locationId + '.json').then((response) => {
-                        $rootScope.$emit('http.warning', 'Locatia a fost stearsa!');
-
-                        if (clbk) {
-                            clbk(response.data);
-                        }
-                    })
-                };
-
-                _this.getLocations = function (clbk) {
-                    return $http.get('/sensor_locations.json').then((response) => {
-                        if (clbk) {
-                            clbk(response.data);
-                        }
-                    })
-                };
-
-                _this.evaluateLocations = function (sensor, perimeters, sample_perimeter, clbk ,errClbck) {
-                    _this.channel.trigger("client-evaluate-" + sensor.id,
-                        JSON.stringify({perimeters: perimeters,sample_perimeter: sample_perimeter}));
-                    _this.channel.unbind('client-evaluate-ready-' + sensor.id);
-                    _this.channel.unbind('client-evaluate-err-' + sensor.id);
-                    _this.channel.bind('client-evaluate-ready-' + sensor.id, function (data) {
-                        console.log(data);
-                        if(clbk) clbk(data);
-                    });
-                    _this.channel.bind('client-evaluate-err-' + sensor.id, function (data) {
-                        console.log(data);
-                        if(errClbck) clbk(data);
-                    });
-                };
-
                 _this.getAssignedSensors = function (location_id, clbk) {
                     $http.get('/sensors/assigned.json', {
                         params: {location_id: location_id}
@@ -134,7 +80,6 @@ angular.module('ParkingSpaceSensors.services')
                 };
 
 
-
                 _this.connectToSensor = function (sensor, onHello, onErr) {
 
 
@@ -164,7 +109,7 @@ angular.module('ParkingSpaceSensors.services')
                 };
 
                 _this.takeSnapshot = function (sensor, clbk, errClbk) {
-                    _this.connectToSensor(sensor,() =>{
+                    _this.connectToSensor(sensor, () => {
                         _this.channel.trigger("client-snapshot-" + sensor.id, JSON.stringify({params: "all"}));
                         _this.channel.unbind('client-snapshot-ready-' + sensor.id);
                         _this.channel.bind('client-snapshot-ready-' + sensor.id, function (data) {
@@ -242,6 +187,14 @@ angular.module('ParkingSpaceSensors.services')
                     })
                 };
 
+                _this.getSectionPerimeters = function (sectionId, clbk) {
+                    $http.get('/sections/' + sectionId + '/perimeters.json').then((response) => {
+                        if (clbk) {
+                            clbk(response.data);
+                        }
+                    });
+                };
+
 
                 _this.savePerimeters = function (sensorId, perimeters, clbk) {
 
@@ -262,8 +215,162 @@ angular.module('ParkingSpaceSensors.services')
                     }, function (error) {
                         errorHandlingService.handle(error.data, error.status);
                     })
+                }
+
+                _this.saveSectionPerimeters = function (sectionId, perimeters, clbk) {
+
+                    // massage space a to fit the back end model
+
+                    let sectionObj = {perimeters: perimeters};
+                    perimeters.forEach((p) => {
+                        p.section_id = sectionId;
+                        if (p.user)
+                            p.user_email = p.user.email;
+                    });
+                    let url = '/sections/' + sectionId + '/save_perimeters.json';
+
+                    $http.post(url, sectionObj).then(function (response) {
+
+                        $rootScope.$emit('http.notif', 'Perimeters saved!');
+
+                        let data = response.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
                 };
 
+            }])
+
+    .service('companyUserService',
+        ['$rootScope', '$http', 'errorHandlingService',
+            function ($rootScope, $http, errorHandlingService) {
+                var _this = this;
+
+                _this.loadCompanyUsers = function (query, clbk) {
+                    $http.get('/users/employees.json', {
+                        params: {
+                            query: query
+                        }
+                    }).then((response) => {
+                        let data = response.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
+                };
+
+                _this.getAllRoles = function (clbk) {
+                    $http.get('/roles.json').then((response) => {
+                        let data = response.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
+                };
+
+                _this.findCompanyUser = function (id, clbk) {
+                    $http.get('/users/'+id+'.json').then((response) => {
+                        let data = response.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
+                };
+
+                _this.getCompany = function(clbk) {
+                    $http.get('/companies/1.json').then ((resp )=> {
+                        let data = resp.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
+                }
+            }])
+
+    .service('locationService',
+        ['$rootScope', '$http', 'errorHandlingService',
+            function ($rootScope, $http, errorHandlingService) {
+                let _this = this;
+                _this.saveLocation = function (location, clbk) {
+                    // massage space a to fit the back end model
+
+                    let locationObj = {location: location};
+
+                    let url = location.id ? '/locations/' + location.id + '.json' : '/locations.json';
+                    let restCall = location.id ? $http.put(url, locationObj) : $http.post(url, locationObj);
+
+                    return restCall.then(function (response) {
+                        $rootScope.$emit('http.notif', 'Locatia a fost salvata!');
+
+                        let data = response.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
+                };
+
+                _this.deleteLocation = function (locationId, clbk) {
+                    return $http.delete('/locations/' + locationId + '.json').then((response) => {
+                        $rootScope.$emit('http.warning', 'Locatia a fost stearsa!');
+
+                        if (clbk) {
+                            clbk(response.data);
+                        }
+                    })
+                };
+
+                _this.getLocations = function (clbk) {
+                    return $http.get('/locations.json').then((response) => {
+                        if (clbk) {
+                            clbk(response.data);
+                        }
+                    })
+                };
+
+                _this.saveSection = function (section, clbk) {
+
+                    let sectionObj = {section: section};
+
+                    let url = section.id ? '/sections/' + section.id + '.json' : '/sections.json';
+                    let restCall = section.id ? $http.put(url, sectionObj) : $http.post(url, sectionObj);
+
+                    return restCall.then(function (response) {
+                        $rootScope.$emit('http.notif', 'Sectiunea a fost adaugată!');
+
+                        let data = response.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
+                }
+
+                _this.getRules = function (query, ids, clbk) {
+                    return $http.get('/rules.json', {
+                        params: {
+                            query: query,
+                            ids: ids
+                        }
+                    }).then((response) => {
+                        if (clbk) {
+                            clbk(response.data);
+                        }
+                    })
+                }
             }])
 ;
 

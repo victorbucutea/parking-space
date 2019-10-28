@@ -1,9 +1,10 @@
-
 angular.module('ParkingSpaceSensors.controllers')
-    .controller('MainCtrl', ['$scope', '$state', '$rootScope', '$document',
-        function ($scope, $state, $rootScope, $document ) {
+    .controller('MainCtrl', ['$scope', '$state', '$rootScope', '$document', 'companyUserService',
+        function ($scope, $state, $rootScope, $document, userService) {
 
-
+            userService.getCompany((c) => {
+                $scope.company = c;
+            });
 
             console.log($state.params);
 

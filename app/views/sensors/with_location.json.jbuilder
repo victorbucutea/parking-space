@@ -5,16 +5,16 @@ json.array! @sensors do |sensor|
   unless sensor.last_touch_date.nil?
     json.is_connected sensor.last_touch_date.to_time > 3.minutes.ago
   end
-  unless sensor.sensor_location.nil?
-    json.sensor_location do
-      json.extract! sensor.sensor_location, :id, :parking_space_name, :address,
+  unless sensor.section.nil?
+    json.section do
+      json.extract! sensor.section, :id, :parking_space_name, :address,
                     :name
     end
   end
   unless sensor.parking_perimeters.nil?
     json.perimeters do
       json.array! sensor.parking_perimeters do |perim|
-        json.extract! perim, :id, :snapshot, :identifier, :description, :price, :correlation_threshold
+        json.extract! perim, :id, :snapshot, :identifier, :description, :price
         unless perim.parking_space.nil?
           json.parking_space do
             json.extract! perim.parking_space, :id, :title
