@@ -168,4 +168,4 @@ Rule.create!([{id: 1,
                stop: 60,
                type: 'WorkingHoursRule',
               }])
-end
+
