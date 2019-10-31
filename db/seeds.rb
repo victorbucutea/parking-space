@@ -76,7 +76,6 @@ company = Company.create!({id: 1,
 
 User.destroy_all
 
-=begin
 user = User.new
 user.full_name = 'Victor-Florin Bucutea'
 user.email = 'victor-florin.bucutea-ext@socgen.com'
