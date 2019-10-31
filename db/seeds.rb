@@ -74,7 +74,6 @@ company = Company.create!({id: 1,
                   short_name: "SG EBS"
                  })
 
-User.destroy_all
 
 user = User.new
 user.full_name = 'Victor-Florin Bucutea'
