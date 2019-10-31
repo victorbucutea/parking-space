@@ -33,6 +33,7 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 
 gem 'devise'
+gem 'cancancan'
 gem 'json'
 gem 'rest-client'
 gem 'swagger_client_go_park'

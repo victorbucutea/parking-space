@@ -4,7 +4,6 @@ angular.module('ParkingSpaceSensors.controllers')
             function ($scope, $state, $rootScope, userService, locationService, replaceById) {
 
 
-
                 $scope.searchUser = function (searcg) {
 
                     userService.loadCompanyUsers(searcg, (data) => {
@@ -25,7 +24,10 @@ angular.module('ParkingSpaceSensors.controllers')
                     $state.go('.rights');
                 }
 
-                $scope.selectUser = function(user) {
+                $scope.getLocations = function() {
+                    locationService.getLocations((data) => {
+                        $scope.locations = data;
+                    })
                 }
 
 

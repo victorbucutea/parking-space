@@ -39,7 +39,7 @@
                   e.g. 722.333.444
                 </div>
               </div>
-              <div ng-if="::inside" class="text-center">
+              <div ng-if="inside" class="text-center">
                 <button class="btn btn-info btn-sm mt-2" ui-sref="home.search.confirm-phone">
                   <i class="fa fa-spinner loading-spinner fa-spin"></i>
                   Schimbă nr. telefon
@@ -66,7 +66,7 @@
           <div ng-hide="fromFb">
             <div class="form-group">
               <input type="email" class="form-control form-control-lg"
-                     placeholder="Email" ng-disabled="::inside" ng-model="email" name="email"
+                     placeholder="Email" ng-disabled="inside" ng-model="email" name="email"
                      required minlength="5"
                      pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"/>
             </div>
@@ -78,7 +78,7 @@
             </div>
 
 
-            <div class="form-group mb-0" ng-if="::!inside">
+            <div class="form-group mb-0" ng-show="!inside">
               <input type="password" class="form-control form-control-lg" placeholder="Parolă"
                      ng-model="pw" name="pw"
                      ng-required="!fromFb"

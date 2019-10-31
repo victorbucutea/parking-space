@@ -156,6 +156,22 @@ angular.module('ParkingSpaceMobile.services')
                         });
                 }
 
+                /* get current user details */
+                _this.getRoles = function (clbk) {
+
+                    $http.get('/roles/user_company_roles.json')
+                        .then(function (res) {
+                            let data = res.data;
+                            if (clbk)
+                                clbk(data);
+                        }, function (err) {
+                            if (err.status == 401) {
+                                sessionStorage.removeItem("current_roles");
+                            }
+                            console.log(err);
+                        });
+                };
+
             }])
 
     .service('errorHandlingService', ['$rootScope', '$state', function ($rootScope, $state) {
@@ -183,7 +199,7 @@ angular.module('ParkingSpaceMobile.services')
         };
 
         this.handle = function (data, status) {
-            if (status === 420 || status === 422) { // 420  || 422 is an error status with business message
+            if (status !== 401) { // 420  || 422 is an error status with business message
                 // transform error response into a manageable obj
                 let errorMessages = _this.buildErrorMessages(data);
                 $rootScope.$emit('http.error', errorMessages);

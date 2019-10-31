@@ -48,6 +48,7 @@ GEM
     braintree (2.83.0)
       builder (>= 2.0.0)
     builder (3.2.3)
+    cancancan (3.0.1)
     cloudinary (1.11.1)
       aws_cf_signer
       rest-client
@@ -226,6 +227,7 @@ PLATFORMS
 
 DEPENDENCIES
   braintree (~> 2.83.0)
+  cancancan
   cloudinary
   concurrent-ruby
   devise

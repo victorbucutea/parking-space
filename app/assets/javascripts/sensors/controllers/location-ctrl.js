@@ -72,7 +72,7 @@ angular.module('ParkingSpaceSensors.controllers')
 
                 $scope.newSection.location_id = location.id;
 
-                locationService.saveSection($scope.newSection, (resp) => {
+                sensorService.saveSection($scope.newSection, (resp) => {
                     $scope.newSection =null;
                     if (!location.sections) {
                         location.sections = [];

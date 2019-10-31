@@ -76,7 +76,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     # return employees of current user company
-    @users = User.with_query params[:query]
+    @users = User.includes(:roles).with_query(params[:query]).for_company(1)
     respond_to do |format|
       format.json { render 'registrations/index', status: :ok }
     end

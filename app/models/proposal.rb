@@ -2,7 +2,7 @@ class Proposal < ActiveRecord::Base
 
   scope :for_space, ->(sp_id) {where('proposals.parking_space_id = ? ', sp_id)}
   scope :price_above, ->(price) {where('proposals.bid_amount >= ? ', price)}
-
+  scope :active_or_future, -> () { where('proposals.end_date >= ?' , Time.now)}
 
   enum approval_status: [:pending, :rejected, :approved, :canceled]
   enum payment_status: [:unpaid, :paid]

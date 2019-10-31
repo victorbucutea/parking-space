@@ -3,5 +3,3 @@ json.extract! location, :id, :created_at, :parking_space_name, :name, :location_
 json.sections do
   json.array! location.sections, partial: "sections/section", as: :section
 end
-
-json.url location_url(location, format: :json)

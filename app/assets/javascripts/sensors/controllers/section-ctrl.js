@@ -6,17 +6,20 @@ angular.module('ParkingSpaceSensors.controllers')
                 let tmpId = 0;
 
                 $scope.savePerimeters = function () {
-
+                    if (!$scope.sectionForm.$valid) {
+                        $('#sectionForm').addClass('was-validated');
+                        return;
+                    }
                     $scope.loading = true;
                     let perimToSave = angular.copy($scope.parkingPerimeters);
 
-                    sensorService.saveSectionPerimeters($state.params.sectionId, perimToSave, (data) => {
+                    sensorService.saveSectionAndPerimeters($scope.section, perimToSave, (data) => {
                         $state.go('^', {}, {reload: true});
                     });
 
                 };
 
-                $scope.resetPerimeters = function () {
+                $scope.reloadPerimeters = function () {
                     sensorService.getSectionPerimeters($state.params.sectionId, (data) => {
                         $scope.section = data;
                         $scope.parkingPerimeters = data.perimeters;
@@ -24,7 +27,7 @@ angular.module('ParkingSpaceSensors.controllers')
                 };
 
                 if ($state.params.sectionId) {
-                    $scope.resetPerimeters();
+                    $scope.reloadPerimeters();
                 }
 
                 $scope.preSavePerimeter = function (per) {
@@ -100,6 +103,7 @@ angular.module('ParkingSpaceSensors.controllers')
                     $scope.initFactors();
                     $scope.$apply();
                 });
+
 
                 $scope.top = function (per) {
                     return per.top_left_y / factorHeight + 'px';

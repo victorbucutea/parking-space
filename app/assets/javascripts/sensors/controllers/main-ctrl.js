@@ -6,8 +6,6 @@ angular.module('ParkingSpaceSensors.controllers')
                 $scope.company = c;
             });
 
-            console.log($state.params);
-
             $scope.errMsg = [];
             $scope.notifMsg = [];
             $scope.warningMsg = [];

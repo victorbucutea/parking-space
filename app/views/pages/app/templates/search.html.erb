@@ -37,9 +37,18 @@
     <div id="showMultipleSpaces" class="ps-dialog animated zoomIn">
       <div class="ps-dialog-content max-zoom-spaces pt-3">
         <h5 class="text-center"> Alege un loc</h5>
+        {{cloudinaryName}}
+        <img class="img-fluid"
+             id="scream"
+             crossorigin="anonymous"
+             ng-show="selectedSpaces[0].perimeter.section.interior_map"
+             ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+selectedSpaces[0].perimeter.section.interior_map}}">
+
         <ul>
-          <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center " ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
-            <div> {{space.title}}</div>  <span class="text-secondary">  {{space.price + ' ' + space.currency}} / h  </span>
+          <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center "
+              ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
+            <div> {{space.title}}</div>
+            <span class="text-secondary">  {{space.price + ' ' + space.currency}} / h  </span>
           </li>
         </ul>
         <div class="ps-control-buttons">

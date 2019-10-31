@@ -8,7 +8,16 @@ angular.module('ParkingSpaceSensors', [
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
+
             .state('main', {url:'/'})
+            .state('home.login', {
+                url: '/login',
+                views: {
+                    'content': {
+                        templateUrl: 'sensor-fleet.html'
+                    }
+                },
+            })
             .state('sensor-fleet', {
                 url: '/sensor-fleet',
                 views: {
@@ -67,8 +76,16 @@ angular.module('ParkingSpaceSensors', [
             .state('locations.section.perimeter', {
                 url: '/section/perimeter',
                 views: {
-                    'perimeter': {
+                    'detail': {
                         templateUrl: 'perimeter-edit.html'
+                    }
+                }
+            })
+            .state('locations.section.upload', {
+                url: '/section/upload',
+                views: {
+                    'detail': {
+                        templateUrl: 'section-upload.html'
                     }
                 }
             })

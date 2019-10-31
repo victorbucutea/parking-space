@@ -9,14 +9,10 @@
 
 ParameterValue.delete_all
 Parameter.delete_all
-
-
 Parameter.create!([
                       {id: 1, name: 'country', default_value: 'ro'},
                       {id: 2, name: 'bid_price_epsilon', default_value: 0.05},
                   ])
-
-
 ParameterValue.create!([
                            {parameter_id: 1, key: 'en', value: 5, value2: 'Usd', value3: '+1', value4: 'United States of America'},
                            {parameter_id: 1, key: 'ae', value: 5, value2: 'Usd', value3: '+971', value4: 'United Arab Emirates'},
@@ -61,24 +57,32 @@ Role.delete_all
 
 Role.create!([{id: 1, identifier: 'sensor_admin'},
               {id: 2, identifier: 'city_admin'},
+              {id: 2, identifier: 'company_admin'},
               {id: 3, identifier: 'parking_lot_admin'},
               {id: 4, identifier: 'parking_lot_viewer'}])
 
-User.where(email: 'sensor@go-park.ro').destroy_all
+ParkingPerimeter.destroy_all
+Section.destroy_all
+Location.destroy_all
+Company.destroy_all
 
+company = Company.create!({id: 1,
+                           name: "SOCIETE GENERALE EUROPEAN BUSINESS SERVICES SA ",
+                           address: "West Gate Park, Strada Preciziei nr. 24, cladirea H4, etaj 5, sector 6 013981, Bucuresti, Romania",
+                           cui: "27883477",
+                               registry: "J40/151/2011",
+                  short_name: "SG EBS"
+                 })
 
-user = User.new
-user.email = 'sensor@go-park.ro'
-user.password = 'Vic10Buc@'
-user.password_confirmation = 'Vic10Buc@'
-user.save!
+User.destroy_all
 
-
+=begin
 user = User.new
 user.full_name = 'Victor-Florin Bucutea'
 user.email = 'victor-florin.bucutea-ext@socgen.com'
-user.password = 'Vic10Buc'
+user.password = 'pasword123'
 user.password_confirmation = 'pasword123'
+user.company = company
 user.save!
 
 user = User.new
@@ -86,6 +90,7 @@ user.full_name = 'Sorin Diaconescu'
 user.email = 'sorin.diaconescu-ext@socgen.com'
 user.password = 'pasword123'
 user.password_confirmation = 'pasword123'
+user.company = company
 user.save!
 
 user = User.new
@@ -93,6 +98,7 @@ user.full_name = 'Marius Dumitrescu'
 user.email = 'marius.dumitrescu-ext@socgen.com'
 user.password = 'pasword123'
 user.password_confirmation = 'pasword123'
+user.company = company
 user.save!
 
 user = User.new
@@ -100,6 +106,7 @@ user.full_name = 'Catalin Lupsa'
 user.email = 'catalin.lupsa-ext@socgen.com'
 user.password = 'pasword123'
 user.password_confirmation = 'pasword123'
+user.company = company
 user.save!
 
 user = User.new
@@ -107,6 +114,7 @@ user.full_name = 'Alexandru-Cosmin Ivan'
 user.email = 'alexandru-cosmin.ivan-ext@socgen.com'
 user.password = 'pasword123'
 user.password_confirmation = 'pasword123'
+user.company = company
 user.save!
 
 user = User.new
@@ -114,18 +122,8 @@ user.full_name = 'Constantin Agapi'
 user.email = 'constantin.agapi-ext@socgen.com'
 user.password = 'pasword123'
 user.password_confirmation = 'pasword123'
+user.company = company
 user.save!
-
-
-
-Company.delete_all
-Company.create!([{id: 1,
-                  name: "SOCIETE GENERALE EUROPEAN BUSINESS SERVICES SA ",
-                  address: "West Gate Park, Strada Preciziei nr. 24, cladirea H4, etaj 5, sector 6 013981, Bucuresti, Romania",
-                  cui: "27883477",
-                  registry: "J40/151/2011",
-                  short_name: "SG EBS"
-                 }])
 
 Rule.delete_all
 
@@ -171,3 +169,4 @@ Rule.create!([{id: 1,
                stop: 60,
                type: 'WorkingHoursRule',
               }])
+=end

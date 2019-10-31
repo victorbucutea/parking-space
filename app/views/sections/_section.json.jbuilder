@@ -1,2 +1,1 @@
-json.extract! section, :id, :name, :description, :created_at, :updated_at
-json.url section_url(section, format: :json)
+json.extract! section, :id, :name, :description, :interior_map,  :created_at, :updated_at

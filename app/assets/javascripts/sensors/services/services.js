@@ -166,6 +166,26 @@ angular.module('ParkingSpaceSensors.services')
                     });
                 };
 
+                _this.saveSection = function (section, clbk) {
+
+                    let sectionObj = {section: section};
+
+                    let url = section.id ? '/sections/' + section.id + '.json' : '/sections.json';
+                    let restCall = section.id ? $http.put(url, sectionObj) : $http.post(url, sectionObj);
+
+                    return restCall.then(function (response) {
+                        $rootScope.$emit('http.notif', 'Sectiunea a fost salvată!');
+
+                        let data = response.data;
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
+                    })
+                }
+
+
                 _this.getPerimeters = function (sensorId, clbk) {
                     $http.get('/sensors/' + sensorId + '/perimeters.json').then((response) => {
                         let data = response.data;
@@ -199,7 +219,6 @@ angular.module('ParkingSpaceSensors.services')
                 _this.savePerimeters = function (sensorId, perimeters, clbk) {
 
                     // massage space a to fit the back end model
-
                     let sensorObj = {perimeters: perimeters};
 
                     let url = '/sensors/' + sensorId + '/save_perimeters.json';
@@ -217,21 +236,21 @@ angular.module('ParkingSpaceSensors.services')
                     })
                 }
 
-                _this.saveSectionPerimeters = function (sectionId, perimeters, clbk) {
+                _this.saveSectionAndPerimeters = function (section, perimeters, clbk) {
 
-                    // massage space a to fit the back end model
+                    _this.saveSection(section, clbk);
 
                     let sectionObj = {perimeters: perimeters};
                     perimeters.forEach((p) => {
-                        p.section_id = sectionId;
+                        p.section_id = section.id;
                         if (p.user)
                             p.user_email = p.user.email;
                     });
-                    let url = '/sections/' + sectionId + '/save_perimeters.json';
+                    let url = '/sections/' + section.id + '/save_perimeters.json';
 
                     $http.post(url, sectionObj).then(function (response) {
 
-                        $rootScope.$emit('http.notif', 'Perimeters saved!');
+                        $rootScope.$emit('http.notif', 'Perimetre parcare salvate!');
 
                         let data = response.data;
                         if (clbk) {
@@ -329,6 +348,8 @@ angular.module('ParkingSpaceSensors.services')
                         if (clbk) {
                             clbk(response.data);
                         }
+                    }, function (error) {
+                        errorHandlingService.handle(error.data, error.status);
                     })
                 };
 
@@ -337,27 +358,10 @@ angular.module('ParkingSpaceSensors.services')
                         if (clbk) {
                             clbk(response.data);
                         }
-                    })
-                };
-
-                _this.saveSection = function (section, clbk) {
-
-                    let sectionObj = {section: section};
-
-                    let url = section.id ? '/sections/' + section.id + '.json' : '/sections.json';
-                    let restCall = section.id ? $http.put(url, sectionObj) : $http.post(url, sectionObj);
-
-                    return restCall.then(function (response) {
-                        $rootScope.$emit('http.notif', 'Sectiunea a fost adaugată!');
-
-                        let data = response.data;
-                        if (clbk) {
-                            clbk(data);
-                        }
                     }, function (error) {
                         errorHandlingService.handle(error.data, error.status);
                     })
-                }
+                };
 
                 _this.getRules = function (query, ids, clbk) {
                     return $http.get('/rules.json', {

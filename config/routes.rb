@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
 
-  resources :companies
   post 'sensor_auth/authenticate'
 
+  resources :companies
   resources :locations
   resources :rules
-  resources :roles
+  resources :roles do
+    collection do
+      get 'user_company_roles'
+    end
+  end
 
   resources :sections do
     post 'save_perimeters'

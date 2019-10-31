@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_26_112521) do
+ActiveRecord::Schema.define(version: 2019_10_31_184304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,8 @@ ActiveRecord::Schema.define(version: 2019_10_26_112521) do
     t.time "daily_stop"
     t.bigint "user_id"
     t.integer "source_type", default: 0
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_parking_spaces_on_company_id"
     t.index ["created_at"], name: "index_parking_spaces_on_created_at"
     t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
     t.index ["location_long"], name: "index_parking_spaces_on_location_long"
@@ -151,7 +153,9 @@ ActiveRecord::Schema.define(version: 2019_10_26_112521) do
     t.datetime "payment_date"
     t.bigint "user_id"
     t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
+    t.index ["end_date"], name: "index_proposals_on_end_date"
     t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"
+    t.index ["start_date"], name: "index_proposals_on_start_date"
     t.index ["user_id"], name: "index_proposals_on_user_id"
   end
 
@@ -160,6 +164,7 @@ ActiveRecord::Schema.define(version: 2019_10_26_112521) do
     t.bigint "user_id"
     t.bigint "company_id"
     t.bigint "location_id"
+    t.string "description"
     t.index ["company_id"], name: "index_roles_on_company_id"
     t.index ["location_id"], name: "index_roles_on_location_id"
     t.index ["user_id"], name: "index_roles_on_user_id"
@@ -232,6 +237,8 @@ ActiveRecord::Schema.define(version: 2019_10_26_112521) do
     t.boolean "notif_approved"
     t.string "p256dh"
     t.string "notif_auth"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["device_id"], name: "index_users_on_device_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["license"], name: "index_users_on_license"
@@ -256,6 +263,7 @@ ActiveRecord::Schema.define(version: 2019_10_26_112521) do
   add_foreign_key "parking_perimeters", "sections"
   add_foreign_key "parking_perimeters", "sensors"
   add_foreign_key "parking_perimeters", "users"
+  add_foreign_key "parking_spaces", "companies"
   add_foreign_key "parking_spaces", "users"
   add_foreign_key "proposals", "parking_spaces"
   add_foreign_key "proposals", "users"
@@ -264,5 +272,6 @@ ActiveRecord::Schema.define(version: 2019_10_26_112521) do
   add_foreign_key "roles", "users"
   add_foreign_key "sections", "locations"
   add_foreign_key "sensors", "sections"
+  add_foreign_key "users", "companies"
   add_foreign_key "withdrawals", "accounts"
 end

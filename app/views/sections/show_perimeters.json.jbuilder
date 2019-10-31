@@ -1,4 +1,4 @@
-json.extract! @section, :id, :name, :description, :created_at, :updated_at
+json.extract! @section, :id, :name, :description, :interior_map, :created_at, :updated_at
 json.perimeters do
   json.array! @section.parking_perimeters do |perimeter|
     json.extract! perimeter, :id, :top_left_x, :top_left_y, :bottom_right_x,

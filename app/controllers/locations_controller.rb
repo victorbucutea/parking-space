@@ -1,11 +1,13 @@
 class LocationsController < ApplicationController
   before_action :authenticate_user!
+  load_and_authorize_resource
+  skip_authorize_resource :only => :create
   before_action :set_sensor_location, only: [:show, :edit, :update, :destroy]
 
   # GET /locations
   # GET /locations.json
   def index
-    @locations = Location.all
+    @locations = Location.accessible_by(current_ability)
   end
 
   # GET /locations/1
@@ -25,7 +27,12 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
-    @location = Location.new(sensor_location_params)
+    @location = Location.new(location_params)
+    @location.company = current_user.company
+    if @location.company.nil?
+      render json: {Error: 'You must be company admin to create locations and sections'}, status: :forbidden
+      return
+    end
 
     respond_to do |format|
       if @location.save
@@ -40,7 +47,7 @@ class LocationsController < ApplicationController
   # PATCH/PUT /locations/1.json
   def update
     respond_to do |format|
-      if @location.update(sensor_location_params)
+      if @location.update(location_params)
         format.json {render :show, status: :ok, location: @location}
       else
         format.json {render json: @location.errors, status: :unprocessable_entity}
@@ -65,8 +72,8 @@ class LocationsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def sensor_location_params
+  def location_params
     params.require(:location).permit(
-        :location_lat, :location_long, :name, :parking_space_name, :address, :perimeter_type, :deviceid)
+        :location_lat, :location_long, :name, :parking_space_name, :address)
   end
 end

@@ -19,22 +19,24 @@
         <th scope="col">Email</th>
         <th scope="col">Loc asignat</th>
         <th scope="col">Drepturi</th>
-        <th scope="col">Actiuni</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="user in users">
         <td>{{user.full_name}}</td>
         <td>{{user.email}}</td>
-        <td>{{user.assignedSpace || 'N/A'}}</td>
+        <td>
+          <div>{{user.assignedSpace || 'N/A'}}</div>
+          <button class="btn btn-sm btn-link"> Asigneaza loc </button>
+        </td>
+
         <td>
           <div ng-repeat="role in user.roles">
-            {{role.name}} - {{role.location.name}}
+            {{role.identifier}}
           </div>
-        </td>
-        <td>
-          <button class="btn btn-sm btn-warning"> Asigneaza loc </button>
-          <button class="btn btn-sm btn-primary" ng-click="goEditRoles(user)"> Modifica drepturi </button>
+          <div>
+            <button class="btn btn-sm btn-link" ng-click="goEditRoles(user)"> Modifica drepturi </button>
+          </div>
         </td>
       </tr>
     </tbody>

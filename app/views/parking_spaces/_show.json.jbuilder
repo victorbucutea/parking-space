@@ -11,6 +11,7 @@ json.owner_is_current_user parking_space.user.id == current_user.id unless parki
 json.expired parking_space.expired?
 json.from_sensor parking_space.sensor_source?
 json.from_user parking_space.user_source?
+json.from_company parking_space.company_source?
 if parking_space.owner.present?
   json.owner_phone_number parking_space.owner.phone_number
   json.owner_email parking_space.owner.email
@@ -39,5 +40,14 @@ json.offers do
     json.owner_name proposal.bidder_name
     json.paid proposal.paid?
     json.payment_date proposal.payment_date
+  end
+end
+
+unless parking_space.parking_perimeter.nil?
+  json.perimeter do
+    json.extract! parking_space.parking_perimeter, :id, :rules_expression, :description
+    json.section do
+      json.extract! parking_space.parking_perimeter.section, :id, :name, :description, :interior_map
+    end
   end
 end

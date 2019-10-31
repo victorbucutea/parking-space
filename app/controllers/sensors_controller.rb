@@ -125,6 +125,8 @@ class SensorsController < ApplicationController
       end
 
       @sensor.parking_perimeters << perimeter
+
+
     end
 
     respond_to do |format|

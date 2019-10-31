@@ -13,6 +13,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             let dragListenHandle = null;
             let zoomListenHandle = null;
 
+            $scope.cloudinaryName = window.cloudinaryName;
+
             $scope.mapCreated = function (map, overlay, geocoder) {
                 $('#mapBlanket').fadeOut();
                 $rootScope.map = map;
@@ -40,6 +42,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                     map.setCenter(pos);
                 }
 
+                $scope.navigateToCompanyLot();
+
 
             };
 
@@ -54,6 +58,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 return;
             }
 
+
+            $scope.navigateToCompanyLot = function () {
+                userService.getRoles(function (roles) {
+                    if (!roles) return;
+                    let rolesJson = JSON.stringify(roles);
+                    sessionStorage.setItem("current_roles", rolesJson);
+                    if (roles.company.locations) {
+                        let lat = roles.company.locations[0].location_lat;
+                        let lng = roles.company.locations[0].location_long;
+                        let pos = new google.maps.LatLng(lat, lng);
+                        $rootScope.map.setCenter(pos);
+                    }
+                    $rootScope.company = roles.company;
+                    $rootScope.roles = roles.roles;
+                })
+            };
 
             let item = sessionStorage.getItem("current_user");
             if (!item) {
@@ -184,7 +204,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 $state.go('.post');
             };
 
-            $scope.centerMap = function (){
+            $scope.centerMap = function () {
                 geolocationService.getCurrentLocation(function (position) {
                     let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     $rootScope.map.setCenter(pos);
