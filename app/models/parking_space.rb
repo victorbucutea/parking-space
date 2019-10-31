@@ -62,7 +62,7 @@ class ParkingSpace < ActiveRecord::Base
   end
 
   def expired?
-    space_availability_stop.nil? or Time.now >= space_availability_stop
+    !space_availability_stop.nil? and Time.now >= space_availability_stop
   end
 
 end

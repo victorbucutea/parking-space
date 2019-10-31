@@ -34,8 +34,8 @@ class Proposal < ActiveRecord::Base
 
 
   def bid_amount_valid
-    unless bid_amount.nil? or bid_amount > 0
-      errors.add :general, 'Cannot place a bid with 0 or negative price!'
+    unless bid_amount.nil? or bid_amount >= 0
+      errors.add :general, 'Cannot place a bid with negative price!'
       false
     end
   end

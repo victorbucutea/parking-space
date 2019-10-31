@@ -57,9 +57,9 @@ Role.delete_all
 
 Role.create!([{id: 1, identifier: 'sensor_admin'},
               {id: 2, identifier: 'city_admin'},
-              {id: 2, identifier: 'company_admin'},
-              {id: 3, identifier: 'parking_lot_admin'},
-              {id: 4, identifier: 'parking_lot_viewer'}])
+              {id: 3, identifier: 'company_admin'},
+              {id: 4, identifier: 'parking_lot_admin'},
+              {id: 5, identifier: 'parking_lot_viewer'}])
 
 ParkingPerimeter.destroy_all
 Section.destroy_all

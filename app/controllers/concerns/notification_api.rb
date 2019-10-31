@@ -3,6 +3,7 @@ require 'webpush'
 module NotificationApi
   extend ActiveSupport::Concern
   def send_notification(destination_user, data)
+    return if destination_user.nil?
 
     return unless destination_user.notif_approved or current_user.notif_registration_id.nil?
 
