@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :cities
   post 'sensor_auth/authenticate'
 
   resources :companies
