@@ -6,10 +6,6 @@ angular.module('ParkingSpaceSensors.controllers')
                 $scope.company = c;
             });
 
-            userService.loadCities((c) => {
-                $scope.cities = c
-            });
-
             $scope.errMsg = [];
             $scope.notifMsg = [];
             $scope.warningMsg = [];

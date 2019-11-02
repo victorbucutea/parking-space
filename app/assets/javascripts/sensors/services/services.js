@@ -315,17 +315,6 @@ angular.module('ParkingSpaceSensors.services')
                         errorHandlingService.handle(error.data, error.status);
                     })
                 }
-
-                _this.loadCities = function(clbk) {
-                    $http.get('/cities.json').then ((resp )=> {
-                        let data = resp.data;
-                        if (clbk) {
-                            clbk(data);
-                        }
-                    }, function (error) {
-                        errorHandlingService.handle(error.data, error.status);
-                    })
-                }
             }])
 
     .service('locationService',
