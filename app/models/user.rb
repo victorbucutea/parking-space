@@ -1,13 +1,13 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :trackable, :validatable , :lockable
 
-  scope :with_query, -> (desc) { where('users.full_name like ?
+  scope :with_name, -> (desc) { where('users.full_name like ?
                                       or users.email like ? ',"%#{desc}%", "%#{desc}%")}
 
-  scope :for_company, -> (c) { joins(:company).where("companies.id = ? ",c)}
+  scope :for_companies, -> (c) { joins(:company).where("companies.id in  (?) ",c)}
 
   attr_accessor :skip_password_validation
 

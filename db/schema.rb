@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_31_184304) do
+ActiveRecord::Schema.define(version: 2020_01_26_110418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 2019_10_31_184304) do
     t.datetime "updated_at", null: false
     t.string "registry"
     t.string "short_name"
+    t.string "logo"
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.string "file"
+    t.string "comment"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parking_spaces_id"
+    t.index ["parking_spaces_id"], name: "index_documents_on_parking_spaces_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -102,8 +113,6 @@ ActiveRecord::Schema.define(version: 2019_10_31_184304) do
   create_table "parking_spaces", force: :cascade do |t|
     t.decimal "location_lat"
     t.decimal "location_long"
-    t.decimal "recorded_from_lat"
-    t.decimal "recorded_from_long"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "target_price"
@@ -126,6 +135,7 @@ ActiveRecord::Schema.define(version: 2019_10_31_184304) do
     t.bigint "user_id"
     t.integer "source_type", default: 0
     t.bigint "company_id"
+    t.integer "status"
     t.index ["company_id"], name: "index_parking_spaces_on_company_id"
     t.index ["created_at"], name: "index_parking_spaces_on_created_at"
     t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
@@ -238,11 +248,16 @@ ActiveRecord::Schema.define(version: 2019_10_31_184304) do
     t.string "p256dh"
     t.string "notif_auth"
     t.bigint "company_id"
+    t.integer "failed_attempts", default: 0, null: false
+    t.datetime "locked_at"
+    t.string "unlock_token"
+    t.string "prefix"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["device_id"], name: "index_users_on_device_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["license"], name: "index_users_on_license"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
   create_table "withdrawals", force: :cascade do |t|
@@ -258,6 +273,7 @@ ActiveRecord::Schema.define(version: 2019_10_31_184304) do
     t.index ["amount"], name: "index_withdrawals_on_amount"
   end
 
+  add_foreign_key "documents", "parking_spaces", column: "parking_spaces_id"
   add_foreign_key "locations", "companies"
   add_foreign_key "parking_perimeters", "parking_spaces"
   add_foreign_key "parking_perimeters", "sections"

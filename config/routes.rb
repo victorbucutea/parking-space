@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'employees/list'
+  get 'employees/:id' => 'employees#details'
   post 'sensor_auth/authenticate'
 
   resources :companies
@@ -38,7 +40,6 @@ Rails.application.routes.draw do
     get "/users/client_token" => "registrations#client_token", :as => "client_token"
     get "/users/create_payment_method" => "registrations#create_payment_method", :as => "create_payment_method"
     get "/users/password/done" => "passwords#done", :as => "done_user_password"
-    get "/users/employees" => 'registrations#employees', :as => 'employees'
     post "/users/sign_in_fb" => "sessions#sign_in_fb", :as => "sign_in_fb"
     post "/users/validate_code" => "registrations#validate_code", :as => "validate_code"
     post "/users/send_new_code" => "registrations#send_new_code", :as => "send_new_code"
@@ -56,6 +57,8 @@ Rails.application.routes.draw do
   resources :parking_spaces do
 
     get 'mark_offers_as_read'
+
+    post 'attach_documents'
 
     get 'phone_number'
 

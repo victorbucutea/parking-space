@@ -69,18 +69,7 @@ class RegistrationsController < Devise::RegistrationsController
     render json: {token: token_str}
   end
 
-  def employees
-    if params[:query].nil?
-      @users = []
-      return
-    end
 
-    # return employees of current user company
-    @users = User.includes(:roles).with_query(params[:query]).for_company(1)
-    respond_to do |format|
-      format.json { render 'registrations/index', status: :ok }
-    end
-  end
 
 
   protected
@@ -90,7 +79,7 @@ class RegistrationsController < Devise::RegistrationsController
   def configure_permitted_parameters
     permitted = %i[full_name license phone_number phone_validation_code
                  country email password password_confirmation notif_approved
-                 endpoint p256dh auth keys]
+                 endpoint p256dh auth keys prefix]
     devise_parameter_sanitizer.permit(:sign_up, keys: permitted)
     devise_parameter_sanitizer.permit(:account_update, keys: permitted)
     devise_parameter_sanitizer.permit(:sign_in, keys: permitted)

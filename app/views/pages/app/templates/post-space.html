@@ -1,24 +1,21 @@
 <div class="ps-modal " style="overflow: visible">
     <div class="mt-md-4 animated zoomIn" ng-controller="EditParkingSpaceCtrl">
         <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm" novalidate="novalidate">
-            <div>
-                <h3 class="ps-page-title" ng-hide="editTitle">
-                    {{spaceEdit.title}}
-                    <i class="fa fa-edit edit-title"
-                       ng-click="editTitle = true"></i>
-
+            <div >
+                <h3 class="px-3 py-2 ng-binding" >
+                    Loc parcare {{spaceEdit.sublocality}}
+                    <i class="fa fa-car fa-2x text-success edit-title" ></i>
                 </h3>
-                <div class="input-group" ng-show="editTitle">
-                    <input type="text" class="form-control form-control-lg"
-                           ng-model="spaceEdit.title">
+                <div class="text-muted px-3">Pentru a fi închiriat rapid, asigură-te ca <b>adresa</b> si <b>locația</b> pe hartă sunt exacte.</div>
+                <div class="input-group ng-hide" ng-show="editTitle">
+                    <input type="text" class="form-control form-control-lg ng-pristine ng-untouched ng-valid ng-not-empty" ng-model="spaceEdit.title">
                     <div class="input-group-append" ng-click="editTitle=false">
                         <span class="input-group-text"><i class="fa fa-check"></i></span>
                     </div>
 
                 </div>
-
             </div>
-
+            <hr/>
             <!-- Step 0 -->
             <div class="container" ng-show="step == 0">
 
@@ -41,31 +38,16 @@
                     <label class="col-form-label col-form-label-lg col-4"
                            for="dateStart">Disp. din:</label>
                     <div class="col-8">
-                        <div class="input-group">
-                            <date-time id="dateStart" class="form-control-lg"
-                                       date-model="spaceEdit.space_availability_start" day></date-time>
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                            </div>
-                        </div>
+                        <date-time id="dateStart"  large="true"
+                                   date-model="spaceEdit.space_availability_start" day></date-time>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label  col-form-label-lg col-4 pr-0"
                            for="dateStop">Disp. până la:</label>
                     <div class="col-8">
-                        <div class="input-group">
-                            <date-time id="dateStop" class="form-control-lg"
-                                       date-model="spaceEdit.space_availability_stop" day></date-time>
-
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
-                            </div>
-                        </div>
+                        <date-time id="dateStop" large="true" date-model="spaceEdit.space_availability_stop"
+                                   day></date-time>
                         <div class="invalid-feedback">
                             Perioada minimă e de 15 min
                         </div>
@@ -95,6 +77,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <div class="col-12 text-center">
                             <div class="btn-group week-sched">
@@ -132,12 +115,6 @@
                 </div>
             </div>
 
-            <!-- Image upload -->
-            <div class="ps-modal p-4 d-flex align-items-center justify-content-center" ng-show="showFullImage" id="imgModalDiv">
-                <img src="" class="img-fluid mb-1 animated zoomIn" id="imgModal">
-                <span>{{spaceEdit.description}}</span>
-            </div>
-
             <!-- Step 1 -->
             <div class="container animated slideInRight" ng-show="step == 1">
 
@@ -172,7 +149,7 @@
                         <input class="form-check-input" type="checkbox" id="termsAndConditions"
                                ng-model="termsAndConditions" required value="">
                         <label for="termsAndConditions" class="form-check-label">
-                            Accept <a class="text-primary" ui-sref="home.search.terms">termenii și condițiile </a>
+                            Accept <a class="text-primary" ui-sref="search.terms">termenii și condițiile </a>
                             Go-Park și voi respecta orice obligații se regăsesc in acești termeni.
                         </label>
                         <div class="invalid-feedback">

@@ -6,16 +6,11 @@ angular.module('ParkingSpaceMobile.controllers')
 
                 if (!$state.params.fbLogin) {
                     // if not redirect from fb
-                    if (sessionStorage.getItem('current_user')) {
-                        $state.go('home.search', $stateParams);
-                    } else {
-                        userService.getUser(function (user) {
-                            if (!user) return;
-                            let userjson = JSON.stringify(user);
-                            sessionStorage.setItem("current_user", userjson);
-                            $state.go('home.search');
-                        });
-                    }
+                    userService.getUser(function (user) {
+                        if (!user) return;
+                        $state.go('search', $stateParams);
+                    });
+
                 }
 
                 $scope.login = function () {
@@ -29,7 +24,7 @@ angular.module('ParkingSpaceMobile.controllers')
 
                     userService.login(user, password, function () {
                         $scope.loading = true;
-                        $state.go('home.search', $stateParams);
+                        $state.go('search', $stateParams);
                     })
                 };
 
@@ -55,11 +50,9 @@ angular.module('ParkingSpaceMobile.controllers')
 
                 $scope.logout = function () {
                     userService.logout(() => {
-                        $state.go('home.login');
+                        $state.go('login');
                     });
                 };
-
-                let blanket = $('#loadingBlanket');
 
                 $scope.goToFb = function () {
                     let curLoc = location.origin + location.pathname;
@@ -85,13 +78,13 @@ angular.module('ParkingSpaceMobile.controllers')
                     userService.loginFb(accessToken,
                         function (resp) {
                             // user successfully logged in
-                            $state.go('home.search', latLng);
+                            $state.go('search', latLng);
                         }, function (err, status) {
                             $scope.loadingFb = false;
                             if (status === 422) {
                                 // user does not exist
                                 // go to additional info page
-                                $state.go("home.register", {
+                                $state.go("register", {
                                     fromFb: true,
                                     email: err.email,
                                     firstName: err.name,
@@ -105,7 +98,7 @@ angular.module('ParkingSpaceMobile.controllers')
                                 // display error message
                                 $rootScope.$emit('http.error',
                                     'Eroare la autentificarea facebook. Vă rugăm încercați din nou.');
-                                $state.go("home.login", {
+                                $state.go("login", {
                                     fromFb: true,
                                     lat: latLng.lat,
                                     lng: latLng.lng

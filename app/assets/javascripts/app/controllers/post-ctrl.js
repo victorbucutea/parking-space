@@ -2,8 +2,8 @@
  * Created by 286868 on 04.04.2015.
  */
 angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl',
-    ['$scope', '$rootScope', '$state', '$q', 'geocoderService', 'parameterService', '$stateParams', 'replaceById', 'parkingSpaceService',
-        function ($scope, $rootScope, $state, $q, geocoderService, parameterService, $stateParams, replaceById, parkingSpaceService,) {
+    ['$scope', '$rootScope', '$state', '$q', 'geoService', 'parameterService', '$stateParams', 'replaceById', 'parkingSpaceService',
+        function ($scope, $rootScope, $state, $q, geoService, parameterService, $stateParams, replaceById, parkingSpaceService,) {
 
 
             $scope.calculateAddress = function () {
@@ -12,7 +12,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
                 let space = $scope.spaceEdit;
 
-                geocoderService.getAddress(mapCenter.lat(), mapCenter.lng(), function (newAddr) {
+                geoService.getAddress(mapCenter.lat(), mapCenter.lng(), function (newAddr) {
                     let street = newAddr.street || '';
                     let street_number = newAddr.street_number || '';
                     let sublocality = newAddr.sublocality ||
@@ -88,23 +88,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
             let moving = false;
 
-            window.showThumbnail = function (evt) {
-                if (moving) {
-                    return;
-                }
-                let img = evt.currentTarget.src;
-                $scope.showFullImage = true;
-                document.getElementById('imgModal').src = img;
-                $scope.$apply();
-            };
-
-            window.stopThumbnail = function (evt) {
-                moving = true;
-            };
-
-            window.startThumbnail = function (evt) {
-                moving = false;
-            };
 
             $('#imgModalDiv').click((evt) => {
                 evt.stopPropagation();
@@ -249,7 +232,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                         parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
                             $rootScope.$emit('spaceSave', savedSpace);
                             $scope.loading = false;
-                            $state.go('home.search');
+                            $state.go('search');
                         });
                     }).catch((e) => {
                         $rootScope.$emit('http.error', e);

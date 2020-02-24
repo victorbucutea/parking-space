@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '2.5.1'
@@ -16,39 +18,26 @@ group :production do
   gem 'rails_12factor'
 end
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .js.coffee assets and views
-
-gem 'concurrent-ruby', require: 'concurrent'
-gem 'sendgrid-ruby'
-gem 'webpacker', '~> 3.5', require: false
-gem 'webpush'
-
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
-
-gem 'devise'
-gem 'cancancan'
-gem 'json'
-gem 'rest-client'
-gem 'swagger_client_go_park'
-
-gem 'high_voltage', '~> 3.0.0'
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-
 gem 'braintree', '~> 2.83.0'
+gem 'cancancan'
 gem 'cloudinary'
+gem 'concurrent-ruby', require: 'concurrent'
+gem 'devise'
+gem 'high_voltage', '~> 3.0.0'
+gem 'jbuilder', '~> 2.0'
+gem 'json'
 gem 'pusher'
 gem 'pushmeup'
+gem 'rest-client'
+gem 'sass-rails', '~> 5.0'
+gem 'seed-fu', '~> 2.3'
+gem 'sendgrid-ruby'
 gem 'serviceworker-rails'
+gem 'swagger_client_go_park'
+gem 'turbolinks'
+gem 'uglifier', '>= 1.3.0'
+gem 'webpacker', '~> 3.5', require: false
+gem 'webpush'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]

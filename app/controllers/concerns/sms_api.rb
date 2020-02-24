@@ -17,11 +17,11 @@ module SmsApi
   def send_sms(destination_no, text)
 
     sms_message = SwaggerClient::Message.new # Message | Message properties
-    sms_message.sender = "GoPark"
+    sms_message.sender = 'GoPark'
     sms_message.destination = destination_no.sub '+', ''
     sms_message.content = text
-    sms_message.schedule = ""
-    sms_message.tag = "offers"
+    sms_message.schedule = ''
+    sms_message.tag = 'offers'
     Concurrent::Future.execute do
       begin
         @sms_api.send_message(sms_message)

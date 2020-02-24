@@ -143,9 +143,9 @@ class Proposal < ActiveRecord::Base
   end
 
   def amount
-    quarter_hrs = (self.end_date.to_time - self.start_date.to_time) / (0.25).hours
+    quarter_hrs = (end_date.to_time - start_date.to_time) / 0.25.hours
     quarter_hrs = quarter_hrs.ceil
-    price_per_q_hr = (self.parking_space.target_price) / 4
+    price_per_q_hr = parking_space.target_price / 4
     (quarter_hrs * price_per_q_hr).round(0)
   end
 
@@ -167,5 +167,9 @@ class Proposal < ActiveRecord::Base
 
   def expired?
     Time.now >= self.end_date
+  end
+
+  def active?
+    start_date <= Time.now && Time.now <= end_date
   end
 end

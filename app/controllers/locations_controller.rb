@@ -1,7 +1,6 @@
 class LocationsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
-  skip_authorize_resource :only => :create
   before_action :set_sensor_location, only: [:show, :edit, :update, :destroy]
 
   # GET /locations
@@ -29,11 +28,6 @@ class LocationsController < ApplicationController
   def create
     @location = Location.new(location_params)
     @location.company = current_user.company
-    if @location.company.nil?
-      render json: {Error: 'You must be company admin to create locations and sections'}, status: :forbidden
-      return
-    end
-
     respond_to do |format|
       if @location.save
         format.json {render :show, status: :created, location: @location}

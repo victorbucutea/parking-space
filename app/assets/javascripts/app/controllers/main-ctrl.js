@@ -6,39 +6,17 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
 
             $rootScope.desktopScreen = $(document).width() > 991;
 
-            $scope.errMsg = [];
-            $scope.notifMsg = [];
-            $scope.warningMsg = [];
-            $scope.warningMsgHtml = [];
-
-            let notifArea = $('.notification-area');
-            let drawer = $('.drawer');
-
-            let removeMsgs = function (evt) {
-                $scope.errMsg = [];
-                $scope.notifMsg = [];
-                $scope.warningMsg = [];
-                $scope.warningMsgHtml = [];
-                notifArea.removeClass('zoomIn').addClass('zoomOut');
-                setTimeout(function () {
-                    notifArea.removeClass('zoomOut').addClass('zoomIn');
-                    $scope.$evalAsync()
-                }, 300);
-                if (evt)
-                    evt.preventDefault();
-            };
-
-            notifArea.on('mousedown', function (evt) {
-                removeMsgs(evt)
-            });
 
             $scope.openMenu = function () {
+                $('#navMenu').show();
+                let drawer = $('.drawer');
                 $('#drawer').css('left', '0');
                 drawer.css('display', 'block');
                 drawer.css('opacity', '.4');
             };
 
             $scope.closeMenu = function () {
+                let drawer = $('.drawer');
                 $('#drawer').css('left', '-105%');
                 drawer.css('opacity', '0');
                 setTimeout(function () {
@@ -46,54 +24,32 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 }, 300);
             };
 
-            $scope.selectPlace = function (newAddr, newLocation) {
-                $scope.selectedAddress = newAddr;
-                if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
-                $scope.selectedLocation = newLocation;
-            };
 
-            $scope.dateFilter = {start: new Date(), stop: moment().add(1, 'M').toDate()};
-
-            let addMsg = function (type, msg) {
-                if (msg instanceof Array) {
-                    msg.forEach((text) => {
-                        if (type.indexOf(text) === -1)
-                            type.push(text);
+            $scope.$on('login', function (event, val, current) {
+                if (userService.isAuthenticated())
+                    userService.getUser((user) => {
+                        $scope.currentUser = user;
                     });
-                } else {
-                    if (type.indexOf(msg) === -1)
-                        type.push(msg);
-                }
-
-                setTimeout(() => {
-                    removeMsgs();
-                }, 7000);
-            };
-
-
-            $rootScope.$on('http.error', function (event, data) {
-                addMsg($scope.errMsg, data);
-            });
-            $rootScope.$on('http.warning', function (event, data) {
-                addMsg($scope.warningMsg, data);
-            });
-            $rootScope.$on('http.warning.html', function (event, data) {
-                addMsg($scope.warningMsgHtml, data);
-            });
-            $rootScope.$on('http.notif', function (event, data) {
-                addMsg($scope.notifMsg, data);
             });
 
+            $scope.$on('logout', function (event, val, current) {
+                $scope.currentUser = null;
+            });
 
-            $scope.logout = function () {
-                userService.logout();
-                $state.go('home.login');
-            };
+            $scope.$on('$locationChangeStart', function (event, next, current) {
+                if (userService.isAuthenticated())
+                    userService.getUser((user) => {
+                        if (!user.phone_no_confirm) {
+                            $state.go('confirm-phone');
+                            event.preventDefault();
+                        }
+                    });
+            });
+
 
             $document.on('click', '.ps-modal', function (event) {
-                if ($(event.target).hasClass('ps-modal'))
+                let isModal = $(event.target).hasClass('ps-modal');
+                if (isModal)
                     $state.go('^');
             });
 
@@ -106,7 +62,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 $scope.mapSpaces = val;
             });
 
-            $scope.zoomTo = function(space) {
+            $scope.zoomTo = function (space) {
                 let lat = space.location_lat;
                 let lng = space.location_long;
                 if (!lat) {
@@ -117,7 +73,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
 
 
             $scope.nextOffer = function (space) {
-                if (space.from_sensor){
+                if (space.from_sensor) {
                     return 'Parcare publică liberă';
                 }
                 let free = 'Se eliberează ';
@@ -153,9 +109,32 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
 
 
             $scope.selectSpace = function (space) {
-                $state.go('home.search').then(() => {
+                $state.go('search').then(() => {
                     $rootScope.$broadcast('selectSpace', space);
                 });
             };
+
+           /* $(document).bind('dragover', function (e) {
+                let dropZones = $('.add-photo'),
+                    timeout = window.dropZoneTimeout;
+                if (timeout) {
+                    clearTimeout(timeout);
+                } else {
+                    dropZones.addClass('in');
+                }
+                let hoveredDropZone = $(e.target).closest(dropZones);
+                dropZones.not(hoveredDropZone).removeClass('hover');
+                hoveredDropZone.addClass('hover');
+                window.dropZoneTimeout = setTimeout(function () {
+                    window.dropZoneTimeout = null;
+                    dropZones.removeClass('in hover');
+                });
+
+            });
+
+
+            $(document).bind('drop dragover', function (e) {
+                e.preventDefault();
+            });*/
 
         }]);

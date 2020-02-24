@@ -5,10 +5,9 @@ angular.module('ParkingSpaceMobile', [
     'ui.bootstrap.buttons',
     'ui.router',
     'angular.filter',
-    'ParkingSpaceMobile.controllers',
-    'ParkingSpaceMobile.directives',
+    'ParkingSpace',
     'ParkingSpaceMobile.filters',
-    'ParkingSpaceMobile.services'])
+    'ParkingSpaceMobile.controllers'])
 
     .run(function () {
         // install service worker
@@ -21,192 +20,172 @@ angular.module('ParkingSpaceMobile', [
 
         window.addEventListener('beforeinstallprompt', (e) => {
             // Prevent Chrome 67 and earlier from automatically showing the prompt
-            console.log('prompting to install !');
-            e.prompt();
             // Stash the event so it can be triggered later.
             window.installPrompt = e;
         });
     })
 
-    .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.interceptors.push(function () {
-            return {
-                'request': function (config) {
-                    let loading = $('#loading-progress');
-                    loading.removeClass('loading-done');
-                    loading.css('width', '100%');
-                    return config;
-                },
-                'response': function (response) {
-                    let loading = $('#loading-progress');
-                    loading.addClass('loading-done');
-                    setTimeout(() => {
-                        loading.css('width', 0);
-                    }, 500);
-                    return response;
-                }
-            };
-        });
 
-        $httpProvider.useApplyAsync(true);
-    }])
-
-    .run(['$http', '$rootScope', function ($http, $rootScope) {
-
-        if (!window.google || !window.google.maps) return;
-
-        function HtmlMarker(cluster, scope) {
-            this.spaces = cluster.elements.map((elm) => {
-                return elm[2];
-            });
-            this.scope = scope;
-            this.pos = new google.maps.LatLng(cluster.centroid[0], cluster.centroid[1]);
-            this.setMap($rootScope.map);
-        }
-
-        HtmlMarker.prototype = new google.maps.OverlayView();
-
-        HtmlMarker.prototype.onRemove = function () {
-            if (!this._div) return;
-            this._div.parentElement.removeChild(this._div);
-            this._div = null;
-        };
-
-        HtmlMarker.prototype.onAdd = function () {
-            let _this = this;
-            let div = document.createElement('DIV');
-
-            div.className = "html-marker";
-            let noOfSpaces = this.spaces.length;
-            let owned = noOfSpaces === this.spaces.filter((e) => {
-                return e.owner_is_current_user
-            }).length;
-            let from_user = noOfSpaces === this.spaces.filter((e) => {
-                return e.from_user
-            }).length;
-
-            if (owned) {
-                div.className += " owner";
-            }
-
-            let noOfSp = noOfSpaces + (noOfSpaces === 1 ? ' loc' : ' locuri');
-            div.innerHTML = '<div>' + noOfSp +
-                '    <br/>' +
-                '   <small class="text-secondary">' +
-                '        ' + this.getPrice() + ' / h ' +
-                '   </small>' +
-                '</div>';
-
-            if (from_user) {
-                div.className += " private";
-                if (noOfSpaces === 1) {
-                    this.markReservationActive(div);
-                }
-            } else {
-                div.className += " public";
-            }
-
-
-            $(div).on('click touchstart', function (evt) {
-                if (noOfSpaces > 1) {
-                    let zoom = _this.getMap().getZoom();
-                    if (zoom >= 20) {
-                        _this.scope.markerClick(_this.spaces, true);
-                        return;
-                    }
-                    _this.getMap().setCenter(_this.pos);
-                    let lats = [];
-                    _this.spaces.forEach((sp) => {
-                        lats.push([sp.location_lat, sp.location_long, sp]);
-                    });
-                    let zoomLvl = $rootScope.map.zoom;
-                    let zoomFactor = (22 - zoomLvl) / 5;
-                    let zoomIn = 2;
-
-                    let cluster = geocluster(lats, (zoomFactor + 1));
-                    if (cluster.length >= 2 ){
-                        zoomIn += 2;
-                    }
-                    console.log(cluster);
-
-
-                    _this.getMap().setZoom(zoomLvl + zoomIn);
-
-                    return;
-                }
-                _this.scope.markerClick(_this.spaces[0]);
-                evt.preventDefault();
-                evt.stopPropagation();
-            });
-
-            let panes = this.getPanes();
-            panes.overlayImage.appendChild(div);
-            this._div = div;
-        };
-
-        HtmlMarker.prototype.markReservationActive = function (div) {
-            if (this.spaces > 1) return;
-
-            let space = this.spaces[0];
-
-            let nearestOffer = space.offers.find((of) => {
-                if (!of.owner_is_current_user) return false;
-                return moment(of.end_date).isAfter(moment());
-            });
-
-            if (!nearestOffer) return;
-
-            let st = moment(nearestOffer.start_date);
-            let end = moment(nearestOffer.end_date);
-            let now = moment();
-            let text;
-            if (end.isBefore(now)) {
+    .run(['$rootScope', function ($rootScope) {
+        window.onGoogleMapLoad = function () {
+            if (!window.google || !window.google.maps) {
+                console.log('marker not loaded ');
                 return;
             }
 
-            text = st.fromNow();
-
-            if (end.isAfter(now) && st.isBefore(now)) {
-                text = ' în curs';
+            function HtmlMarker(cluster, scope, map) {
+                this.spaces = cluster.elements.map((elm) => {
+                    return elm[2];
+                });
+                this.scope = scope;
+                this.pos = new google.maps.LatLng(cluster.centroid[0], cluster.centroid[1]);
+                this.setMap(map);
             }
 
+            HtmlMarker.prototype = new google.maps.OverlayView();
 
-            let rezHtml =
-                '<div>' + this.getPrice() +
-                '   <small> / h </small> ' +
-                '   <br/>' +
-                '   <small class="text-secondary">' +
-                '       <i class="fa fa-flash"></i> ' +
-                '       Rez. ' + text + ' ' +
-                '   </small>' +
-                '</div>';
+            HtmlMarker.prototype.onRemove = function () {
+                if (!this._div) return;
+                this._div.parentElement.removeChild(this._div);
+                this._div = null;
+            };
 
-            div.innerHTML = rezHtml;
-        };
+            HtmlMarker.prototype.onAdd = function () {
+                let _this = this;
+                let div = document.createElement('DIV');
 
-        HtmlMarker.prototype.getPrice = function () {
-            let prices = [];
-            let curr;
-            this.spaces.forEach((space) => {
-                prices.push(space.price);
-                curr = space.currency;
-            });
-            prices.sort();
-            if (prices[0] === prices[prices.length - 1]) {
-                return prices[0] + " " + curr;
-            } else {
-                return prices[0] + "-" + prices[prices.length - 1] + " " + curr;
-            }
-        };
+                div.className = "html-marker";
+                let noOfSpaces = this.spaces.length;
+                let owned = noOfSpaces === this.spaces.filter((e) => {
+                    return e.owner_is_current_user
+                }).length;
+                let from_user = noOfSpaces === this.spaces.filter((e) => {
+                    return e.from_user
+                }).length;
 
-        HtmlMarker.prototype.draw = function () {
-            let overlayProjection = this.getProjection();
-            let position = overlayProjection.fromLatLngToDivPixel(this.pos);
-            this._div.style.left = position.x - 20 + 'px';
-            this._div.style.top = position.y - 45 + 'px';
-        };
-        window.HtmlMarker = HtmlMarker;
+                if (owned) {
+                    div.className += " owner";
+                }
 
+                let noOfSp = noOfSpaces + (noOfSpaces === 1 ? ' loc' : ' locuri');
+                div.innerHTML = '<div>' + noOfSp +
+                    '    <br/>' +
+                    '   <small class="text-secondary">' +
+                    '        ' + this.getPrice() + ' / h ' +
+                    '   </small>' +
+                    '</div>';
+
+                if (from_user) {
+                    div.className += " private";
+                    if (noOfSpaces === 1) {
+                        this.markReservationActive(div);
+                    }
+                } else {
+                    div.className += " public";
+                }
+
+
+                $(div).on('click touchstart', function (evt) {
+                    if (noOfSpaces > 1) {
+                        let zoom = _this.getMap().getZoom();
+                        if (zoom >= 20) {
+                            _this.scope.markerClick(_this.spaces, true);
+                            return;
+                        }
+                        _this.getMap().setCenter(_this.pos);
+                        let lats = [];
+                        _this.spaces.forEach((sp) => {
+                            lats.push([sp.location_lat, sp.location_long, sp]);
+                        });
+                        let zoomLvl = $rootScope.map.zoom;
+                        let zoomFactor = (22 - zoomLvl) / 5;
+                        let zoomIn = 2;
+
+                        let cluster = geocluster(lats, (zoomFactor + 1));
+                        if (cluster.length >= 2) {
+                            zoomIn += 2;
+                        }
+                        console.log(cluster);
+
+
+                        _this.getMap().setZoom(zoomLvl + zoomIn);
+
+                        return;
+                    }
+                    _this.scope.markerClick(_this.spaces[0]);
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                });
+
+                let panes = this.getPanes();
+                panes.overlayImage.appendChild(div);
+                this._div = div;
+            };
+
+            HtmlMarker.prototype.markReservationActive = function (div) {
+                if (this.spaces > 1) return;
+
+                let space = this.spaces[0];
+
+                let nearestOffer = space.offers.find((of) => {
+                    if (!of.owner_is_current_user) return false;
+                    return moment(of.end_date).isAfter(moment());
+                });
+
+                if (!nearestOffer) return;
+
+                let st = moment(nearestOffer.start_date);
+                let end = moment(nearestOffer.end_date);
+                let now = moment();
+                let text;
+                if (end.isBefore(now)) {
+                    return;
+                }
+
+                text = st.fromNow();
+
+                if (end.isAfter(now) && st.isBefore(now)) {
+                    text = ' în curs';
+                }
+
+
+                let rezHtml =
+                    '<div>' + this.getPrice() +
+                    '   <small> / h </small> ' +
+                    '   <br/>' +
+                    '   <small class="text-secondary">' +
+                    '       <i class="fa fa-flash"></i> ' +
+                    '       Rez. ' + text + ' ' +
+                    '   </small>' +
+                    '</div>';
+
+                div.innerHTML = rezHtml;
+            };
+
+            HtmlMarker.prototype.getPrice = function () {
+                let prices = [];
+                let curr;
+                this.spaces.forEach((space) => {
+                    prices.push(space.price);
+                    curr = space.currency;
+                });
+                prices.sort();
+                if (prices[0] === prices[prices.length - 1]) {
+                    return prices[0] + " " + curr;
+                } else {
+                    return prices[0] + "-" + prices[prices.length - 1] + " " + curr;
+                }
+            };
+
+            HtmlMarker.prototype.draw = function () {
+                let overlayProjection = this.getProjection();
+                let position = overlayProjection.fromLatLngToDivPixel(this.pos);
+                this._div.style.left = position.x - 20 + 'px';
+                this._div.style.top = position.y - 45 + 'px';
+            };
+            window.HtmlMarker = HtmlMarker;
+
+        }
     }])
 
     .config(function () {
@@ -363,10 +342,10 @@ angular.module('ParkingSpaceMobile', [
         window.geocluster = geocluster;
     })
 
-    .config(function() {
-        window.getJsonFromUrl = function(url) {
+    .config(function () {
+        window.getJsonFromUrl = function (url) {
             var result = {};
-            url.split("&").forEach(function(part) {
+            url.split("&").forEach(function (part) {
                 var item = part.split("=");
                 result[item[0]] = decodeURIComponent(item[1]);
             });
@@ -376,12 +355,7 @@ angular.module('ParkingSpaceMobile', [
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('home', {
-                url: '/home',
-                abstract: true,
-                templateUrl: 'templates/home.html'
-            })
-            .state('home.login', {
+            .state('login', {
                 url: '/login?fbLogin&lat&lng',
                 views: {
                     'content': {
@@ -394,7 +368,7 @@ angular.module('ParkingSpaceMobile', [
                     fbLogin: null
                 }
             })
-            .state('home.register', {
+            .state('register', {
                 url: '/register',
                 views: {
                     'content': {
@@ -411,17 +385,22 @@ angular.module('ParkingSpaceMobile', [
                     lng: null
                 }
             })
-            .state('home.search', {
+            .state('confirm-phone', {
+                url: '/confirm-phone',
+                views: {
+                    'content': {
+                        templateUrl: "templates/confirm-phone.html"
+                    }
+                }
+            })
+            .state('search', {
                 url: '/search?lat&lng&zoom',
                 views: {
                     'content': {
                         templateUrl: "templates/search.html"
                     },
-                    "my-menu": {
-                        templateUrl: "templates/nav-bar.html"
-                    },
-                    "left-side-menu": {
-                        templateUrl: "templates/left-side-menu.html"
+                    "nav-menu" : {
+                        templateUrl: "templates/nav-menu.html"
                     }
                 },
                 params: {
@@ -430,7 +409,7 @@ angular.module('ParkingSpaceMobile', [
                     zoom: null
                 }
             })
-            .state('home.search.help', {
+            .state('search.help', {
                 url: '/help',
                 views: {
                     'help': {
@@ -438,7 +417,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.search.instructions', {
+            .state('search.instructions', {
                 url: '/instructions',
                 views: {
                     'help': {
@@ -446,15 +425,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.search.confirm-phone', {
-                url: '/confirm-phone',
-                views: {
-                    'place-bid': {
-                        templateUrl: "templates/confirm-phone.html"
-                    }
-                }
-            })
-            .state('home.search.terms', {
+            .state('search.terms', {
                 url: '/terms',
                 views: {
                     'place-bid': {
@@ -462,7 +433,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.search.post-bids', {
+            .state('search.post-bids', {
                 url: '/post-offer?spaceId',
                 views: {
                     'place-bid': {
@@ -473,7 +444,7 @@ angular.module('ParkingSpaceMobile', [
                     spaceId: null
                 }
             })
-            .state('home.search.post-bids.pay', {
+            .state('search.post-bids.pay', {
                 url: '/pay',
                 views: {
                     'pay': {
@@ -485,7 +456,7 @@ angular.module('ParkingSpaceMobile', [
                     space: null
                 }
             })
-            .state('home.search.review-bids', {
+            .state('search.review-bids', {
                 url: '/review-bid?spaceId',
                 views: {
                     'place-bid': {
@@ -496,7 +467,7 @@ angular.module('ParkingSpaceMobile', [
                     spaceId: null
                 }
             })
-            .state('home.search.post', {
+            .state('search.post', {
                 url: '/post',
                 views: {
                     'place-bid': {
@@ -504,7 +475,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.search.review-bids.delete', {
+            .state('search.review-bids.delete', {
                 url: '/delete/{parking_space_id}',
                 views: {
                     'action': {
@@ -512,7 +483,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.search.review-bids.edit', {
+            .state('search.review-bids.edit', {
                 url: '/edit/{parking_space_id}',
                 views: {
                     'action': {
@@ -520,7 +491,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.search.myaccount', {
+            .state('search.myaccount', {
                 url: '/myaccount',
                 views: {
                     'place-bid': {
@@ -531,21 +502,18 @@ angular.module('ParkingSpaceMobile', [
                     inside: true
                 }
             })
-            .state('home.myposts', {
+            .state('myposts', {
                 url: '/myposts',
                 views: {
                     'content': {
                         templateUrl: "templates/my-posts.html"
                     },
-                    "my-menu": {
-                        templateUrl: "templates/nav-bar.html"
-                    },
-                    'left-side-menu': {
-                        templateUrl: "templates/my-posts-side.html"
+                    "nav-menu" : {
+                        templateUrl: "templates/nav-menu.html"
                     }
                 }
             })
-            .state('home.myposts.help', {
+            .state('myposts.help', {
                 url: '/help',
                 views: {
                     'help': {
@@ -553,15 +521,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.myposts.bids', {
-                url: '/bids/{parking_space_id}',
-                views: {
-                    'edit-space': {
-                        templateUrl: "templates/review-bids.html"
-                    }
-                }
-            })
-            .state('home.myposts.edit', {
+            .state('myposts.edit', {
                 url: '/edit/{parking_space_id}',
                 views: {
                     'edit-space': {
@@ -569,7 +529,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.myposts.delete', {
+            .state('myposts.delete', {
                 url: '/delete/{parking_space_id}',
                 views: {
                     'edit-space': {
@@ -577,26 +537,25 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.myoffers', {
+            .state('myoffers', {
                 url: '/myoffers',
                 views: {
                     'content': {
                         templateUrl: "templates/my-offers.html"
                     },
-                    'my-menu': {
-                        templateUrl: "templates/nav-bar.html"
+                    "nav-menu" : {
+                        templateUrl: "templates/nav-menu.html"
                     },
-                    'left-side-menu': {
-                        templateUrl: "templates/my-offers-side.html"
+                    'search-bar': {
+                        templateUrl: "templates/search-bar.html"
                     }
                 }
             })
-            .state('home.myoffers.pay', {
+            .state('myoffers.pay', {
                 url: '/pay',
                 views: {
                     'pay': {
                         templateUrl: "templates/pay.html"
-
                     }
                 },
                 params: {
@@ -604,18 +563,18 @@ angular.module('ParkingSpaceMobile', [
                     space: null
                 }
             })
-            .state('home.account', {
+            .state('account', {
                 url: "/account",
                 views: {
                     'content': {
                         templateUrl: "templates/account.html"
                     },
-                    'left-side-menu': {
-                        templateUrl: "templates/account-side.html"
+                    "nav-menu" : {
+                        templateUrl: "templates/nav-menu.html"
                     }
                 }
             })
-            .state('home.account.payments', {
+            .state('account.payments', {
                 url: "/payments",
                 views: {
                     'financial': {
@@ -623,7 +582,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('home.account.withdrawals', {
+            .state('account.withdrawals', {
                 url: "/withdrawals",
                 views: {
                     'financial': {
@@ -638,18 +597,41 @@ angular.module('ParkingSpaceMobile', [
                 let token = getJsonFromUrl($location.$$hash).access_token;
                 sessionStorage.setItem("fb_token", token);
                 // sucessful response from fb
-                return "/home/login?fbLogin=ok";
+                return "/login?fbLogin=ok";
             } else if ($location.absUrl().indexOf("error") !== -1 &&
                 $location.absUrl().indexOf("error_code") !== -1) {
-                return "/home/login?fbLogin=err";
+                return "/login?fbLogin=err";
             }
-            return "/home/search";
+            return "/search";
         });
 
     }])
 
     .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel):/);
+    }])
+
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push(function () {
+            return {
+                'request': function (config) {
+                    let loading = $('#loading-progress');
+                    loading.removeClass('loading-done');
+                    loading.css('width', '100%');
+                    return config;
+                },
+                'response': function (response) {
+                    let loading = $('#loading-progress');
+                    loading.addClass('loading-done');
+                    setTimeout(() => {
+                        loading.css('width', 0);
+                    }, 500);
+                    return response;
+                }
+            };
+        });
+
+        $httpProvider.useApplyAsync(true);
     }])
 
     .config(function () {
@@ -676,6 +658,7 @@ angular.module('ParkingSpaceMobile', [
                 || navigator.userAgent.match(/iPod/i));
         };
     })
+
     .constant('currencies', [
         {
             name: 'Usd',
@@ -728,6 +711,7 @@ angular.module('ParkingSpaceMobile', [
             icon: 'fa-krw'
         }
     ])
+
     .constant('uom', {
         metric: {
             name: 'meters',
@@ -738,10 +722,16 @@ angular.module('ParkingSpaceMobile', [
             abr: 'ft'
         }
     })
+
+    .constant('uuid', {
+        value: 0,
+        next: function() {
+            this.value++;
+            return this.value;
+        }
+    })
 ;
 
 angular.module('ParkingSpaceMobile.controllers', []);
-angular.module('ParkingSpaceMobile.services', []);
-angular.module('ParkingSpaceMobile.directives', []);
 angular.module('ParkingSpaceMobile.filters', []);
 

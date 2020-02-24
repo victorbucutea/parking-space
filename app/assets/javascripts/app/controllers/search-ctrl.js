@@ -4,10 +4,10 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl',
-    ['geocoderService', 'notificationService', 'userService', '$rootScope', '$scope', 'parkingSpaceService',
-        'parameterService', 'geolocationService', '$state', 'currencyFactory', 'offerService', '$stateParams',
-        function (geocoderService, notificationService, userService, $rootScope, $scope, parkingSpaceService,
-                  parameterService, geolocationService, $state, currencyFactory, offerService, $stateParams) {
+    ['geoService', 'notificationService', 'userService', '$rootScope', '$scope', 'parkingSpaceService',
+        'parameterService', '$state', 'offerService', '$stateParams',
+        function (geoService, notificationService, userService, $rootScope, $scope, parkingSpaceService,
+                  parameterService, $state, offerService, $stateParams) {
 
 
             let dragListenHandle = null;
@@ -16,6 +16,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             $scope.cloudinaryName = window.cloudinaryName;
 
             $scope.mapCreated = function (map, overlay, geocoder) {
+                window.onGoogleMapLoad();
                 $('#mapBlanket').fadeOut();
                 $rootScope.map = map;
                 $rootScope.overlay = overlay;
@@ -44,7 +45,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
 
                 $scope.navigateToCompanyLot();
 
-
             };
 
             $scope.mapError = function () {
@@ -58,13 +58,19 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 return;
             }
 
+            if (!userService.instructionsShown()) {
+                $state.go('.instructions').then(() => {
+                        userService.instructionsShown(true)
+                    }
+                )
+            }
 
             $scope.navigateToCompanyLot = function () {
                 userService.getRoles(function (roles) {
                     if (!roles) return;
                     let rolesJson = JSON.stringify(roles);
                     sessionStorage.setItem("current_roles", rolesJson);
-                    if (roles.company.locations) {
+                    if (roles.company && roles.company.locations && roles.company.locations[0]) {
                         let lat = roles.company.locations[0].location_lat;
                         let lng = roles.company.locations[0].location_long;
                         let pos = new google.maps.LatLng(lat, lng);
@@ -75,35 +81,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 })
             };
 
-            let item = sessionStorage.getItem("current_user");
-            if (!item) {
-                userService.getUser(function (user) {
-                    if (!user) return;
-                    let userjson = JSON.stringify(user);
-                    sessionStorage.setItem("current_user", userjson);
-
-                    if (!user.phone_no_confirm) {
-                        $state.go('.confirm-phone');
-                    }
-                });
-            } else {
-                let user = JSON.parse(item);
-                if (!user.phone_no_confirm) {
-                    $state.go('.confirm-phone');
-                }
-            }
-
-
-            if ($state.current.name === 'home.search'
-                && localStorage.getItem('instructionsShown') !== 'true'
-                && JSON.parse(item).phone_no_confirm) {
-                $state.go('.instructions');
-                localStorage.setItem('instructionsShown', 'true');
-            }
 
             function addMarker(space) {
-
-                let htmlMarker = new HtmlMarker(space, $scope);
+                let htmlMarker = new HtmlMarker(space, $scope, $rootScope.map);
                 $rootScope.markers.push(htmlMarker);
             }
 
@@ -162,13 +142,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 });
             };
 
-
-            $scope.$watch('selectedLocation', newVal => {
-                if (!newVal) return;
-
-                $rootScope.map.setCenter(newVal);
-            });
-
             $scope.$on('selectSpace', function (event, space) {
                 $scope.markerClick(space);
             });
@@ -205,18 +178,24 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
             };
 
             $scope.centerMap = function () {
-                geolocationService.getCurrentLocation(function (position) {
+                geoService.getCurrentPosition((position) => {
                     let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     $rootScope.map.setCenter(pos);
                 });
             };
 
+            $scope.selectPlace = function (newAddr, newLocation) {
+                if (!newLocation) return;
+
+                $rootScope.map.setCenter(newLocation);
+            };
+
 
             $scope.$on('$stateChangeStart', function (event, toState) {
-                if (toState.name.indexOf('home.search') === -1) {
+                if (toState.name.indexOf('search') === -1) {
                     google.maps.event.removeListener(dragListenHandle);
                     google.maps.event.removeListener(zoomListenHandle);
-                } else if (toState.name === 'home.search') {
+                } else if (toState.name === 'search') {
                     $scope.placingSpot = null;
                 }
             });

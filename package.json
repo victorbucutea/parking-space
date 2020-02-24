@@ -16,10 +16,13 @@
     "cloudinary-core": "^2.4.0",
     "cloudinary-jquery-file-upload": "^2.5.0",
     "cloudinary_ng": "^1.1.1",
+    "css-element-queries": "^1.2.1",
     "font-awesome": "^4.7.0",
     "geocluster": "^0.1.1",
     "iban": "^0.0.10",
     "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-bundle": "^1.12.1-migrate",
     "jquery.iframe-transport": "^1.0.0",
     "jquery.scrollto": "^2.1.2",
     "jquery.ui.widget": "^1.10.3",
@@ -29,6 +32,7 @@
     "owl.carousel": "^2.3.4",
     "popper.js": "1.12.3",
     "pusher-js": "^4.3.1",
+    "slick-carousel": "^1.8.1",
     "tooltip.js": "^1.3.3"
   },
   "devDependencies": {}

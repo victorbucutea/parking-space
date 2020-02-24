@@ -7,8 +7,7 @@ class ProposalsController < ApplicationController
   include NotificationApi
 
   before_action :authenticate_user!
-  before_action :set_proposal, only: [ :pay, :reject,:cancel,:approve]
-
+  before_action :set_proposal, only: %i[pay reject cancel approve]
 
 
   def show
@@ -41,9 +40,9 @@ class ProposalsController < ApplicationController
         send_sms @proposal.parking_space.user.phone_number,
                  current_user.full_name + ' a achitat contravaloarea de ' + @proposal.amount_with_vat.to_s +
                      ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
-        format.json {render :show, status: :ok}
+        format.json { render :show, status: :ok }
       else
-        format.json {render json: {Error: 'Eroare in procesarea platii. Va rugam incercati din nou.'}, status: :unprocessable_entity}
+        format.json { render json: {Error: 'Eroare in procesarea platii. Va rugam incercati din nou.'}, status: :unprocessable_entity }
       end
 
     end
@@ -63,9 +62,9 @@ class ProposalsController < ApplicationController
 
     respond_to do |format|
       if @proposal.reject
-        format.json {render :show, status: :ok}
+        format.json { render :show, status: :ok }
       else
-        format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
+        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -74,9 +73,9 @@ class ProposalsController < ApplicationController
 
     respond_to do |format|
       if @proposal.cancel
-        format.json {render :show, status: :ok}
+        format.json { render :show, status: :ok }
       else
-        format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
+        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -85,9 +84,9 @@ class ProposalsController < ApplicationController
 
     respond_to do |format|
       if @proposal.approve
-        format.json {render :show, status: :ok}
+        format.json { render :show, status: :ok }
       else
-        format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
+        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
       end
     end
 
@@ -102,13 +101,11 @@ class ProposalsController < ApplicationController
     @proposal.phone_number = current_user.phone_number
     @proposal.user = current_user
 
-    respond_to do |format|
-      if @proposal.save
-        send_notification @proposal.parking_space.user, 'Ofertă pt locul tău din ' + @proposal.parking_space.address_line_1
-        format.json {render :show, status: :created}
-      else
-        format.json {render json: {Error: @proposal.errors}, status: :unprocessable_entity}
-      end
+    if @proposal.save
+      send_notification @proposal.parking_space.user, 'Ofertă pt locul tău din ' + @proposal.parking_space.address_line_1
+      render :show, status: :created
+    else
+      render json: {Error: @proposal.errors}, status: :unprocessable_entity
     end
   end
 
@@ -129,4 +126,5 @@ class ProposalsController < ApplicationController
   def set_proposal
     @proposal = Proposal.find(params[:proposal_id])
   end
+
 end

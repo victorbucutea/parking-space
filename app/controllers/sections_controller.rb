@@ -6,16 +6,6 @@ class SectionsController < ApplicationController
   before_action :set_section_p, only: %i[save_perimeters  perimeters]
 
 
-  def add_parking_place
-  end
-
-  def remove_parking_place
-  end
-
-  def assign_parking_place
-  end
-
-
   # GET /sections
   # GET /sections.json
   def index
@@ -41,24 +31,20 @@ class SectionsController < ApplicationController
   def create
     @section = Section.new(section_params)
 
-    respond_to do |format|
-      if @section.save
-        format.json { render :show, status: :created, location: @section }
-      else
-        format.json { render json: @section.errors, status: :unprocessable_entity }
-      end
+    if @section.save
+      render :show, status: :created, location: @section
+    else
+      render json: @section.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /sections/1
   # PATCH/PUT /sections/1.json
   def update
-    respond_to do |format|
-      if @section.update(section_params)
-        format.json { render :show, status: :ok, location: @section }
-      else
-        format.json { render json: @section.errors, status: :unprocessable_entity }
-      end
+    if @section.update(section_params)
+      render :show, status: :ok, location: @section
+    else
+      render json: @section.errors, status: :unprocessable_entity
     end
   end
 
@@ -95,17 +81,13 @@ class SectionsController < ApplicationController
 
 
     pers.each do |per|
-      unless per[:user].nil?
-        user = User.find_by_email(per[:user][:email])
-      end
+
       if per[:id].nil? || per[:id] < 0
         per[:id] = nil # needed as ui indexes using a negative id
         perimeter = ParkingPerimeter.new(permiter_params(per))
-        perimeter.user = user
         perimeter.publish_parking_space
       else
         perimeter = ParkingPerimeter.find(per[:id])
-        perimeter.user = user
         perimeter.update(permiter_params(per))
         perimeter.update_parking_space
       end
@@ -141,7 +123,7 @@ class SectionsController < ApplicationController
     perim_params.permit(
         :id, :top_left_y, :top_left_x, :bottom_right_y, :bottom_right_x, :price,
         :identifier, :description, :perimeter_type, :lat, :lng, :section_id,
-        :rules_expression, :user_attributes => [:email]
+        :rules_expression, :user_id
     )
   end
 end

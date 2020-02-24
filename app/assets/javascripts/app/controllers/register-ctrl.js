@@ -4,21 +4,14 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
-    ['$rootScope', '$stateParams', '$scope', 'parameterService', 'userService',  '$state',
+    ['$rootScope', '$stateParams', '$scope', 'parameterService', 'userService', '$state',
         function ($rootScope, $stateParams, $scope, parameterService, userService, $state) {
-
-            if (!$stateParams.inside) {
-                $('#drawer').attr('style', 'display: none !important');
-            }
 
             if ($stateParams.inside) {
                 $scope.inside = true;
                 userService.getUser(function (user) {
                     if (!user) return;
 
-                    if (!user.phone_no_confirm) {
-                        $state.go('home.search.confirm-phone');
-                    }
                     $scope.firstName = user.full_name;
                     $scope.phoneNumber = user.phone_number.replace("+40", "");
                     $scope.country = user.country;
@@ -29,9 +22,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                 });
             }
 
-            $scope.prefix = '+40';
-            $scope.user = {country: 'ro'};
-
             $scope.fromFb = $stateParams.fromFb;
             $scope.email = $stateParams.email;
             $scope.fbId = $stateParams.fbId;
@@ -39,27 +29,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
             $scope.token = $stateParams.token;
             $scope.lat = $stateParams.lat;
             $scope.lng = $stateParams.lng;
-
-            console.log($stateParams);
-
-            $scope.$watch('registerForm.licensePlate.$valid', function (newVal) {
-                if (!newVal) return;
-                let init = $scope.licensePlate;
-                if (!init) return;
-
-                let no = /(\d)+/g.exec(init)[0];
-                let county = /([a-zA-Z])+/g.exec(init)[0];
-                let code = /([a-zA-Z])+$/g.exec(init)[0];
-                $scope.licensePlate = county.toLocaleUpperCase() + '-' + no + '-' + code.toLocaleUpperCase();
-            });
-
-            $scope.options = {
-                phoneNumber: {
-                    delimiters: ['.', '.'],
-                    blocks: [3, 3, 3],
-                    numericOnly: true
-                }
-            };
 
 
             $scope.save = function () {
@@ -83,10 +52,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
 
                 let backEndUser = {};
                 backEndUser.full_name = $scope.firstName;
-                backEndUser.phone_number = $scope.prefix + $scope.phoneNumber;
-                backEndUser.country = $scope.user.country;
+                backEndUser.prefix = $scope.selectedCountry.prefix;
+                backEndUser.phone_number = $scope.phoneNumber;
+                backEndUser.country = $scope.selectedCountry.code;
                 backEndUser.email = $scope.email;
-                if( $scope.registerForm && $scope.registerForm.pw) {
+                if ($scope.registerForm && $scope.registerForm.pw) {
                     backEndUser.password = $scope.registerForm.pw.$viewValue;
                     backEndUser.password_confirmation = backEndUser.pw;
                 }
@@ -95,11 +65,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
 
                 if ($stateParams.inside) {
                     userService.saveUser(backEndUser, function () {
-                        $state.go('home.search', {lat: $scope.lat, lng: $scope.lng});
+                        $state.go('search', {lat: $scope.lat, lng: $scope.lng});
                     });
                 } else {
                     userService.registerUser(backEndUser, function () {
-                        $state.go('home.search', {lat: $scope.lat, lng: $scope.lng});
+                        $state.go('search', {lat: $scope.lat, lng: $scope.lng});
                     });
                 }
 
@@ -120,7 +90,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                 if ($scope.inside) {
                     $state.go('^');
                 } else {
-                    $state.go('home.login', {lat: $scope.lat, lng: $scope.lng});
+                    $state.go('login', {lat: $scope.lat, lng: $scope.lng});
                 }
             };
         }]);

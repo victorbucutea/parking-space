@@ -5,8 +5,10 @@ json.perimeters do
                   :bottom_right_y, :identifier, :snapshot, :description,
                   :perimeter_type, :lat, :lng, :rules_expression, :user_id
     json.price perimeter.price.to_f unless perimeter.price.nil?
+    json.is_public perimeter.public_space?
+    json.is_assigned perimeter.assigned_space?
+    json.is_employee perimeter.employee_space?
   end
-
 end
 json.perimeter_types do
   json.merge! [

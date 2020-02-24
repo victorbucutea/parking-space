@@ -1,0 +1,37 @@
+<!-- Here be perimeter edit form -->
+<div class="ps-modal perimeter-modal" ng-controller="SectionUploadCtrl">
+  <div class=" my-4 p-4">
+
+    <form novalidate id="perForm" name="perForm">
+      <h4>Incarcare plan parcare </h4>
+
+
+      <div class="my-4" id="dropZone">
+        <input id="fileupload" style="display: none" type="file" name="file" multiple max="3"
+               accept="image/*">
+
+        <div class="form-group my-4 mark small">
+          Încarcând un nou plan al parcării, veți fi nevoit sa repoziționați toate perimetrele
+          de parcare. <br/>
+          De asemenea în cazul in care ștergeți <b>locurile</b> veți invalida si
+          <b>rezervările</b> existente.
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar" id="uploadProgressBar"></div>
+        </div>
+
+      </div>
+
+      <button class="btn btn-primary" onclick="$('#fileupload').click()" ng-disabled="loading">
+        <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+        OK
+      </button>
+      <button class="btn btn-secondary" ui-sref="^" ng-disabled="loading">
+        <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+        Inapoi
+      </button>
+
+    </form>
+  </div>
+</div>

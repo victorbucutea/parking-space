@@ -30,7 +30,9 @@
 //= require jquery.ui.widget/jquery.ui.widget
 //= require blueimp-file-upload/js/jquery.iframe-transport
 //= require blueimp-file-upload/js/jquery.fileupload
-//= require pusher-js/dist/web/pusher.min.js
+//= require pusher-js/dist/web/pusher.min
+//= require slick-carousel/slick/slick.js
+//= require css-element-queries/src/ResizeSensor
 
 //= require main
 //= require_tree .

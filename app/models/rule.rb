@@ -27,14 +27,3 @@ class WorkingHoursRule < Rule
 
   end
 end
-
-class OrRule < Rule
-  def check(proposal)
-
-  end
-end
-class AndRule < Rule
-  def check(proposal)
-
-  end
-end

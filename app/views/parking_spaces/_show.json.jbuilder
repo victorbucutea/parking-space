@@ -1,6 +1,5 @@
 json.extract! parking_space, :id, :location_lat, :location_long, :title,
-              :address_line_1, :address_line_2, :description, :recorded_from_lat,
-              :recorded_from_long, :space_availability_start, :space_availability_stop,
+              :address_line_1, :address_line_2, :description, :space_availability_start, :space_availability_stop,
               :daily_start, :daily_stop, :weekly_schedule,
               :owner_name, :updated_at, :created_at, :file1, :file2, :file3
 
@@ -12,6 +11,9 @@ json.expired parking_space.expired?
 json.from_sensor parking_space.sensor_source?
 json.from_user parking_space.user_source?
 json.from_company parking_space.company_source?
+json.missing_title_deed parking_space.missing_title_deed?
+json.validation_pending parking_space.validation_pending?
+json.validated parking_space.validated?
 if parking_space.owner.present?
   json.owner_phone_number parking_space.owner.phone_number
   json.owner_email parking_space.owner.email
@@ -32,13 +34,16 @@ json.offers do
     json.start_date proposal.start_date
     json.end_date proposal.end_date
     json.owner_is_current_user proposal.user.id == current_user.id
-    json.read proposal.read
     json.amount proposal.amount.to_f
     json.amount_with_vat proposal.amount_with_vat.to_f
     json.comision proposal.comision.to_f
     json.comision_with_vat proposal.comision_with_vat.to_f
-    json.owner_name proposal.bidder_name
+    json.owner_name proposal.user.full_name
+    json.owner_license proposal.user.license
+    json.owner_phone_number proposal.user.phone_number
+    json.owner_prefix proposal.user.prefix
     json.paid proposal.paid?
+    json.active proposal.active?
     json.payment_date proposal.payment_date
   end
 end

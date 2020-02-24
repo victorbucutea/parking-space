@@ -1,6 +1,7 @@
 class ParkingSpacesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_parking_space, only: [:phone_number, :show, :update, :destroy]
+  load_and_authorize_resource
+  before_action :set_parking_space, only: %i[phone_number show update destroy attach_documents validate]
   respond_to :json
 
   # GET /parking_spaces
@@ -26,9 +27,9 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    query_attrs = {lon_min: lon_min, lon_max:lon_max, lat_min: lat_min, lat_max: lat_max}
+    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
     @parking_spaces = ParkingSpace.not_expired.active
-                          .includes(:proposals)
+                          .includes(:proposals, :user)
                           .within_boundaries(query_attrs)
   end
 
@@ -45,22 +46,17 @@ class ParkingSpacesController < ApplicationController
 
 
   def myspaces
-
-    @parking_spaces = ParkingSpace.not_expired.active
-                          .includes(:proposals)
-                          .where({user: current_user})
+    @parking_spaces = ParkingSpace.includes(:proposals, :user)
+                          .where(user: current_user)
 
     @parking_spaces.each do |space|
       space.owner = space.user
     end
 
-    respond_to do |format|
-      format.json {render :index, status: :ok}
-    end
+    render :index, status: :ok
   end
 
   def myoffers
-
     @parking_spaces = ParkingSpace.not_expired.active
                           .includes(:proposals)
                           .where(proposals: {user: current_user})
@@ -69,10 +65,34 @@ class ParkingSpacesController < ApplicationController
       space.owner = space.user
     end
 
-    respond_to do |format|
-      format.json {render :index, status: :ok}
-    end
+    render :index, status: :ok
   end
+
+  def attach_documents
+
+    docs = params[:docs]
+
+    # save to parking_space_documents
+    docs.each do |d|
+      doc = @parking_space.documents.create(file: d, comment: 'User upload', status: 'uploaded')
+      unless doc.errors.empty?
+        return render json: { Error: doc.errors }, status: :unprocessable_entity
+      end
+    end
+
+    # move to title_deed_pending
+    @parking_space.validation_pending!
+
+    render :show, status: :created, location: @parking_space
+
+  end
+
+  def validate
+    # check user allowed to validate ( private_spaces_admin )
+    # check title deed is attached
+    # move to validated
+  end
+
 
   # POST /parking_spaces
   # POST /parking_spaces.json
@@ -80,12 +100,10 @@ class ParkingSpacesController < ApplicationController
     @parking_space = ParkingSpace.new(parking_space_params)
     @parking_space.user = current_user
 
-    respond_to do |format|
-      if @parking_space.save
-        format.json {render :show, status: :created, location: @parking_space}
-      else
-        format.json {render json: {Error: @parking_space.errors}, status: :unprocessable_entity}
-      end
+    if @parking_space.save
+      render :show, status: :created, location: @parking_space
+    else
+      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
     end
   end
 
@@ -93,53 +111,46 @@ class ParkingSpacesController < ApplicationController
   # PATCH/PUT /parking_spaces/1.json
   def update
 
-    if current_user.id != @parking_space.user.id
-      render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
-      return
-    end
-
-    respond_to do |format|
-      if @parking_space.update(parking_space_params)
-        format.json {render :show, status: :ok, location: @parking_space}
-      else
-        format.json {render json: {Error: @parking_space.errors}, status: :unprocessable_entity}
-      end
+    if @parking_space.update(parking_space_params)
+      render :show, status: :ok, location: @parking_space
+    else
+      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
     end
   end
+
 
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-    if current_user.id != @parking_space.user.id
-      render json: {Error: {general: "Device id invalid"}}, status: :unprocessable_entity
+
+
+    if @parking_space.has_paid_proposals?
+      render json: {Error: {general: 'Nu se poate șterge un loc cu oferte plătite'}}, status: :unprocessable_entity
       return
     end
 
-    if @parking_space.has_paid_proposals?
-      render json: {Error: {general: "Nu se poate șterge un loc cu oferte plătite"}}, status: :unprocessable_entity
-      return
-    end
+    # todo do not delete just expire validity
 
     @parking_space.destroy
     respond_to do |format|
-      format.json {head :no_content}
+      format.json { head :no_content }
     end
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_parking_space
-    if params[:id].nil?
-      @parking_space = ParkingSpace.find(params[:parking_space_id])
-    else
-      @parking_space = ParkingSpace.find(params[:id])
-    end
+    @parking_space = if params[:id].nil?
+                       ParkingSpace.find(params[:parking_space_id])
+                     else
+                       ParkingSpace.find(params[:id])
+                     end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def parking_space_params
     params.require(:parking_space).permit(:location_lat, :location_long,
-                                          :recorded_from_lat, :recorded_from_long,
                                           :target_price, :target_price_currency,
                                           :phone_number, :owner_name, :title,
                                           :address_line_1, :address_line_2,
@@ -148,4 +159,5 @@ class ParkingSpacesController < ApplicationController
                                           :daily_start, :daily_stop, :weekly_schedule,
                                           :description, :created_at)
   end
+
 end

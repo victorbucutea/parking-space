@@ -18,37 +18,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
             });
 
 
-            $scope.selectOffer = function (offer, space) {
-                $scope.selOffer = offer;
-                $scope.selectedSpace = space;
-            };
-
-
-            $scope.expiration = function (offer) {
-                let st = moment(offer.start_date);
-                let end = moment(offer.end_date);
-                let now = moment();
-
-                let isNow = end.isAfter(now) && st.isBefore(now);
-                let isInThePast = st.isBefore(now);
-                let isInTheFuture = end.isAfter(now);
-
-                if (isNow) {
-                    return "Acum (expira " + end.fromNow() + ")"
-                }
-
-                if (isInThePast) {
-                    return "Cu " + end.fromNow()
-                }
-
-                if (isInTheFuture) {
-                    return "Progr. " + st.fromNow();
-                }
-
-
-                return "";
-            };
-
             $scope.cancelOffer = function (offer) {
                 if (confirm('Ești sigur ca vrei să anulezi această ofertă?')) {
                     offerService.cancelOffer($scope.selectedSpace.id, offer, function (bid) {

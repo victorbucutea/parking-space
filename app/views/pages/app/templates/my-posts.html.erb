@@ -1,0 +1,116 @@
+<div ng-controller="MyPostsCtrl" class="row no-gutters">
+  <search-bar place-holder="'Caută adresa  ...'" on-select-place="selectPlace(place,location)" on-menu-click="openMenu()"></search-bar>
+
+  <div class="d-none d-lg-flex open-spaces-list col-lg-4 full-height flex-column justify-content-center align-items-center faq ">
+    <div class="pricing-icon large-icon">
+      <img src="<%= image_path 'map_plain.png' %>">
+    </div>
+  </div>
+
+  <div class="col-lg-7 list open-spaces-list scroll container">
+    <div class="item mb-4 mx-3 panel p-0" ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
+      <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
+      <hr class="m-0"/>
+      <div class="not-posted-box alert-danger p-2 animated delay-2 fadeIn" ng-show="space.missing_title_deed">
+        <div class="font-weight-bold text-danger">Nepublicat</div>
+        <div>Locul nu este disponibil pentru închiriat.
+          Atașați un document ce atestă posibilitatea sub-închirierii (
+          <i> contract închiriere, vânzare/cumparare, etc.</i> ).
+        </div>
+        <file-upload accept="'*'" icon="'fa-file'" label="'Document sau foto'"
+                     on-select="fileSelected(file)"
+                     on-de-select="fileDeSelected(file)"
+                     uploaded-files="uploadedFiles"></file-upload>
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-danger btn-sm" ng-click="upload(space)" ng-disabled="count < 1">
+            <i class="fa fa-upload"></i> Încarcă documente
+          </button>
+        </div>
+      </div>
+
+      <div class="not-posted-box alert-danger p-2 animated delay-2 fadeIn" ng-show="space.validation_pending">
+        <div class="font-weight-bold text-danger">Nepublicat</div>
+        <div>Locul este în curs de validare. Pentru întrebari sau detalii vă rugam contacți-ne pe
+          <a href="mailto:office@go-park.ro"> office@go-park.ro </a> .
+        </div>
+      </div>
+
+
+      <div class="animated fadeIn delay-2" ng-show="space.validated">
+        <div class="p-2 expired-box alert-warning " ng-show="space.expired" ng-init="initExpiredBox()">
+          <div class="d-flex justify-content-between">
+            <div class="font-weight-bold text-warning" data-toggle="tooltip" title="Perioada de valabilitate s-a încheiat.
+                În consecință locul nu mai este disponibil pentru închiriere">
+              Valabilitate expirată <i class="fa fa-question-circle-o"></i>
+            </div>
+            <button class="btn btn-link btn-sm" onclick="$('#validityDetails').slideToggle()">
+              <i class="fa fa-angle-down"></i> Prelungește valabilitatea
+            </button>
+          </div>
+          <form name="extendValidityForm" id="extendValidityForm">
+            <div class="form-row" id="validityDetails">
+              <div class="col-md-2"></div>
+              <div class="form-group col-6 col-md-4">
+                <label for="validStart"> Data start
+                </label>
+                <date-time id="validStart" class="input-group-sm" date-model="availability_start" day></date-time>
+              </div>
+              <div class="form-group col-6  col-md-4">
+                <label for="validStart"> Data stop</label>
+                <date-time id="validStop" class="input-group-sm" date-model="availability_stop" day></date-time>
+                <div class="invalid-tooltip">
+                  Introdu data stop
+                </div>
+              </div>
+              <div class="col-md-2"></div>
+              <div class="col-12 text-center">
+                <button ng-click="extendValidity(space, availability_start, availability_stop)" class="btn btn-success btn-sm my-2"> Prelungește perioada
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="p-2 posted-box" ng-hide="space.expired">
+
+          <div class="font-weight-bold text-success">Disponibil pentru închiriat încă {{ timeUntilExpiry(space) }}</div>
+          <div class="d-flex justify-content-between">
+            <div class="text-monospace text-muted">
+              {{space.space_availability_start | moment:'D MMM [(h)] HH:mm' }} -
+              {{space.space_availability_stop | moment:'D MMM [(h)] HH:mm'}}
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2 posted-box" ng-show="findActiveOffer(space)" ng-init="activeOffer = findActiveOffer(space)">
+          <div class="font-weight-bold text-success">Rezervare in curs </div>
+          <bid-table space="space" offers="[activeOffer]"></bid-table>
+
+        </div>
+      </div>
+
+
+      <bid-table space="space" ng-if="space.showOffers"></bid-table>
+
+      <div class="" ng-show="space.offers.length">
+        <button class="btn btn-link btn-block" ng-click="space.showOffers = !space.showOffers">
+          <i class="fa fa-angle-double-down"></i> Afișează toate rezervările
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-items-msg loading-finished" ng-hide="spaces.length">
+    Nu ai postat un loc, sau acestea au expirat.
+    Ajută la descongestionarea traficului și rotunjește-ți veniturile
+    <u>
+      <a ui-sref="search">
+        postând un loc.
+      </a>
+    </u>
+  </div>
+
+</div>
+
+<ui-view name="edit-space"></ui-view>
+<ui-view name="help"></ui-view>
+</div>

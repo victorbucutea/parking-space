@@ -10,6 +10,7 @@ json.end_date proposal.end_date
 json.owner_is_current_user proposal.user_id == current_user.id
 json.read proposal.read
 json.paid proposal.paid?
+json.active proposal.active?
 json.payment_date proposal.payment_date
 json.amount proposal.amount.to_f
 json.amount_with_vat proposal.amount_with_vat.to_f

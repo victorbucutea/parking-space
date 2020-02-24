@@ -290,34 +290,16 @@ div.daterangepicker {
     margin-left: auto;
     margin-right: auto;
     padding: 25px 15px;
-    box-shadow: 2px 0 10px 0 transparentize($blue-800, .5);
+    border: 1px solid $gray-400;
+    border-radius: 3px;
     background-color: #fff;
   }
 
-  .owl-stage-outer {
-    overflow: visible;
-  }
-
-  .owl-carousel {
-    .owl-item {
-      img {
-        width: auto;
-      }
-    }
-
-    .owl-dots {
-      position: absolute;
-      width: 100%;
-      top: -20px;
-    }
-
-  }
 
   .pricing-title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 900;
     color: #151515;
-    text-align: center;
   }
 
   .pricing-icon {

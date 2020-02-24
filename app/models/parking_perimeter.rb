@@ -1,5 +1,7 @@
 class ParkingPerimeter < ActiveRecord::Base
-  enum perimeter_type: %i[assigned_space employee_space public_parking_space]
+  include ActiveModel::Dirty
+
+  enum perimeter_type: %i[assigned_space employee_space public_space]
 
   belongs_to :sensor
   belongs_to :parking_space
@@ -7,6 +9,7 @@ class ParkingPerimeter < ActiveRecord::Base
   belongs_to :user
 
   before_destroy :expire_old_space
+
 
 
   def publish_parking_space
@@ -19,6 +22,9 @@ class ParkingPerimeter < ActiveRecord::Base
   end
 
   def update_parking_space
+    unless previous_changes[:perimeter_type].nil?
+      expire_old_space
+    end
     populate parking_space
     parking_space.save!
   end
@@ -26,15 +32,13 @@ class ParkingPerimeter < ActiveRecord::Base
   def expire_old_space
     unless parking_space.nil?
       parking_space.space_availability_stop = DateTime.now
-      Proposal.for_space(parking_space.id).active_or_future.each do |prop|
+      parking_space.proposals.active_or_future.each do |prop|
         prop.end_date = DateTime.now
         prop.save
       end
       parking_space.save
     end
   end
-
-  private
 
   def populate(parking_space)
     section_location = section.location
