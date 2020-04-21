@@ -36,7 +36,16 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # action mailer configuration
-
+  config.action_mailer.default_url_options = { host: 'localhost', port: '3000' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'email-smtp.eu-west-1.amazonaws.com',
+    port: 587, # Port 25 is throttled on AWS
+    user_name: ENV['SMTP_USER'],
+    password: ENV['SMTP_PASS'],
+    authentication: :login,
+    enable_starttls_auto: true
+  }
 end
 
 

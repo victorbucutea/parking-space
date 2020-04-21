@@ -18,11 +18,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   def send_new_code
     current_user.phone_number = params[:phone_number]
+    current_user.prefix = params[:prefix]
     current_user.phone_confirm_code = random_str
     current_user.phone_no_confirm = false
 
     if current_user.save
-      send_sms(current_user.phone_number, "'#{current_user.phone_confirm_code}' este codul de confirmare (Go-park.ro).")
+      send_sms(current_user.phone_with_prefix,
+               "'#{current_user.phone_confirm_code}' este codul de confirmare (Go-park.ro).")
       render :edit
     end
   end
@@ -45,47 +47,43 @@ class RegistrationsController < Devise::RegistrationsController
       if current_user.save
         render :edit
       else
-        render json: {Error: 'Cod invalid'}, status: :unprocessable_entity
+        render json: { Error: 'Cod invalid' }, status: :unprocessable_entity
       end
     else
-      render json: {Error: 'Cod invalid'}, status: :unprocessable_entity
+      render json: { Error: 'Cod invalid' }, status: :unprocessable_entity
     end
   end
 
-
   def client_token
     gateway = Braintree::Gateway.new(
-      environment: ENV['PAYMENT_ENV'].to_sym,
-      merchant_id: ENV['MERCHANT_ID'],
-      public_key: ENV['MERCHANT_PUB_KEY'],
-      private_key: ENV['MERCHANT_PRIV_KEY']
+        environment: ENV['PAYMENT_ENV'].to_sym,
+        merchant_id: ENV['MERCHANT_ID'],
+        public_key: ENV['MERCHANT_PUB_KEY'],
+        private_key: ENV['MERCHANT_PRIV_KEY']
     )
     token = gateway.client_token
     token_str = if current_user.payment_id.nil?
-      token.generate
-    else
-      token.generate customer_id: current_user.payment_id
+                  token.generate
+                else
+                  token.generate customer_id: current_user.payment_id
                 end
     render json: {token: token_str}
   end
 
 
-
-
   protected
 
-# my custom fields are :full_name, :phone_number,
-# :country
+  # my custom fields are :full_name, :phone_number,
+  # :country
   def configure_permitted_parameters
-    permitted = %i[full_name license phone_number phone_validation_code
-                 country email password password_confirmation notif_approved
-                 endpoint p256dh auth keys prefix]
+    permitted = %i[full_name license phone_number country
+                  email password password_confirmation prefix image]
     devise_parameter_sanitizer.permit(:sign_up, keys: permitted)
     devise_parameter_sanitizer.permit(:account_update, keys: permitted)
     devise_parameter_sanitizer.permit(:sign_in, keys: permitted)
   end
 
-#Override default update because it required a password
+  # Override default update because it required a password
   def update_resource(resource, params)
     resource.update(params)
   end
@@ -96,7 +94,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def random_str
-    (0...4).map {('a'..'z').to_a[rand(26)]}.join
+    (0...4).map { ('a'..'z').to_a[rand(26)] }.join
   end
 
 end

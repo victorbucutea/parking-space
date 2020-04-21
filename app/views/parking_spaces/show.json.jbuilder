@@ -1,1 +1,1 @@
-json.partial! 'parking_spaces/show', {parking_space: @parking_space}
+json.partial! 'parking_spaces/show', parking_space: @parking_space

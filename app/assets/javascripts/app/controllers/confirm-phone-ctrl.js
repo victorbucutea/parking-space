@@ -2,20 +2,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('ConfirmPhoneCtrl',
     ['$rootScope', '$scope', '$state', 'userService',
         function ($rootScope, $scope, $state, userService) {
 
-            $scope.options = {
-                phoneNumber: {
-                    delimiters: ['.', '.'],
-                    blocks: [3, 3, 3],
-                    numericOnly: true
-                }
-            };
-
-            userService.getUser((user) => {
+            userService.getUser().then((user) => {
                 $scope.user = user;
             });
 
             $scope.validateCode = function () {
-                userService.validateCode($scope.confirmationCode, (data) => {
+                userService.validateCode($scope.confirmationCode).then( (data) => {
                     $state.go('search');
                     $rootScope.$emit('http.notif', 'Ai validat numărul de telefon. ' +
                         'Acum poți publica sau rezerva locuri de parcare!')
@@ -32,7 +24,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('ConfirmPhoneCtrl',
                     $('#phoneConfirmation').addClass('was-validated');
                     return;
                 }
-                userService.resendCode( $scope.user.phoneNumber, (data) => {
+                let user = $scope.user;
+                userService.resendCode(user.prefix, user.phone_number).then((data) => {
                     $rootScope.$emit('http.notif', 'Codul a fost trimis!')
                 });
 

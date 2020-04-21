@@ -3,10 +3,11 @@
  */
 angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtrl',
     ['$scope', '$rootScope', '$state', '$q', 'geoService', 'parameterService', '$stateParams', 'replaceById', 'parkingSpaceService',
-        function ($scope, $rootScope, $state, $q, geoService, parameterService, $stateParams, replaceById, parkingSpaceService,) {
+        function ($scope, $rootScope, $state, $q, geoService, parameterService, $stateParams, replaceById, parkingSpaceService) {
 
 
             $scope.calculateAddress = function () {
+                if (!$rootScope.map) return;
 
                 let mapCenter = $rootScope.map.getCenter();
 
@@ -26,14 +27,17 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                     space.location_long = mapCenter.lng();
                     space.title = "Loc parcare " + sublocality;
                     space.sublocality = sublocality;
-                    space.price = parameterService.getStartingAskingPrice();
-                    space.currency = parameterService.getStartingCurrency();
+                    // space.price = 5;
+                    // space.currency = 'Ron';
+                    parameterService.getStartingAskingPrice().then((pr) => {
+                        space.price = pr.price;
+                        space.currency = pr.currency;
+                    });
                     space.daily_start = new Date(1970, 0, 1, 0, 0);
                     space.daily_stop = new Date(1970, 0, 1, 23, 59);
                     space.space_availability_start = new Date();
                     space.space_availability_stop = moment().add(1, 'd').toDate();
 
-                    $scope.$apply();
                 });
             };
 
@@ -65,119 +69,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
             $scope.step = 0;
             $scope.termsAndConditions = true;
 
-            let owl = $('#thumb1');
-
-            owl.owlCarousel({
-                margin: 7,
-                items: 2,
-                dots: true,
-                center: true
-            });
-
-            let uploadedFiles = {};
-
-
-            window.removeFile = function (name, evt) {
-                let target = evt.currentTarget;
-                let idxToRemove = $('#thumb1').find('.btn').index(target);
-                delete uploadedFiles[name];
-                let fileAttr = target.dataset.fileId;
-                $scope.spaceEdit[fileAttr] = null;
-                owl.trigger('remove.owl.carousel', idxToRemove).trigger('refresh.owl.carousel');
-            };
-
-            let moving = false;
-
-
-            $('#imgModalDiv').click((evt) => {
-                evt.stopPropagation();
-                $scope.showFullImage = false;
-                $scope.$evalAsync();
-            });
-
-            $('#fileupload').fileupload({
-                url: 'https://api.cloudinary.com/v1_1/' + window.cloudinaryName + '/image/upload/',
-                dataType: 'json',
-                dropZone: $('#dropZone'),
-                imageOrientation: true,
-                formData: {upload_preset: window.cloudinaryPreset, folder: 'spaces'},
-                add: function (e, data) {
-
-                    if (!(/(\.|\/)(jpe?g|png)$/i).test(data.files[0].name)) {
-                        alert('Not an accepted file type');
-                        return;
-                    }
-
-                    if (data.files[0].size > 8000000) {
-                        alert('File is too big');
-                        return;
-                    }
-
-                    if (Object.keys(uploadedFiles).length === 3) {
-                        return;
-                    }
-
-                    let dataUrl = URL.createObjectURL(data.files[0]);
-                    let file = data.files[0];
-                    uploadedFiles[file.name] = data;
-
-
-                    let div = '<div>' +
-                        '<img src="' + dataUrl + '" ' +
-                        'onmouseup="showThumbnail(event)" ' +
-                        'onmousedown="startThumbnail(event)" ' +
-                        'onmousemove="stopThumbnail()" class="img-thumbnail"/>' +
-                        '<div id="uploadProgressCont" class="progress-container">\n' +
-                        '    <div id="uploadProgressBar-' + file.name + '"' +
-                        '         style="width: 0" class="progress-bar">' +
-                        '    </div>' +
-                        '</div>' +
-                        '<button class="btn btn-link btn-block" onclick="removeFile(\'' + file.name + '\',event)">' +
-                        ' <i class="fa fa-trash"></i> Șterge' +
-                        '</button>' +
-                        '</div>';
-
-                    owl.trigger('add.owl.carousel', [div, 0]).trigger('refresh.owl.carousel');
-
-                },
-                progress: function (e, data) {
-                    let progress = parseInt(data.loaded / data.total * 100, 10);
-                    $(document.getElementById('uploadProgressBar-' + data.files[0].name)).css(
-                        'width',
-                        progress + '%'
-                    );
-                },
-                fail: function (e, data) {
-                    console.log('upload failed ', e, data);
-                }
-            });
-
-            $scope.$watch('spaceEdit', (newVal) => {
-                if (!newVal) return;
-                [1, 2, 3].forEach((idx) => {
-                    let file = newVal['file' + idx];
-                    if (!file) return;
-                    uploadedFiles[file] = {};
-
-                    let div = '<div>' +
-                        '<img src="https://res.cloudinary.com/' + window.cloudinaryName + '/image/upload/q_auto,f_auto,w_768/' + file + '" ' +
-                        'onmouseup="showThumbnail(event)" ' +
-                        'onmousedown="startThumbnail(event)" ' +
-                        'onmousemove="stopThumbnail()" ' +
-                        'class="img-thumbnail"/>' +
-                        '<div id="uploadProgressCont" class="progress-container">\n' +
-                        '    <div id="uploadProgressBar-' + file + '"' +
-                        '         style="width: 0" class="progress-bar">' +
-                        '    </div>' +
-                        '</div>' +
-                        '<button data-file-id="' + ('file' + idx) + '" class="btn btn-link btn-block" onclick="removeFile(\'' + file + '\',event)">' +
-                        ' <i class="fa fa-trash"></i> Șterge' +
-                        '</button>' +
-                        '</div>';
-                    owl.trigger('add.owl.carousel', [div, idx]).trigger('refresh.owl.carousel');
-                });
-            });
-
 
             $scope.prevStep = function () {
                 $('#postSpaceForm').removeClass('was-validated');
@@ -207,42 +98,49 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
                 if ($scope.step === 1) {
                     $scope.loading = true;
-                    let clbks = [];
-                    for (let f in uploadedFiles) {
-                        if (uploadedFiles.hasOwnProperty(f)) {
-                            let data = uploadedFiles[f];
-                            if (data.submit)
-                                clbks.push(data.submit());
-                        }
+
+                    let savePromise = parkingSpaceService.saveSpace($scope.spaceEdit);
+                    let uploadFilesPromise = $scope.uploadedFiles.submit();
+                    let images = $scope.spaceEdit.images;
+                    let existingImgs = [];
+                    if (images) {
+                        existingImgs = images.filter(i => !i._destroy);
                     }
 
-                    $q.all(clbks).then((response) => {
-
-                        response.forEach((resp, idx) => {
-                            for (let i = 1; i <= 3; i++) {
-                                let attr = 'file' + i;
-                                if (!$scope.spaceEdit[attr]) {
-                                    $scope.spaceEdit[attr] = resp.public_id;
-                                    break;
-                                }
-                            }
+                    $q.all([savePromise, uploadFilesPromise]).then((savedSpaceAndFiles) => {
+                        if (!savedSpaceAndFiles[0]) return;
+                        let savedSpace = savedSpaceAndFiles[0];
+                        $scope.spaceEdit = savedSpace;
+                        let uploadedFiles = [...savedSpaceAndFiles[1], ...existingImgs];
+                        parkingSpaceService.uploadImages(savedSpace.id, uploadedFiles).then((resp) => {
+                            $rootScope.$emit('http.notif', 'Locul de parcare a fost salvat!');
+                            $scope.spaceEdit = resp;
                         });
+                        if (savedSpace.missing_title_deed) {
+                            $scope.step++;
+                        } else {
+                            $state.go('^');
+                        }
+                    }).finally(() => {
+                        $scope.loading = false;
+                    })
 
-
-                        parkingSpaceService.saveSpace($scope.spaceEdit, function (savedSpace) {
-                            $rootScope.$emit('spaceSave', savedSpace);
-                            $scope.loading = false;
+                } else if ($scope.step === 2) {
+                    $scope.uploadedDocs.submit().then((docs) => {
+                        if (!docs.length) {
+                            alert('Va rugam selectati un document');
+                            return;
+                        }
+                        parkingSpaceService.uploadDocuments($scope.spaceEdit.id, docs, function (savedDocs) {
                             $state.go('search');
                         });
-                    }).catch((e) => {
-                        $rootScope.$emit('http.error', e);
+                    }).finally(() => {
+                        $scope.loading = false;
                     });
-
-                    return;
+                } else {
+                    $scope.step++;
+                    $scope.termsAndConditions = false;
                 }
-
-                $scope.step++;
-                $scope.termsAndConditions = false;
             };
 
 

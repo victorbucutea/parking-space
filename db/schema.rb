@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_26_110418) do
+ActiveRecord::Schema.define(version: 2020_04_16_124551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,8 +41,17 @@ ActiveRecord::Schema.define(version: 2020_01_26_110418) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "parking_spaces_id"
-    t.index ["parking_spaces_id"], name: "index_documents_on_parking_spaces_id"
+    t.bigint "parking_space_id"
+    t.index ["parking_space_id"], name: "index_documents_on_parking_space_id"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "image"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parking_space_id"
+    t.index ["parking_space_id"], name: "index_images_on_parking_space_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -76,6 +85,9 @@ ActiveRecord::Schema.define(version: 2020_01_26_110418) do
     t.string "value2"
     t.string "value3"
     t.string "value4"
+    t.string "value5"
+    t.string "value6"
+    t.string "value7"
     t.index ["key"], name: "index_parameter_values_on_key"
     t.index ["parameter_id"], name: "index_parameter_values_on_parameter_id"
   end
@@ -126,9 +138,6 @@ ActiveRecord::Schema.define(version: 2020_01_26_110418) do
     t.datetime "space_availability_start"
     t.datetime "space_availability_stop"
     t.integer "legal_type"
-    t.string "file1"
-    t.string "file2"
-    t.string "file3"
     t.string "weekly_schedule"
     t.time "daily_start"
     t.time "daily_stop"
@@ -154,9 +163,7 @@ ActiveRecord::Schema.define(version: 2020_01_26_110418) do
     t.string "bid_currency"
     t.string "bidder_name"
     t.integer "approval_status"
-    t.boolean "read"
     t.string "phone_number"
-    t.string "message_from_device_id"
     t.datetime "start_date", null: false
     t.datetime "end_date", null: false
     t.integer "payment_status"
@@ -237,7 +244,6 @@ ActiveRecord::Schema.define(version: 2020_01_26_110418) do
     t.datetime "updated_at", null: false
     t.string "full_name"
     t.string "phone_number"
-    t.string "device_id"
     t.string "country"
     t.string "notif_registration_id"
     t.string "license"
@@ -252,8 +258,8 @@ ActiveRecord::Schema.define(version: 2020_01_26_110418) do
     t.datetime "locked_at"
     t.string "unlock_token"
     t.string "prefix"
+    t.string "image"
     t.index ["company_id"], name: "index_users_on_company_id"
-    t.index ["device_id"], name: "index_users_on_device_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["license"], name: "index_users_on_license"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -273,7 +279,8 @@ ActiveRecord::Schema.define(version: 2020_01_26_110418) do
     t.index ["amount"], name: "index_withdrawals_on_amount"
   end
 
-  add_foreign_key "documents", "parking_spaces", column: "parking_spaces_id"
+  add_foreign_key "documents", "parking_spaces"
+  add_foreign_key "images", "parking_spaces"
   add_foreign_key "locations", "companies"
   add_foreign_key "parking_perimeters", "parking_spaces"
   add_foreign_key "parking_perimeters", "sections"

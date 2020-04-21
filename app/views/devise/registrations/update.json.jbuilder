@@ -1,0 +1,1 @@
+json.partial! 'devise/registrations/show', user: resource

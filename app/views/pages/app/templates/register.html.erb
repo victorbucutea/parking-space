@@ -1,91 +1,133 @@
 <div class="register" class="mb-5" ng-controller="RegisterCtrl">
-  <div class="container" >
-    <div class="text-center p-4 p-md-5">
-      <img width="150" src="<%= image_path 'useravatar_blue_lg.png' %>">
-      <h4 class="mt-3"> {{firstName}}</h4>
-    </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 m-auto">
+        <div class="text-center pt-4">
+          <file-upload max-count="1" label="'Încarcă o poză cu mașina'"
+                       icon="'fa-car'"
+                       uploaded-files="newImage"
+                       existing-files="existingImage"></file-upload>
+          <h4 class=""> {{user.full_name}}</h4>
+        </div>
 
-    <div id="register" class="row justify-content-center">
-      <div class="col-11">
-        <form id="registerForm" name="registerForm" novalidate="novalidate">
-
-
-          <div ng-show="fromFb" class="py-3 p-md-4">
-            <code> Nr. de înmatriculare </code>și <code>nr. de telefon</code>
-            sunt necesare pentru a rezerva parcari publice sau private. Dacă s-ar
-            putea mai simplu, am face-o.
-          </div>
-
-          <div class="form-row">
-            <div class="col-12 mb-3">
-              <input-phone-number phone-number="phoneNumber" selected-country="selectedCountry">
-            </div>
-          </div>
+        <div id="register" class="row justify-content-center">
+          <div class="col-11">
+            <form id="registerForm" name="registerForm" novalidate="novalidate" autocomplete="none">
 
 
-          <div class="form-row">
-            <div class="col-12 mb-3">
-              <input type="text" class="form-control form-control-lg"
-                     placeholder="Nr. înmatriculare (e.g. B 10 INM) "
-                     ng-model="licensePlate" name="licensePlate"
-                     required minlength="5"/>
-              <div class="invalid-tooltip">Nr de înamtriculare (e.g. B 10 AAA)</div>
-            </div>
-          </div>
-
-          <div ng-hide="::fromFb">
-            <div class="form-group">
-              <input type="email" class="form-control form-control-lg"
-                     placeholder="Email" ng-model="email" name="email"
-                     required minlength="5"
-                     pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"/>
-            </div>
-
-            <div class="form-group">
-              <input type="text" class="form-control form-control-lg" placeholder="Nume și prenume"
-                     ng-model="firstName" name="firstName" required
-                     minlength="5"/>
-            </div>
-
-            <div class="form-group mb-3" >
-              <input type="password" class="form-control form-control-lg" placeholder="Parolă"
-                     ng-model="pw" name="pw"
-                     ng-required="!fromFb"
-                     minlength="8"/>
-            </div>
-
-          </div>
-
-          <div class="form-group my-4 mark small">
-            <div class="form-check pl-4">
-              <input class="form-check-input" type="checkbox" id="termsAndConditions"
-                     ng-model="termsAndConditions" required value="">
-              <label for="termsAndConditions" class="form-check-label">
-                Sunt de acord cu <a class="text-primary" ui-sref="search.terms">termenii și condițiile </a>
-                și de asemenea îmi dau acordul ca Go-Park sa proceseze datele personale.
-              </label>
-              <div class="invalid-feedback">
-                Pentru a continua trebuie să accepți termenii si condițiile Go-Park
+              <div class="pt-3 text-muted text-center">
+                <code>Nr. de înmatriculare</code> și <code>nr. de telefon</code>
+                sunt necesare pentru a rezerva parcări publice sau private. Dacă s-ar
+                putea mai simplu, am face-o.
               </div>
+
+              <div class="form-row">
+                <div class="col-12 mb-3">
+                  <input-phone-number user="user">
+                </div>
+              </div>
+
+
+              <div class="form-row">
+                <div class="col-12">
+                  <input type="text" class="form-control form-control-lg"
+                         placeholder="Nr. înmatriculare (e.g. B 10 INM) "
+                         ng-model="user.license" name="licensePlate"
+                         required minlength="5"
+                         autocomplete="none" autocapitalize="none"/>
+                  <div class="invalid-tooltip">Nr de înamtriculare (e.g. B 10 AAA)</div>
+                </div>
+              </div>
+              <hr/>
+              <div class="form-group" >
+                <div class="input-group input-group-lg">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                  </div>
+                  <input type="email" class="form-control form-control-lg"
+                         placeholder="Email" ng-model="user.email" name="email"
+                         required minlength="5" autocomplete="none" autocapitalize="none"
+                         pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"/>
+                </div>
+              </div>
+              <div ng-if="!fromFb">
+                <div class="form-group">
+                  <input type="text" class="form-control form-control-lg" placeholder="Nume și prenume"
+                         ng-model="user.full_name" name="firstName" required
+                         minlength="5" autocomplete="none" autocapitalize="none"/>
+                  <div class="form-text text-muted">Numele dvs. <b>întreg</b> așa cum îl vor vedea ceilalți utilizatori
+                  </div>
+                </div>
+
+                <div class="form-group" ng-if="inside">
+                  <button class="btn btn-block btn-link" onclick="$('#recoverPassword').show()">
+                    <i class="fa fa-lock"></i>
+                    Reseteaza parola
+                  </button>
+                </div>
+
+                <div class="form-group mb-3" ng-if="!inside">
+                  <input type="password" class="form-control form-control-lg" placeholder="Parolă"
+                         ng-model="pw" name="pw"
+                         ng-required="!fromFb"
+                         minlength="8"/>
+                </div>
+              </div>
+
+              <div class="form-group my-4 mark small">
+                <div class="form-check pl-4">
+                  <input class="form-check-input" type="checkbox" id="termsAndConditions"
+                         ng-model="termsAndConditions" required value="">
+                  <label for="termsAndConditions" class="form-check-label">
+                    Sunt de acord cu <a class="text-primary" ui-sref="search.terms">termenii și condițiile </a>
+                    și de asemenea îmi dau acordul ca Go-Park sa proceseze datele personale.
+                  </label>
+                  <div class="invalid-feedback">
+                    Pentru a continua trebuie să accepți termenii si condițiile Go-Park
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center d-flex justify-content-around mb-3">
+                <button class="btn btn-primary btn-lg" ng-click="register()">
+                  <i class="fa fa-spinner loading-spinner fa-spin"></i>
+                  Ok
+                </button>
+
+
+                <button class="btn btn-lg btn-secondary" ng-click="back()">
+                  <i class="fa fa-spinner loading-spinner fa-spin"></i>
+                  <i class="fa fa-angle-double-left  "></i>
+                </button>
+              </div>
+
+            </form>
+
+            <div id="recoverPassword" class="ps-dialog">
+              <form id="recoverPwForm" name="recoverPwForm" novalidate="novalidate">
+                <div class="ps-dialog-content">
+                  <div class="ps-question">
+                    <div class="py-2">
+                      Te rugăm introdu adresa de email
+                    </div>
+                    <input type="email" class="form-control"
+                           placeholder="Email" ng-model="recoveryEmail" name="email" required
+                           minlength="5"
+                           autofocus="true"
+                           pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+                  </div>
+                  <div class="ps-control-buttons">
+                    <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
+                    <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Înapoi</a>
+                  </div>
+                </div>
+              </form>
             </div>
+
           </div>
 
-          <div class="text-center d-flex justify-content-around mb-3">
-            <button  class="btn btn-primary btn-lg" ng-click="register()">
-              <i class="fa fa-spinner loading-spinner fa-spin"></i>
-              Ok, caută loc de parcare
-            </button>
-
-
-            <button class="btn btn-lg btn-secondary" ng-click="back()">
-              <i class="fa fa-spinner loading-spinner fa-spin"></i>
-              <i class="fa fa-angle-double-left  "></i>
-            </button>
-          </div>
-
-        </form>
+        </div>
       </div>
-
     </div>
   </div>
 

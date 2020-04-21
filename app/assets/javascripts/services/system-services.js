@@ -4,33 +4,26 @@
 angular.module('ParkingSpace.services')
 
     .service('userService',
-        ['$http', 'errorHandlingService', '$rootScope', 'parameterService', '$state', 'notificationService',
-            function ($http, errorHandlingService, $rootScope, parameterService, $state, notificationService) {
+        ['$http', 'errorHandlingService', '$rootScope', 'parameterService', '$state', 'notificationService', '$q',
+            function ($http, errorHandlingService, $rootScope, parameterService, $state, notificationService, $q) {
                 let _this = this;
 
-                _this.isAuthenticated = function () {
-                    return !!sessionStorage.getItem("current_user");
-                }
-
                 /* get current user details */
-                _this.getUser = function (clbk) {
+                _this.getUser = function () {
                     let user = sessionStorage.getItem("current_user");
                     if (user) {
-                        clbk(JSON.parse(user));
-                        return;
+                        return $q((res, rej) => {
+                            res(JSON.parse(user));
+                        })
                     }
 
-                    $http.get('/users/edit.json')
+                    return $http.get('/users/edit.json')
                         .then(function (res) {
                             let data = res.data;
                             let userjson = JSON.stringify(data);
                             sessionStorage.setItem("current_user", userjson);
-                            if (clbk)
-                                clbk(data);
-                        }, function (err) {
-                            sessionStorage.removeItem("current_user");
-                            errorHandlingService.handle(err.data, err.status);
-                        });
+                            return data;
+                        }, _this.errFunc);
                 };
 
                 /* save details */
@@ -42,16 +35,10 @@ angular.module('ParkingSpace.services')
                             sessionStorage.setItem('current_user', JSON.stringify(data));
                             if (clbk)
                                 clbk(data);
-                        }, function (err) {
-                            if (!errClbk) {
-                                errorHandlingService.handle(err.data, err.status);
-                            } else {
-                                errClbk(err.data, err.status);
-                            }
-                        });
+                        }, _this.errFunc);
                 };
 
-                _this.registerUser = function (user, clbk, errClbk) {
+                _this.registerUser = function (user, clbk) {
                     user.notif_registration_id = notificationService.notifRegistrationId;
                     $http.post('/users.json', {user: user})
                         .then(function (res) {
@@ -60,20 +47,13 @@ angular.module('ParkingSpace.services')
                             sessionStorage.setItem('current_user', JSON.stringify(data));
                             if (clbk)
                                 clbk(data);
-                        }, function (err) {
-                            if (!errClbk) {
-                                errorHandlingService.handle(err.data, err.status);
-                            } else {
-                                errClbk(err.data, err.status);
-                            }
-                        })
+                        }, _this.errFunc)
                 };
 
                 _this.recoverPassword = function (email, clbk) {
                     $http.post('/users/password.json', {user: {email: email}})
                         .then(function (res) {
                             let data = res.data;
-                            //TODO show message with direct dom manipulation
                             $rootScope.$emit('http.notif', 'Link pt. recuperare parolă trimis la ' + email + '.');
                             if (clbk)
                                 clbk(data);
@@ -82,93 +62,45 @@ angular.module('ParkingSpace.services')
                         })
                 };
 
-                _this.login = function (user, password, clbk, errClbk) {
-                    $http.post('/users/sign_in.json', {user: {email: user, password: password, remember_me: 1}})
-                        .then(function (rs) {
-                            let data = rs.data;
-                            //TODO show message with direct dom manipulation
-                            $rootScope.$emit('http.notif', 'Bine ai venit ' + user + '!');
-                            sessionStorage.setItem('current_user', JSON.stringify(data));
-                            if (clbk) {
-                                clbk(data);
-                            }
-                            $rootScope.$emit('login', user);
-                        }, function (err) {
-                            if (!errClbk)
-                                errorHandlingService.handle(err.data, err.status);
-                            else {
-                                errClbk(err.data, err.status);
-                            }
+                _this.login = function (user, password) {
+                    return $http.post('/users/sign_in.json', {user: {email: user, password: password, remember_me: 1}})
+                        .then(_this.loginInternal, _this.errFunc)
+                };
+
+                _this.loginFb = function (token) {
+                    return $http.post('/users/sign_in_fb.json', {user: {token: token, remember_me: 1}})
+                        .then(_this.loginInternal, function (err) {
+                            sessionStorage.removeItem("current_user");
+                            errorHandlingService.handle(err.data, err.status);
                         })
                 };
 
-                _this.loginFb = function (token, clbk, errClbk) {
-                    $http.post('/users/sign_in_fb.json', {user: {token: token, remember_me: 1}})
-                        .then(function (rs) {
-                            let user = rs.data.user;
-                            $rootScope.$emit('http.notif', 'Bine ai venit ' + user.full_name + '!');
-                            sessionStorage.setItem('current_user', JSON.stringify(user));
-                            if (clbk) {
-                                clbk(user);
-                            }
-                            $rootScope.$broadcast('login', user);
-                        }, function (err) {
-                            if (!errClbk)
-                                errorHandlingService.handle(err.data, err.status);
-                            else {
-                                errClbk(err.data, err.status);
-                            }
-                        })
-                };
-
-                _this.logout = function (clbk, errClbk) {
+                _this.logout = function (clbk) {
                     $http['delete']('/users/sign_out.json', {})
                         .then(function (res) {
                             sessionStorage.removeItem('current_user');
                             if (clbk) {
                                 clbk(res);
                             }
-                            $rootScope.$broadcast('logout');
-
                         }, function (err) {
-                            if (!errClbk)
-                                errorHandlingService.handle(err.data, err.status);
-                            else {
-                                errClbk(err.data, err.status);
-                            }
+                            errorHandlingService.handle(err.data, err.status);
                         })
                 };
 
-                _this.validateCode = function (code, clbk, errClbk) {
-                    $http.post('/users/validate_code.json', {phone_validation_code: code})
+                _this.validateCode = function (code) {
+                    return $http.post('/users/validate_code.json', {phone_validation_code: code})
                         .then(function (res) {
                             let user = res.data;
                             sessionStorage.setItem('current_user', JSON.stringify(user));
-                            if (clbk)
-                                clbk(user);
-                        }, function (err) {
-                            if (!errClbk) {
-                                errorHandlingService.handle(err.data, err.status);
-                            } else {
-                                errClbk(err.data, err.status);
-                            }
-                        });
+                        }, _this.errFunc);
                 };
 
-                _this.resendCode = function (number, clbk, errClbk) {
-                    $http.post('/users/send_new_code.json', {phone_number: number})
+                _this.resendCode = function (prefix, number, clbk) {
+                    return $http.post('/users/send_new_code.json', {prefix: prefix, phone_number: number})
                         .then(function (res) {
                             let user = res.data;
                             sessionStorage.setItem('current_user', JSON.stringify(user));
-                            if (clbk)
-                                clbk(user);
-                        }, function (err) {
-                            if (!errClbk) {
-                                errorHandlingService.handle(err.data, err.status);
-                            } else {
-                                errClbk(err.data, err.status);
-                            }
-                        });
+                        }, _this.errFunc);
                 }
 
                 /* get current user details */
@@ -180,9 +112,6 @@ angular.module('ParkingSpace.services')
                             if (clbk)
                                 clbk(data);
                         }, function (err) {
-                            if (err.status == 401) {
-                                sessionStorage.removeItem("current_roles");
-                            }
                             console.log(err);
                         });
                 };
@@ -193,6 +122,19 @@ angular.module('ParkingSpace.services')
                     else
                         localStorage.setItem('instructionsShown', 'true');
                 }
+
+
+                _this.loginInternal = function (rs) {
+                    let user = rs.data;
+                    $rootScope.$emit('http.notif', 'Bine ai venit ' + user.full_name + '!');
+                    sessionStorage.setItem('current_user', JSON.stringify(user));
+                    return user;
+                }
+
+                _this.errFunc = function (err) {
+                    sessionStorage.removeItem("current_user");
+                    errorHandlingService.handle(err.data, err.status);
+                };
             }])
 
     .service('errorHandlingService', ['$rootScope', '$state', function ($rootScope, $state) {
@@ -203,6 +145,13 @@ angular.module('ParkingSpace.services')
         _this.buildErrorMessages = function (data) {
             let errMsgs = [];
             let i = 0;
+            if (!data) {
+                errMsgs.push('Unknown server error');
+                return errMsgs;
+            }
+            if (data.skipFlash){
+                return [];
+            }
             let errors = data.Error || data.errors || data.error;
 
             if (typeof errors === "string") {
@@ -216,25 +165,32 @@ angular.module('ParkingSpace.services')
                 errMsgs[i] = text;
                 i++;
             }
+
+            if (errMsgs.length === 0) {
+                errMsgs.push('Unknown server error');
+            }
             return errMsgs;
         };
 
         this.handle = function (data, status) {
-            if (status !== 401) { // 420  || 422 is an error status with business message
+            if (status !== 401 && status !== 403) { // 420  || 422 is an error status with business message
                 // transform error response into a manageable obj
                 let errorMessages = _this.buildErrorMessages(data);
                 $rootScope.$emit('http.error', errorMessages);
-            } else if (status === 401) {
+            } else if (status === 401 || status === 403) {
                 //if unauthorized, go to login
                 sessionStorage.removeItem("current_user");
+                sessionStorage.removeItem("current_roles");
                 errorMessages = _this.buildErrorMessages(data);
                 $rootScope.$emit('http.error', errorMessages);
+                $rootScope.$emit('logout', 'logout');
                 $state.go('login', $state.params);
             } else if (status === -1) {
                 $rootScope.$emit('http.error', 'Eroare de conexiune. Ești conectat la internet?');
             } else {
                 $rootScope.$emit('http.error', 'Connectivity error.');
             }
+            throw {data: data, status: status};
         }
 
     }])
@@ -251,10 +207,10 @@ angular.module('ParkingSpace.services')
 
                     if (!notifAsked && Notification.permission !== 'granted') {
                         if (!forOffers)
-                            $rootScope.$emit('http.notif', "Pentru a primi oferte pentru locul tău " +
+                            $rootScope.$emit('http.warning', "Pentru a primi oferte pentru locul tău " +
                                 "în timp real, te rugăm acceptă notificările.");
                         else
-                            $rootScope.$emit('http.notif', "Te rugăm acceptă " +
+                            $rootScope.$emit('http.warning', "Te rugăm acceptă " +
                                 "pentru a primi notificări în timp real despre oferta ta.");
 
                         notifAsked = true;

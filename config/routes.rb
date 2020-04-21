@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     get 'mark_offers_as_read'
 
     post 'attach_documents'
+    post 'attach_images'
 
     get 'phone_number'
 

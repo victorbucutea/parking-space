@@ -1,149 +1,23 @@
 <div class="ps-modal" ng-controller="ReviewBidsCtrl">
-  <div class="search-space-modal animated zoomIn container mt-md-4">
+  <div class="search-space-modal animated zoomIn mt-md-4">
 
-    <div ng-hide="selectedSpace.public" class="row my-2 pb-3 align-items-center space-type ">
+    <div ng-hide="selectedSpace.public" class="row my-2 align-items-center space-type ">
       <div class="col-3 offset-1 rapid-icon">
-        <i class="fa fa-flash fa-4x"></i>
+        <i class="fa fa-flash fa-3x"></i>
       </div>
       <div class="col-8">
-        <h2>
+        <h3>
           {{selectedSpace.offers.length}} Oferte
-        </h2>
+        </h3>
         Acesta e locul postat de dvs.!
       </div>
     </div>
 
+    <space-status-box space="selectedSpace"></space-status-box>
 
-    <!-- table of offers when parking space owner == current user -->
-    <div class="bids-area">
-      <div ng-hide="selectedSpace.offers.length" class="text-center my-5">
-        <h1>:-( </h1>
-      </div>
-
-
-      <div class="bid-table m-0 scroll" ng-show="selectedSpace.offers.length ">
-
-        <div class="offer" ng-click="selectOffer(offer)"
-             ng-repeat="offer in selectedSpace.offers | orderBy: 'timestamp'"
-             ng-class="{selected: selOffer == offer, canceled: !offer.approved}">
-
-          <span class="offer-price">
-                 {{offer.amount}} {{selectedSpace.currency}}
-          </span>
-
-          <span class="offer-desc pl-2">
-            <span style="font-size: 1.4em;">
-              {{offer.start_date | moment: 'D/MM' }}
-            </span>
-              {{offer.start_date | moment: 'HH:mm' }}
-            -
-            <span style="font-size: 1.4em;">
-              {{offer.end_date | moment: 'D/MM' }}
-            </span>
-              {{offer.end_date | moment: 'HH:mm' }}
-          </span>
-        </div>
-      </div>
-
-      <div ng-show="selOffer" class="offer-desc-area py-3 animated zoomIn">
-        <h5 class="text-center font-weight-bold">
-          <span ng-hide="selOffer.paid">
-            Neachitat <br/>
-            <small class="font-weight-light"> (Se achită cash proprietarului)</small>
-          </span>
-          <span ng-show="selOffer.paid">Achitat online  <br/>
-            <small class="font-weight-light"> ( La data de {{selOffer.payment_date | moment: 'D/MM HH:mm'}})</small>
-
-          </span>
-
-        </h5>
-
-        <div class="offer-desc-item">
-          Data start:
-          <div class="value pull-right">{{selOffer.start_date | moment: 'ddd, D MMM HH:mm'}}</div>
-        </div>
-
-        <div class="offer-desc-item">
-          Data stop:
-          <div class="value pull-right">{{selOffer.end_date | moment: 'ddd, D MMM HH:mm'}}</div>
-        </div>
-
-        <div class="offer-desc-item">
-          Durata:
-          <div class="value pull-right">{{selOffer | totalPeriod}}</div>
-        </div>
-
-        <div class="offer-desc-item">
-          Propusă de:
-          <div class="value pull-right">{{selOffer.owner_name}}</div>
-        </div>
-
-        <div class="offer-desc-item phone-number">
-          Nr. Tel.:
-          <span class="value pull-right" ng-show="selOffer.approved">
-              <i class="fa fa-phone"></i>{{selOffer.phone_number}}
-            </span>
-          <span class="value pull-right" ng-hide="selOffer.approved"
-                ng-click="confirmApproval(selOffer)">
-              (indisponibil)
-            </span>
-        </div>
-
-
-        <div class="offer-desc-item">
-          Status:
-          <div class="value pull-right">
-            <button class="btn btn-sm btn-outline-danger" onclick="$('#approveDialog').show()" ng-show="selOffer.canceled">Anulată</button>
-            <button class="btn btn-sm btn-outline-success" onclick="$('#approveDialog').show()" ng-show="selOffer.approved">Confirmată</button>
-            <button class="btn btn-sm btn-outline-danger" onclick="$('#approveDialog').show()" ng-show="selOffer.rejected || selOffer.pending">Respinsă</button>
-          </div>
-        </div>
-
-        <!-- Approve / reject offer dialog -->
-        <div class="ps-dialog mt-5" id="approveDialog">
-          <div class="ps-dialog-content mt-5 animated zoomIn">
-            <div class="ps-question" ng-if="selOffer.rejected || selOffer.pending ">
-              Rezervarea se suprapune cu o altă rezervare, sau a fost respinsa de dvs.!
-            </div>
-            <div class="ps-question" ng-if="selOffer.approved">
-              Rezervarea poate fi respinsa de dvs.! Daca aceasta este achitată online, banii
-              cumpărătorului vor fi restituiți.
-            </div>
-            <div class="ps-question" ng-if="selOffer.canceled">
-              Rezervarea a fost anulată de către client. Pentru detalii puteți contacta persoana
-              care a efectuat rezervarea.
-            </div>
-            <div class="ps-control-buttons">
-              <button class="btn btn-danger"
-                      ng-if="selOffer.approved"
-                      ng-click="confirmApproval(selOffer)">Refuză
-              </button>
-              <button class="btn btn-primary"
-                      ng-if="selOffer.rejected || selOffer.pending"
-                      ng-click="confirmApproval(selOffer)">Acceptă
-              </button>
-              <button class="btn btn-secondary" onclick="$('#approveDialog').hide()">Înapoi</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center my-3">
-        Promoveaza locul ! <br/>
-        <i class="fa fa-facebook-square fa-3x" ng-click="shareFb('Message only')"> </i>
-        &nbsp;&nbsp;&nbsp;
-        <i class="fa fa-google-plus-square fa-3x" ng-click="shareFb('Message only')"> </i>
-        &nbsp;&nbsp;&nbsp;
-        <i class="fa fa-twitter-square fa-3x" ng-click="shareFb('Message only')"> </i>
-      </div>
-    </div>
-
-    <div class="row flex-nowrap ps-control-buttons">
-      <button class="btn btn-lg btn-secondary" ng-click="showEdit(selectedSpace)">
-        <i class="fa fa-pencil"></i> Modifică
-      </button>
-      <button class="btn btn-lg btn-danger" ng-click="showDelete(selectedSpace)">
-        <i class="fa fa-trash"></i> Șterge
+    <div class="d-flex ps-control-buttons">
+      <button class="btn btn-lg btn-outline-primary" ng-click="showEdit(selectedSpace)">
+        <i class="fa fa-pencil"></i> Modifică datele locului
       </button>
       <button class="btn btn-lg btn-secondary" ui-sref="^">
         Închide

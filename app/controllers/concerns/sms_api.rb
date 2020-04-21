@@ -24,7 +24,7 @@ module SmsApi
     sms_message.tag = 'offers'
     Concurrent::Future.execute do
       begin
-        @sms_api.send_message(sms_message)
+        # @sms_api.send_message(sms_message)
       rescue SwaggerClient::ApiError => e
         puts "Exception when sending SMS : #{e} , #{e.response_body}"
       end

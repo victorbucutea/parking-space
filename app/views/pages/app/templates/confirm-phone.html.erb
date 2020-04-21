@@ -6,7 +6,7 @@
     <hr/>
 
     <div class="form-group mt-5 row">
-      <div class="col-4 text-center border-right">
+      <div class="col-4 text-center border-right ">
         <img src="<%= image_path 'phone_and_sms_xs.png' %>" height="100px"/>
       </div>
       <div class="col-8 border-left">
@@ -15,6 +15,7 @@
                autocomplete="none"
                autocorrect="none"
                autocapitalize="none"
+               autofocus="autofocus"
                ng-model="confirmationCode"
                required maxlength="4"
                minlength="4">
@@ -35,9 +36,7 @@
       <div class="form-row">
         <div class="col-12">
           <label for="phoneNumber">Număr telefon:</label>
-          <input-phone-number selected-country="user.country" phone-number="user.phone_number">
-
-          <small class="form-text text-muted">(e.g. 727.123.456)</small>
+          <input-phone-number user="user">
         </div>
       </div>
 

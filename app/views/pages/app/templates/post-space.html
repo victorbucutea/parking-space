@@ -1,20 +1,15 @@
-<div class="ps-modal " style="overflow: visible">
+<div class="ps-modal ">
     <div class="mt-md-4 animated zoomIn" ng-controller="EditParkingSpaceCtrl">
         <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm" novalidate="novalidate">
             <div >
-                <h3 class="px-3 py-2 ng-binding" >
-                    Loc parcare {{spaceEdit.sublocality}}
-                    <i class="fa fa-car fa-2x text-success edit-title" ></i>
-                </h3>
-                <div class="text-muted px-3">Pentru a fi închiriat rapid, asigură-te ca <b>adresa</b> si <b>locația</b> pe hartă sunt exacte.</div>
-                <div class="input-group ng-hide" ng-show="editTitle">
-                    <input type="text" class="form-control form-control-lg ng-pristine ng-untouched ng-valid ng-not-empty" ng-model="spaceEdit.title">
-                    <div class="input-group-append" ng-click="editTitle=false">
-                        <span class="input-group-text"><i class="fa fa-check"></i></span>
-                    </div>
+                <h3 class="px-3 pt-2 ng-binding" >
+                    <i class="fa fa-car text-success" ></i>
+                    <small ng-show="step == 0" class="text-muted px-3"><b>Adresa</b> și <b>disponibilitatea</b></small>
+                    <small ng-show="step == 1" class="text-muted px-3">     <b>Locul tău</b> si <b>accesul</b> la acesta.</small>
+                    <small ng-show="step == 2" class="text-muted px-3"> Termeni legali </small>
 
-                </div>
-            </div>
+                </h3>
+                 </div>
             <hr/>
             <!-- Step 0 -->
             <div class="container" ng-show="step == 0">
@@ -25,11 +20,21 @@
                                 bid-currency="spaceEdit.currency"></bid-amount>
                 </div>
 
+
+                <div class="form-group row">
+                    <label for="addr" class="col-form-label col-form-label-lg col-3">Titlu:</label>
+                    <div class="col-9">
+                        <input id="title" type="text" placeholder="" class="form-control form-control-lg"
+                               ng-model="spaceEdit.title" required>
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <label for="addr" class="col-form-label col-form-label-lg col-3">Adresă:</label>
                     <div class="col-9">
                         <input id="addr" type="text" placeholder="Adresă" class="form-control form-control-lg"
                                ng-model="spaceEdit.address_line_1" required>
+                        <smal class="text-muted form-text">Pentru a fi găsit ușor, asigură-te ca <b>adresa</b> si <a class="text-muted" ui-sref="^"><b>locația</b></a> pe hartă sunt exacte.</smal>
                     </div>
                 </div>
 
@@ -118,20 +123,11 @@
             <!-- Step 1 -->
             <div class="container animated slideInRight" ng-show="step == 1">
 
+                <!-- Start image upload -->
                 <div class="my-4" id="dropZone">
-                    <input id="fileupload" style="display: none" type="file" name="file" multiple max="3"
-                           accept="image/*">
-
-                    <div class="my-3 owl-carousel owl-theme" id="thumb1">
-                        <div class="add-photo justify-content-center d-flex flex-column" id="addPhotoLink"
-                             onclick="$('#fileupload').click()">
-                            <i class="fa fa-camera fa-3x"></i>
-                            <i class="text">Adaugă foto</i>
-                            <i class="text small">(max 3)</i>
-                        </div>
-                    </div>
-
-
+                    <file-upload accept="'image/*'" label="'Încarcă foto'"
+                                 existing-files="spaceEdit.images"
+                                 uploaded-files="uploadedFiles"></file-upload>
                 </div>
                 <!-- End image upload-->
 
@@ -140,7 +136,7 @@
                     <div class="col-12">
                         <textarea id="description"
                                   class="form-control" ng-model="spaceEdit.description"
-                                  placeholder="Avantaje locație, indicații, sugestii, etc..."></textarea>
+                                  placeholder="Indicații acces, tip parcare, sugestii, etc..."></textarea>
                     </div>
                 </div>
 
@@ -159,6 +155,18 @@
                 </div>
             </div>
 
+            <div class="container animate slideInRight" ng-show="step == 2">
+                <div class="p-2 legal-contract-txt">
+                    Pentru ca e prima oară când postezi acest loc, trebuie sa faci dovada dreptului de a sub-închiria.
+                    Te rugăm încarcă un act doveditor (titlu de proprietate, contract închiriere, etc. )
+                </div>
+                <div class="my-4">
+                    <file-upload accept="'*'" icon="'fa-file'"
+                                 label="'Încarcă document'"
+                                 folder="'documents'"
+                                 uploaded-files="uploadedDocs"></file-upload>
+                </div>
+            </div>
             <hr/>
 
             <div class="mt-3 ps-control-buttons">
@@ -169,8 +177,9 @@
                         ng-disabled="loading"
                         ng-click="nextStep()">
                     <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
-                    <span ng-show="step == 1 ">Postează locul</span>
+                    <span ng-show="step == 1">Postează locul</span>
                     <span ng-show="step == 0 ">Următorul </span>
+                    <span ng-show="step == 2 ">Salvează documentele </span>
                     <i class="fa fa-angle-double-right" ng-show="step == 0"></i>
                 </button>
                 <button class="btn btn-secondary btn-lg" ng-click="close()">

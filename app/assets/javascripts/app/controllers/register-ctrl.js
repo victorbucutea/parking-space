@@ -7,40 +7,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
     ['$rootScope', '$stateParams', '$scope', 'parameterService', 'userService', '$state',
         function ($rootScope, $stateParams, $scope, parameterService, userService, $state) {
 
-            if ($stateParams.inside) {
-                $scope.inside = true;
-                userService.getUser(function (user) {
-                    if (!user) return;
-
-                    $scope.firstName = user.full_name;
-                    $scope.phoneNumber = user.phone_number.replace("+40", "");
-                    $scope.country = user.country;
-                    $scope.email = user.email;
-                    $scope.pw = user.pw;
-                    $scope.licensePlate = user.license;
-                    $scope.pw_confirmation = user.pw;
-                });
-            }
 
             $scope.fromFb = $stateParams.fromFb;
-            $scope.email = $stateParams.email;
-            $scope.fbId = $stateParams.fbId;
-            $scope.firstName = $stateParams.firstName;
-            $scope.token = $stateParams.token;
-            $scope.lat = $stateParams.lat;
-            $scope.lng = $stateParams.lng;
+            $scope.user = {};
+            $scope.user.email = $stateParams.email;
+            $scope.user.full_name = $stateParams.firstName;
+            $scope.newImage = [];
+            $scope.existingImage = [];
 
-
-            $scope.save = function () {
-                if (!$scope.registerForm.$valid) {
-                    $('#registerForm').addClass('was-validated');
-                    return;
-                }
-
-                userService.saveUser($scope.user, function (user) {
-                    $state.go('^');
-                });
-            };
+            if ($stateParams.inside) {
+                $scope.inside = true;
+                userService.getUser().then((user) => {
+                    $scope.user = user;
+                    if (user.image)
+                        $scope.existingImage.push(user.image);
+                })
+            }
 
 
             $scope.register = function () {
@@ -49,48 +31,47 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                     $('#registerForm').addClass('was-validated');
                     return;
                 }
-
-                let backEndUser = {};
-                backEndUser.full_name = $scope.firstName;
-                backEndUser.prefix = $scope.selectedCountry.prefix;
-                backEndUser.phone_number = $scope.phoneNumber;
-                backEndUser.country = $scope.selectedCountry.code;
-                backEndUser.email = $scope.email;
+                let user = $scope.user;
                 if ($scope.registerForm && $scope.registerForm.pw) {
-                    backEndUser.password = $scope.registerForm.pw.$viewValue;
-                    backEndUser.password_confirmation = backEndUser.pw;
+                    user.password = $scope.registerForm.pw.$viewValue;
+                    user.password_confirmation = user.password;
                 }
-                backEndUser.license = $scope.licensePlate;
 
-
-                if ($stateParams.inside) {
-                    userService.saveUser(backEndUser, function () {
-                        $state.go('search', {lat: $scope.lat, lng: $scope.lng});
-                    });
-                } else {
-                    userService.registerUser(backEndUser, function () {
-                        $state.go('search', {lat: $scope.lat, lng: $scope.lng});
-                    });
-                }
+                $scope.newImage.submit().then((publicIds) => {
+                    if (publicIds.length)
+                        user.image = publicIds[0].name;
+                    if ($stateParams.inside) {
+                        userService.saveUser(user, function () {
+                            $state.go('search');
+                        });
+                    } else {
+                        userService.registerUser(user, function () {
+                            $state.go('search');
+                        });
+                    }
+                })
 
             };
 
-            $scope.$on('$stateChangeStart', function (event, toState) {
-                $('#drawer').attr('style', '');
-            });
 
             $scope.recoverPassword = function () {
+                if (!$scope.recoverPwForm.$valid) {
+                    $('#recoverPwForm').addClass('was-validated');
+                    return;
+                }
+
                 $('#recoverPassword').hide();
                 userService.recoverPassword($scope.recoveryEmail, function () {
+                    $state.go('login');
                 });
             };
 
 
             $scope.back = function () {
                 if ($scope.inside) {
-                    $state.go('^');
+                    $state.go('search');
                 } else {
-                    $state.go('login', {lat: $scope.lat, lng: $scope.lng});
+                    $state.go('login');
                 }
             };
         }]);

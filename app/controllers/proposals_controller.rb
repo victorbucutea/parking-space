@@ -20,12 +20,12 @@ class ProposalsController < ApplicationController
   end
 
   def pay
-    if @proposal.user.id != current_user.id
+    if @proposal.user != current_user
       render json: {Error: 'Cannot pay an offer which doesn\'t belong to the current user'}, status: :unprocessable_entity
       return
     end
 
-    unless @proposal.approved?
+    unless @proposal.pending?
       render json: {Error: 'Nu se poate achita. Oferta a fost respinsa de proprietar sau a expirat.'}, status: :unprocessable_entity
       return
     end
@@ -35,17 +35,15 @@ class ProposalsController < ApplicationController
       return
     end
 
-    respond_to do |format|
-      if submit_payment && @proposal.pay
-        send_sms @proposal.parking_space.user.phone_number,
-                 current_user.full_name + ' a achitat contravaloarea de ' + @proposal.amount_with_vat.to_s +
-                     ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
-        format.json { render :show, status: :ok }
-      else
-        format.json { render json: {Error: 'Eroare in procesarea platii. Va rugam incercati din nou.'}, status: :unprocessable_entity }
-      end
-
+    if submit_payment && @proposal.pay
+      send_sms @proposal.parking_space.user.phone_number,
+               current_user.full_name + ' a achitat contravaloarea de ' + @proposal.amount_with_vat.to_s +
+                   ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
+      render :show, status: :ok
+    else
+      render json: {Error: 'Eroare in procesarea platii. Va rugam incercati din nou.'}, status: :unprocessable_entity
     end
+
   end
 
   def get_user_payments

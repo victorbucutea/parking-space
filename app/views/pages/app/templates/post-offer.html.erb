@@ -1,29 +1,21 @@
 <div id="search-space" class="ps-modal  animated fadeIn " ng-controller="ReviewBidsCtrl">
   <div class="search-space-modal container animated zoomIn mt-md-4">
 
-    <div ng-show="selectedSpace.from_sensor " class="row my-3 pb-2 align-items-center ">
-      <div class="col-3 offset-1">
-        <img src="<%= image_path 'app/P_logo_sm.png' %>">
-      </div>
-      <div class="col-8">
-        <h2 >Parcare companie</h2>
-      </div>
-    </div>
-
-    <div ng-hide="selectedSpace.from_sensor" class="row my-2 my-sm-4 align-items-center ">
+    <div ng-hide="selectedSpace.from_sensor" class="row my-2 align-items-center ">
       <div class="col-3 text-center rapid-icon">
-        <i class="fa fa-flash fa-4x"></i>
+        <i class="fa fa-flash fa-3x"></i>
       </div>
       <div class="col-8">
-        <h2>Parcare personală</h2>
+        <h3>Parcare personală</h3>
         <small>
           Pusă la dispoziție de <u>{{selectedSpace.owner_name}}</u>
         </small>
       </div>
     </div>
+    <hr class="m-0"/>
 
     <!-- Parking space info box -->
-    <div class="space-detail-content my-3 pt-2 ">
+    <div class="space-detail-content pt-2 ">
       <parking-spot-info-box space="selectedSpace"></parking-spot-info-box>
     </div>
 
@@ -31,20 +23,30 @@
     <div class="bids-area" ng-hide="selectedSpace.from_sensor">
 
       <!-- table of offers when parking space owner != current user -->
-      <div class="existing-offers mt-2 mt-sm-4 panel p-3" ng-class="{canceled:bid.rejected}" ng-repeat="bid in selectedSpace.userOffers">
+      <div class="existing-offers panel p-3 mb-2" ng-class="{canceled:bid.rejected || bid.canceled}"
+           ng-repeat="bid in selectedSpace.userOffers">
         <div class="row" ng-click="show('offerDetails'+'-'+$index)">
           <div class="col-12 mb-2 text-center">
             <h5 class="mb-0" ng-show="bid.approved">
+              <i class="fa fa-check text-success"></i>
               Rezervare confirmată
             </h5>
             <h5 class="mb-0" ng-show="bid.rejected">
-              <del>Rezervare respinsă</del>
+              <i class="fa fa-ban text-danger"></i>
+              Rezervare respinsă
             </h5>
             <h5 class="mb-0" ng-show="bid.canceled">
-              <del>Rezervare anulată</del>
+              <i class="fa fa-ban text-danger"></i>
+              Rezervare anulată
             </h5>
-            <h5 class="font-weight-light">
-              <small>
+            <div ng-show="bid.pending">
+              <h5 class="mb-0">
+                <i class="fa fa-exclamation-triangle text-danger"></i> Rezervare neplătită
+              </h5>
+              <div class="text-muted">Achitați taxa pentru a putea accesa locul de parcare.</div>
+            </div>
+            <h5>
+              <small class="font-weight-light">
                 ({{bid.start_date | moment: 'D MMM HH:mm'}} - {{bid.end_date | moment: 'D MMM HH:mm'}})
               </small>
             </h5>
@@ -58,7 +60,7 @@
             <h5>{{bid | totalPeriod}}</h5>
           </div>
         </div>
-        <div class="panel-body p-0 pt-2 animated" ng-show="bid.approved" id="offerDetails-{{$index}}">
+        <div class="panel-body p-0 animated"  id="offerDetails-{{$index}}">
           <div class="row no-gutters px-1">
             <div class="col-4">Dată start</div>
             <div class="col-8">
@@ -83,10 +85,9 @@
             <div class="col-4 ">Status</div>
             <div class="col-8">
               <span ng-show="bid.approved" class="green">Acceptată</span>
-              <span ng-show="bid.canceled">In așteptare</span>
+              <span ng-show="bid.pending">In așteptare</span>
               <span ng-show="bid.rejected" class="red">Respinsă</span>
-              &nbsp;
-              <button class="btn btn-danger btn-sm" ng-click="cancelOffer(bid)">Anulează</button>
+              <span ng-show="bid.canceled" class="red">Anulată</span>
             </div>
           </div>
           <div class="row no-gutters px-1">
@@ -99,29 +100,30 @@
           </div>
         </div>
 
-        <div class="mt-2 text-center" ng-show="bid.approved">
+        <div class="mt-2 text-center" ng-hide="bid.rejected || bid.canceled">
           <button class="mt-1 btn btn-outline-primary" ui-sref=".pay({offer:bid})" ng-if="!bid.paid">
             <i class="fa fa-credit-card"></i> Plătește online
           </button>
           <button class="mt-1 btn btn-link" ng-if="bid.paid">
             <i class="fa fa-credit-card"></i> Achitat online
           </button>
-          <a class="mt-1 btn btn-outline-info" id="callOwner" href="tel:{{phoneNumber}}">
+          <a class="mt-1 btn btn-outline-info" id="callOwner"
+             href="tel:{{selectedSpace.owner_prefix + selectedSpace.owner_phone_number}}">
             <i class="fa fa-phone"></i> Apelează proprietar
           </a>
         </div>
 
       </div>
 
-      <form ng-hide="hideRentForm">
+      <form ng-show="hideRentForm">
         <div class="row mt-4 mt-sm-5">
           <div class="col-12 col-xsm-6 ">
             <label for="dateStart">Închiriere start:</label>
-            <date-time id="dateStart" date-model="bid.start_date" class="form-control-lg "></date-time>
+            <date-time id="dateStart" date-model="bid.start_date" large="true"></date-time>
           </div>
           <div class="col-12 col-xsm-6  ">
             <label for="dateStop">Închiriere stop:</label>
-            <date-time id="dateStop" date-model="bid.end_date" day class="form-control-lg "></date-time>
+            <date-time id="dateStop" date-model="bid.end_date" large="true" day></date-time>
             <div class="invalid-feedback">
               Perioada minimă e de 15 min
             </div>
@@ -130,7 +132,7 @@
       </form>
 
       <div class="text-center mt-4">
-        <div ng-hide="hideRentForm">
+        <div ng-show="hideRentForm">
           <button class="btn btn-danger btn-lg" ng-click="placeOffer()">Închiriază</button>
         </div>
         <h4 class="my-4">
@@ -160,7 +162,8 @@
     </div>
 
     <div class="row flex-nowrap ps-control-buttons">
-      <button class="btn btn-lg btn-primary" ng-show="hideRentForm" ng-click="hideRentForm = false">Rezervare nouă
+      <button class="btn btn-lg btn-primary" ng-hide="hideRentForm" ng-click="hideRentForm = !hideRentForm">
+        Rezervare nouă
       </button>
       <button class="btn btn-lg btn-secondary" ui-sref="^">
         Înapoi

@@ -24,32 +24,32 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 }, 300);
             };
 
-
-            $scope.$on('login', function (event, val, current) {
-                if (userService.isAuthenticated())
-                    userService.getUser((user) => {
-                        $scope.currentUser = user;
-                    });
+            $scope.logout = function () {
+                userService.logout(() => {
+                    $state.go('login');
+                });
+            };
+            $scope.$on('$stateChangeStart', function (event, next, current) {
+                if (['login', 'register', 'confirm-phone'].indexOf(next.name) >= 0)
+                    return;
+                userService.getUser().then((user) => {
+                    $scope.currentUser = user;
+                    if (!user.phone_no_confirm) {
+                        $state.go('confirm-phone');
+                        event.preventDefault();
+                    }
+                });
             });
 
-            $scope.$on('logout', function (event, val, current) {
+            $rootScope.$on('logout', function (event, payload) {
                 $scope.currentUser = null;
-            });
-
-            $scope.$on('$locationChangeStart', function (event, next, current) {
-                if (userService.isAuthenticated())
-                    userService.getUser((user) => {
-                        if (!user.phone_no_confirm) {
-                            $state.go('confirm-phone');
-                            event.preventDefault();
-                        }
-                    });
             });
 
 
             $document.on('click', '.ps-modal', function (event) {
                 let isModal = $(event.target).hasClass('ps-modal');
-                if (isModal)
+                let isSkipNav = $(event.target).hasClass('ps-no-nav')
+                if (isModal && !isSkipNav)
                     $state.go('^');
             });
 
@@ -114,27 +114,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 });
             };
 
-           /* $(document).bind('dragover', function (e) {
-                let dropZones = $('.add-photo'),
-                    timeout = window.dropZoneTimeout;
-                if (timeout) {
-                    clearTimeout(timeout);
-                } else {
-                    dropZones.addClass('in');
-                }
-                let hoveredDropZone = $(e.target).closest(dropZones);
-                dropZones.not(hoveredDropZone).removeClass('hover');
-                hoveredDropZone.addClass('hover');
-                window.dropZoneTimeout = setTimeout(function () {
-                    window.dropZoneTimeout = null;
-                    dropZones.removeClass('in hover');
-                });
-
-            });
-
-
-            $(document).bind('drop dragover', function (e) {
-                e.preventDefault();
-            });*/
+            $('#navMenu').hide();
 
         }]);

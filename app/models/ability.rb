@@ -5,22 +5,23 @@ class Ability
 
   def initialize(user)
 
-    if user.has_role 'city_admin'
+    if user.role? 'city_admin'
       can :manage, ParkingSpace
     else
       can :manage, ParkingSpace, user_id: user.id
     end
 
     can :index, ParkingSpace
+    can :show, ParkingSpace
     can :phone_number, ParkingSpace
 
-    if user.has_role 'parking_lot_admin'
+    if user.role? 'parking_lot_admin'
       can [:read, :update], Location, roles: {user_id: user.id}
       can :manage, Section, location: {roles: {user_id: user.id}}
     end
 
 
-    if user.has_role 'company_admin'
+    if user.role? 'company_admin'
       can :manage, Company, roles: {user_id: user.id}
       can :manage, Company, id: user.company_id
       can :manage, Location, company: {roles: {user_id: user.id}}
@@ -28,7 +29,7 @@ class Ability
     end
 
 
-    if user.has_role 'city_admin'
+    if user.role? 'city_admin'
       can :manage, Role
       can :manage, Location
       can :manage, Company

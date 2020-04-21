@@ -1,6 +1,343 @@
 angular.module('ParkingSpace.directives')
 
-    .directive('map', [function () {
+    .factory('geocluster', function () {
+
+        if (typeof (Number.prototype.toRad) === "undefined") Number.prototype.toRad = function () {
+            return this * Math.PI / 180;
+        };
+
+
+        function geocluster(elements, bias) {
+            if (!(this instanceof geocluster)) return new geocluster(elements, bias);
+            return this._cluster(elements, bias);
+        };
+
+        // geodetic distance approximation
+        geocluster.prototype._dist = function (lat1, lon1, lat2, lon2) {
+            var dlat = (lat2 - lat1).toRad();
+            var dlon = (lon2 - lon1).toRad();
+            var a = (Math.sin(dlat / 2) * Math.sin(dlat / 2) + Math.sin(dlon / 2) * Math.sin(dlon / 2) * Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()));
+            return (Math.round(((2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))) * 6371) * 100) / 100);
+        };
+
+        geocluster.prototype._centroid = function (set) {
+            return set.reduce(function (s, e) {
+                return [(s[0] + e[0]), (s[1] + e[1])];
+            }, [0, 0]).map(function (e) {
+                return (e / set.length);
+            });
+        }
+
+        geocluster.prototype._clean = function (data) {
+            return data.map(function (cluster) {
+                return [cluster.centroid, cluster.elements];
+            });
+        };
+
+        geocluster.prototype._cluster = function (elements, bias) {
+
+            var self = this;
+
+            // set bias to 1 on default
+            if ((typeof bias !== "number") || isNaN(bias)) bias = 1;
+
+            var tot_diff = 0;
+            var diffs = [];
+            var diff;
+
+            // calculate sum of differences
+            for (let i = 1; i < elements.length; i++) {
+                diff = self._dist(elements[i][0], elements[i][1], elements[i - 1][0], elements[i - 1][1]);
+                tot_diff += diff;
+                diffs.push(diff);
+            }
+
+            // calculate mean diff
+            var mean_diff = (tot_diff / diffs.length);
+            var diff_variance = 0;
+
+            // calculate variance total
+            diffs.forEach(function (diff) {
+                diff_variance += Math.pow(diff - mean_diff, 2);
+            });
+
+            // derive threshold from stdev and bias
+            var diff_stdev = Math.sqrt(diff_variance / diffs.length);
+            var threshold = (diff_stdev * bias);
+
+            var cluster_map = [];
+
+            // generate random initial cluster map
+            cluster_map.push({
+                centroid: elements[Math.floor(Math.random() * elements.length)],
+                elements: []
+            });
+
+            // loop elements and distribute them to clusters
+            var changing = true;
+            while (changing === true) {
+
+                var new_cluster = false;
+                var cluster_changed = false;
+
+                // iterate over elements
+                elements.forEach(function (e, ei) {
+
+                    var closest_dist = Infinity;
+                    var closest_cluster = null;
+
+                    // find closest cluster
+                    cluster_map.forEach(function (cluster, ci) {
+
+                        // distance to cluster
+                        let dist = self._dist(e[0], e[1], cluster_map[ci].centroid[0], cluster_map[ci].centroid[1]);
+
+                        if (dist < closest_dist) {
+                            closest_dist = dist;
+                            closest_cluster = ci;
+                        }
+
+                    });
+
+                    // is the closest distance smaller than the stddev of elements?
+                    if (closest_dist < threshold || closest_dist === 0) {
+
+                        // put element into existing cluster
+                        cluster_map[closest_cluster].elements.push(e);
+
+                    } else {
+
+                        // create a new cluster with this element
+                        cluster_map.push({
+                            centroid: e,
+                            elements: [e]
+                        });
+
+                        new_cluster = true;
+
+                    }
+
+                });
+
+                // delete empty clusters from cluster_map
+                cluster_map = cluster_map.filter(function (cluster) {
+                    return (cluster.elements.length > 0);
+                });
+
+                // calculate the clusters centroids and check for change
+                cluster_map.forEach(function (cluster, ci) {
+                    var centroid = self._centroid(cluster.elements);
+                    if (centroid[0] !== cluster.centroid[0] || centroid[1] !== cluster.centroid[1]) {
+                        cluster_map[ci].centroid = centroid;
+                        cluster_changed = true;
+                    }
+                });
+
+                // loop cycle if clusters have changed
+                if (!cluster_changed && !new_cluster) {
+                    changing = false;
+                } else {
+                    // remove all elements from clusters and run again
+                    if (changing) cluster_map = cluster_map.map(function (cluster) {
+                        cluster.elements = [];
+                        return cluster;
+                    });
+                }
+
+            }
+
+            // compress result
+            return cluster_map;
+
+        };
+
+        return geocluster;
+    })
+
+    .factory('loadGmaps', ['geocluster', '$rootScope', function (geocluster, $rootScope) {
+        let s = document.createElement('script');
+        s.onload = function () {
+            window.onLoadMaps()
+        };
+        s.src = 'https://maps.googleapis.com/maps/api/js?key=AI' +
+            'zaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=ge' +
+            'ometry,places&language=ro';
+        document.body.appendChild(s);
+
+
+        let lazyLoadGmapsApi = function () {
+            let deffered = $.Deferred();
+            window.onLoadMaps = function () {
+                deffered.resolve();
+            };
+            return deffered.promise();
+        };
+
+        return lazyLoadGmapsApi().then(function () {
+            if (!window.google || !window.google.maps) {
+                console.error('gmaps not loaded');
+            }
+
+            function HtmlMarker(cluster, scope, map) {
+                this.spaces = cluster.elements.map((elm) => {
+                    return elm[2];
+                });
+                this.scope = scope;
+                this.pos = new google.maps.LatLng(cluster.centroid[0], cluster.centroid[1]);
+                this.setMap(map);
+            }
+
+            HtmlMarker.prototype = new google.maps.OverlayView();
+
+            HtmlMarker.prototype.onRemove = function () {
+                if (!this._div) return;
+                this._div.parentElement.removeChild(this._div);
+                this._div = null;
+            };
+
+            HtmlMarker.prototype.onAdd = function () {
+                let _this = this;
+                let div = document.createElement('DIV');
+
+                div.className = "html-marker";
+                let noOfSpaces = this.spaces.length;
+                let owned = noOfSpaces === this.spaces.filter((e) => {
+                    return e.owner_is_current_user
+                }).length;
+                let from_user = noOfSpaces === this.spaces.filter((e) => {
+                    return e.from_user
+                }).length;
+
+                if (owned) {
+                    div.className += " owner";
+                }
+
+                let noOfSp = noOfSpaces + (noOfSpaces === 1 ? ' loc' : ' locuri');
+                div.innerHTML = '<div>' + noOfSp +
+                    '    <br/>' +
+                    '   <small class="text-secondary">' +
+                    '        ' + this.getPrice() + ' / h ' +
+                    '   </small>' +
+                    '</div>';
+
+                if (from_user) {
+                    div.className += " private";
+                    if (noOfSpaces === 1) {
+                        this.markReservationActive(div);
+                    }
+                } else {
+                    div.className += " public";
+                }
+
+
+                $(div).on('click touchstart', function (evt) {
+                    if (noOfSpaces > 1) {
+                        let zoom = _this.getMap().getZoom();
+                        if (zoom >= 20) {
+                            _this.scope.markerClick(_this.spaces, true);
+                            return;
+                        }
+                        _this.getMap().setCenter(_this.pos);
+                        let lats = [];
+                        _this.spaces.forEach((sp) => {
+                            lats.push([sp.location_lat, sp.location_long, sp]);
+                        });
+                        let zoomLvl = $rootScope.map.zoom;
+                        let zoomFactor = (22 - zoomLvl) / 5;
+                        let zoomIn = 2;
+
+                        let cluster = geocluster(lats, (zoomFactor + 1));
+                        if (cluster.length >= 2) {
+                            zoomIn += 2;
+                        }
+                        console.log(cluster);
+
+
+                        _this.getMap().setZoom(zoomLvl + zoomIn);
+
+                        return;
+                    }
+                    _this.scope.markerClick(_this.spaces[0]);
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                });
+
+                let panes = this.getPanes();
+                panes.overlayImage.appendChild(div);
+                this._div = div;
+            };
+
+            HtmlMarker.prototype.markReservationActive = function (div) {
+                if (this.spaces > 1) return;
+
+                let space = this.spaces[0];
+                let nearestOffer = null;
+                if (space && space.offers)
+                    nearestOffer = space.offers.find((of) => {
+                        if (!of.owner_is_current_user) return false;
+                        return moment(of.end_date).isAfter(moment());
+                    });
+
+                if (!nearestOffer) return;
+
+                let st = moment(nearestOffer.start_date);
+                let end = moment(nearestOffer.end_date);
+                let now = moment();
+                let text;
+                if (end.isBefore(now)) {
+                    return;
+                }
+
+                text = st.fromNow();
+
+                if (end.isAfter(now) && st.isBefore(now)) {
+                    text = ' în curs';
+                }
+
+
+                let rezHtml =
+                    '<div>' + this.getPrice() +
+                    '   <small> / h </small> ' +
+                    '   <br/>' +
+                    '   <small class="text-secondary">' +
+                    '       <i class="fa fa-flash"></i> ' +
+                    '       Rez. ' + text + ' ' +
+                    '   </small>' +
+                    '</div>';
+
+                div.innerHTML = rezHtml;
+            };
+
+            HtmlMarker.prototype.getPrice = function () {
+                let prices = [];
+                let curr;
+                this.spaces.forEach((space) => {
+                    prices.push(space.price);
+                    curr = space.currency;
+                });
+                prices.sort();
+                if (prices[0] === prices[prices.length - 1]) {
+                    return prices[0] + " " + curr;
+                } else {
+                    return prices[0] + "-" + prices[prices.length - 1] + " " + curr;
+                }
+            };
+
+            HtmlMarker.prototype.draw = function () {
+                let overlayProjection = this.getProjection();
+                let position = overlayProjection.fromLatLngToDivPixel(this.pos);
+                this._div.style.left = position.x - 20 + 'px';
+                this._div.style.top = position.y - 45 + 'px';
+            };
+
+            window.HtmlMarker = HtmlMarker;
+
+        }, function () {
+            console.error('promise rejected');
+        });
+    }])
+
+    .directive('map', ['loadGmaps', function (loadGmaps) {
         return {
             restrict: 'E',
             scope: {
@@ -8,40 +345,40 @@ angular.module('ParkingSpace.directives')
                 onError: '&',
             },
             link: function ($scope, $element, $attr) {
-                // bad internet, a message should be shown
-                // to warn the user. No sense to initialize the map.
-                if (!window.google || !window.google.maps) {
+
+                loadGmaps.then(() => {
+                    function initialize() {
+                        let mapOptions = {
+                            center: new google.maps.LatLng(44.412, 26.113),
+                            zoom: 18,
+                            minZoom: 16,
+                            maxZoom: 20,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP,
+                            streetViewControl: false,
+                            scaleControl: false,
+                            rotateControl: false,
+                            disableDefaultUI: true,
+                            gestureHandling: 'greedy',
+                            clickableIcons: false
+                        };
+                        let map = new google.maps.Map($element[0], mapOptions);
+                        let overlay = new google.maps.OverlayView();
+                        overlay.setMap(map);
+                        overlay.draw = function () {
+                        };
+
+                        let geocoder = new google.maps.Geocoder();
+
+                        $scope.onCreate({map: map, overlay: overlay, geocoder: geocoder});
+                    }
+
+                    initialize();
+                }, (err) => {
+                    // bad internet, a message should be shown
+                    // to warn the user. No sense to initialize the map.
                     $scope.onError();
                     return;
-                }
-
-
-                function initialize() {
-                    let mapOptions = {
-                        center: new google.maps.LatLng(44.412, 26.113),
-                        zoom: 18,
-                        minZoom: 16,
-                        maxZoom: 20,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                        streetViewControl: false,
-                        scaleControl: false,
-                        rotateControl: false,
-                        disableDefaultUI: true,
-                        gestureHandling: 'greedy',
-                        clickableIcons: false
-                    };
-                    let map = new google.maps.Map($element[0], mapOptions);
-                    let overlay = new google.maps.OverlayView();
-                    overlay.setMap(map);
-                    overlay.draw = function () {
-                    };
-
-                    let geocoder = new google.maps.Geocoder();
-
-                    $scope.onCreate({map: map, overlay: overlay, geocoder: geocoder});
-                }
-
-                initialize();
+                })
             }
         };
     }])
@@ -87,7 +424,7 @@ angular.module('ParkingSpace.directives')
         }
     })
 
-    .directive('placesAutocomplete', function () {
+    .directive('placesAutocomplete', ['loadGmaps', function (loadGmaps) {
         return {
             restrict: 'E',
             scope: {
@@ -105,42 +442,41 @@ angular.module('ParkingSpace.directives')
                 '       ng-click="address=\'\'" ' +
                 '       ng-show="address.length > 3"></i>',
             link: function ($scope, elm, attr) {
-                // bad internet, a message should be shown
-                // to warn the user. No sense to initialize the map.
-                if (!window.google || !window.google.maps) return;
+                loadGmaps.then(() => {
+                    let input = $(elm).find('#pac-input')[0];
+                    let searchBox = new google.maps.places.Autocomplete(input);
 
-
-                let input = $(elm).find('#pac-input')[0];
-                let searchBox = new google.maps.places.Autocomplete(input);
-
-                // Bias the autocomplete object to bucharest for now
-                let bnds = new google.maps.Circle({
-                    center: {
-                        lat: 44.4115726,
-                        lng: 26.11414
-                    },
-                    radius: 35000 //35 km
-                });
-                searchBox.setBounds(bnds.getBounds());
-
-                searchBox.addListener('place_changed', function () {
-                    let place = searchBox.getPlace();
-                    $scope.selectedPlace({
-                        place: place.address_components,
-                        location: place.geometry.location
+                    // Bias the autocomplete object to bucharest for now
+                    let bnds = new google.maps.Circle({
+                        center: {
+                            lat: 44.4115726,
+                            lng: 26.11414
+                        },
+                        radius: 35000 //35 km
                     });
-                    $scope.$apply();
-                });
+                    searchBox.setBounds(bnds.getBounds());
 
-                $scope.$watch('address', function (newVal, oldVal) {
-                    // address will change on blur
-                    if (!newVal) {
-                        $scope.selectedPlace({place: null});
-                    }
+                    searchBox.addListener('place_changed', function () {
+                        let place = searchBox.getPlace();
+                        $scope.selectedPlace({
+                            place: place.address_components,
+                            location: place.geometry.location
+                        });
+                        $scope.$apply();
+                    });
+
+                    $scope.$watch('address', function (newVal, oldVal) {
+                        // address will change on blur
+                        if (!newVal) {
+                            $scope.selectedPlace({place: null});
+                        }
+                    })
                 })
+
+
             }
-        }
-    })
+        };
+    }])
 
     .directive('searchBar', function () {
         return {
@@ -211,19 +547,17 @@ angular.module('ParkingSpace.directives')
         }
     }])
 
-    .directive('parkingSpotInfoBox', function () {
+    .directive('parkingSpotInfoBox', ['$rootScope', function ($rootScope) {
         return {
             restrict: 'E',
             template:
-                '<div class="parking-spot-details p-2 row" >' +
-                '          <div class="d-flex col-3 pr-0 justify-content-center" style="overflow: hidden" ng-click="showFullImage()">' +
-                '           <i class="fa fa-3x fa-photo align-self-center text-muted" ng-if="!space.file1"></i>'+
-                '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.file1}}"' +
-                '                ng-if="space.file1" class=" p-0 thumbnail">' +
-                '           <img ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.file2}}" ' +
-                '                ng-if="space.file2" class=" p-0 thumbnail">' +
+                '<div class="parking-spot-details row no-gutters" >' +
+                '          <div class="col-4 col-md-3 px-2 pt-1 justify-content-center d-flex" style="overflow: hidden" >' +
+                '               <i class="fa fa-3x fa-photo align-self-center text-muted" ng-if="!space.images.length"></i>' +
+                '               <img ng-click="showFullImage()" ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.images[0].name}}"' +
+                '                   class="img-thumbnail" ng-if="space.images.length">' +
                 '          </div>' +
-                '          <div class="p-2 col-9" >' +
+                '          <div class="p-2 col-8 col-md-9" >' +
                 '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
                 '              <p>{{space.address_line_1}} ' +
                 '                     <br  />' +
@@ -234,22 +568,17 @@ angular.module('ParkingSpace.directives')
                 '                  <currency val="space.currency"></currency> / h' +
                 '              </h1>' +
                 '          </div>' +
-                '          <div class="ml-auto text-right">' +
-                '     <button class="btn btn-link" ui-sref=".edit({parking_space_id: space.id})">' +
-                '       <i class="fa fa-trash"></i> Sterge ' +
-                '     </button>' +
-                '     <button class="btn btn-link">' +
-                '       <i class="fa fa-edit"></i> Modifica' +
-                '             </button>' +
-                '          </div>' +
+                '     </div>' +
                 '</div>',
             scope: {
                 space: '=',
-                thumbnailModal: '='
+                thumbnailModal: '=',
+                showControls: '='
             },
             link: function ($scope, elm) {
 
                 $scope.cloudName = window.cloudinaryName;
+                $rootScope.cloudName = window.cloudinaryName;
                 $(elm).find('.parking-spot-details').click(evt => {
                     let isRoot = $(evt.currentTarget).hasClass('parking-spot-details');
                     if (isRoot && !$scope.thumbnailModal) {
@@ -258,79 +587,125 @@ angular.module('ParkingSpace.directives')
                     }
                 });
 
-                $scope.showFullImage = function () {
-
-                    let space = $scope.space;
-                    let imgSrc1 = `https://res.cloudinary.com/${cloudinaryName}/image/upload/q_auto,f_auto/${space.file1}`;
-                    let imgSrc2 = `https://res.cloudinary.com/${cloudinaryName}/image/upload/q_auto,f_auto/${space.file2}`;
-                    let imgSrc3 = `https://res.cloudinary.com/${cloudinaryName}/image/upload/q_auto,f_auto/${space.file3}`;
-
-
-                    let img1 = $('<img>').attr('src', imgSrc1);
-                    let img2 = $('<img>').attr('src', imgSrc2);
-                    let img3 = $('<img>').attr('src', imgSrc3);
-                    let car = $('#imgCarousel');
-                    if (space.file1)
-                        car.append(img1)
-
-                    if (space.file2)
-                        car.append(img2)
-                    if (space.file3)
-                        car.append(img3);
-
-                    car.slick({
-                        infinite: false,
-                        dots: true,
-                        slidesToShow: 1,
-                        centerMode: true,
-                        variableWidth: true,
-                        arrows: true
-                    });
-                    $('#imgCarouselModal').show();
-
+                $scope.showFullImage = function (evt) {
+                    $rootScope.$emit('showCarouselImages', $scope.space.images);
                 };
 
 
             }
         }
-    })
+    }])
+
+    .directive('carouselImages', ['$rootScope', function ($rootScope) {
+        return {
+            template: '<div id="imgCarouselModal" style="display: none" >' +
+                '        <div class="ps-modal d-flex p-3 align-items-center justify-content-center ps-no-nav " ng-click="close($event)">' +
+                '          <span ng-click="prevImg()" class="car-handle left"> <i class="fa fa-angle-left fa-4x px-3"></i> </span>' +
+                '          <div class="car-stage" ng-init="imgIndex = 0">' +
+                '            <DIV ng-repeat="img in carouselImgs" class="car-invisible">' +
+                '              <img  ng-class="{\'d-none\' : $index != imgIndex }"' +
+                '                    ng-src="{{\'https://res.cloudinary.com/\'+cloudName+\'/image/upload/q_auto,f_auto/\'+img.name}}" ' +
+                '                    class="carousel-img img-fluid mb-1 animated zoomIn">' +
+                '            </DIV>' +
+                '          </div>' +
+                '          <span class="car-index"> {{imgIndex + 1}}/{{carouselImgs.length}} </span>' +
+                '          <span ng-click="nextImg()" class="car-handle right"> <i class="fa fa-angle-right fa-4x px-3"></i> </span>' +
+                '        </div>' +
+                '      </div>',
+            scope: {
+                imgs: '='
+            },
+            link: function ($scope, $elm) {
+                $scope.cloudName = window.cloudinaryName;
+
+                $rootScope.$on('showCarouselImages', function (event, val) {
+                    $scope.imgIndex = 0;
+                    $scope.carouselImgs = val;
+                    $elm.find('#imgCarouselModal').show();
+                })
+
+
+                $scope.nextImg = function () {
+                    let $carousel = $elm.find('.carousel-img');
+                    $carousel.removeClass('slideInLeft').removeClass('zoomIn').addClass('slideInRight');
+                    $scope.imgIndex++;
+                    if ($scope.imgIndex > $carousel.length - 1) {
+                        $scope.imgIndex = $carousel.length - 1;
+                    }
+                };
+
+                $scope.prevImg = function () {
+                    let $carousel = $elm.find('.carousel-img');
+                    $carousel.removeClass('slideInRight').addClass('slideInLeft');
+                    $scope.imgIndex--;
+                    if ($scope.imgIndex < 0) {
+                        $scope.imgIndex = 0;
+                    }
+                }
+
+                $scope.close = function (evt) {
+                    let elm = $(evt.target);
+                    if (elm.hasClass('ps-modal')) {
+                        $('#imgCarouselModal').hide();
+                    }
+                }
+            }
+        }
+    }])
 
     .directive('bidTable', function () {
         return {
             restrict: 'E',
             scope: {
-                space: '=',
                 noContact: '=',
-                offers: '=?'
+                offers: '=?',
+                space: '='
             },
             template: '<div class="bids-area ">' +
                 '      <div class="bid-table">' +
-                '      <div class="offer row no-gutters p-2" ng-click="selectOffer(offer, space)"' +
-                '           ng-repeat="offer in offers | periodFilterOffers:dateFilter | orderBy: \'timestamp\'">' +
-                '        <div class="col-3">' +
-                '          <div class="font-weight-bold text-monospace text-uppercase">{{offer.owner_license}}</div>' +
-                '          <div>{{offer.owner_name}}</div>' +
-                '        </div>' +
-                '        <span class="col-5 " ng-class="{canceled : !offer.approved}">' +
-                '          <div> {{ expiration(offer) }} </div>' +
-                '          <div class="text-secondary"> ' +
-                '            {{offer.start_date |moment: \'D MMM HH:mm\'}}  - ' +
-                '            {{offer.end_date |moment: \'D MMM HH:mm\'}} ' +
+                '        <div class="offer row no-gutters py-1" ng-click="selectOffer(offer)"' +
+                '             ng-repeat="offer in offers | orderBy: \'start_date\'">' +
+                '          <div class="col-3 offer-owner">' +
+                '            <div>{{offer.owner_name}}</div>' +
+                '            <div class="license text-monospace">{{offer.owner_license}}</div>' +
                 '          </div>' +
-                '        </span>' +
-                '        <span class="offer-price col-4 col-md-2" ng-class="{canceled : !offer.approved}">' +
-                '          {{offer.amount}} {{ space.currency }}' +
-                '        </span>' +
-                '        <div class="col-md-2 text-center text-lg-right">' +
-                '<button class="btn btn-link" ng-click="selectOffer(offer,space)"> Detalii</button>' +
+                '          <div class="col-6 offer-period" ng-class="{canceled : !offer.approved}">' +
+                '             <span class="">' +
+                '                  <span style="font-size: 1.1em;">' +
+                '                    {{offer.start_date | moment: \'D/MM\' }}' +
+                '                  </span>' +
+                '                    {{offer.start_date | moment: \'HH:mm\' }}' +
+                '                  -' +
+                '                  <span style="font-size: 1.1em;">' +
+                '                    {{offer.end_date | moment: \'D/MM\' }}' +
+                '                  </span>' +
+                '                    {{offer.end_date | moment: \'HH:mm\' }}' +
+                '                  </span>' +
+                '             </div>' +
+                '          </span>' +
+                '          <span class="offer-price col-3" ng-class="{canceled : !offer.approved}">' +
+                '            <div>{{offer.amount}} {{ offer.currency }}</div>' +
+                '            <div class="offer-duration"> {{offer | totalPeriod}}</div>' +
+                '          </span>' +
                 '       </div>' +
                 '      </div>' +
-                '      </div>' +
-                '       <div class="ps-dialog mt-5" id="showPhoneNumber">' +
+                '       <div class="ps-dialog mt-5 showPhoneNumber" >' +
                 '        <div class="ps-dialog-content animated zoomIn">' +
                 '            <div class="ps-question">' +
-                '                <parking-spot-info-box space="selectedSpace" class="mb-3"></parking-spot-info-box>' +
-                '                <hr/>' +
+                '                <parking-spot-info-box space="space"></parking-spot-info-box>' +
+                '                <hr class="m-0"/>' +
+                '                <div class="row ps-row py-2">' +
+                '                    <div class="col-4">Utilizator</div>' +
+                '                    <div class="col-8 ">' +
+                '                        {{selOffer.owner_name}}' +
+                '                    </div>' +
+                '                </div>' +
+                '                <div class="row ps-row py-2">' +
+                '                    <div class="col-4">Nr. Înm.</div>' +
+                '                    <div class="col-8 text-monospace text-uppercase">' +
+                '                        {{selOffer.owner_license}}' +
+                '                    </div>' +
+                '                </div>' +
                 '                <div class="row ps-row">' +
                 '                    <div class="col-4">Durata</div>' +
                 '                    <div class="col-8">' +
@@ -367,12 +742,6 @@ angular.module('ParkingSpace.directives')
                 '                        La 15 min' +
                 '                    </div>' +
                 '                </div>' +
-                '                <div class="mt-3 pt-3 text-center" ng-hide="selOffer.approved">' +
-                '                    <h5>Oferta nu a fost încă acceptată</h5>' +
-                '                    <div class="ps-text-xxbig">' +
-                '                        :(' +
-                '                    </div>' +
-                '                </div>' +
                 '                <div class="mt-3 pt-3 text-center" ng-hide="noContact" >' +
                 '                    <h5>Apelează <br/> {{selOffer.owner_name}} </h5>' +
                 '                    <div class="ps-text-xbig">' +
@@ -384,15 +753,12 @@ angular.module('ParkingSpace.directives')
                 '                </div>' +
                 '            </div>' +
                 '            <div class="ps-control-buttons">' +
-                '                <button class="btn  btn-secondary" onclick="$(\'#showPhoneNumber\').hide()">Înapoi</button>' +
+                '                <button class="btn  btn-secondary" onclick="$(\'.showPhoneNumber\').hide()">Înapoi</button>' +
                 '            </div>' +
                 '        </div>' +
                 '    </div>' +
                 '      </div>',
-            link: function ($scope, element) {
-                $scope.offers = angular.isDefined($scope.offers) ? $scope.offers : $scope.space.offers;
-
-
+            link: function ($scope, $elm) {
                 $scope.expiration = function (offer) {
                     if (!offer)
                         return;
@@ -405,7 +771,7 @@ angular.module('ParkingSpace.directives')
                     let isInTheFuture = end.isAfter(now);
 
                     if (isNow) {
-                        return "Acum (expira " + end.fromNow() + ")"
+                        return "Se încheie " + end.fromNow();
                     }
 
                     if (isInThePast) {
@@ -416,19 +782,187 @@ angular.module('ParkingSpace.directives')
                         return "Progr. " + st.fromNow();
                     }
 
-
                     return "";
                 };
 
-
-                $scope.selectOffer = function (offer, space) {
+                $scope.selectOffer = function (offer) {
                     $scope.selOffer = offer;
-                    $scope.selectedSpace = space;
-                    $('#showPhoneNumber').show();
+                    $elm.find('.showPhoneNumber').show();
                 };
             }
         }
     })
+
+    .directive('spaceValidatedBox', ['parkingSpaceService', function (parkingSpaceService) {
+        return {
+            restrict: 'E',
+            scope: {
+                space: '='
+            },
+            template:
+                '      <div class="animated zoomIn delay-2" ng-if="space.validated">' +
+                '        <div class="p-2 expired-box alert-warning " ng-show="space.expired" ng-init="initExpiredBox()">' +
+                '          <div class="d-flex justify-content-between">' +
+                '            <div class="font-weight-bold text-warning" data-toggle="tooltip" title="Perioada de valabilitate s-a încheiat.' +
+                '                În consecință locul nu mai este disponibil pentru închiriere">' +
+                '              Valabilitate expirată <i class="fa fa-question-circle-o"></i>' +
+                '            </div>' +
+                '            <button class="btn btn-link btn-sm" onclick="$(\'#validityDetails\').slideToggle()">' +
+                '              <i class="fa fa-angle-down"></i> Prelungește valabilitatea' +
+                '            </button>' +
+                '          </div>' +
+                '          <form>' +
+                '            <div class="form-row" id="validityDetails">' +
+                '              <div class="col-md-2"></div>' +
+                '              <div class="form-group col-6 col-md-4">' +
+                '                <label for="validStart"> Data start' +
+                '                </label>' +
+                '                <date-time id="validStart" class="input-group-sm" date-model="availability_start" day></date-time>' +
+                '              </div>' +
+                '              <div class="form-group col-6  col-md-4">' +
+                '                <label for="validStart"> Data stop</label>' +
+                '                <date-time id="validStop" class="input-group-sm" date-model="availability_stop" day></date-time>' +
+                '                <div class="invalid-tooltip">' +
+                '                  Introdu data stop' +
+                '                </div>' +
+                '              </div>' +
+                '              <div class="col-md-2"></div>' +
+                '              <div class="col-12 text-center">' +
+                '                <button ng-click="extendValidity(space, availability_start, availability_stop)" class="btn btn-success btn-sm my-2">' +
+                '                  Prelungește perioada' +
+                '                </button>' +
+                '              </div>' +
+                '            </div>' +
+                '          </form>' +
+                '        </div>' +
+                '        <div class="p-2 posted-box text-center" ng-hide="space.expired">' +
+                '          <div class="font-weight-bold text-success ">Disponibil pentru închiriat încă {{ timeUntilExpiry(space) }}' +
+                '          </div>' +
+                '          <div class="">' +
+                '            <div class="text-monospace text-muted small text-center ">' +
+                '              {{space.space_availability_start | moment:\'D MMM [(h)] HH:mm\' }} -' +
+                '              {{space.space_availability_stop | moment:\'D MMM [(h)] HH:mm\'}}' +
+                '            </div>' +
+                '          </div>' +
+                '        </div>' +
+                '      </div>',
+            link: function ($scope, $elm) {
+
+                $scope.timeUntilExpiry = function (space) {
+                    return moment().to(moment(space.space_availability_stop), true);
+                };
+
+                $scope.initExpiredBox = function () {
+                    $('[data-toggle=tooltip]').tooltip();
+                };
+
+
+                $scope.extendValidity = function (space, start, stop) {
+
+                    if (start.isSameOrAfter(stop)) {
+                        alert('Data stop trebuie sa fie mai mare ca data start!');
+                        return;
+                    }
+
+                    space.space_availability_start = start.toDate();
+                    space.space_availability_stop = stop.toDate();
+                    parkingSpaceService.extendValidity(space, (s) => {
+                        replaceById(s, $scope.spaces);
+                    })
+                }
+            }
+        }
+    }])
+
+    .directive('spaceMissingDocBox', ['parkingSpaceService', function (parkingSpaceService) {
+        return {
+            restrict: 'E',
+            scope: {
+                space: '='
+            },
+            template: '<div>' +
+                '        <div class="not-posted-box alert-danger p-2 animated delay-2 zoomIn" ng-if="space.missing_title_deed">' +
+                '                <div class="font-weight-bold text-danger">Nepublicat</div>' +
+                '                <div>Locul nu este disponibil pentru închiriat.' +
+                '                  Atașați un document ce atestă posibilitatea sub-închirierii (' +
+                '                  <i> contract închiriere, vânzare/cumparare, etc.</i> ).' +
+                '                </div>' +
+                '                <file-upload accept="\'*\'" icon="\'fa-file\'" ' +
+                '                             label="\'Document sau foto\'"' +
+                '                             uploaded-files="space.uploadedFiles"></file-upload>' +
+                '                <div class="d-flex justify-content-center">' +
+                '                  <button class="btn btn-danger btn-sm" ng-click="upload(space)" ng-disabled="uploadedFiles.length < 1">' +
+                '                    <i class="fa fa-upload"></i> Încarcă documente' +
+                '                  </button>' +
+                '                </div>' +
+                '        </div>' +
+                '        <div class="not-posted-box alert-danger p-2 animated delay-2 zoomIn" ng-show="space.validation_pending">' +
+                '          <div class="font-weight-bold text-danger">Nepublicat</div>' +
+                '          <div>Locul este în curs de validare. Pentru întrebari sau detalii vă rugam contacți-ne pe' +
+                '            <a href="mailto:office@go-park.ro"> office@go-park.ro </a> .' +
+                '          </div>' +
+                '        </div>' +
+                '       </div>',
+            link: function ($scope, $elm) {
+                $scope.upload = function (space) {
+                    space.uploadedFiles.submit().then(function (resp) {
+                        parkingSpaceService.uploadDocuments(space.id, resp, (r) => {
+                            $scope.space = r;
+                            // replaceById(r, $scope.spaces)
+                        });
+                    })
+                };
+            }
+        }
+    }])
+
+    .directive('spaceStatusBox', ['parkingSpaceService', function (parkingSpaceService) {
+        return {
+            restrict: 'E',
+            scope: {
+                space: '='
+            },
+            template: '<div>' +
+                '         <space-missing-doc-box space="space"></space-missing-doc-box>' +
+                '         <space-validated-box space="space"></space-validated-box>' +
+                '         <div>' +
+                '           <button class="btn btn-link btn-block" ng-show="activeOffers.length">' +
+                '             <i class="fa fa-angle-double-down"></i> Rezervare curentă' +
+                '           </button>' +
+                '           <button class="btn btn-link btn-block" ng-hide="activeOffers.length">' +
+                '             <i class="fa fa-ban"></i> Nicio rezervare curentă' +
+                '           </button>' +
+                '         </div>' +
+                '         <bid-table offers="activeOffers"></bid-table>' +
+                '         <div ng-if="nonActiveOffers.length">' +
+                '           <button class="btn btn-link btn-block" ng-click="space.showOffers = !space.showOffers">' +
+                '             <i class="fa fa-angle-double-down"></i> Afișează toate rezervările' +
+                '           </button>' +
+                '         </div>' +
+                '         <bid-table space="space" offers="nonActiveOffers" ng-if="space.showOffers"></bid-table>' +
+                '      </div>',
+            link: function ($scope, elm) {
+                $scope.availability_start = moment().toDate();
+                $scope.availability_stop = moment().add(1, 'd').toDate();
+
+                let isActive = function (o) {
+                    let st = moment(o.start_date);
+                    let now = moment();
+                    if (st.isBefore(now) && !o.end_date) return true;
+                    let end = moment(o.end_date);
+                    return st.isBefore(now) && now.isBefore(end);
+                }
+
+                $scope.$watch('space.offers', (newVal) => {
+                    if (!newVal) return;
+                    $scope.activeOffers = newVal.filter(o => isActive(o));
+                    $scope.nonActiveOffers = newVal.filter(o => !isActive(o));
+                })
+
+            }
+        }
+    }])
+
     .directive('bidAmount', ['currencies', function (currencies) {
         return {
             restrict: 'E',
@@ -530,7 +1064,7 @@ angular.module('ParkingSpace.directives')
             '<input ' +
             '       type="text" ' +
             '       class="form-control"' +
-            '       ng-class="{\'form-control-lg\': large }"'+
+            '       ng-class="{\'form-control-lg\': large }"' +
             '       required >';
 
         if (isMobileOrTablet()) {
@@ -538,7 +1072,7 @@ angular.module('ParkingSpace.directives')
                 '<input ' +
                 '       type="datetime-local" ' +
                 '       class="form-control"' +
-                '       ng-class="{\'form-control-lg\': large }"'+
+                '       ng-class="{\'form-control-lg\': large }"' +
                 '       ng-model="dateModel"' +
                 '       required>';
         }
@@ -833,18 +1367,340 @@ angular.module('ParkingSpace.directives')
         }
     }])
 
+    .directive('fileUpload', ['$q', '$rootScope', function ($q, $rootScope) {
+        return {
+            restrict: 'E',
+            scope: {
+                onSelect: '&',
+                onDeSelect: '&',
+                icon: '=?',
+                label: '=',
+                maxCount: '=?',
+                accept: '=?',
+                folder: '=?',
+                uploadedFiles: '=',
+                existingFiles: '=?',
+            },
+            template: '<div class="drop-zone d-flex justify-content-center" >' +
+                '           <input class="fileupload" style="display: none" type="file" name="file" multiple max="3" accept="{{accept}}">' +
+                '           <div class="my-3 ps-carousel d-flex flex-wrap justify-content-center" >' +
+                '             <div ng-repeat="file in existingFiles" ng-hide="file._destroy" class="px-2 thumb-box"> ' +
+                '               <carousel-thumbnail file="file" on-remove="removeFileUpload(file)"></carousel-thumbnail>' +
+                '             </div>' +
+                '             <div ng-repeat="file in uploadedFiles" ng-hide="file._destroy" class="px-2 thumb-box"> ' +
+                '               <carousel-thumbnail file="file" on-remove="removeFileUpload(file)"></carousel-thumbnail>' +
+                '             </div>' +
+                '              <div class=" add-photo p-2 justify-content-center d-flex flex-column"' +
+                '                   ng-click="openUpload()" ng-hide="maxCntReached()">' +
+                '                  <i class="fa {{icon}} fa-3x"></i>' +
+                '                  <i class="text">{{label}}</i>' +
+                '                  <i class="text small">(max 8MB)</i>' +
+                '               </div>' +
+                '          </div>' +
+                '      </div>',
+            link: function ($scope, $elm) {
+                $scope.accept = angular.isDefined($scope.accept) ? $scope.accept : 'image/*';
+                $scope.folder = angular.isDefined($scope.folder) ? $scope.folder : 'spaces';
+                $scope.icon = angular.isDefined($scope.icon) ? $scope.icon : 'fa-image';
+                $scope.maxCount = angular.isDefined($scope.maxCount) ? $scope.maxCount : 3;
+                $scope.uploadedFiles = angular.isDefined($scope.uploadedFiles) ? $scope.uploadedFiles : [];
+                $scope.existingFiles = angular.isDefined($scope.existingFiles) ? $scope.existingFiles : [];
+
+                $scope.uploadedFiles.submit = function () {
+                    return $q(function (resolve) {
+                        let clbks = [];
+                        $scope.uploadedFiles.forEach((f) => {
+                            if (f.submit)
+                                clbks.push(f.submit());
+                        })
+
+                        let publicIds = [];
+                        $q.all(clbks).then((response) => {
+                            response.forEach((resp) => {
+                                publicIds.push({name: resp.public_id});
+                            });
+                            resolve(publicIds);
+                        }).catch((e) => {
+                            $rootScope.$emit('http.error', e);
+                        });
+                    })
+
+                }
+
+                let car = $($elm.find('.ps-carousel'));
+
+
+                $scope.removeFileUpload = function (f) {
+                    f._destroy = true;
+                    $scope.onDeSelect({file: f});
+                };
+
+                $($elm.find('.fileupload')).fileupload({
+                    url: 'https://api.cloudinary.com/v1_1/' + window.cloudinaryName + '/image/upload/',
+                    dataType: 'json',
+                    dropZone: $($elm.find('.drop-zone')),
+                    imageOrientation: true,
+                    formData: {upload_preset: window.cloudinaryPreset, folder: $scope.folder},
+                    add: function (e, data) {
+
+                        if (data.files[0].size > 8000000) {
+                            alert('File is too big');
+                            return;
+                        }
+
+                        $scope.uploadedFiles.push(data);
+                        $scope.onSelect({file: data});
+                        $scope.$apply();
+                    },
+                    progress: function (e, data) {
+                        let progress = parseInt(data.loaded / data.total * 100, 10);
+                        let name = data.files[0].name.replace(".", "\\.");
+                        $('#uploadProgressBar-' + name).css('width', progress + '%');
+                    },
+                    fail: function (e, data) {
+                        console.log('upload failed ', e, data);
+                    }
+                })
+
+                $scope.openUpload = function () {
+                    $($elm.find('.fileupload')).click();
+                }
+
+                $scope.maxCntReached = function () {
+
+                    let noUploads = $scope.uploadedFiles.length;
+                    let noExisting = $scope.existingFiles.length;
+                    let deletedUpl = $scope.uploadedFiles.filter((i) => {
+                        return i._destroy
+                    }).length;
+                    let deletedExist = $scope.existingFiles.filter((i) => {
+                        return i._destroy
+                    }).length;
+
+                    return ((noUploads + noExisting) - (deletedUpl + deletedExist)) >= $scope.maxCount;
+                }
+            }
+
+        }
+    }])
+
+    .directive('carouselThumbnail', [function () {
+        return {
+            restrict: 'E',
+            scope: {
+                file: '=',
+                onRemove: '&'
+            },
+            template: '<div class="d-flex flex-column justify-content-between position-relative">' +
+                "       <div ng-show='isFile' class=\"d-flex flex-column  py-3 photo-thumbnail\" >" +
+                "          <i class=\"fa fa-file fa-3x align-self-center\"></i>" +
+                "          <div class='text-truncate'>{{realFile.name}}</div>" +
+                "       </div> " +
+                '       <img ng-hide="isFile" class="photo-thumbnail" ng-src="{{dataUrl}}" ng-click="showThumbnail($event)">' +
+                '       <div class="progress-container">' +
+                '           <div id="uploadProgressBar-{{realFile.name}}"' +
+                '                style="width: 0" class="progress-bar">' +
+                '           </div>' +
+                '       </div>' +
+                '       <button class="btn btn-danger delete-thumbnail animated zoomIn" ng-click="removeFile()">' +
+                '           <i class="fa fa-trash"></i>' +
+                '       </button>' +
+                '     </div>',
+            link: function ($scope, $elm) {
+                $scope.isFile = false;
+                $scope.removeFile = function () {
+                    $scope.onRemove($scope.file);
+                }
+
+                $scope.$watch('file', function (newValue, oldValue) {
+                    if (!newValue) return;
+                    let isExisting = newValue.hasOwnProperty("image");
+
+                    if (isExisting) {
+                        $scope.realFile = newValue;
+                        $scope.dataUrl = 'https://res.cloudinary.com/' + window.cloudinaryName + '/image/upload/' + newValue.name;
+                    } else {
+                        let file = newValue.files[0];
+                        $scope.realFile = file;
+                        if ((/(\.|\/)(jpe?g|png|bmp)$/i).test(file.name)) {
+                            $scope.dataUrl = URL.createObjectURL(file);
+                            $scope.isFile = false;
+                        } else {
+                            $scope.isFile = true;
+                        }
+                    }
+                });
+
+
+                $scope.showThumbnail = function (evt) {
+                    let src = evt.currentTarget.src;
+                    let img = $(evt.currentTarget);
+                    let clicked = img.data('clicked');
+                    $('.photo-thumbnail').data('clicked', false);
+                    if (!clicked && isMobileOrTablet()) {
+                        $elm.find('.delete-thumbnail').show();
+                        img.data('clicked', true);
+                        return;
+                    }
+                    img.data('clicked', false);
+                    let imgModal = $('#imgModal');
+                    imgModal.find('img').attr('src', src);
+                    imgModal.show();
+                }
+            }
+        }
+    }])
+
+    .directive('inputPhoneNumber', ['parameterService', function (parameterService) {
+        return {
+            restrict: 'E',
+            template: '<div class="input-group mt-3 input-group-lg">' +
+                '                <country-select selected-country="selectedCountry" ></country-select>' +
+                '                <input class="phone-number form-control" type="text" id="phoneNo"' +
+                '                       autocorrect="off" autocapitalize="none" ng-model="phoneNumberFormatted" autocomplete="none"' +
+                '                       placeholder="e.g. {{example}}"' +
+                '                        name="phoneNumber"' +
+                '                       required ' +
+                '                       ng-pattern="pattern"' +
+                '                       pattern="{{pattern}}"/>' +
+                '                <div class="invalid-tooltip" style="left:20%">' +
+                '                  e.g. {{example}}' +
+                '                </div>' +
+                '              </div>',
+            scope: {
+                selectedCountry: '=?',
+                phoneNumber: '=?',
+                user: '=?'
+            },
+            link: function ($scope, elm, attrs) {
+
+                let inserted = [];
+                let input = $(elm).find('#phoneNo');
+                let phNo = $(elm).find('.phone-number');
+                let isInternalChange = false;
+                let format = function () {
+                    let finaVal = '';
+                    for (let i = 0, tplIdx = 0; i < inserted.length; i++, tplIdx++) {
+                        let tmpl = $scope.format.charAt(tplIdx);
+                        let ch = inserted[i];
+                        if (tmpl === ' ') {
+                            finaVal += tmpl + ch;
+                            tplIdx++;
+                        } else if (tmpl = '') {
+                        } else {
+                            finaVal += ch;
+                        }
+                    }
+                    $scope.phoneNumberFormatted = finaVal;
+                }
+                let insert = function (e) {
+
+                    let idx = inserted.length;
+                    var keyCode = e.keyCode || e.charCode;
+                    if (keyCode == 8 || keyCode == 46) {
+                        inserted = [];
+                        input.val('');
+                        return false;
+                    }
+
+                    if (idx >= $scope.mob_length) {
+                        return false;
+                    }
+
+                    let prefix = $scope.prefixes.split(",").find((pr) => {
+                        let insrtTmp = inserted.join("") + e.key;
+                        let prTmp = pr.slice(0, idx + 1);
+                        return insrtTmp.startsWith(prTmp);
+                    })
+
+
+                    if (!prefix) {
+                        return false;
+                    }
+
+                    if (/\d/.test(e.key)) {
+                        inserted.push(e.key);
+                    }
+                    return true;
+
+
+                }
+
+                input.keydown((e) => {
+                    e.preventDefault();
+                    insert(e);
+                    format();
+                    isInternalChange = true;
+                    $scope.user.phone_number = inserted.join('');
+                    $scope.$apply();
+                    isInternalChange = false;
+                });
+
+                $scope.$watch('user', function (newValue, oldValue) {
+                    parameterService.getCountryList().then((list) => {
+                        if (newValue) {
+                            $scope.selectedCountry = list.countries[newValue.country]
+                            $scope.phoneNumber = newValue.phone_number
+                        } else {
+                            $scope.selectedCountry = list.default_country
+                        }
+                    })
+
+                });
+
+
+                $scope.$watch('selectedCountry', function (newValue, oldValue) {
+                    if (!newValue) return;
+                    $scope.example = newValue.mobile_example;
+                    $scope.prefixes = newValue.mobile_prefixes;
+                    $scope.mob_length = newValue.mobile_no_length;
+                    $scope.format = $scope.example.replace(/\d/g, "x");
+                    $scope.phoneNumberFormatted = '';
+                    inserted = [];
+                    $scope.pattern = $scope.example.replace(/\d/g, "\\d");
+                    if ($scope.user) {
+                        $scope.user.country = newValue.code;
+                        $scope.user.prefix = newValue.prefix;
+                    }
+                    input.attr('pattern', $scope.pattern);
+                });
+
+                $scope.$watch('phoneNumber', function (newVal) {
+                        if (!newVal) return;
+                        if (isInternalChange) return;
+
+                        let split = newVal.split('');
+                        for (let i = 0; i < split.length; i++) {
+                            if (!insert({key: split[i]})) {
+                                break;
+                            }
+                        }
+                        format();
+                        if ($scope.user) {
+                            $scope.user.phone_number = newVal;
+                        }
+                    }
+                )
+
+
+            }
+        }
+    }])
+
     .directive('countrySelect', ['parameterService', function (parameterService) {
         return {
             restrict: 'E',
             replace: true,
-            template: '<div class="input-group-prepend" >' +
-                '       <button class="btn btn-outline-secondary dropdown-toggle" type="button"' +
+            template: '<div class="input-group-prepend x" >' +
+                '       <button class="btn btn-outline-secondary dropdown-toggle input-border" type="button"' +
                 '                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                '                    {{selectedCountry.name}} {{selectedCountry.prefix}}' +
+                '                  <div class="{{selectedCountry.css}} d-inline-block"></div>' +
+                '                    {{selectedCountry.prefix}} ' +
                 '                  </button>' +
                 '                  <div class="dropdown-menu">' +
-                '                    <a class="dropdown-item" href ng-repeat="country in countryList"  ng-click="selectCountry(country)">' +
-                '                      {{country.name}} {{country.prefix}}' +
+                '                    <a class="dropdown-item p-2 d-flex align-items-center justify-content-start" href ng-repeat="country in countryList"  ng-click="selectCountry(country)">' +
+                '                       <div class="{{country.css}} d-inline-block"></div> ' +
+                '                       <span class="ml-2 mr-auto">{{country.name}} {{country.prefix}} </span>' +
                 '                    </a>' +
                 '                  </div>' +
                 '</div>',
@@ -858,203 +1714,10 @@ angular.module('ParkingSpace.directives')
                     $scope.selectedCountry = c;
                 }
 
-                parameterService.getCountryList((list) => {
-                    $scope.selectedCountry = list.find((c) => {
-                        return c.code === 'ro'
-                    });
-                    $scope.countryList = list;
+                parameterService.getCountryList().then((data) => {
+                    $scope.selectedCountry = data.default_country;
+                    $scope.countryList = data.countries;
                 });
-            }
-        }
-    }])
-
-    .directive('fileUpload', ['$q', '$rootScope', 'uuid', function ($q, $rootScope, uuid) {
-        return {
-            restrict: 'E',
-            scope: {
-                onSelect: '&',
-                onDeSelect: '&',
-                icon: '=?',
-                label: '=',
-                count: '=',
-                accept: '=?',
-                uploadedFiles: '='
-            },
-            template: '<div class="py-3 drop-zone" >' +
-                '           <input class="fileupload" style="display: none" type="file" name="file" multiple max="3" accept="{{accept}}">' +
-                '           <div class="my-3 owl-carousel owl-theme " >' +
-                '              <div class=" add-photo justify-content-center d-flex flex-column"' +
-                '                   ng-click="openUpload()">' +
-                '                  <i class="fa {{icon}} fa-3x"></i>' +
-                '                  <i class="text">{{label}}</i>' +
-                '                  <i class="text small">(max {{count}})</i>' +
-                '             </div>' +
-                '          </div>' +
-                '        </div>',
-            link: function ($scope, $elm) {
-                let cnt = uuid.next();
-                $scope.accept = angular.isDefined($scope.accept) ? $scope.accept : 'image/*';
-                $scope.icon = angular.isDefined($scope.icon) ? $scope.icon : 'fa-image';
-                $scope.uploadedFiles = angular.isDefined($scope.uploadedFiles) ? $scope.uploadedFiles : {};
-                let files = $scope.uploadedFiles;
-
-                files.submit = function () {
-                    return $q(function (resolve) {
-                        let clbks = [];
-                        for (let f in files) {
-                            if (files.hasOwnProperty(f)) {
-                                let data = files[f];
-                                if (data.submit)
-                                    clbks.push(data.submit());
-                            }
-                        }
-
-                        let publicIds = [];
-                        $q.all(clbks).then((response) => {
-                            response.forEach((resp, idx) => {
-                                publicIds.push(resp.public_id);
-                            });
-                            resolve(publicIds);
-                        }).catch((e) => {
-                            $rootScope.$emit('http.error', e);
-                        });
-                    })
-
-                }
-                let owl = $($elm.find('.owl-carousel'));
-
-                owl.owlCarousel({
-                    margin: 7,
-                    dots: true,
-                    autoWidth: true,
-                });
-
-
-                window['showFileUploadThumbnail' + cnt] = function (evt) {
-                    if (moving) {
-                        return;
-                    }
-                    let img = evt.currentTarget.src;
-                    let imgModal = $('#imgModal');
-                    imgModal.find('img').attr('src', img);
-                    imgModal.show();
-                };
-
-                window['stopFileUploadThumbnail' + cnt] = function (evt) {
-                    moving = true;
-                };
-
-                window['startFileUploadThumbnail' + cnt] = function (evt) {
-                    moving = false;
-                };
-
-
-                window['removeFileUploadFile' + cnt] = function (name, evt) {
-                    let target = evt.currentTarget;
-                    let idxToRemove = $(owl.find('.btn')).index(target);
-                    delete $scope.uploadedFiles[name];
-                    $scope.onDeSelect({file: name});
-                    let fileAttr = target.dataset.fileId;
-
-                    owl.trigger('remove.owl.carousel', idxToRemove).trigger('refresh.owl.carousel');
-                };
-
-                $($elm.find('.fileupload')).fileupload({
-                    url: 'https://api.cloudinary.com/v1_1/' + window.cloudinaryName + '/image/upload/',
-                    dataType: 'json',
-                    dropZone: $($elm.find('.drop-zone')),
-                    imageOrientation: true,
-                    formData: {upload_preset: window.cloudinaryPreset, folder: 'spaces'},
-                    add: function (e, data) {
-
-                        if (data.files[0].size > 8000000) {
-                            alert('File is too big');
-                            return;
-                        }
-
-                        let file = data.files[0];
-                        $scope.uploadedFiles[file.name] = data;
-                        $scope.onSelect({file: file});
-
-                        let thumbnail = "<div class=\"d-flex flex-column align-items-center py-3\" >" +
-                            "   <i class=\"fa fa-file fa-3x\"></i>" +
-                            "   <div>" + file.name + "</div>" +
-                            "</div> ";
-
-                        if ((/(\.|\/)(jpe?g|png|bmp)$/i).test(file.name)) {
-                            let dataUrl = URL.createObjectURL(file);
-                            thumbnail = '<img  src="' + dataUrl + '" ';
-                            thumbnail += ` onmouseup="showFileUploadThumbnail${cnt}(event)" ` +
-                                `     onmousedown="startFileUploadThumbnail${cnt}(event)" ` +
-                                `     onmousemove="stopFileUploadThumbnail${cnt}()" />`
-                        }
-
-
-                        let div = '<div class="d-flex flex-column justify-content-between">' +
-                            thumbnail +
-                            '<div class="progress-container">' +
-                            '    <div id="uploadProgressBar-' + file.name + '"' +
-                            '         style="width: 0" class="progress-bar">' +
-                            '    </div>' +
-                            '</div>' +
-                            '<button class="btn btn-link btn-block" onclick="removeFileUploadFile' + cnt + '(\'' + file.name + '\',event)">' +
-                            '    <i class="fa fa-trash"></i> Șterge' +
-                            '</button>' +
-                            '</div>';
-
-                        owl.trigger('add.owl.carousel', [div, 1]).trigger('refresh.owl.carousel');
-                        $scope.onSelect({file: file});
-
-                    },
-                    progress: function (e, data) {
-                        let progress = parseInt(data.loaded / data.total * 100, 10);
-                        $(document.getElementById('uploadProgressBar-' + data.files[0].name)).css(
-                            'width',
-                            progress + '%'
-                        );
-                    },
-                    fail: function (e, data) {
-                        console.log('upload failed ', e, data);
-                    }
-                })
-                $scope.openUpload = function () {
-                    $($elm.find('.fileupload')).click();
-                }
-
-
-            }
-
-        }
-    }])
-    .directive('inputPhoneNumber', ['parameterService', function (parameterService) {
-        return {
-            restrict: 'E',
-            template: '<div class="input-group mt-3 input-group-lg">' +
-                '                <country-select selected-country="selectedCountry" ></country-select>' +
-                '                <input class="phone-number form-control" type="text" id="phoneNo"' +
-                '                       autocorrect="off" autocapitalize="none"' +
-                '                       placeholder="Nr. mobil (e.g. 727 333 444)"' +
-                '                       ng-model="phoneNumber" name="phoneNumber"' +
-                '                       required minlength="5"' +
-                '                       cleave="options.phoneNumber"' +
-                '                       pattern="[0-9\\. ]{5,15}"/>' +
-                '                <div class="invalid-tooltip" style="left:20%">' +
-                '                  e.g. 722.333.444' +
-                '                </div>' +
-                '              </div>',
-            scope: {
-                selectedCountry: '=',
-                phoneNumber: '='
-            },
-            link: function ($scope, elm) {
-
-                $scope.options = {
-                    phoneNumber: {
-                        delimiters: ['.', '.', ' '],
-                        blocks: [3, 3, 3, 3],
-                        numericOnly: true
-                    }
-                };
             }
         }
     }])

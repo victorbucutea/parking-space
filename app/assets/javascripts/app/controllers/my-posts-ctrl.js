@@ -25,75 +25,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                     });
                 }
             };
-            $scope.uploadedFiles = {};
-            $scope.count = 0;
-            $scope.availability_start = moment().toDate();
-            $scope.availability_stop = moment().add(1, 'd').toDate();
-
-            function calcCnt() {
-                let count = 0;
-                for (let i in $scope.uploadedFiles) {
-                    count++;
-                }
-                $scope.count = count - 1;
-
-                if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
-            }
-
-            $scope.fileSelected = function (f) {
-                calcCnt();
-            };
-
-            $scope.fileDeSelected = function (f) {
-                calcCnt();
-            };
-
-            $scope.upload = function (space) {
-                $scope.uploadedFiles.submit().then(function (resp) {
-                    parkingSpaceService.uploadDocuments(space.id, resp, (r) => {
-                        replaceById(r, $scope.spaces)
-                    });
-                })
-
-            };
-
-            $scope.show = function (space, item) {
-                $scope.selectedSpace = space;
-                notificationService.hideParkingSpaceNotifications();
-                $('#' + item).slideToggle(200);
-
-            };
-
-            $scope.initExpiredBox = function () {
-
-                $('[data-toggle=tooltip]').tooltip();
-
-            };
-
-            $scope.timeUntilExpiry = function (space) {
-                return moment().to(moment(space.space_availability_stop), true);
-            };
 
             $scope.findActiveOffer = function (space) {
                 return space.offers.find((of) => {
                     return of.active
                 });
             };
-
-            $scope.extendValidity = function (space,start,stop) {
-
-                if (start.isSameOrAfter(stop)) {
-                    alert('Data stop trebuie sa fie mai mare ca data start!');
-                    return;
-                }
-
-                space.space_availability_start = start.toDate();
-                space.space_availability_stop = stop.toDate();
-                parkingSpaceService.extendValidity(space, (s) => {
-                    replaceById(s,$scope.spaces);
-                })
-            }
 
         }]);

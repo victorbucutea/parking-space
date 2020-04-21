@@ -27,21 +27,18 @@ class SessionsController < Devise::SessionsController
       # user is new, he needs to sign up
       # return a status to indicate that we need to redirect to
       # additional info page for the rest of the details
-      respond_to do |format|
-        format.json {render json: {Error: 'User does not exist',
-                                   email: email,
-                                   id: id,
-                                   name: name},
-                            status: :unprocessable_entity}
-      end
+      render json: {Error: 'Te rugăm introdu datele de identificare',
+                    email: email,
+                    id: id,
+                    name: name},
+             status: :unprocessable_entity
+
     else
       password = ('a'..'Z').to_a.shuffle[0, 34].join
       # make user unable to authenticate outside fb
       user.reset_password password, password
       sign_in :user, user
-      respond_to do |format|
-        format.json {render json: {Status: 'OK', user: user}, status: :created}
-      end
+      render :new, status: :created
     end
 
   end

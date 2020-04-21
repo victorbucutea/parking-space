@@ -1,9 +1,9 @@
 angular.module('ParkingSpace.services')
 
-    .service('parkingSpaceService', ['$rootScope', '$http', 'userService', 'errorHandlingService', 'notificationService',
-        function ($rootScope, $http, userService, errorHandlingService, notificationService) {
+    .service('parkingSpaceService', ['$rootScope', '$http', 'userService', 'errorHandlingService', 'notificationService', 'geocluster',
+        function ($rootScope, $http, userService, errorHandlingService, notificationService, geocluster) {
 
-
+            let _this = this;
             this.getPhoneNumber = function (spaceId, clbk, errClbk) {
                 $http.get('/parking_spaces/' + spaceId + '/phone_number.json')
                     .then(function (response) {
@@ -37,16 +37,10 @@ angular.module('ParkingSpace.services')
                         let latLngs = [];
 
                         data.forEach(function (p_space) {
-                            p_space.space_availability_start = new Date(p_space.space_availability_start);
-                            p_space.space_availability_stop = new Date(p_space.space_availability_stop);
-                            p_space.daily_start = new Date(p_space.daily_start);
-                            p_space.daily_stop = new Date(p_space.daily_stop);
-                            p_space.location_lat = Number.parseFloat(p_space.location_lat);
-                            p_space.location_long = Number.parseFloat(p_space.location_long);
+                            _this.convert(p_space);
                             latLngs.push([p_space.location_lat, p_space.location_long, p_space]);
                         });
                         clusteredSpaces = geocluster(latLngs, zoomFactor);
-
                     }
                     if (clbk)
                         clbk(clusteredSpaces);
@@ -65,8 +59,7 @@ angular.module('ParkingSpace.services')
                         let data = response.data;
                         if (data) {
                             data.forEach(function (p_space) {
-                                p_space.space_availability_start = new Date(p_space.space_availability_start);
-                                p_space.space_availability_stop = new Date(p_space.space_availability_stop);
+                                _this.convert(p_space);
                             });
                         }
                         if (clbk)
@@ -76,18 +69,24 @@ angular.module('ParkingSpace.services')
                     });
             };
 
+            this.convert = function (space) {
+                if (space) {
+                    space.space_availability_start = new Date(space.space_availability_start);
+                    space.space_availability_stop = new Date(space.space_availability_stop);
+                    space.daily_start = new Date(space.daily_start);
+                    space.daily_stop = new Date(space.daily_stop);
+                    space.location_lat = Number.parseFloat(space.location_lat);
+                    space.location_long = Number.parseFloat(space.location_long);
+                    space.weekly_schedule = JSON.parse(space.weekly_schedule);
+                }
+            };
+
             this.getSpace = function (parkingSpaceId, clbk, errClbk) {
 
                 return $http.get('/parking_spaces/' + parkingSpaceId + ".json")
                     .then(function (response) {
                         let data = response.data;
-                        if (data) {
-                            data.space_availability_start = new Date(data.space_availability_start);
-                            data.space_availability_stop = new Date(data.space_availability_stop);
-                            data.daily_start = new Date(data.daily_start);
-                            data.daily_stop = new Date(data.daily_stop);
-                            data.weekly_schedule = JSON.parse(data.weekly_schedule);
-                        }
+                        _this.convert(data);
                         if (clbk)
                             clbk(data);
                         return data;
@@ -103,6 +102,7 @@ angular.module('ParkingSpace.services')
                 $http.get('/parking_spaces/myoffers.json')
                     .then(function (response) {
                         let data = response.data;
+                        _this.convert(data);
                         if (clbk)
                             clbk(data);
                     }, function (errorResponse) {
@@ -110,7 +110,7 @@ angular.module('ParkingSpace.services')
                     });
             };
 
-            this.saveSpace = function (space, clbk) {
+            this.saveSpace = function (space) {
 
                 // massage space a to fit the back end model
                 space.target_price = space.price;
@@ -121,15 +121,11 @@ angular.module('ParkingSpace.services')
                 let url = space.id ? '/parking_spaces/' + space.id + '.json' : '/parking_spaces.json';
                 let restCall = space.id ? $http.put(url, parking_space) : $http.post(url, parking_space);
 
-                restCall.then(function (response) {
-                    //TODO show mesage with direct dom manipulation
-                    $rootScope.$emit('http.notif', 'Locul de parcare a fost postat!');
-
+                return restCall.then(function (response) {
                     notificationService.registerForNotifications();
                     let data = response.data;
-                    if (clbk) {
-                        clbk(data);
-                    }
+                    _this.convert(data);
+                    return data;
                 }, function (error) {
                     errorHandlingService.handle(error.data, error.status);
                 })
@@ -150,26 +146,42 @@ angular.module('ParkingSpace.services')
             };
 
             this.uploadDocuments = function (spaceId, docs, clbk) {
+
                 $http.post(`/parking_spaces/${spaceId}/attach_documents.json`, {docs: docs})
                     .then(function (res) {
+                        let data = res.data;
+                        _this.convert(data);
                         $rootScope.$emit('http.notif', 'Documentele sunt in curs de verificare. Veți fi ' +
                             'notificat când locul va deveni disponibil.');
                         if (clbk) {
-                            clbk(res.data);
+                            clbk(data);
                         }
-
                     }, function (err) {
                         errorHandlingService.handle(err.data, err.status);
                     })
+            };
 
+
+            this.uploadImages = function (spaceId, imgs) {
+                return $http.post(`/parking_spaces/${spaceId}/attach_images.json`, {imgs: imgs})
+                    .then(function (res) {
+                        let data = res.data;
+                        _this.convert(data);
+                        return data;
+                    }, function (err) {
+                        errorHandlingService.handle(err.data, err.status);
+                    })
             };
 
             this.extendValidity = function (space, clbk) {
                 let parking_space = {parking_space: space};
                 $http.put('/parking_spaces/' + space.id + '.json', parking_space).then(function (res) {
                     $rootScope.$emit('http.notif', 'Valabilitatea locului de parcare a fost extinsă');
-
-                    if (clbk) clbk(res.data);
+                    let data = res.data;
+                    _this.convert(data);
+                    if (clbk) {
+                        clbk(data);
+                    }
                 }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
                 });
@@ -187,13 +199,11 @@ angular.module('ParkingSpace.services')
                         let data = resp.data;
                         data.start_date = new Date(data.start_date);
                         data.end_date = new Date(data.end_date);
-                        if (data.approved) {
-                            $rootScope.$emit('http.notif', 'Felicitări! Locul a fost rezervat pt. tine.' +
-                                ' Acum poți achita online sau poți contacta proprietarul.');
+                        if (data.pending) {
+                            $rootScope.$emit('http.notif', 'Felicitări! Locul poate fi rezervat.' +
+                                ' Te rugăm achită online pentru a finaliza rezervarea.');
                             notificationService.registerForNotifications(true);
-                        } else {
-                            $rootScope.$emit('http.notif', 'Ofertă trimisă, însă nu a putut fi aprobată!');
-                        }
+                        } // whatever else for now we only return pending
                         if (clbk)
                             clbk(data);
                     }, function (err) {
@@ -242,6 +252,15 @@ angular.module('ParkingSpace.services')
                     })
             };
 
+            this.getOffers = function (spaceId) {
+                return $http.get(`/parking_spaces/${spaceId}/proposals.json`)
+                    .then(function (res) {
+                        return res.data;
+                    }, function (err) {
+                        errorHandlingService.handle(err.data, err.status);
+                    })
+            }
+
             this.cancelOffer = function (spaceId, offer, clbk) {
                 $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
                     .then(function (res) {
@@ -258,97 +277,51 @@ angular.module('ParkingSpace.services')
             };
         }])
 
-    .service('parameterService', ['$http', function ($http) {
+    .service('parameterService', ['$http', '$q', 'errorHandlingService', function ($http, $q, errorHandlingService) {
 
         /**
          * provides back-end parameters
-         * 2. short_term_expiration: 10 # minutes
-         * 3. max_search_radius: 1200
-         * 4. long_term_expiration: 2 # weeks
-         * 5. default_range: 500
          * 6. countries list ( starting asking price, country_name, etc.)
          */
 
         let _this = this;
 
-        _this.parameters = {};
 
-        this.retrieveParameters = function (okClbk, errClbk) {
-            if (Object.keys(_this.parameters) > 0) {
-                if (okClbk) {
-                    okClbk(_this.parameters);
-                }
-                return;
+        _this.retrieveParameters = function () {
+            if (sessionStorage.getItem('parameters')) {
+                let parse = JSON.parse(sessionStorage.getItem('parameters'));
+                return $q.resolve(parse);
             }
 
-            $http.get('/parameters.json')
+            return $http.get('/parameters.json')
                 .then(function (res) {
                     let data = res.data;
-                    _this.setParameters(data);
-                    if (okClbk) {
-                        okClbk(data);
+                    let countries = data.countries;
+                    for (attr in countries) {
+                        let item = countries[attr];
+                        let countryName = item.name.replace(/ /g, "_");
+                        item.css = 'bg-' + countryName;
                     }
-                }, function (err) {
-                    if (errClbk) {
-                        errClbk(err.data, err.status);
-                    }
+                    data.default_country = data.countries[data.default_country]
+                    sessionStorage.setItem('parameters', JSON.stringify(data));
+                    return data;
+                }, function (error) {
+                    errorHandlingService.handle(error.data, error.status);
                 })
 
         };
 
-        this.retrieveParameters();
-
-        this.setParameters = function (params) {
-            params.forEach(function (item) {
-                _this.parameters[item.name] = item.default_value;
-                if (item.values && item.values.length) {
-                    _this.parameters[item.name + '_values'] = item.values
-                }
-            });
-            // look for the country which has the default value
-            let srvParams = _this.parameters;
-            srvParams.starting_ctry = srvParams.country_values.find((item) => {
-                return item.key === srvParams.country;
-            });
-
-            srvParams.starting_asking_price = srvParams.starting_ctry.value;
-            srvParams.starting_currency = srvParams.starting_ctry.value2;
-        };
-
-        this.getStartingCurrency = function () {
-            return _this.parameters.starting_currency || 'Eur';// default
-        };
 
         this.getStartingAskingPrice = function () {
-            return parseInt(_this.parameters.starting_asking_price) || 5;// default
+            return _this.retrieveParameters().then((data) => {
+                let ctry = data.default_country;
+                return {currency: ctry.currency, price: Number.parseFloat(ctry.starting_value)};
+            })
         };
 
 
-        this.getCountryList = function (clbk) {
-            _this.retrieveParameters(function (data) {
-                let countries = _this.parameters.country_values;
-
-                countries.map(function (item) {
-                    let countryName = item.value4.replace(/ /g, "_") + ".png";
-                    item.url = '/assets/app/flags/' + countryName;
-                    item.prefix = item.value3;
-                    item.name = item.value4;
-                    item.code = item.key;
-                });
-
-                countries.sort(function (item1, item2) {
-                    if (item1.name < item2.name)
-                        return -1;
-                    if (item1.name > item2.name)
-                        return 1;
-                    return 0;
-                });
-
-                if (clbk) {
-                    clbk(countries);
-                }
-
-            });
+        this.getCountryList = function () {
+            return _this.retrieveParameters();
         };
     }])
 

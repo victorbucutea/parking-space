@@ -1,17 +1,16 @@
 class ParkingSpacesController < ApplicationController
+
   before_action :authenticate_user!
   load_and_authorize_resource
-  before_action :set_parking_space, only: %i[phone_number show update destroy attach_documents validate]
+  before_action :set_parking_space, only: %i[phone_number show update destroy attach_documents validate attach_images]
   respond_to :json
 
   # GET /parking_spaces
   # GET /parking_spaces.json
   def index
-
     if current_user.company
       @parking_spaces = ParkingSpace.not_expired.active
                             .includes(:parking_perimeter)
-                            .includes(:proposals)
                             .for_company current_user.company
       render :index, status: :ok
     end
@@ -21,18 +20,16 @@ class ParkingSpacesController < ApplicationController
     lon_min = params[:lon_min]
     lon_max = params[:lon_max]
 
-
     unless lat_min && lon_min && lat_max && lon_max
       render json: {Error: {general: "Missing parameters 'lat' or 'lon' min/max"}}, status: :unprocessable_entity
       return
     end
 
-    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
-    @parking_spaces = ParkingSpace.not_expired.active
-                          .includes(:proposals, :user)
+    query_attrs = { lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max }
+    @parking_spaces = ParkingSpace.not_expired.active(current_user)
+                          .includes(:user, :images)
                           .within_boundaries(query_attrs)
   end
-
 
   # GET /parking_spaces/1/phone_number
   def phone_number
@@ -41,58 +38,64 @@ class ParkingSpacesController < ApplicationController
 
   # GET /parking_spaces/1
   # GET /parking_spaces/1.json
-  def show
-  end
-
+  def show; end
 
   def myspaces
     @parking_spaces = ParkingSpace.includes(:proposals, :user)
                           .where(user: current_user)
-
-    @parking_spaces.each do |space|
-      space.owner = space.user
-    end
 
     render :index, status: :ok
   end
 
   def myoffers
     @parking_spaces = ParkingSpace.not_expired.active
-                          .includes(:proposals)
+                          .includes(:proposals, :user)
                           .where(proposals: {user: current_user})
-
-    @parking_spaces.each do |space|
-      space.owner = space.user
-    end
 
     render :index, status: :ok
   end
 
   def attach_documents
-
     docs = params[:docs]
+    if docs.empty?
+      return render json: {Error: 'No documents uploaded!'}, status: :unprocessable_entity
+    end
 
+    @parking_space.documents.destroy_all
     # save to parking_space_documents
     docs.each do |d|
       doc = @parking_space.documents.create(file: d, comment: 'User upload', status: 'uploaded')
       unless doc.errors.empty?
-        return render json: { Error: doc.errors }, status: :unprocessable_entity
+        return render json: {Error: doc.errors}, status: :unprocessable_entity
       end
     end
-
     # move to title_deed_pending
     @parking_space.validation_pending!
 
     render :show, status: :created, location: @parking_space
-
   end
+
+  def attach_images
+    imgs = params[:imgs]
+
+    @parking_space.images.destroy_all
+    # save to parking_space_documents
+    imgs.each do |d|
+      img = @parking_space.images.create(image: d[:name], comment: 'User upload')
+      unless img.errors.empty?
+        return render json: {Error: img.errors}, status: :unprocessable_entity
+      end
+    end
+
+    render :show, status: :created, location: @parking_space
+  end
+
 
   def validate
     # check user allowed to validate ( private_spaces_admin )
     # check title deed is attached
     # move to validated
   end
-
 
   # POST /parking_spaces
   # POST /parking_spaces.json
@@ -110,7 +113,6 @@ class ParkingSpacesController < ApplicationController
   # PATCH/PUT /parking_spaces/1
   # PATCH/PUT /parking_spaces/1.json
   def update
-
     if @parking_space.update(parking_space_params)
       render :show, status: :ok, location: @parking_space
     else
@@ -118,16 +120,9 @@ class ParkingSpacesController < ApplicationController
     end
   end
 
-
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-
-
-    if @parking_space.has_paid_proposals?
-      render json: {Error: {general: 'Nu se poate șterge un loc cu oferte plătite'}}, status: :unprocessable_entity
-      return
-    end
 
     # todo do not delete just expire validity
 
@@ -155,9 +150,8 @@ class ParkingSpacesController < ApplicationController
                                           :phone_number, :owner_name, :title,
                                           :address_line_1, :address_line_2,
                                           :space_availability_start, :space_availability_stop,
-                                          :file1, :file2, :file3,
-                                          :daily_start, :daily_stop, :weekly_schedule,
-                                          :description, :created_at)
+                                          :daily_start, :daily_stop, :weekly_schedule, :description,
+                                          parking_space_images_attributes: [:image, :comment,:id])
   end
 
 end

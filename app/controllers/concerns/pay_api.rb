@@ -4,10 +4,10 @@ module PayApi
 
   def get_payments
     gateway = Braintree::Gateway.new(
-        environment: ENV['PAYMENT_ENV'].to_sym,
-        merchant_id: ENV['MERCHANT_ID'],
-        public_key: ENV['MERCHANT_PUB_KEY'],
-        private_key: ENV['MERCHANT_PRIV_KEY']
+      environment: ENV['PAYMENT_ENV'].to_sym,
+      merchant_id: ENV['MERCHANT_ID'],
+      public_key: ENV['MERCHANT_PUB_KEY'],
+      private_key: ENV['MERCHANT_PRIV_KEY']
     )
 
     gateway.transaction.search do |search|
@@ -17,10 +17,10 @@ module PayApi
 
   def get_payment_details_for (tx_id)
     gateway = Braintree::Gateway.new(
-        environment: ENV['PAYMENT_ENV'].to_sym,
-        merchant_id: ENV['MERCHANT_ID'],
-        public_key: ENV['MERCHANT_PUB_KEY'],
-        private_key: ENV['MERCHANT_PRIV_KEY']
+      environment: ENV['PAYMENT_ENV'].to_sym,
+      merchant_id: ENV['MERCHANT_ID'],
+      public_key: ENV['MERCHANT_PUB_KEY'],
+      private_key: ENV['MERCHANT_PRIV_KEY']
     )
 
     gateway.transaction_line_item.find_all(tx_id)
@@ -32,10 +32,10 @@ module PayApi
     nonce = params[:nonce]
 
     gateway = Braintree::Gateway.new(
-        environment: ENV['PAYMENT_ENV'].to_sym,
-        merchant_id: ENV['MERCHANT_ID'],
-        public_key: ENV['MERCHANT_PUB_KEY'],
-        private_key: ENV['MERCHANT_PRIV_KEY']
+      environment: ENV['PAYMENT_ENV'].to_sym,
+      merchant_id: ENV['MERCHANT_ID'],
+      public_key: ENV['MERCHANT_PUB_KEY'],
+      private_key: ENV['MERCHANT_PRIV_KEY']
     )
 
     addr = @proposal.parking_space.address_line_1
@@ -62,19 +62,19 @@ module PayApi
     # 4000111111111115
     if current_user.payment_id.nil?
       result = gateway.transaction.sale(
-          amount: total_amount,
-          payment_method_nonce: nonce,
-          merchant_account_id: ENV['SECONDARY_MERCHANT_ID'],
-          order_id: @proposal.id,
-          customer: {
-              first_name: current_user.full_name,
-              email: current_user.email,
-              phone: current_user.phone_number
-          },
-          line_items: line_items,
-          options: {
-              store_in_vault_on_success: true
-          }
+        amount: total_amount,
+        payment_method_nonce: nonce,
+        merchant_account_id: ENV['SECONDARY_MERCHANT_ID'],
+        order_id: @proposal.id,
+        customer: {
+            first_name: current_user.full_name,
+            email: current_user.email,
+            phone: current_user.phone_number
+        },
+        line_items: line_items,
+        options: {
+            store_in_vault_on_success: true
+        }
       )
       if result.success?
         current_user.payment_id = result.transaction.customer_details.id
@@ -85,12 +85,12 @@ module PayApi
       !result.respond_to? :errors
     else
       result = gateway.transaction.sale(
-          amount: total_amount,
-          customer_id: current_user.payment_id,
-          payment_method_nonce: nonce,
-          merchant_account_id: ENV['SECONDARY_MERCHANT_ID'],
-          order_id: @proposal.id,
-          line_items: line_items
+        amount: total_amount,
+        customer_id: current_user.payment_id,
+        payment_method_nonce: nonce,
+        merchant_account_id: ENV['SECONDARY_MERCHANT_ID'],
+        order_id: @proposal.id,
+        line_items: line_items
       )
       log_error(line_items, result)
       register_payment result,  @proposal

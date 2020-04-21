@@ -148,8 +148,21 @@ map {
   left: 0;
 }
 
-.nav-border-right {
-  border-right: 1px solid $gray-700;
+nav.navbar {
+
+  .nav-border-right {
+    border-right: 1px solid $gray-700;
+  }
+  .nav-item.active {
+    font-weight: normal;
+  }
+
+  .dropdown-item {
+    .fa-user {
+      font-size: 1.2em;
+      padding-right: 4px;
+    }
+  }
 }
 
 #pac-container {
@@ -213,7 +226,7 @@ map {
   }
 
   span.controls {
-    top: -1px;
+    top: 0px;
     right: 0;
     font-size: 1.5em;
     padding: 8px 15px;
@@ -226,12 +239,6 @@ map {
       border-bottom-right-radius: 10px;
       border-top-right-radius: 10px;
     }
-
-    .notif-icon {
-      position: absolute;
-      right: -10px;
-      top: -10px;
-    }
   }
 
   .filter {
@@ -241,9 +248,9 @@ map {
   .clear-btn {
     position: absolute;
     right: 51px;
-    top: 1px;
-    padding: 13px;
-    font-size: 1.6em;
+    top: 0;
+    padding: 14px;
+    font-size: 1.5em;
 
     &:hover {
       background-color: $gray-200;
@@ -310,10 +317,6 @@ map {
   justify-content: space-around;
   padding: $measure-unit;
   background-color: $white;
-
-  .btn {
-    color: $white
-  }
 }
 
 .ps-modal {
@@ -360,8 +363,6 @@ map {
 
   .space-detail-content {
     overflow: auto;
-    border-bottom: 1px solid $gray-500;
-    //border-top: 1px solid $gray-500;
   }
 
   .space-summary-content {
@@ -446,6 +447,11 @@ map {
   }
 }
 
+.ps-text-big {
+  font-size: 1.3em;
+  text-align: center;
+}
+
 .ps-text-xbig {
   font-size: 1.5em;
   text-align: center;
@@ -475,6 +481,10 @@ map {
   &.shadow {
     box-shadow: 2px 2px 12px 1px $gray-700;
   }
+}
+
+.legal-contract-txt {
+  border-left: 2px solid $red;
 }
 
 .max-zoom-spaces {
@@ -530,50 +540,66 @@ map {
   overflow-y: scroll;
 }
 
-
-.add-photo {
-  border: 1px dashed;
-  box-shadow: none;
-  margin: auto;
-  border-radius: 8px;
-  text-align: center;
-  height: 118px;
-  color: $blue-400;
-  width: 150px;
-
-  &:hover {
-    cursor: pointer;
-    border-style: solid;
-  }
-
-  &.in {
-    color: $red
-  }
-}
+.drop-zone {
 
 
-.owl-carousel {
-  .owl-stage {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-box;
-    display: box;
-    margin: auto;
-  }
+  .add-photo {
+    border: 1px dashed;
+    box-shadow: none;
+    border-radius: 8px;
+    text-align: center;
+    height: 100px;
+    color: $blue-400;
+    min-width: 134px;
 
+    &:hover {
+      cursor: pointer;
+      border-style: solid;
+    }
 
-  .owl-item {
-    display: flex;
-
-    img {
-      width: auto !important;
+    &.in {
+      color: $red
     }
   }
+
+
+  .thumb-box {
+    width: 134px;
+  }
+
+  carousel-thumbnail {
+
+    .photo-thumbnail {
+      height: 100px;
+      max-width: 120px;
+      transition: .1s ease-out;
+
+      &:hover:focus {
+        cursor: pointer;
+        transform: scale(1.1);
+      }
+    }
+
+    .delete-thumbnail {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      display: none;
+      z-index: 1;
+      border-radius: 50%;
+    }
+
+
+    &:hover {
+      .delete-thumbnail {
+        display: block;
+      }
+    }
+  }
+
+
 }
 
-file-upload .owl-carousel .owl-item img {
-  max-height: 20vh !important;
-}
 
 .img-modal img {
   max-width: 80vh;
@@ -586,6 +612,49 @@ file-upload .owl-carousel .owl-item img {
 
 .progress-container {
   margin-top: 2px !important;
+}
+
+.w-0 {
+  width: 0
+}
+
+.car-handle {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  color: $gray-100;
+  background: $gray-dark-transparent;
+
+  &.right {
+    right: 0;
+  }
+
+  &.left {
+    left: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background: darken($gray-dark-transparent, 30%);
+
+  }
+}
+
+.carousel-img {
+  max-height: 90vh;
+}
+
+.car-index {
+  position: absolute;
+  top: 80%;
+  padding: $measure-unit;
+  z-index: 3;
+  color: $gray-100;
+  background: $gray-dark-transparent;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 42px;
 }
 
 .open-offers-list {
@@ -758,7 +827,6 @@ parking-spot-info-box {
   }
 
   .parking-spot-details {
-    padding: $measure-unit 0;
 
     h1 {
       color: $red;
@@ -878,23 +946,6 @@ parking-spot-info-box {
   border-right: 1px solid $gray-400;
 }
 
-.offer-desc-area {
-  .offer-desc-item {
-    font-size: 1.1em;
-    padding-bottom: 5px;
-    clear: both;
-    font-weight: 300;
-
-    .value {
-      font-weight: 600;
-      padding-right: 10px;
-      padding-left: 10px;
-      border-radius: 3px;
-      white-space: nowrap;
-    }
-  }
-}
-
 .code-confirm {
   font-size: 1.6em;
   width: 48%;
@@ -904,10 +955,18 @@ parking-spot-info-box {
   overflow-y: scroll;
 }
 
+.scroll-x {
+  overflow-x: scroll;
+}
+
 .existing-offers {
   div.row {
     padding-bottom: 5px;
     padding-top: 5px;
+  }
+
+  &.canceled {
+    text-decoration: line-through;
   }
 
   .panel-body .row:nth-child(2n+1) {
@@ -953,11 +1012,24 @@ parking-spot-info-box {
     .offer {
       background-color: $white;
       align-items: center;
+      text-align: center;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      padding: $measure-unit;
+      border-top: 1px dashed $gray;
 
-      &.selected {
+      &:focus-within {
         background-color: darken($blue-90, 10%);
+      }
 
-        .offer-price {
+      .offer-period {
+        text-align: center;
+        font-size: .9em;
+
+        @include media-breakpoint-up(md) {
+          font-size: $base-font-size;
         }
       }
 
@@ -965,18 +1037,36 @@ parking-spot-info-box {
         text-decoration: line-through;
       }
 
+      .offer-owner {
+        font-size: .9em;
+        .license{
+          margin-top: $xxsm-measure-unit;
+          border: 1px solid $gray-600;
+          border-radius: 5px;
+          font-weight: 700;
+          color: $gray-600;
+          text-transform: uppercase;
+        }
+      }
+
+      .offer-duration {
+        font-weight: normal;
+        border-top: 1px solid $gray;
+        font-size: .7em;
+
+      }
+
       .offer-price {
         color: $blue-700;
         font-weight: bold;
         padding: 5px;
-        font-size: 1.4em;
+        font-size: 1.2em;
         display: inline-block;
         width: 95px;
-        -ms-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
+
+        @include media-breakpoint-up(md) {
+          font-size: 1.4em;
+        }
       }
 
     }
@@ -1197,7 +1287,7 @@ parking-spot-info-box {
 
   &.public:before {
     content: '';
-    background-image: image_url('app/p_logo_icon.png');
+    background-image: cloudinary_url('p_logo_icon.png');
     display: inline-block;
     width: 17px;
     height: 23px;
@@ -1226,6 +1316,11 @@ parking-spot-info-box {
     cursor: pointer;
     z-index: 2;
   }
+}
+
+.input-border {
+  border: 1px solid $gray;
+  border-right: 0;
 }
 
 .location_map {

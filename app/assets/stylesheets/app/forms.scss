@@ -5,15 +5,6 @@
     height: 116px;
   }
 
-  .owl-item {
-    .thumb-img {
-      max-height: 35vh;
-      box-shadow: 4px 4px 0 $gray-400;
-      width: auto;
-
-    }
-  }
-
   .separator {
     align-self: stretch;
   }
@@ -37,6 +28,17 @@
 
   .form-control {
     box-shadow: none;
+
+  }
+
+  &.is-invalid {
+    .form-control {
+      border-color: $red;
+    }
+
+    + .invalid-feedback {
+      display: block;
+    }
   }
 
 }
@@ -55,11 +57,13 @@
     margin-left: 14px;
   }
 
-  .recover-pw-link {
-    text-decoration: underline;
-    display: block;
-    margin: auto;
-    text-align: right;
+  .drop-zone {
+    .add-photo {
+      height: 150px;
+      .fa {
+        font-size: 4em;
+      }
+    }
   }
 
   .btn-fb {

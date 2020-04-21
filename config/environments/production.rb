@@ -81,9 +81,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
 
-  config.action_mailer.default_url_options = {:host => 'email-smtp.eu-west-1.amazonaws.com'}
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {:address => "email-smtp.eu-west-1.amazonaws.com", :port => 25}
+  config.action_mailer.default_url_options = {:host => 'go-park.ro'}
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {

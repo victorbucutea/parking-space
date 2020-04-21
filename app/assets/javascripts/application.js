@@ -19,20 +19,15 @@
 //= require popper.js/dist/umd/popper.min
 //= require bootstrap/dist/js/bootstrap.min
 //= require bootstrap-daterangepicker/daterangepicker
-//= require owl.carousel/dist/owl.carousel.min
 //= require iban/iban.js
 //= require angular/angular.min
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-filter/dist/angular-filter
 //= require angular-ui-bootstrap/src/buttons/buttons
 //= require tooltip.js/dist/umd/tooltip
-//= require cleave.js/dist/cleave-angular.min
 //= require jquery.ui.widget/jquery.ui.widget
 //= require blueimp-file-upload/js/jquery.iframe-transport
 //= require blueimp-file-upload/js/jquery.fileupload
-//= require pusher-js/dist/web/pusher.min
-//= require slick-carousel/slick/slick.js
-//= require css-element-queries/src/ResizeSensor
 
 //= require main
 //= require_tree .

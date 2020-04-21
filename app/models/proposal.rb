@@ -1,24 +1,28 @@
 class Proposal < ActiveRecord::Base
 
-  scope :for_space, ->(sp_id) {where('proposals.parking_space_id = ? ', sp_id)}
-  scope :price_above, ->(price) {where('proposals.bid_amount >= ? ', price)}
-  scope :active_or_future, -> () { where('proposals.end_date >= ?' , Time.now)}
+  scope :for_space, ->(sp_id) { where('proposals.parking_space_id = ? ', sp_id) }
+  scope :price_above, ->(price) { where('proposals.bid_amount >= ? ', price) }
+  scope :active_or_future, -> { where('proposals.end_date >= ?', Time.now) }
+  scope :outside_period, lambda { |start, end_p|
+    where('proposals.start_date <= ?
+                                  OR proposals.end_date >= ? ', start, end_p) }
 
-  enum approval_status: [:pending, :rejected, :approved, :canceled]
-  enum payment_status: [:unpaid, :paid]
+  enum approval_status: %i[pending rejected approved canceled]
+  enum payment_status: %i[unpaid paid]
 
   belongs_to :parking_space
   belongs_to :user
 
-  validates :bidder_name, :presence => true
-  validates :approval_status, :presence => true
-  validates :bid_amount, :presence => true
-  validates :bid_currency, :presence => true
-  validate :offers_do_not_overlap, :on => [:create, :update], :unless => :skip_overlap_check
-  validate :bid_amount_valid, :on => :create
-  validate :space_is_not_expired, :unless => :skip_expiration_check
-  validate :cannot_update_expired, :on => :update, :unless => :skip_expiration_check
-  validate :cannot_update_paid, :on => :update, :unless => :skip_paid_check
+  validates :bidder_name, presence: true
+  validates :approval_status, presence: true
+  validates :bid_amount, presence: true
+  validates :bid_currency, presence: true
+  validate :offers_do_not_overlap, on: %i[create update], unless: :skip_overlap_check
+  validate :no_pending_similar_offer, on: %i[create update], unless: :skip_overlap_check
+  validate :bid_amount_valid, on: :create
+  validate :space_is_not_expired, unless: :skip_expiration_check
+  validate :cannot_update_expired, on: :update, unless: :skip_expiration_check
+  validate :cannot_update_paid, on: :update, unless: :skip_paid_check
 
   attr_accessor :skip_overlap_check
   attr_accessor :skip_expiration_check
@@ -28,6 +32,7 @@ class Proposal < ActiveRecord::Base
 
   def init
     self.approval_status ||= :pending
+    self.payment_status ||= :unpaid
     self.skip_overlap_check = false
     self.skip_expiration_check = false
   end
@@ -40,56 +45,56 @@ class Proposal < ActiveRecord::Base
     end
   end
 
-  def offers_do_not_overlap
-
-    props_for_space = Proposal.for_space(parking_space_id).approved.order(:start_date)
-
-    if props_for_space.empty?
-      self.approval_status = :approved;
-    else
-      # there are offers, let's make sure this offer does not overlap with existing one
-      props_for_space.each do |offer|
-        next_offer = props_for_space [(props_for_space.index offer) + 1]
-        start_after_end = self.start_date >= offer.end_date
-        ends_before_next_start = true
-        unless next_offer.nil?
-          ends_before_next_start = self.end_date <= next_offer.start_date
-        end
-
-        if start_after_end && ends_before_next_start
-          self.approval_status = :approved
-          return true
-        end
-      end
-
-      # if end_date is before all start_dates approve
-      if end_date <= props_for_space[0].start_date
-        self.approval_status = :approved
-        return true
-      end
-
-      # if start_date is after all end_dates, approve
-      props_for_space = Proposal.for_space(parking_space_id).approved.order(:end_date)
-      if start_date > props_for_space[-1].end_date
-        self.approval_status = :approved
-        return true
-      end
-
-      self.approval_status = :rejected
-      errors.add :general, 'Locul este rezervat pentru perioada selectată!'
-      false
+  def no_pending_similar_offer
+    props_for_space = Proposal.for_space(parking_space_id).pending.where user_id: user.id
+    if overlap? props_for_space
+      errors.add :general, 'Există deja o ofertă similară pentru acest interva de timp!'
     end
   end
 
+  def offers_do_not_overlap
+    props_for_space = Proposal.for_space(parking_space_id).approved
+    if overlap? props_for_space
+      errors.add :general, 'Locul este rezervat pentru perioada selectată!'
+    end
+  end
+
+  def overlap?(offers)
+    return false if offers.empty?
+
+    offers = offers.order :start_date
+    # there are offers, let's make sure this offer does no§t overlap with existing
+    # approved one
+    offers.each do |offer|
+      next_offer = offers [(offers.index offer) + 1]
+      start_after_prev_end = start_date >= offer.end_date
+      ends_before_next_start = true
+      unless next_offer.nil?
+        ends_before_next_start = end_date <= next_offer.start_date
+      end
+
+      return false if start_after_prev_end && ends_before_next_start
+    end
+
+    # if end_date is before all start_dates approve
+    return false if end_date <= offers[0].start_date
+
+    # if start_date is after all end_dates, approve
+    offers = offers.reorder :end_date
+    return false if start_date > offers[-1].end_date
+
+    true
+  end
+
   def cannot_update_expired
-    if self.expired?
+    if expired?
       errors.add :general, 'Oferta a expirat, aceasta nu se mai poate modifica!'
     end
   end
 
   def cannot_update_paid
     # should not be able to alter any offer info ( status, dates, etc)
-    if self.paid?
+    if paid?
       errors.add :general, 'Oferta a fost achitata, aceasta nu se mai poate modifica!'
     end
   end
@@ -104,8 +109,7 @@ class Proposal < ActiveRecord::Base
   def reject
     self.skip_overlap_check = true
     if parking_space.user.id == user.id
-      self.approval_status = 1
-      save
+      rejected!
     else
       errors.add :general, 'You are not allowed to reject the offer!'
       false
@@ -114,9 +118,8 @@ class Proposal < ActiveRecord::Base
 
   def cancel
     self.skip_overlap_check = true
-    if self.user.id == user.id
-      self.approval_status = 3
-      save
+    if parking_space.user.id == user.id
+      canceled!
     else
       errors.add :general, 'You are not allowed to cancel the offer!'
       false
@@ -125,12 +128,11 @@ class Proposal < ActiveRecord::Base
 
   def approve
     # only the owner of the parking space can approve or reject an offer
-    if self.parking_space.user.id != user.id
+    if parking_space.user.id != user.id
       errors.add :general, 'You are not allowed to accept the offer!'
       false
     else
-      self.approval_status = 2
-      save
+      approved!
     end
   end
 
@@ -140,6 +142,7 @@ class Proposal < ActiveRecord::Base
     self.skip_paid_check = true
     self.payment_date = DateTime.now
     paid!
+    approved!
   end
 
   def amount
@@ -166,7 +169,7 @@ class Proposal < ActiveRecord::Base
   end
 
   def expired?
-    Time.now >= self.end_date
+    Time.now >= end_date
   end
 
   def active?
