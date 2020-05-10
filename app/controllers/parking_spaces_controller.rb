@@ -25,7 +25,7 @@ class ParkingSpacesController < ApplicationController
       return
     end
 
-    query_attrs = { lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max }
+    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
     @parking_spaces = ParkingSpace.not_expired.active(current_user)
                           .includes(:user, :images)
                           .within_boundaries(query_attrs)
@@ -41,15 +41,14 @@ class ParkingSpacesController < ApplicationController
   def show; end
 
   def myspaces
-    @parking_spaces = ParkingSpace.includes(:proposals, :user)
+    @parking_spaces = ParkingSpace.includes(:images, :user)
                           .where(user: current_user)
 
     render :index, status: :ok
   end
 
   def myoffers
-    @parking_spaces = ParkingSpace.not_expired.active
-                          .includes(:proposals, :user)
+    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
                           .where(proposals: {user: current_user})
 
     render :index, status: :ok
@@ -151,7 +150,7 @@ class ParkingSpacesController < ApplicationController
                                           :address_line_1, :address_line_2,
                                           :space_availability_start, :space_availability_stop,
                                           :daily_start, :daily_stop, :weekly_schedule, :description,
-                                          parking_space_images_attributes: [:image, :comment,:id])
+                                          parking_space_images_attributes: [:image, :comment, :id])
   end
 
 end

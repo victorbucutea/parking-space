@@ -52,8 +52,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                     sun: true,
                 };
 
-            if ($stateParams.parking_space_id) {
-                parkingSpaceService.getSpace($stateParams.parking_space_id, function (data) {
+            if ($stateParams.spaceId) {
+                parkingSpaceService.getSpace($stateParams.spaceId, function (data) {
                     $scope.spaceEdit = data;
                 });
             } else {

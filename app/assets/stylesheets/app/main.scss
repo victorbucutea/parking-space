@@ -21,11 +21,6 @@ map {
   height: 100%;
 }
 
-.map-loading {
-  position: fixed;
-  width: 100%;
-}
-
 .info-btn {
   position: absolute;
   bottom: 160px;
@@ -115,6 +110,12 @@ map {
   }
 }
 
+.space-availability {
+  .av-row:not(:last-child) {
+    border-bottom: 1px dashed $gray-400;
+  }
+}
+
 .filter-instruction-circle {
   position: absolute;
   top: 76px;
@@ -153,6 +154,7 @@ nav.navbar {
   .nav-border-right {
     border-right: 1px solid $gray-700;
   }
+
   .nav-item.active {
     font-weight: normal;
   }
@@ -349,39 +351,12 @@ nav.navbar {
 
 .search-space-modal {
 
-  .rapid-icon {
-    color: $yellow;
-  }
-
   .space-type {
-    border-bottom: 1px solid $gray-500;
-  }
-
-  .space-detail-thumb {
-    padding-top: 10px;
+    border-bottom: 1px solid $gray-300;
   }
 
   .space-detail-content {
     overflow: auto;
-  }
-
-  .space-summary-content {
-    overflow: auto;
-    border-bottom: 1px solid $gray-500;
-    border-top: 1px solid $gray-500;
-
-    p {
-      color: $gray-600;
-      margin-bottom: 0;
-    }
-
-    h4 {
-      color: $red;
-    }
-
-    img {
-      height: 5em;
-    }
   }
 }
 
@@ -503,46 +478,11 @@ nav.navbar {
   }
 }
 
-.open-spaces-list {
-  margin-top: $jumbo-measure-unit + $base-font-size;
-
-  h1, h2, h3 {
-    margin: 0;
-  }
-
-  .not-posted-box {
-    border-left: 2px solid $red;
-    border-bottom: 1px solid $gray;
-  }
-
-  .posted-box {
-    border-bottom: 1px solid $gray;
-  }
-
-  .expired-box {
-    border-left: 2px solid $warning;
-    border-bottom: 1px solid $gray;
-  }
-
-  .item-notifications {
-    font-size: 0.9em;
-    color: $blue-700;
-    text-decoration: underline;
-  }
-
-  .offer {
-    border-bottom: 1px solid $gray-400;
-    padding-top: $measure-unit;
-  }
-}
-
 .scroll {
   overflow-y: scroll;
 }
 
 .drop-zone {
-
-
   .add-photo {
     border: 1px dashed;
     box-shadow: none;
@@ -817,15 +757,6 @@ bid-amount {
 parking-spot-info-box {
   display: block;
 
-
-  &.left-side {
-    font-size: .9em;
-
-    .parking-spot-details h1 {
-      font-size: 1.9em;
-    }
-  }
-
   .parking-spot-details {
 
     h1 {
@@ -842,11 +773,21 @@ parking-spot-info-box {
     h2 {
       font-size: $lg-font-size;
       margin-bottom: $sm-measure-unit;
+      color: $gray-800;
     }
 
-    img {
-      height: 8em;
+    height: 8em;
 
+    img {
+      //position: absolute;
+      //top: 50%;
+      //left: 50%;
+      //width: auto;
+      //height: auto;
+      //max-width: 100%;
+      //max-height: 100%;
+      //transform: translate(-50%,-50%);
+     object-fit: cover;
       &:hover {
         background-color: $gray-200;
         cursor: pointer;
@@ -1018,7 +959,14 @@ parking-spot-info-box {
       white-space: nowrap;
       overflow: hidden;
       padding: $measure-unit;
-      border-top: 1px dashed $gray;
+
+      &:not(:last-child){
+        border-bottom: 1px dashed $gray;
+      }
+
+      &.canceled {
+        text-decoration: line-through;
+      }
 
       &:focus-within {
         background-color: darken($blue-90, 10%);
@@ -1033,13 +981,11 @@ parking-spot-info-box {
         }
       }
 
-      .canceled {
-        text-decoration: line-through;
-      }
 
       .offer-owner {
         font-size: .9em;
-        .license{
+
+        .license {
           margin-top: $xxsm-measure-unit;
           border: 1px solid $gray-600;
           border-radius: 5px;

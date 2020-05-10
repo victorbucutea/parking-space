@@ -3,17 +3,35 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
         function ($rootScope, paymentService, $state, $scope, offerService, parkingSpaceService, replaceById, $q) {
 
 
+            $scope.validity = function (space) {
+                if (!space) return 'N/A';
+                return moment(space.space_availability_start).twix(space.space_availability_stop).format();
+            };
+
+            $scope.timeUntilExpiry = function (space) {
+                if (!space) return 'N/A';
+                return moment().twix(space.space_availability_stop).humanizeLength();
+            };
+
             function initBid() {
                 $scope.bid = {};
                 let selectedSpace = $scope.selectedSpace;
                 if (selectedSpace) {
                     $scope.bid.bid_price = selectedSpace.price;
                     $scope.bid.bid_currency = selectedSpace.currency;
-                    $scope.bid.start_date = new Date();
-                    $scope.bid.end_date = moment().add(1, 'd').toDate();
+                    if ($state.params.start) {
+                        $scope.bid.start_date = $state.params.start;
+                    } else
+                        $scope.bid.start_date = new Date();
+
+                    if ($state.params.stop) {
+                        $scope.bid.end_date = $state.params.stop;
+                    } else {
+                        $scope.bid.end_date = moment().add(1, 'd').toDate();
+                    }
                     selectedSpace.userOffers = [];
-                    if (selectedSpace.offers)
-                        selectedSpace.userOffers = selectedSpace.offers.filter(offer => offer.owner_is_current_user);
+                    selectedSpace.showAvail = false;
+
                     $scope.hideRentForm = !selectedSpace.userOffers.length;
                 }
             }
@@ -22,6 +40,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
 
             if ($state.params.spaceId) {
                 let spacePr;
+                if ($scope.spaces)
+                    $scope.selectedSpace = $scope.spaces.find(s => s.id == $state.params.spaceId)
+
                 if (!$scope.selectedSpace) {
                     spacePr = parkingSpaceService.getSpace($state.params.spaceId)
                 }
@@ -50,9 +71,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
             };
 
 
-            $scope.show = function (item) {
-                $('#' + item).slideToggle(200);
-            };
+            $scope.$watchCollection('selectedSpace.offers', function (newValue, oldValue) {
+                if (newValue) {
+                    $scope.activeOffers = newValue.filter(o => isActive(o));
+                    $scope.futureOffers = newValue.filter(o => isFuture(o));
+                    $scope.pastOffers = newValue.filter(o => isPast(o));
+                }
+            });
 
             $scope.placeOffer = function () {
                 let bid = $scope.bid;
@@ -66,7 +91,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
                 }
                 offerService.placeOffer(bid, $scope.selectedSpace.id, function (bid) {
                     $scope.selectedSpace.offers.push(bid);
-                    $rootScope.$emit('spaceSave', $scope.selectedSpace);
                     $state.go('.pay', {offer: bid});
                     initBid();
                 });
@@ -88,14 +112,26 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
                 $scope.selOffer = offer;
             };
 
-            $scope.showEdit = function (selectedSpace) {
-                $state.go('.edit', {parking_space_id: selectedSpace.id});
-            };
+            let isActive = function (o) {
+                let st = moment(o.start_date);
+                let now = moment();
+                if (st.isBefore(now) && !o.end_date) return true;
+                let end = moment(o.end_date);
+                return st.isBefore(now) && now.isBefore(end);
+            }
 
-            $scope.showDelete = function (selectedSpace) {
-                $state.go('.delete', {parking_space_id: selectedSpace.id});
+            let isFuture = function (o) {
+                let st = moment(o.start_date);
+                let now = moment();
+                return st.isAfter(now);
+            }
 
-            };
+            let isPast = function (o) {
+                if (!o.end_date) return false;
+                let ent = moment(o.end_date);
+                let now = moment();
+                return ent.isBefore(now);
+            }
 
         }]);
 

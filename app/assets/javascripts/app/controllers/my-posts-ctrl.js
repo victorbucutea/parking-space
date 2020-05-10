@@ -4,18 +4,23 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
-    ['$scope', '$filter', 'offerService', 'parkingSpaceService', '$state', '$stateParams', 'notificationService', 'replaceById',
-        function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams, notificationService, replaceById) {
+    ['$scope', '$filter', 'offerService', 'parkingSpaceService', '$state', '$stateParams',
+        'notificationService', 'replaceById', '$rootScope',
+        function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams,
+                  notificationService, replaceById, $rootScope) {
 
-            parkingSpaceService.getMySpaces(function (spaces) {
-                $scope.spaces = spaces;
-                let selectedSpace = spaces.find(function (item) {
-                    return (item.id === $stateParams.parking_space_id);
-                });
+            $('.map-controls').hide();
 
-                if (selectedSpace && selectedSpace[0]) {
-                    $scope.spaceEdit = selectedSpace[0];
-                }
+
+            $scope.createMap().then((map) => {
+                parkingSpaceService.getMySpaces((spaces)=>{
+                    $scope.drawSpaces(spaces);
+                })
+
+            })
+
+            $scope.$on('markerClick', function (event, space) {
+                // show edit space
             });
 
             $scope.acceptOffer = function (space, offer) {

@@ -4,24 +4,10 @@ angular.module('ParkingSpace.services')
         function ($rootScope, $http, userService, errorHandlingService, notificationService, geocluster) {
 
             let _this = this;
-            this.getPhoneNumber = function (spaceId, clbk, errClbk) {
-                $http.get('/parking_spaces/' + spaceId + '/phone_number.json')
-                    .then(function (response) {
-                        let data = response.data;
-                        if (clbk)
-                            clbk(data);
-                    }, function (errorResponse) {
-                        if (!errClbk) {
-                            errorHandlingService.handle(errorResponse.data, errorResponse.status);
-                        } else {
-                            errClbk(errorResponse.data, errorResponse.status);
-                        }
-                    });
-            };
 
             this.getAvailableSpaces = function (latMinMax, clbk, errClbk) {
 
-                $http.get('/parking_spaces.json', {
+                return $http.get('/parking_spaces.json', {
                     params: {
                         lat_min: latMinMax.south,
                         lat_max: latMinMax.north,
@@ -30,38 +16,17 @@ angular.module('ParkingSpace.services')
                     }
                 }).then(function (response) {
                     let data = response.data;
-                    let clusteredSpaces = [];
-                    if (data) {
-                        let zoomLvl = $rootScope.map.zoom;
-                        let zoomFactor = (22 - zoomLvl) / 5;
-                        let latLngs = [];
-
-                        data.forEach(function (p_space) {
-                            _this.convert(p_space);
-                            latLngs.push([p_space.location_lat, p_space.location_long, p_space]);
-                        });
-                        clusteredSpaces = geocluster(latLngs, zoomFactor);
-                    }
                     if (clbk)
-                        clbk(clusteredSpaces);
+                        clbk(data);
                 }, function (errorResponse) {
-                    if (!errClbk) {
-                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
-                    } else {
-                        errClbk(errorResponse.data, errorResponse.status);
-                    }
+                    errorHandlingService.handle(errorResponse.data, errorResponse.status);
                 });
             };
 
-            this.getMySpaces = function (clbk, active) {
-                $http.get('/parking_spaces/myspaces.json', {params: {active: active}})
+            this.getMySpaces = function (clbk) {
+                $http.get('/parking_spaces/myspaces.json')
                     .then(function (response) {
                         let data = response.data;
-                        if (data) {
-                            data.forEach(function (p_space) {
-                                _this.convert(p_space);
-                            });
-                        }
                         if (clbk)
                             clbk(data);
                     }, function (errorResponse) {
@@ -80,6 +45,22 @@ angular.module('ParkingSpace.services')
                     space.weekly_schedule = JSON.parse(space.weekly_schedule);
                 }
             };
+
+            this.clusterize = function (spaces) {
+                let clusteredSpaces = [];
+                if (spaces) {
+                    let zoomLvl = $rootScope.map.zoom;
+                    let zoomFactor = (22 - zoomLvl) / 5;
+                    let latLngs = [];
+
+                    spaces.forEach(function (p_space) {
+                        _this.convert(p_space);
+                        latLngs.push([p_space.location_lat, p_space.location_long, p_space]);
+                    });
+                    clusteredSpaces = geocluster(latLngs, zoomFactor);
+                }
+                return clusteredSpaces;
+            }
 
             this.getSpace = function (parkingSpaceId, clbk, errClbk) {
 
@@ -102,7 +83,11 @@ angular.module('ParkingSpace.services')
                 $http.get('/parking_spaces/myoffers.json')
                     .then(function (response) {
                         let data = response.data;
-                        _this.convert(data);
+                        if (data) {
+                            data.forEach(function (p_space) {
+                                _this.convert(p_space);
+                            });
+                        }
                         if (clbk)
                             clbk(data);
                     }, function (errorResponse) {

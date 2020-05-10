@@ -430,14 +430,57 @@ div.daterangepicker {
 
 
 
-.left-panel {
-  border-bottom: 15px solid $gray-300;
+.spaces-list {
+  background-color: $gray-300;
+  height: 100vh;
+  overflow: scroll;
 
-  .offer-availability {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    background: #fff;
-    padding: 10px;
+  @include media-breakpoint-down(sm) {
+      padding-top: 93px !important;
+  }
+
+  .panel {
+    background-color: $white;
+
+    &:hover {
+      transform: scale(1.03);
+      background-color: $gray-100;
+      cursor: pointer;
+      transition: all .1s linear;
+    }
+
+    .group-thumbnail {
+      height: 6em;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+
+      img {
+        object-fit: cover;
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .offer-availability {
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      background: #fff;
+
+      .space-desc {
+        font-size: .9em;
+        white-space: pre-line;
+        overflow-wrap: break-spaces;
+        max-height: 70px;
+        transition: max-height .2s ease-in-out;
+        overflow: hidden;
+        color: $gray-700;
+      }
+    }
+
+    &:hover {
+
+    }
   }
 }
 
@@ -531,11 +574,6 @@ div.daterangepicker {
   }
 }
 
-.spaces-list {
-  position: static;
-  height: 100vh;
-  overflow: scroll;
-}
 
 .pos-relative {
   position: relative;

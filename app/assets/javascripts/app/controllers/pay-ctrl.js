@@ -73,7 +73,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('PayCtrl',
                     paymentService.registerPayment(payload, $scope.selectedSpace.id, $scope.offer.id, function (respData) {
                         $scope.loading = false;
                         replaceById(respData, $scope.selectedSpace.offers);
-                        replaceById(respData, $scope.selectedSpace.userOffers);
                         $state.go('^');
                         $rootScope.$emit('http.notif', 'Ați achitat cu succes rezervarea. Proprietarul a fost notificat.')
                     }, function (errResp) {

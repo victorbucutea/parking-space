@@ -1,22 +1,31 @@
 <div class="ps-modal" ng-controller="ReviewBidsCtrl">
   <div class="search-space-modal animated zoomIn mt-md-4">
 
-    <div ng-hide="selectedSpace.public" class="row my-2 align-items-center space-type ">
-      <div class="col-3 offset-1 rapid-icon">
-        <i class="fa fa-flash fa-3x"></i>
+    <div ng-hide="selectedSpace.public" class="row no-gutters my-2 space-type ">
+      <div class="col-8 ">
+        <h3 class="ng-binding text-muted pl-3">
+          <i class="fa fa-user text-success"></i>
+          <small class="px-2">Locul tau personal</small></h3>
       </div>
-      <div class="col-8">
-        <h3>
-          {{selectedSpace.offers.length}} Oferte
+      <div class="col-12">
+        <div class="text-muted ng-binding pl-3 pb-1">
+          <b>Activ pentru {{timeUntilExpiry(selectedSpace)}}: </b>
+          {{validity(selectedSpace)}}
+        </div>
+      </div>
+    </div>
+    <div ng-if="selectedSpace.public" class="row my-2 align-items-center space-type ">
+      <div class="col-8 ">
+        <h3 class=" text-muted pl-3">
+          <img src=""> Loc public
         </h3>
-        Acesta e locul postat de dvs.!
       </div>
     </div>
 
     <space-status-box space="selectedSpace"></space-status-box>
 
     <div class="d-flex ps-control-buttons">
-      <button class="btn btn-lg btn-outline-primary" ng-click="showEdit(selectedSpace)">
+      <button class="btn btn-lg btn-link" ui-sref="map.search.post({spaceId: selectedSpace.id})">
         <i class="fa fa-pencil"></i> Modifică datele locului
       </button>
       <button class="btn btn-lg btn-secondary" ui-sref="^">

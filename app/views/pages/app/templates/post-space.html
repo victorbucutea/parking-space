@@ -2,14 +2,15 @@
     <div class="mt-md-4 animated zoomIn" ng-controller="EditParkingSpaceCtrl">
         <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm" novalidate="novalidate">
             <div >
-                <h3 class="px-3 pt-2 ng-binding" >
-                    <i class="fa fa-car text-success" ></i>
+                <h3 class="px-3 pt-2 ">
+                    <i class="fa fa-car text-success"></i>
                     <small ng-show="step == 0" class="text-muted px-3"><b>Adresa</b> și <b>disponibilitatea</b></small>
-                    <small ng-show="step == 1" class="text-muted px-3">     <b>Locul tău</b> si <b>accesul</b> la acesta.</small>
+                    <small ng-show="step == 1" class="text-muted px-3"> <b>Locul tău</b> si <b>accesul</b> la
+                        acesta.</small>
                     <small ng-show="step == 2" class="text-muted px-3"> Termeni legali </small>
 
                 </h3>
-                 </div>
+            </div>
             <hr/>
             <!-- Step 0 -->
             <div class="container" ng-show="step == 0">

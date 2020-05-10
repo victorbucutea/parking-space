@@ -1,0 +1,41 @@
+<div class="full-height row no-gutters" ng-controller="MapCtrl">
+
+  <div class="col-6" id="contentColumn">
+    <ui-view name="subcontent"></ui-view>
+  </div>
+  <div class="col-6" id="mapColumn">
+
+    <ui-view name="help"></ui-view>
+    <div id="map" >
+      <!-- map -->
+      <search-bar place-holder="'Caută adresa  ...'" on-select-place="selectPlace(place,location)" on-menu-click="openMenu()"></search-bar>
+      <search-center-icon shown="placingSpot"></search-center-icon>
+
+      <map on-create="mapCreated(map, overlay, geocoder)" on-error="mapError()"></map>
+    </div>
+
+    <div class="map-controls">
+
+      <button class="info-btn btn btn-info" ui-sref=".instructions">
+        <i class="fa fa-question"></i>
+      </button>
+
+      <button class="center-btn btn btn-secondary" ng-click="centerMap()">
+        <i class="fa fa-crosshairs"></i>
+      </button>
+
+      <button class="btn btn-primary add-btn" ng-click="showPostSpace()" ng-class="{wide: placingSpot}">
+       <span ng-hide="placingSpot">
+           <i class="fa fa-plus"></i> <br/> Vinde
+       </span>
+        <span ng-show="placingSpot">
+            Continuă
+            <i class="fa fa-arrow-right"></i>
+        </span>
+      </button>
+
+
+
+    </div>
+  </div>
+</div>

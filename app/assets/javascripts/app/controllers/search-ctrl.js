@@ -3,107 +3,95 @@
  */
 
 
-angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceCtrl',
-    ['geoService', 'notificationService', 'userService', '$rootScope', '$scope', 'parkingSpaceService',
-        'parameterService', '$state', 'offerService', '$stateParams', 'geocluster',
-        function (geoService, notificationService, userService, $rootScope, $scope, parkingSpaceService,
-                  parameterService, $state, offerService, $stateParams, geocluster) {
+angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
+    ['$rootScope', '$scope', '$state', 'parkingSpaceService', 'userService', 'offerService',
+        function ($rootScope, $scope, $state, parkingSpaceService, userService, offerService) {
 
+            $('.map-controls').show();
+            $scope.cloudName = window.cloudinaryName;
 
-            let dragListenHandle = null;
-            let zoomListenHandle = null;
-
-            $scope.cloudinaryName = window.cloudinaryName;
+            let dragHandle = null;
+            let zoomHandle = null;
 
             let ongoingDrawSpacesReq;
-            let scheduleDrawSpaces = () => {
+
+            $scope.scheduleDrawSpaces = () => {
                 if (ongoingDrawSpacesReq) {
                     clearTimeout(ongoingDrawSpacesReq);
                 }
                 ongoingDrawSpacesReq = setTimeout(() => {
-                    drawSpaces();
+                    let args = $rootScope.map.getBounds().toJSON();
+                    parkingSpaceService.getAvailableSpaces(args, (spaces) => {
+                        $scope.drawSpaces(spaces);
+                    })
                 }, 1000);
             };
 
-            let drawSpaces = function () {
+            $scope.createMap().then((map) => {
+                let event = google.maps.event;
 
-                let bnds = $rootScope.map.getBounds().toJSON();
-                parkingSpaceService.getAvailableSpaces(bnds, function (spaces) {
-                    if (!spaces || spaces.length === 0) {
-                        $scope.selectedSpace = null;
+                dragHandle = event.addListener(map, 'dragend', $scope.scheduleDrawSpaces);
+                zoomHandle = event.addListener(map, 'zoom_changed', $scope.scheduleDrawSpaces);
+                $scope.scheduleDrawSpaces();
+                $scope.$on('$stateChangeStart', function (stateEventm, next, current) {
+                    if (!next.name.startsWith('map.search')) {
+                        event.removeListener(dragHandle);
+                        event.removeListener(zoomHandle);
                     }
-
-                    if ($rootScope.markers)
-                        $rootScope.markers.forEach(function (d) {
-                            d.setMap();//clear marker
-                        });
-
-                    $rootScope.markers = [];
-
-                    $rootScope.$emit('spaces', spaces);
-
-                    spaces.forEach(function (space) {
-                        addMarker(space);
-                    })
                 });
-            };
-
-            $scope.mapCreated = function (map, overlay, geocoder) {
-                $('#mapBlanket').fadeOut();
-                $rootScope.map = map;
-                $rootScope.overlay = overlay;
-                $rootScope.geocoder = geocoder;
+            })
 
 
-                dragListenHandle = google.maps.event.addListener($rootScope.map, 'dragend', scheduleDrawSpaces);
-                zoomListenHandle = google.maps.event.addListener($rootScope.map, 'zoom_changed', scheduleDrawSpaces);
-                scheduleDrawSpaces();
-
-                $rootScope.map.addListener('click', function (evt) {
-                    // to avoid mobile ggl autocomplete keeping focus when clicking on map
-                    $('#pac-input').blur();
-                });
-
-                // center on request params if need be
-                if ($stateParams.lat && $stateParams.lng) {
-                    let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
-                    if ($stateParams.zoom) {
-                        map.setZoom(parseInt($stateParams.zoom));
-                    } else {
-                        map.setZoom(17);
-                    }
-                    map.setCenter(pos);
+            $rootScope.$on('markerClick', function (event, payload) {
+                let isMultiple = payload[1];
+                let data = payload[0];
+                $('#showMultipleSpaces').hide();
+                if (isMultiple) {
+                    $('#showMultipleSpaces').show();
+                    $scope.selectedSpaces = data;
+                    $scope.$apply();
+                    return;
                 }
 
-                navigateToCompanyLot();
+                $scope.selectedSpace = data;
 
-                $scope.$on('$stateChangeStart', function (event, toState) {
-                    if (toState.name.indexOf('search') === -1) {
-                        google.maps.event.removeListener(dragListenHandle);
-                        google.maps.event.removeListener(zoomListenHandle);
-                    } else if (toState.name === 'search') {
-                        $scope.placingSpot = null;
-                    }
-                });
+                let owned = data.owner_is_current_user;
+
+                if (owned) {
+                    $state.go('.review-bids', {spaceId: data.id});
+                } else {
+                    $state.go('.post-bids', {spaceId: data.id});
+                }
+            });
+
+            $rootScope.$on('postSpace', function (rvt) {
+                $scope.spaceEdit = {};
+                $state.go('.post');
+            })
+
+
+            $scope.showDesc = function (space) {
+                let esc = $('#spaceDesc-' + space.id);
+                let height = esc[0].scrollHeight;
+                let open = esc.data('open')
+                if (open) {
+                    esc.css('max-height', '70px');
+                    esc.data('open', '');
+                } else {
+                    esc.css('max-height', height + 'px');
+                    esc.data('open', 'true');
+                }
             };
 
-            $scope.mapError = function () {
-                $('#mapBlanket').fadeOut();
-                $rootScope.$emit('http.error', 'Nu se poate inițializa harta. Ești conectat la internet? ');
+            $scope.showFullImageThumb = function (evt, space) {
+                $rootScope.$emit('showCarouselImages', space.images);
+                evt.stopPropagation();
             };
 
-            if (!userService.instructionsShown()) {
-                $state.go('.instructions').then(() => {
-                        userService.instructionsShown(true)
-                    }
-                )
-            }
 
             function navigateToCompanyLot() {
                 userService.getRoles(function (roles) {
                     if (!roles) return;
-                    let rolesJson = JSON.stringify(roles);
-                    sessionStorage.setItem("current_roles", rolesJson);
                     if (roles.company && roles.company.locations && roles.company.locations[0]) {
                         let lat = roles.company.locations[0].location_lat;
                         let lng = roles.company.locations[0].location_long;
@@ -115,78 +103,17 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchParkingSpaceC
                 })
             }
 
-            function addMarker(space) {
-                let htmlMarker = new HtmlMarker(space, $scope, $rootScope.map);
-                $rootScope.markers.push(htmlMarker);
+
+            $scope.showFullImage = function (evt) {
+                $rootScope.$emit('showCarouselImages', $scope.space.images);
+            };
+
+            if (!userService.instructionsShown()) {
+                $state.go('.instructions').then(() => {
+                        userService.instructionsShown(true)
+                    }
+                )
             }
-
-            function removeMarker(id) {
-                $rootScope.markers.forEach(function (d) {
-                    d.spaces.forEach((space) => {
-                        if (space.id == id)
-                            d.setMap();//clear marker
-                    })
-
-                });
-            }
-
-            $rootScope.$on('spaceSave', (evt, space) => {
-                removeMarker(space.id);
-                let cluster = geocluster([
-                    [Number.parseFloat(space.location_lat), Number.parseFloat(space.location_long), space]
-                ]);
-                addMarker(cluster[0]);
-            });
-
-            $rootScope.$on('spaceDelete', (evt, id) => {
-                removeMarker(id);
-            });
-
-            $scope.$on('selectSpace', function (event, space) {
-                $scope.markerClick(space);
-            });
-
-            $scope.markerClick = function (data, isMultiple) {
-                $('#showMultipleSpaces').hide();
-                if (isMultiple) {
-                    $('#showMultipleSpaces').show();
-                    $scope.selectedSpaces = data;
-                    $scope.$apply();
-                    return;
-                }
-                $scope.selectedSpace = data;
-                let owned = $scope.selectedSpace.owner_is_current_user;
-
-                if (owned) {
-                    $state.go('.review-bids', {spaceId: $scope.selectedSpace.id});
-                } else {
-                    $state.go('.post-bids', {spaceId: $scope.selectedSpace.id});
-                }
-            };
-
-            $scope.showPostSpace = function () {
-                if (!$scope.placingSpot) {
-                    $scope.placingSpot = true;
-                    return;
-                }
-                $scope.spaceEdit = {};
-                angular.copy($scope.space, $scope.spaceEdit);
-                $scope.spaceEdit.title = "";
-                $state.go('.post');
-            };
-
-            $scope.centerMap = function () {
-                geoService.getCurrentPosition((position) => {
-                    let pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    $rootScope.map.setCenter(pos);
-                });
-            };
-
-            $scope.selectPlace = function (newAddr, newLocation) {
-                if (!newLocation) return;
-
-                $rootScope.map.setCenter(newLocation);
-            };
 
 
         }]);

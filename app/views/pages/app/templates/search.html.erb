@@ -1,7 +1,11 @@
-<div class="full-height row no-gutters" ng-controller="SearchParkingSpaceCtrl">
+<div ng-controller="SearchCtrl">
 
-  <div class="d-none d-lg-block col-lg-4 spaces-list ">
-    <div ng-hide="mapSpaces.length">
+
+  <ui-view name="place-bid"></ui-view>
+
+
+  <div class="spaces-list p-3 ">
+    <div ng-hide="spaces.length">
       <div class="no-items-msg loading-finished" ng-hide="spaces.length">
         Nu sunt locuri in zonă.<br/>
         Fii primul care
@@ -12,87 +16,109 @@
         </u>
       </div>
     </div>
-    <div ng-repeat="item in mapSpaces" class="left-panel py-2 px-0">
-      <div ng-if="item.elements.length == 1" ng-init="space = item.elements[0][2]">
+    <div ng-repeat="item in spacesClustered" class="panel mb-3 p-0">
+      <div ng-if="item.elements.length == 1" ng-init="space = item.elements[0][2]" ng-click="zoomTo(space)">
         <parking-spot-info-box space="space" class="left-side"></parking-spot-info-box>
         <div class="m-0 offer-availability">
-          {{nextOffer(space)}}
+          <div class="m-3 small"><u> {{space.owner_name}} </u>
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-warning"></i>
+            (0 reviews)
+          </div>
+          <div class="m-3" ng-show="space.description && !space.owner_is_current_user">
+            <div id="spaceDesc-{{space.id}}" class="space-desc">{{space.description}}</div>
+            <div ng-click="showDesc(space)" class="text-right">
+              <a href> vezi tot <i class="fa fa-angle-double-down"></i> </a>
+            </div>
+          </div>
+          <button class="btn btn-block btn-link border-top" ng-hide="space.owner_is_current_user"
+                  ng-click="space.showAv = !space.showAv">
+            <i class="fa fa-calendar-check-o "></i>
+            Verifică disponibilitatea
+            <i class="fa fa-angle-double-down"></i>
+          </button>
+          <button class="btn btn-block btn-link" ng-show="space.owner_is_current_user"
+                  ui-sref=".review-bids({spaceId:space.id})">
+            <i class="fa fa-user"></i>
+            Loc personal
+          </button>
+          <space-availability-box space="space" ng-if="space.showAv" ></space-availability-box>
         </div>
-        <div class="mt-2 d-flex justify-content-around">
-          <button class="btn btn-outline-primary " ng-show="space.from_user && !space.owner_is_current_user" ng-click="selectSpace(space)">
+        <div class="my-2 d-flex justify-content-around">
+          <button class="btn btn-outline-primary " ng-show="space.from_user && !space.owner_is_current_user" ui-sref=".post-bids({spaceId: space.id})">
             <i class="fa fa-calendar"></i>
             Rezervă
           </button>
-          <button class="btn btn-outline-primary " ng-show="space.from_user && space.owner_is_current_user" ng-click="selectSpace(space)">
+          <button class="btn btn-outline-primary " ng-show="space.from_user && space.owner_is_current_user" ui-sref=".review-bids({spaceId: space.id})">
+            <i class="fa fa-calendar"></i>
+            Vezi rezervări
+          </button>
+          <button class="btn btn-outline-primary " ng-show="space.from_user && space.owner_is_current_user" ui-sref=".post({spaceId: space.id})">
             <i class="fa fa-pencil"></i>
             Modifică
           </button>
-          <button class="btn btn-link" ng-click="zoomTo(space)">
-            <i class="fa fa-map"></i>
-            Arată pe hartă
-          </button>
         </div>
       </div>
-      <div ng-if="item.elements.length > 1" class="p-3 border-bottom">
+      <div ng-if="item.elements.length > 1" class="pt-3 px-2" ng-click="zoomToCluster(item)">
         <h4> {{item.elements.length}} Locuri <br/>
           <small class="text-muted">In apropiere de {{item.elements[0][2].address_line_1}}</small>
         </h4>
         <ul class="p-0">
-          <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center "
-              ng-repeat="space in item.elements" ng-click="selectSpace(space[2])">
-            <div> {{space[2].title}}</div>
-            <span class="text-secondary">  {{space[2].price + ' ' + space[2].currency}} / h  </span>
+          <li class="list-group-item list-group-item-action p-0 " ng-repeat="space in item.elements">
+            <div class="row no-gutters">
+              <div class="group-thumbnail col-4 ">
+                <i class="fa fa-2x fa-photo text-muted" ng-if="!space[2].images.length"></i>
+                <img ng-click="showFullImageThumb($event, space[2])"
+                     ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space[2].images[0].name}}"
+                     ng-if="space[2].images.length">
+              </div>
+
+              <div class="row no-gutters col-8">
+                <div class="col-8 d-flex flex-column align-items-center justify-content-center">
+                  {{space[2].title}}
+                  <div class="small">
+                    <i class="fa fa-star text-warning"></i>
+                    <i class="fa fa-star text-warning"></i>
+                    <i class="fa fa-star text-warning"></i>
+                    <i class="fa fa-star text-warning"></i>
+                    <i class="fa fa-star text-warning"></i>
+                    (0 reviews)
+                  </div>
+                </div>
+                <div class="col-4 d-flex text-danger align-items-center justify-content-center">
+                  <div>
+                    {{space[2].price | units }}.<small>{{space[2].price | subunits}}</small>
+                    <currency val="space[2].currency"></currency> / h
+                  </div>
+                </div>
+                <div class="col-12 d-flex align-items-end justify-content-end">
+                  <button class="btn btn-link btn-sm" ng-show="space[2].from_user && !space[2].owner_is_current_user" ui-sref=".post-bids({spaceId: space[2].id})">
+                    <i class="fa fa-calendar"></i>
+                    Rezervă
+                  </button>
+                  <button class="btn btn-link btn-sm" ng-show="space[2].from_user && space[2].owner_is_current_user" ui-sref=".review-bids({spaceId: space[2].id})">
+                    <i class="fa fa-calendar"></i>
+                    Vezi rezervări
+                  </button>
+                  <button class="btn btn-link btn-sm" ng-show="space[2].from_user && space[2].owner_is_current_user" ui-sref=".post({spaceId: space[2].id})">
+                    <i class="fa fa-pencil"></i>
+                    Modifică
+                  </button>
+                </div>
+              </div>
+
+            </div>
           </li>
         </ul>
-        <div class="mt-2 d-flex justify-content-around">
-          <button class="btn btn-link" ng-click="zoomTo(item.elements[0][2])">
-            <i class="fa fa-map"></i>
-            Arată pe hartă
-          </button>
-        </div>
       </div>
-
     </div>
-  </div>
-
-
-  <!-- map -->
-  <div id="map" class="col-lg-8 ">
-    <search-bar place-holder="'Caută adresa  ...'" on-select-place="selectPlace(place,location)" on-menu-click="openMenu()"> </search-bar>
-    <map on-create="mapCreated(map, overlay, geocoder)" on-error="mapError()"></map>
-    <search-center-icon shown="placingSpot"></search-center-icon>
-  </div>
-
-
-  <div class="map-controls">
-
-    <ui-view name="place-bid"></ui-view>
-
-
-    <button class="info-btn btn btn-info" ui-sref=".instructions">
-      <i class="fa fa-question"></i>
-    </button>
-
-
-    <button class="center-btn btn btn-secondary" ng-click="centerMap()">
-      <i class="fa fa-crosshairs"></i>
-    </button>
-
-    <button class="btn btn-primary add-btn" ng-click="showPostSpace()" ng-class="{wide: placingSpot}">
-       <span ng-hide="placingSpot">
-           <i class="fa fa-plus"></i> <br/> Vinde
-       </span>
-      <span ng-show="placingSpot">
-            Continuă
-            <i class="fa fa-arrow-right"></i>
-        </span>
-    </button>
-
-    <ui-view name="help"></ui-view>
 
     <div id="showMultipleSpaces" class="ps-dialog animated zoomIn">
       <div class="ps-dialog-content max-zoom-spaces pt-3">
-        <h5 class="text-center"> Alege un loc</h5>
+        <h5 class="text-center"> Mai multe locuri la aceeași locație </h5>
         <img class="img-fluid"
              id="scream"
              crossorigin="anonymous"
@@ -100,10 +126,8 @@
              ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+selectedSpaces[0].perimeter.section.interior_map}}">
 
         <ul>
-          <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center "
-              ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
-            <div> {{space.title}}</div>
-            <span class="text-secondary">  {{space.price + ' ' + space.currency}} / h  </span>
+          <li class="list-group-item list-group-item-action p-0" ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
+            <parking-spot-info-box space="space"></parking-spot-info-box>
           </li>
         </ul>
         <div class="ps-control-buttons">
@@ -111,7 +135,5 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </div>

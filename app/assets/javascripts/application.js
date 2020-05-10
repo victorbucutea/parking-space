@@ -16,6 +16,7 @@
 //= require moment/min/moment.min
 //= require moment/locale/ro
 //= require moment-duration-format/lib/moment-duration-format
+//= require twix/dist/twix
 //= require popper.js/dist/umd/popper.min
 //= require bootstrap/dist/js/bootstrap.min
 //= require bootstrap-daterangepicker/daterangepicker

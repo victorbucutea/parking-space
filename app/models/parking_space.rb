@@ -16,7 +16,7 @@ class ParkingSpace < ActiveRecord::Base
 
   scope :not_expired, lambda {
     where('parking_spaces.space_availability_stop >= ?
-                              or parking_spaces.space_availability_stop is null  ', Time.now) }
+                              or parking_spaces.space_availability_stop is null', Time.now) }
 
   scope :active, lambda { |current_user|
     where('parking_spaces.space_availability_start <= ?

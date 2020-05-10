@@ -159,8 +159,8 @@ angular.module('ParkingSpace.directives')
         s.onload = function () {
             window.onLoadMaps()
         };
-        s.src = 'https://maps.googleapis.com/maps/api/js?key=AI' +
-            'zaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=ge' +
+        s.src = 'https://maps.googleapis.com/maps/api/js?key=AIza' +
+            'SyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY&libraries=ge' +
             'ometry,places&language=ro';
         document.body.appendChild(s);
 
@@ -170,12 +170,20 @@ angular.module('ParkingSpace.directives')
             window.onLoadMaps = function () {
                 deffered.resolve();
             };
+            setTimeout(() => {
+                if (!window.google || !window.google.maps) {
+                    console.error('gmaps not loaded');
+                    deffered.reject();
+                    return;
+                }
+            }, 4000)
             return deffered.promise();
         };
 
         return lazyLoadGmapsApi().then(function () {
             if (!window.google || !window.google.maps) {
                 console.error('gmaps not loaded');
+                return;
             }
 
             function HtmlMarker(cluster, scope, map) {
@@ -233,7 +241,7 @@ angular.module('ParkingSpace.directives')
                 $(div).on('click touchstart', function (evt) {
                     if (noOfSpaces > 1) {
                         let zoom = _this.getMap().getZoom();
-                        if (zoom >= 20) {
+                        if (zoom >= 19) {
                             _this.scope.markerClick(_this.spaces, true);
                             return;
                         }
@@ -244,14 +252,12 @@ angular.module('ParkingSpace.directives')
                         });
                         let zoomLvl = $rootScope.map.zoom;
                         let zoomFactor = (22 - zoomLvl) / 5;
-                        let zoomIn = 2;
+                        let zoomIn = 1;
 
                         let cluster = geocluster(lats, (zoomFactor + 1));
                         if (cluster.length >= 2) {
-                            zoomIn += 2;
+                            zoomIn += 1;
                         }
-                        console.log(cluster);
-
 
                         _this.getMap().setZoom(zoomLvl + zoomIn);
 
@@ -334,6 +340,8 @@ angular.module('ParkingSpace.directives')
 
         }, function () {
             console.error('promise rejected');
+            $rootScope.$emit('http.error', 'Nu se poate incărca harta. Ești conectat la internet?')
+            $rootScope.$apply();
         });
     }])
 
@@ -519,30 +527,15 @@ angular.module('ParkingSpace.directives')
                 '               ng-show="shown"' +
                 '               id="searchCenterIcon" ' +
                 '               class="search-center-icon animated bounce"' +
-                '               </div>',
+                '               ></div>',
             link: function ($scope, $element, $attr) {
+                $scope.shown = angular.isDefined($scope.shown) ? $scope.shown : false;
 
                 // bad internet, a message should be shown
                 // to warn the user. No sense to initialize the map.
                 if (!window.google || !window.google.maps) {
                     return;
                 }
-
-                let start = google.maps.event.addListener($rootScope.map, 'dragstart', () => {
-                    $('#searchCenterIcon').addClass('shadow');
-                });
-                let end = google.maps.event.addListener($rootScope.map, 'dragend', () => {
-                    $('#searchCenterIcon').removeClass('shadow');
-
-                });
-
-                $scope.$watch('shown', (newVal) => {
-                    if (newVal === false) {
-                        google.maps.event.removeListener(start);
-                        google.maps.event.removeListener(end);
-                    }
-                })
-
             }
         }
     }])
@@ -552,12 +545,13 @@ angular.module('ParkingSpace.directives')
             restrict: 'E',
             template:
                 '<div class="parking-spot-details row no-gutters" >' +
-                '          <div class="col-4 col-md-3 px-2 pt-1 justify-content-center d-flex" style="overflow: hidden" >' +
+                '          <div class="col-5 col-md-4 justify-content-center d-flex" style="overflow: hidden" >' +
                 '               <i class="fa fa-3x fa-photo align-self-center text-muted" ng-if="!space.images.length"></i>' +
-                '               <img ng-click="showFullImage()" ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.images[0].name}}"' +
-                '                   class="img-thumbnail" ng-if="space.images.length">' +
+                '               <img ng-click="showFullImageThumb($event)" ' +
+                '                    ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.images[0].name}}"' +
+                '                    ng-if="space.images.length">' +
                 '          </div>' +
-                '          <div class="p-2 col-8 col-md-9" >' +
+                '          <div class="px-2 pt-1 col-7 col-md-8" >' +
                 '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
                 '              <p>{{space.address_line_1}} ' +
                 '                     <br  />' +
@@ -587,8 +581,9 @@ angular.module('ParkingSpace.directives')
                     }
                 });
 
-                $scope.showFullImage = function (evt) {
+                $scope.showFullImageThumb = function (evt) {
                     $rootScope.$emit('showCarouselImages', $scope.space.images);
+                    evt.stopPropagation();
                 };
 
 
@@ -664,26 +659,26 @@ angular.module('ParkingSpace.directives')
             template: '<div class="bids-area ">' +
                 '      <div class="bid-table">' +
                 '        <div class="offer row no-gutters py-1" ng-click="selectOffer(offer)"' +
-                '             ng-repeat="offer in offers | orderBy: \'start_date\'">' +
+                '             ng-repeat="offer in offers | orderBy: \'start_date\'"' +
+                '             ng-class="{canceled : !offer.approved}" >' +
                 '          <div class="col-3 offer-owner">' +
                 '            <div>{{offer.owner_name}}</div>' +
                 '            <div class="license text-monospace">{{offer.owner_license}}</div>' +
                 '          </div>' +
-                '          <div class="col-6 offer-period" ng-class="{canceled : !offer.approved}">' +
-                '             <span class="">' +
-                '                  <span style="font-size: 1.1em;">' +
-                '                    {{offer.start_date | moment: \'D/MM\' }}' +
+                '          <div class="col-6 offer-period" >' +
+                '                  <span>' +
+                '                    {{validity(offer)}}' +
                 '                  </span>' +
-                '                    {{offer.start_date | moment: \'HH:mm\' }}' +
-                '                  -' +
-                '                  <span style="font-size: 1.1em;">' +
-                '                    {{offer.end_date | moment: \'D/MM\' }}' +
-                '                  </span>' +
-                '                    {{offer.end_date | moment: \'HH:mm\' }}' +
-                '                  </span>' +
-                '             </div>' +
-                '          </span>' +
-                '          <span class="offer-price col-3" ng-class="{canceled : !offer.approved}">' +
+                '                <div > ' +
+                '                  <span ng-show="offer.canceled" ' +
+                '                        class="text-danger d-inline-block">Anulată</span> ' +
+                '                  <span ng-show="offer.rejected" ' +
+                '                        class="text-danger d-inline-block">Respinsă</span> ' +
+                '                  <span ng-show="!offer.paid" ' +
+                '                        class="text-danger d-inline-block">Neplătită</span> ' +
+                '                </div>' +
+                '          </div>' +
+                '          <span class="offer-price col-3">' +
                 '            <div>{{offer.amount}} {{ offer.currency }}</div>' +
                 '            <div class="offer-duration"> {{offer | totalPeriod}}</div>' +
                 '          </span>' +
@@ -730,8 +725,26 @@ angular.module('ParkingSpace.directives')
                 '                    </div>' +
                 '                    <div class="col-8">' +
                 '                        <span ng-show="selOffer.approved" class="text-success">Acceptat</span>' +
-                '                        <span ng-show="selOffer.canceled" class="text-danger">Anulat</span>' +
-                '                        <span ng-show="selOffer.rejected" class="text-danger">Respins</span>' +
+                '                        <span ng-show="selOffer.canceled" class="text-danger">' +
+                '                        <div>Anulată</div>' +
+                '                          <span class="text-secondary">' +
+                '                             <i class="fa fa-info-circle"></i> ' +
+                '                             Rezervarea a fost anulată de către proprietar.' +
+                '                           </span> ' +
+                '                        </span>' +
+                '                        <span ng-show="selOffer.rejected" class="text-danger">Respins' +
+                '                         <div>Respinsă</div>' +
+                '                           <span class="text-secondary">' +
+                '                             <i class="fa fa-info-circle"></i>  ' +
+                '                             Rezervarea a fost respinsă de către operator' +
+                '                           </span> ' +
+                '                         </span>' +
+                '                        <span ng-show="!selOffer.paid" class="text-danger">' +
+                '                           <div>Neplătită</div>' +
+                '                           <span class="text-secondary">' +
+                '                             <i class="fa fa-info-circle"></i> O rezervare neplătită nu atrage nici o obligatie din partea proprietarului' +
+                '                           </span> ' +
+                '                       </span>' +
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="row ps-row">' +
@@ -759,31 +772,10 @@ angular.module('ParkingSpace.directives')
                 '    </div>' +
                 '      </div>',
             link: function ($scope, $elm) {
-                $scope.expiration = function (offer) {
-                    if (!offer)
-                        return;
-                    let st = moment(offer.start_date);
-                    let end = moment(offer.end_date);
-                    let now = moment();
-
-                    let isNow = end.isAfter(now) && st.isBefore(now);
-                    let isInThePast = st.isBefore(now);
-                    let isInTheFuture = end.isAfter(now);
-
-                    if (isNow) {
-                        return "Se încheie " + end.fromNow();
-                    }
-
-                    if (isInThePast) {
-                        return "Încheiat " + end.fromNow()
-                    }
-
-                    if (isInTheFuture) {
-                        return "Progr. " + st.fromNow();
-                    }
-
-                    return "";
-                };
+                $scope.validity = function (offer) {
+                    if (!offer) return 'n/a';
+                    return moment(offer.start_date).twix(offer.end_date).format()
+                }
 
                 $scope.selectOffer = function (offer) {
                     $scope.selOffer = offer;
@@ -835,22 +827,8 @@ angular.module('ParkingSpace.directives')
                 '            </div>' +
                 '          </form>' +
                 '        </div>' +
-                '        <div class="p-2 posted-box text-center" ng-hide="space.expired">' +
-                '          <div class="font-weight-bold text-success ">Disponibil pentru închiriat încă {{ timeUntilExpiry(space) }}' +
-                '          </div>' +
-                '          <div class="">' +
-                '            <div class="text-monospace text-muted small text-center ">' +
-                '              {{space.space_availability_start | moment:\'D MMM [(h)] HH:mm\' }} -' +
-                '              {{space.space_availability_stop | moment:\'D MMM [(h)] HH:mm\'}}' +
-                '            </div>' +
-                '          </div>' +
-                '        </div>' +
                 '      </div>',
             link: function ($scope, $elm) {
-
-                $scope.timeUntilExpiry = function (space) {
-                    return moment().to(moment(space.space_availability_stop), true);
-                };
 
                 $scope.initExpiredBox = function () {
                     $('[data-toggle=tooltip]').tooltip();
@@ -925,21 +903,46 @@ angular.module('ParkingSpace.directives')
             template: '<div>' +
                 '         <space-missing-doc-box space="space"></space-missing-doc-box>' +
                 '         <space-validated-box space="space"></space-validated-box>' +
-                '         <div>' +
-                '           <button class="btn btn-link btn-block" ng-show="activeOffers.length">' +
-                '             <i class="fa fa-angle-double-down"></i> Rezervare curentă' +
-                '           </button>' +
-                '           <button class="btn btn-link btn-block" ng-hide="activeOffers.length">' +
-                '             <i class="fa fa-ban"></i> Nicio rezervare curentă' +
-                '           </button>' +
+                '         <div class="p-2">' +
+                '            <h5 class="text-center font-weight-bold p-2 "><u>Rezervări</u></h5>' +
+                '            <ul class="nav nav-tabs" role="tablist">' +
+                '              <li class="nav-item " >' +
+                '                <a href="" data-target="#active-{{space.id}}" data-toggle="tab" role="tab"  class="nav-link active" >' +
+                '                  In curs <span class="badge badge-danger">{{activeOffers.length}}</span>' +
+                '                </a>' +
+                '              </li>' +
+                '              <li class="nav-item"  >' +
+                '                <a href="" data-target="#future-{{space.id}}" data-toggle="tab" role="tab" class="nav-link"  > ' +
+                '                    Viitoare' +
+                '                </a>' +
+                '              </li>' +
+                '             <li class="nav-item"> ' +
+                '                <a href="" data-target="#past-{{space.id}}" data-toggle="tab" role="tab" class="nav-link"  > ' +
+                '                    Trecute ' +
+                '                </a>' +
+                '              </li>' +
+                '            </ul>' +
+                '            <div  class="tab-content">' +
+                '               <div class="tab-pane fade show active" id="active-{{space.id}}" role="tabpanel" >' +
+                '                    <div class="text-center p-3 text-muted" ng-hide="activeOffers.length"> ' +
+                '                         <i class="fa fa-ban"></i> Nicio rezervare curentă ' +
+                '                    </div>' +
+                '                    <bid-table space="space" offers="activeOffers" ></bid-table>' +
+                '               </div>' +
+                '               <div class="tab-pane fade" id="future-{{space.id}}" role="tabpanel"  class="pb-2">' +
+                '                    <div class="text-center p-3 text-muted" ng-hide="futureOffers.length"> ' +
+                '                         <i class="fa fa-ban"></i> Nicio rezervare ' +
+                '                    </div>' +
+                '                    <bid-table space="space" offers="futureOffers"  class="pb-2"></bid-table>' +
+                '               </div>' +
+                '               <div class="tab-pane fade" id="past-{{space.id}}" role="tabpanel"  class="pb-2">' +
+                '                    <div class="text-center p-3 text-muted" ng-hide="pastOffers.length"> ' +
+                '                         <i class="fa fa-ban"></i> Nicio rezervare' +
+                '                    </div>' +
+                '                    <bid-table space="space" offers="pastOffers"  class="pb-2"></bid-table>' +
+                '               </div>' +
+                '            </div>' +
                 '         </div>' +
-                '         <bid-table offers="activeOffers"></bid-table>' +
-                '         <div ng-if="nonActiveOffers.length">' +
-                '           <button class="btn btn-link btn-block" ng-click="space.showOffers = !space.showOffers">' +
-                '             <i class="fa fa-angle-double-down"></i> Afișează toate rezervările' +
-                '           </button>' +
-                '         </div>' +
-                '         <bid-table space="space" offers="nonActiveOffers" ng-if="space.showOffers"></bid-table>' +
                 '      </div>',
             link: function ($scope, elm) {
                 $scope.availability_start = moment().toDate();
@@ -953,12 +956,248 @@ angular.module('ParkingSpace.directives')
                     return st.isBefore(now) && now.isBefore(end);
                 }
 
+                let isFuture = function (o) {
+                    let st = moment(o.start_date);
+                    let now = moment();
+                    return st.isAfter(now);
+                }
+
+                let isPast = function (o) {
+                    if (!o.end_date) return false;
+                    let ent = moment(o.end_date);
+                    let now = moment();
+                    return ent.isBefore(now);
+                }
+
                 $scope.$watch('space.offers', (newVal) => {
                     if (!newVal) return;
                     $scope.activeOffers = newVal.filter(o => isActive(o));
-                    $scope.nonActiveOffers = newVal.filter(o => !isActive(o));
+                    $scope.futureOffers = newVal.filter(o => isFuture(o));
+                    $scope.pastOffers = newVal.filter(o => isPast(o));
                 })
 
+            }
+        }
+    }])
+
+    .directive('spaceAvailabilityBox', ['offerService', function (offerService) {
+        return {
+            restrict: 'E',
+            scope: {
+                space: '=',
+                onReserve: '&'
+            },
+            template: '<div>' +
+                '      <div class="text-center" ng-show="loading"><i class="fa fa-spinner fa-spin"></i></div>' +
+                '      <div class="space-availability px-2" ng-hide="loading">' +
+                '            <h5 class="pt-2">Azi</h5>' +
+                '            <div class="text-center text-danger" ng-hide="todayIntervs.length">' +
+                '              <i class="fa fa-ban"></i> Indisponibil' +
+                '            </div>' +
+                '            <div class="d-flex justify-content-around  pt-1 text-success av-row" ng-repeat="intv in todayIntervs">' +
+                '              <div><i class="fa fa-car"></i> {{intv.durationH}}</div>' +
+                '              <div> {{intv.countH}}</div>' +
+                '              <div>' +
+                '                <button class="btn btn-sm btn-link" ui-sref="map.search.post-bids({spaceId:space.id, start: intv.start, stop: intv.end })">' +
+                '                  <i class="fa fa-bolt"></i> Rezervă' +
+                '                </button>' +
+                '              </div>' +
+                '            </div>' +
+                '            <h5 class="pt-2"> Mâine </h5>' +
+                '            <div class="text-center text-danger" ng-hide="tomorrowIntervs.length">' +
+                '              <i class="fa fa-ban"></i> Indisponibil' +
+                '            </div>' +
+                '            <div class="d-flex justify-content-around  pt-1 text-success av-row" ng-repeat="intv in tomorrowIntervs">' +
+                '              <div><i class="fa fa-car"></i> {{intv.durationH}}</div>' +
+                '              <div> {{intv.countH}}</div>' +
+                '              <div>' +
+                '                <button class="btn btn-sm btn-link" ui-sref="map.search.post-bids({spaceId:space.id, start: intv.start, stop: intv.end })">' +
+                '                  <i class="fa fa-bolt"></i> Rezervă' +
+                '                </button>' +
+                '              </div>' +
+                '            </div>' +
+                '            <h5 class="pt-2"> Saptămâna următoare </h5>' +
+                '            <div class="text-center text-danger" ng-hide="thisWeekIntvs.length">' +
+                '              <i class="fa fa-ban"></i> Indisponibil' +
+                '            </div>' +
+                '            <div class="d-flex justify-content-around  pt-1 text-success av-row" ng-repeat="intv in thisWeekIntvs">' +
+                '              <div><i class="fa fa-car"></i> {{intv.durationDH}}</div>' +
+                '              <div> {{intv.countH}}</div>' +
+                '              <div>' +
+                '                <button class="btn btn-sm btn-link" ui-sref="map.search.post-bids({spaceId:space.id, start: intv.start, stop: intv.end })">' +
+                '                  <i class="fa fa-bolt"></i> Rezerva' +
+                '                </button>' +
+                '              </div>' +
+                '            </div>' +
+                '          </div>' +
+                '       </div>',
+            link: function ($scope, $elm) {
+
+                $scope.loading = true;
+                let space = $scope.space;
+                offerService.getOffers(space.id).then((offers) => {
+
+                    function calculateIntervals(dt, space) {
+                        let intervals = [];
+                        let todayRange = dt.clone().startOf('d').twix(dt.clone().endOf('d'));
+                        let spSt = moment(space.space_availability_start);
+                        let spEnd = moment(space.space_availability_stop);
+                        let spaceRange = spSt.twix(spEnd);
+                        todayRange = todayRange.intersection(spaceRange);
+                        if (!todayRange.isValid()) {
+                            return intervals; //outside space validity
+                        }
+                        todayRange = [todayRange];
+                        offers.forEach((of) => {
+                            let st = moment(of.start_date);
+                            let end = moment(of.end_date);
+                            let offerRange = st.twix(end);
+                            let newRanges = [];
+                            todayRange.forEach((rng) => {
+                                let nonReservedRngs = rng.difference(offerRange);
+                                newRanges.push(...nonReservedRngs);
+                            });
+                            todayRange = newRanges;
+                        });
+
+                        todayRange.forEach((intv) => {
+                            intervals.push({
+                                start: intv.start().toISOString(),
+                                end: intv.end().toISOString(),
+                                durationH: intv.format({hideDate: true}),
+                                durationDH: intv.format(),
+                                countH: intv.count('h') + 'h'
+                            });
+                        })
+
+                        return intervals;
+                    }
+
+                    let now = moment();
+                    $scope.todayIntervs = calculateIntervals(now, space);
+                    $scope.tomorrowIntervs = calculateIntervals(now.add(1, 'd'), space);
+
+                    let thisWeekIntvs = [];
+                    thisWeekIntvs = thisWeekIntvs.concat(calculateIntervals(now.add(1, 'd'), space));
+                    thisWeekIntvs = thisWeekIntvs.concat(calculateIntervals(now.add(1, 'd'), space));
+                    thisWeekIntvs = thisWeekIntvs.concat(calculateIntervals(now.add(1, 'd'), space));
+                    thisWeekIntvs = thisWeekIntvs.concat(calculateIntervals(now.add(1, 'd'), space));
+                    thisWeekIntvs = thisWeekIntvs.concat(calculateIntervals(now.add(1, 'd'), space));
+                    thisWeekIntvs = thisWeekIntvs.concat(calculateIntervals(now.add(1, 'd'), space));
+                    $scope.thisWeekIntvs = thisWeekIntvs;
+                }).finally(() => {
+                    $scope.loading = false;
+                })
+            }
+        }
+    }])
+
+    .directive('bidInfoBox', [function () {
+        return {
+            restrict: 'E',
+            scope: {
+                offers: '=',
+                selectedSpace: '=',
+            },
+            template: '<div>' +
+                '          <div class="text-center p-3 text-muted" ng-hide="offers.length">' +
+                '            <i class="fa fa-ban"></i> Nicio rezervare' +
+                '          </div> ' +
+                '        <div class="existing-offers panel p-3 my-2" ng-class="{canceled:bid.rejected || bid.canceled}"' +
+                '           ng-repeat="bid in offers">' +
+                '        <div class="row" ng-click="show(\'offerDetails\'+\'-\'+$index)">' +
+                '          <div class="col-12 mb-2 text-center">' +
+                '            <h5 class="mb-0" ng-show="bid.approved">' +
+                '              <i class="fa fa-check text-success"></i>' +
+                '              Rezervare confirmată' +
+                '            </h5>' +
+                '            <h5 class="mb-0" ng-show="bid.rejected">' +
+                '              <i class="fa fa-ban text-danger"></i>' +
+                '              Rezervare respinsă' +
+                '            </h5>' +
+                '            <h5 class="mb-0" ng-show="bid.canceled">' +
+                '              <i class="fa fa-ban text-danger"></i>' +
+                '              Rezervare anulată' +
+                '            </h5>' +
+                '            <div ng-show="bid.pending">' +
+                '              <h5 class="mb-0">' +
+                '                <i class="fa fa-exclamation-triangle text-danger"></i> Rezervare neplătită' +
+                '              </h5>' +
+                '              <div class="text-muted">Achitați taxa pentru a putea accesa locul de parcare.</div>' +
+                '            </div>' +
+                '            <h5>' +
+                '              <small class="font-weight-light">' +
+                '                ({{bid.start_date | moment: \'D MMM HH:mm\'}} - {{bid.end_date | moment: \'D MMM HH:mm\'}})' +
+                '              </small>' +
+                '            </h5>' +
+                '          </div>' +
+                '          <div class="col-6">' +
+                '            Cost total' +
+                '            <h5>{{bid.amount}} {{selectedSpace.currency}}</h5>' +
+                '          </div>' +
+                '          <div class="col-6">' +
+                '            Durata' +
+                '            <h5>{{bid | totalPeriod}}</h5>' +
+                '          </div>' +
+                '        </div>' +
+                '        <div class="panel-body p-0 animated" id="offerDetails-{{$index}}">' +
+                '          <div class="row no-gutters px-1">' +
+                '            <div class="col-4">Dată start</div>' +
+                '            <div class="col-8">' +
+                '              {{bid.start_date | moment: \'ddd, D MMM hh:mm\'}}' +
+                '            </div>' +
+                '          </div>' +
+                '          <div class="row no-gutters px-1">' +
+                '            <div class="col-4">Dată stop</div>' +
+                '            <div class="col-8">' +
+                '              {{bid.end_date | moment: \'ddd, D MMM hh:mm\'}}' +
+                '            </div>' +
+                '          </div>' +
+                '          <div class="row no-gutters px-1">' +
+                '            <div class="col-4">' +
+                '              Taxare' +
+                '            </div>' +
+                '            <div class="col-8">' +
+                '              La 15 min' +
+                '            </div>' +
+                '          </div>' +
+                '          <div class="row no-gutters px-1">' +
+                '            <div class="col-4 ">Status</div>' +
+                '            <div class="col-8">' +
+                '              <span ng-show="bid.approved" class="green">Acceptată</span>' +
+                '              <span ng-show="bid.pending">In așteptare</span>' +
+                '              <span ng-show="bid.rejected" class="red">Respinsă</span>' +
+                '              <span ng-show="bid.canceled" class="red">Anulată</span>' +
+                '            </div>' +
+                '          </div>' +
+                '          <div class="row no-gutters px-1">' +
+                '            <div class="col-4 ">Ofertă</div>' +
+                '            <div class="col-8">' +
+                '              {{bid.price | units}}.' +
+                '              <small>{{bid.price | subunits}}</small>' +
+                '              {{bid.currency}} / h' +
+                '            </div>' +
+                '          </div>' +
+                '        </div>' +
+                '        <div class="mt-2 text-center" ng-hide="bid.rejected || bid.canceled">' +
+                '          <button class="mt-1 btn btn-outline-primary" ui-sref=".pay({offer:bid})" ng-if="!bid.paid">' +
+                '            <i class="fa fa-credit-card"></i> Plătește online' +
+                '          </button>' +
+                '          <button class="mt-1 btn btn-link" ng-if="bid.paid">' +
+                '            <i class="fa fa-credit-card"></i> Achitat online' +
+                '          </button>' +
+                '          <a class="mt-1 btn btn-outline-info" id="callOwner"' +
+                '             href="tel:{{selectedSpace.owner_prefix + selectedSpace.owner_phone_number}}">' +
+                '            <i class="fa fa-phone"></i> Apelează proprietar' +
+                '          </a>' +
+                '        </div>' +
+                '      </div>' +
+                '</div>',
+            link: function ($scope, $elm) {
+
+                $scope.show = function (item) {
+                    $elm.find('#' + item).slideToggle(200);
+                };
             }
         }
     }])
@@ -1809,7 +2048,6 @@ angular.module('ParkingSpace.directives')
             }
         }
     }])
-
     .filter('to_trusted', ['$sce', function ($sce) {
         return function (text) {
             return $sce.trustAsHtml(text);

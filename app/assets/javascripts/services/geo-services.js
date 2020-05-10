@@ -5,7 +5,7 @@
 angular.module('ParkingSpace.services')
 
 
-    .service('geoService', ['$rootScope', function ($rootScope) {
+    .service('geoService', ['$rootScope', 'GEOCODE_API_URL', '$http', function ($rootScope, GEOCODE_API_URL, $http) {
         let _this = this;
 
         _this.autocompleteAddress = (searchStr, clbk) => {
@@ -33,11 +33,9 @@ angular.module('ParkingSpace.services')
                     return;
                 }
                 let pos = {lat: position.coords.latitude, lng: position.coords.longitude};
-                _this.reverseGeocode(pos.lat, pos.lng, (result) => {
-                    if (clbk) {
-                        clbk(result, position);
-                    }
-                })
+                if (clbk) {
+                    clbk(pos);
+                }
             });
         };
 

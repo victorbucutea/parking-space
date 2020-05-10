@@ -1,30 +1,5 @@
-<div ng-controller="MyPostsCtrl" class="row no-gutters">
-  <search-bar place-holder="'Caută adresa  ...'" on-select-place="selectPlace(place,location)" on-menu-click="openMenu()"></search-bar>
-
-  <div class="d-none d-lg-flex open-spaces-list col-lg-4 full-height AZ align-items-center faq ">
-    <div class="pricing-icon large-icon">
-      <img src="<%= image_path 'map_plain.png' %>">
-    </div>
-  </div>
-
-  <div class="col-lg-7 list open-spaces-list scroll container">
-    <div class="item mb-4 mx-3 panel p-0" ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
-      <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
-      <div class="col-12">
-        <div class="ml-auto text-right">
-          <button class="btn btn-link" ui-sref=".edit({parking_space_id: space.id})">
-            <i class="fa fa-edit"></i> Modifică
-          </button>
-          <button class="btn btn-link" ui-sref="search({lat: space.location_lat, lng: space.location_long})">
-            <i class="fa fa-map"></i> Arată pe hartă
-          </button>
-        </div>
-      </div>
-      <hr class="m-0"/>
-      <space-status-box space="space"></space-status-box>
-    </div>
-  </div>
-
+<div class="full-height" ng-controller="MyPostsCtrl">
+  <h4 class="text-muted p-3"> Locurile postate de tine </h4>
   <div class="no-items-msg loading-finished" ng-hide="spaces.length">
     Nu ai postat un loc, sau acestea au expirat.
     Ajută la traficul și rotunjește-ți veniturile
@@ -34,9 +9,22 @@
       </a>
     </u>
   </div>
+  <div class="item mb-4 mx-3 panel p-0" ng-repeat="space in spaces | addressFilter:selectedAddress  | periodFilter:dateFilter">
+    <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
+    <div class="col-12">
+      <div class="ml-auto text-right">
+        <button class="btn btn-link" ui-sref=".edit({parking_space_id: space.id})">
+          <i class="fa fa-edit"></i> Modifică
+        </button>
+        <button class="btn btn-link" ui-sref="search({lat: space.location_lat, lng: space.location_long})">
+          <i class="fa fa-map"></i> Arată pe hartă
+        </button>
+      </div>
+    </div>
+    <hr class="m-0"/>
+    <space-status-box space="space"></space-status-box>
+  </div>
 
-</div>
-
-<ui-view name="edit-space"></ui-view>
-<ui-view name="help"></ui-view>
+  <ui-view name="edit-space"></ui-view>
+  <ui-view name="help"></ui-view>
 </div>

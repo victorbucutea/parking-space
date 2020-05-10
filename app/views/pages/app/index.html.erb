@@ -64,7 +64,7 @@
           <a class="dropdown-item" ui-sref="search.instructions" href="#">
             Cum rezerv?
           </a>
-          <a class="dropdown-item" ui-sref="search.help"  href="#">
+          <a class="dropdown-item" ui-sref="search.help" href="#">
             Cum vând locul meu?
           </a>
           <div class="dropdown-divider"></div>
@@ -135,14 +135,20 @@
   <div class=" pos-relative justify-content-center">
 
     <div class="scroll" style="overflow: visible">
+
       <ui-view name="content">
-
         <!-- map loading blanket  -->
-        <h1 class="full-height map-loading d-flex align-items-center justify-content-center" id="mapBlanket">
-          <i class="fa fa-2x fa-spinner fa-spin text-secondary"></i>
-        </h1>
-
+        <div class="row no-gutters">
+          <div class="col-6 spaces-list"></div>
+          <div class="col-6 d-flex align-items-center justify-content-center">
+            <h1>
+              <i class="fa fa-2x fa-spinner fa-spin text-secondary"></i>
+            </h1>
+          </div>
+        </div>
       </ui-view>
+
+      <ui-view name="help"></ui-view>
 
       <div id="imgModal" onclick="$('#imgModal').hide()" style="display: none">
         <div class="ps-modal p-4 d-flex flex-nowrap align-items-center justify-content-center">

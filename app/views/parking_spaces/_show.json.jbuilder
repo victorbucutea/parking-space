@@ -20,8 +20,8 @@ json.owner_email parking_space.user.email
 
 json.images do
   json.array! parking_space.images do |img|
-    json.image  img.image
-    json.id  img.id
+    json.image img.image
+    json.id img.id
     json.name img.image
     json.created_at img.created_at
     json.updated_at img.updated_at
@@ -29,8 +29,6 @@ json.images do
 end
 #
 # json.offers do
-#   # this call increases costs by 40%, replacing the partial call with its raw content
-#   # json.array! parking_space.proposals, partial: 'proposals/show', as: :proposal
 #   json.array! parking_space.approved_proposals do |proposal|
 #     json.extract! proposal, :id, :title_message, :phone_number, :created_at
 #     json.approved proposal.approved?

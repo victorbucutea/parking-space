@@ -72,12 +72,12 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('search', {
-                url: '/search?lat&lng&zoom',
+            .state('map', {
+                url: '/map?lat&lng&zoom',
                 views: {
                     'content': {
-                        templateUrl: "templates/search.html"
-                    },
+                        templateUrl: "templates/map.html"
+                    }
                 },
                 params: {
                     lat: null,
@@ -85,7 +85,13 @@ angular.module('ParkingSpaceMobile', [
                     zoom: null
                 }
             })
-            .state('search.help', {
+            .state('map.search', {
+                url: '/search',
+                views: {
+                    'subcontent': { templateUrl: 'templates/search.html'}
+                }
+            })
+            .state('map.help', {
                 url: '/help',
                 views: {
                     'help': {
@@ -93,7 +99,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('search.instructions', {
+            .state('map.instructions', {
                 url: '/instructions',
                 views: {
                     'help': {
@@ -101,26 +107,28 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('search.terms', {
+            .state('map.search.terms', {
                 url: '/terms',
                 views: {
-                    'place-bid': {
+                    'subcontent': {
                         templateUrl: "templates/terms.html"
                     }
                 }
             })
-            .state('search.post-bids', {
-                url: '/post-offer?spaceId',
+            .state('map.search.post-bids', {
+                url: '/post-offer?spaceId&start&stop',
                 views: {
                     'place-bid': {
                         templateUrl: "templates/post-offer.html"
                     }
                 },
                 params: {
-                    spaceId: null
+                    spaceId: null,
+                    start: null,
+                    stop:null
                 }
             })
-            .state('search.post-bids.pay', {
+            .state('map.search.post-bids.pay', {
                 url: '/pay',
                 views: {
                     'pay': {
@@ -132,7 +140,7 @@ angular.module('ParkingSpaceMobile', [
                     space: null
                 }
             })
-            .state('search.review-bids', {
+            .state('map.search.review-bids', {
                 url: '/review-bid?spaceId',
                 views: {
                     'place-bid': {
@@ -143,71 +151,21 @@ angular.module('ParkingSpaceMobile', [
                     spaceId: null
                 }
             })
-            .state('search.post', {
-                url: '/post',
+            .state('map.search.post', {
+                url: '/post?spaceId',
                 views: {
                     'place-bid': {
                         templateUrl: "templates/post-space.html"
-                    }
-                }
-            })
-            .state('search.review-bids.delete', {
-                url: '/delete/{parking_space_id}',
-                views: {
-                    'action': {
-                        templateUrl: "templates/delete-post.html"
-                    }
-                }
-            })
-            .state('search.review-bids.edit', {
-                url: '/edit/{parking_space_id}',
-                views: {
-                    'action': {
-                        templateUrl: "templates/post-space.html"
-                    }
-                }
-            })
-            .state('search.myaccount', {
-                url: '/myaccount',
-                views: {
-                    'place-bid': {
-                        templateUrl: "templates/register.html"
                     }
                 },
                 params: {
-                    inside: true
+                    spaceId: null
                 }
             })
-            .state('myposts', {
+            .state('map.myposts', {
                 url: '/myposts',
                 views: {
-                    'content': {
-                        templateUrl: "templates/my-posts.html"
-                    }
-                }
-            })
-            .state('myposts.help', {
-                url: '/help',
-                views: {
-                    'help': {
-                        templateUrl: "templates/my-posts-help.html"
-                    }
-                }
-            })
-            .state('myposts.edit', {
-                url: '/edit/{parking_space_id}',
-                views: {
-                    'edit-space': {
-                        templateUrl: "templates/post-space.html"
-                    }
-                }
-            })
-            .state('myposts.delete', {
-                url: '/delete/{parking_space_id}',
-                views: {
-                    'edit-space': {
-                        templateUrl: "templates/delete-post.html"
-                    }
+                    'subcontent': { templateUrl: "templates/my-posts.html"}
                 }
             })
             .state('myoffers', {

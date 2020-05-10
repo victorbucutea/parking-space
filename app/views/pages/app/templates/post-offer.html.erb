@@ -1,15 +1,20 @@
 <div id="search-space" class="ps-modal  animated fadeIn " ng-controller="ReviewBidsCtrl">
   <div class="search-space-modal container animated zoomIn mt-md-4">
 
-    <div ng-hide="selectedSpace.from_sensor" class="row my-2 align-items-center ">
-      <div class="col-3 text-center rapid-icon">
-        <i class="fa fa-flash fa-3x"></i>
-      </div>
-      <div class="col-8">
-        <h3>Parcare personală</h3>
-        <small>
-          Pusă la dispoziție de <u>{{selectedSpace.owner_name}}</u>
-        </small>
+
+    <div class="py-2 text-muted">
+      <h3>
+        <i class="fa fa-car text-success"></i>
+        <small class="px-3">Parcare <b>privată</b></small>
+      </h3>
+      <div class="small">
+        <u>{{selectedSpace.owner_name}}</u>
+        <i class="fa fa-star text-warning"></i>
+        <i class="fa fa-star text-warning"></i>
+        <i class="fa fa-star text-warning"></i>
+        <i class="fa fa-star text-warning"></i>
+        <i class="fa fa-star text-warning"></i>
+        (0 reviews)
       </div>
     </div>
     <hr class="m-0"/>
@@ -20,125 +25,61 @@
     </div>
 
 
-    <div class="bids-area" ng-hide="selectedSpace.from_sensor">
-
+    <div class="bids-area mt-2" ng-hide="selectedSpace.from_sensor">
       <!-- table of offers when parking space owner != current user -->
-      <div class="existing-offers panel p-3 mb-2" ng-class="{canceled:bid.rejected || bid.canceled}"
-           ng-repeat="bid in selectedSpace.userOffers">
-        <div class="row" ng-click="show('offerDetails'+'-'+$index)">
-          <div class="col-12 mb-2 text-center">
-            <h5 class="mb-0" ng-show="bid.approved">
-              <i class="fa fa-check text-success"></i>
-              Rezervare confirmată
-            </h5>
-            <h5 class="mb-0" ng-show="bid.rejected">
-              <i class="fa fa-ban text-danger"></i>
-              Rezervare respinsă
-            </h5>
-            <h5 class="mb-0" ng-show="bid.canceled">
-              <i class="fa fa-ban text-danger"></i>
-              Rezervare anulată
-            </h5>
-            <div ng-show="bid.pending">
-              <h5 class="mb-0">
-                <i class="fa fa-exclamation-triangle text-danger"></i> Rezervare neplătită
-              </h5>
-              <div class="text-muted">Achitați taxa pentru a putea accesa locul de parcare.</div>
-            </div>
-            <h5>
-              <small class="font-weight-light">
-                ({{bid.start_date | moment: 'D MMM HH:mm'}} - {{bid.end_date | moment: 'D MMM HH:mm'}})
-              </small>
-            </h5>
-          </div>
-          <div class="col-6">
-            Cost total
-            <h5>{{bid.amount}} {{selectedSpace.currency}}</h5>
-          </div>
-          <div class="col-6">
-            Durata
-            <h5>{{bid | totalPeriod}}</h5>
-          </div>
-        </div>
-        <div class="panel-body p-0 animated"  id="offerDetails-{{$index}}">
-          <div class="row no-gutters px-1">
-            <div class="col-4">Dată start</div>
-            <div class="col-8">
-              {{bid.start_date | moment: 'ddd, D MMM hh:mm'}}
-            </div>
-          </div>
-          <div class="row no-gutters px-1">
-            <div class="col-4">Dată stop</div>
-            <div class="col-8">
-              {{bid.end_date | moment: 'ddd, D MMM hh:mm'}}
-            </div>
-          </div>
-          <div class="row no-gutters px-1">
-            <div class="col-4">
-              Taxare
-            </div>
-            <div class="col-8">
-              La 15 min
-            </div>
-          </div>
-          <div class="row no-gutters px-1">
-            <div class="col-4 ">Status</div>
-            <div class="col-8">
-              <span ng-show="bid.approved" class="green">Acceptată</span>
-              <span ng-show="bid.pending">In așteptare</span>
-              <span ng-show="bid.rejected" class="red">Respinsă</span>
-              <span ng-show="bid.canceled" class="red">Anulată</span>
-            </div>
-          </div>
-          <div class="row no-gutters px-1">
-            <div class="col-4 ">Ofertă</div>
-            <div class="col-8">
-              {{bid.bid_price | units}}.
-              <small>{{bid.bid_price | subunits}}</small>
-              {{bid.bid_currency}} / h
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-2 text-center" ng-hide="bid.rejected || bid.canceled">
-          <button class="mt-1 btn btn-outline-primary" ui-sref=".pay({offer:bid})" ng-if="!bid.paid">
-            <i class="fa fa-credit-card"></i> Plătește online
-          </button>
-          <button class="mt-1 btn btn-link" ng-if="bid.paid">
-            <i class="fa fa-credit-card"></i> Achitat online
-          </button>
-          <a class="mt-1 btn btn-outline-info" id="callOwner"
-             href="tel:{{selectedSpace.owner_prefix + selectedSpace.owner_phone_number}}">
-            <i class="fa fa-phone"></i> Apelează proprietar
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item ">
+          <a href="" data-target="#active-{{selectedSpace.id}}" data-toggle="tab" role="tab" class="nav-link active">
+            Rezervări In curs <span class="badge badge-danger">{{activeOffers.length}}</span>
           </a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#future-{{selectedSpace.id}}" data-toggle="tab" role="tab" class="nav-link">
+            Viitoare
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="" data-target="#past-{{selectedSpace.id}}" data-toggle="tab" role="tab" class="nav-link">
+            Trecute
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade pb-2 active show" id="active-{{selectedSpace.id}}" role="tabpanel">
+          <bid-info-box selected-space="selectedSpace" offers="activeOffers"></bid-info-box>
         </div>
-
+        <div class="tab-pane fade pb-2" id="future-{{selectedSpace.id}}" role="tabpanel">
+          <bid-info-box selected-space="selectedSpace" offers="futureOffers"></bid-info-box>
+        </div>
+        <div class="tab-pane fade pb-2" id="past-{{selectedSpace.id}}" role="tabpanel">
+          <bid-info-box selected-space="selectedSpace" offers="pastOffers"></bid-info-box>
+        </div>
       </div>
-
-      <form ng-show="hideRentForm">
-        <div class="row mt-4 mt-sm-5">
-          <div class="col-12 col-xsm-6 ">
-            <label for="dateStart">Închiriere start:</label>
-            <date-time id="dateStart" date-model="bid.start_date" large="true"></date-time>
-          </div>
-          <div class="col-12 col-xsm-6  ">
-            <label for="dateStop">Închiriere stop:</label>
-            <date-time id="dateStop" date-model="bid.end_date" large="true" day></date-time>
-            <div class="invalid-feedback">
-              Perioada minimă e de 15 min
-            </div>
+    </div>
+    <form>
+      <div class="row mt-2">
+        <div class="col-12 col-xsm-6 ">
+          <label for="dateStart">Închiriere start:</label>
+          <date-time id="dateStart" date-model="bid.start_date" large="true"></date-time>
+        </div>
+        <div class="col-12 col-xsm-6  ">
+          <label for="dateStop">Închiriere stop:</label>
+          <date-time id="dateStop" date-model="bid.end_date" large="true" day></date-time>
+          <div class="invalid-feedback">
+            Perioada minimă e de 15 min
           </div>
         </div>
-      </form>
-
-      <div class="text-center mt-4">
-        <div ng-show="hideRentForm">
-          <button class="btn btn-danger btn-lg" ng-click="placeOffer()">Închiriază</button>
-        </div>
-        <h4 class="my-4">
-          <small> Acest loc va expira <b>{{expireDuration()}}</b>.</small>
-        </h4>
       </div>
+    </form>
+    <div class="d-flex flex-column align-items-center mt-4 mb-2">
+      <button class="btn btn-danger btn-lg" ng-click="placeOffer()">Închiriază</button>
+      <div class="mt-2"> sau</div>
+      <button class="btn btn-link " onclick="$('#showAv').show()" ng-click="selectedSpace.showAvail= !selectedSpace.showAvail">
+        <i class="fa fa-calendar-check-o"></i> Verifică disponibilitate
+      </button>
+
+      <space-availability-box class="w-100" space="selectedSpace" ng-if="selectedSpace.showAvail"></space-availability-box>
+
     </div>
 
 
@@ -152,19 +93,17 @@
                      <i class="fa fa-ban fa-stack-2x" style="color:Tomato"></i>
                  </span>
           </div>
-          <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_lat}}"
-             class="btn btn-primary">
-            <i class="fa fa-location-arrow "></i>
-            Navighează
-          </a>
+
         </li>
       </ul>
     </div>
 
     <div class="row flex-nowrap ps-control-buttons">
-      <button class="btn btn-lg btn-primary" ng-hide="hideRentForm" ng-click="hideRentForm = !hideRentForm">
-        Rezervare nouă
-      </button>
+      <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_lat}}"
+         class="btn btn-lg btn-outline-primary">
+        <i class="fa fa-location-arrow "></i> Navighează la parcare
+      </a>
+
       <button class="btn btn-lg btn-secondary" ui-sref="^">
         Înapoi
       </button>
