@@ -18,13 +18,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('PaymentsCtrl',
             $scope.navigateTo = function () {
                 offerService.getOffer($scope.selPayment.order_id, function (data) {
                     parkingSpaceService.getSpace(data.parking_space_id, function (data) {
-                        $state.go('search', {lat: data.location_lat, lng: data.location_long, zoom: 18});
+                        $state.go('map.search', {lat: data.location_lat, lng: data.location_long, zoom: 18});
                     })
                 });
             };
 
             $scope.getDetails = function (payment) {
-
                 paymentService.getPaymentDetails(payment.id, function (data) {
                     $scope.paymentDetails = data;
                     $('#showDetails').show();

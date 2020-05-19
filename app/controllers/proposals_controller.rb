@@ -21,17 +21,17 @@ class ProposalsController < ApplicationController
 
   def pay
     if @proposal.user != current_user
-      render json: {Error: 'Cannot pay an offer which doesn\'t belong to the current user'}, status: :unprocessable_entity
+      render json: { Error: 'Cannot pay an offer which doesn\'t belong to the current user' }, status: :unprocessable_entity
       return
     end
 
     unless @proposal.pending?
-      render json: {Error: 'Nu se poate achita. Oferta a fost respinsa de proprietar sau a expirat.'}, status: :unprocessable_entity
+      render json: { Error: 'Nu se poate achita. Oferta a fost respinsa de proprietar sau a expirat.' }, status: :unprocessable_entity
       return
     end
 
     if @proposal.paid?
-      render json: {Error: 'Nu se poate achita. Oferta a fost plătită deja.'}, status: :unprocessable_entity
+      render json: { Error: 'Nu se poate achita. Oferta a fost plătită deja.' }, status: :unprocessable_entity
       return
     end
 
@@ -41,7 +41,7 @@ class ProposalsController < ApplicationController
                    ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
       render :show, status: :ok
     else
-      render json: {Error: 'Eroare in procesarea platii. Va rugam incercati din nou.'}, status: :unprocessable_entity
+      render json: { Error: 'Eroare in procesarea platii. Va rugam incercati din nou.' }, status: :unprocessable_entity
     end
 
   end
@@ -57,44 +57,33 @@ class ProposalsController < ApplicationController
   end
 
   def reject
-
-    respond_to do |format|
-      if @proposal.reject
-        format.json { render :show, status: :ok }
-      else
-        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
-      end
+    if @proposal.reject
+      format.json { render :show, status: :ok }
+    else
+      format.json { render json: { Error: @proposal.errors }, status: :unprocessable_entity }
     end
   end
 
   def cancel
-
-    respond_to do |format|
-      if @proposal.cancel
-        format.json { render :show, status: :ok }
-      else
-        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
-      end
+    if @proposal.cancel
+      format.json { render :show, status: :ok }
+    else
+      format.json { render json: { Error: @proposal.errors }, status: :unprocessable_entity }
     end
   end
 
   def approve
-
-    respond_to do |format|
-      if @proposal.approve
-        format.json { render :show, status: :ok }
-      else
-        format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
-      end
+    if @proposal.approve
+      format.json { render :show, status: :ok }
+    else
+      format.json { render json: { Error: @proposal.errors }, status: :unprocessable_entity }
     end
-
   end
 
   # POST /parking_spaces/:p_sp_id/proposals
   # POST /parking_spaces/:p_sp_id/proposals.json
   def create
     @proposal = Proposal.new(proposal_params)
-
     @proposal.bidder_name = current_user.full_name
     @proposal.phone_number = current_user.phone_number
     @proposal.user = current_user
@@ -103,22 +92,24 @@ class ProposalsController < ApplicationController
       send_notification @proposal.parking_space.user, 'Ofertă pt locul tău din ' + @proposal.parking_space.address_line_1
       render :show, status: :created
     else
-      render json: {Error: @proposal.errors}, status: :unprocessable_entity
+      render json: { Error: @proposal.errors }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /parking_spaces/:p_sp_id/proposals
   # PATCH/PUT /parking_spaces/:p_sp_id/proposals.json
   def update
-    render json: {Error: {general: 'Offers cannot be updated'}}, status: :unprocessable_entity
+    render json: { Error: { general: 'Offers cannot be updated' } }, status: :unprocessable_entity
   end
 
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def proposal_params
-    params.require(:proposal).permit(:phone_number, :title_message, :bid_amount, :bid_currency, :bidder_name,
-                                     :start_date, :end_date, :approval_status, :parking_space_id, :created_at, :nonce, :payment_id)
+    params.require(:proposal).permit(:phone_number, :title_message, :bid_amount,
+                                     :bid_currency, :bidder_name, :start_date,
+                                     :end_date, :approval_status, :parking_space_id,
+                                     :created_at, :nonce, :payment_id)
   end
 
   def set_proposal

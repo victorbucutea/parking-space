@@ -1,38 +1,152 @@
 <div ng-controller="MyOffersCtrl">
 
-    <div class="container open-offers-list">
-
-        <div class="no-items-msg loading-finished" ng-hide="spaces.length"> Nu ai nici o rezervare activă.</div>
-
-
-        <div class="bids-area mt-4 mt-md-5 pb-3 panel "
-             ng-repeat="space in spaces | addressFilter:selectedAddress | periodFilter : dateFilter: 'checkOffers'  ">
-            <h6 class="pb-1 bid-title">
-                {{space.address_line_1}} -
-                <span class="bid-amount">
-                     {{space.price | units  }}.<small>{{space.price | subunits}}</small>
-                      {{space.currency}} / h
-                 </span>
-            </h6>
-            <bid-table no-contact  space="space"></bid-table>
-
-            <!-- Action buttons for offer -->
-            <div class="mt-3 d-flex justify-content-center">
-                <button class="btn btn-primary animated zoomIn" ui-sref=".pay({offer: selOffer,space:space})"
-                        ng-if="payButtonAvailable(space,selOffer)">
-                    <i class="fa fa-credit-card"></i> Plătește
-                </button>
-                <button class="btn btn-link animated zoomIn"
-                        ng-if="offerIsForSpace(space,selOffer) && !payButtonAvailable(space,selOffer)">
-                    <i class="fa fa-credit-card"></i> Achitat
-                </button>
-                <a tabindex ng-href="tel:{{space.owner_phone_number}}" class="btn btn-link animated zoomIn">
-                    <i class="fa fa-phone"></i> Apel propr.
+    <div class="p-3 spaces-list ">
+        <ul class="nav nav-pills nav-fill" role="tablist">
+            <li class="nav-item ">
+                <a href="" id="activeTab" data-target="#active" data-toggle="tab" role="tab" class="nav-link active">
+                    In curs <span class="badge badge-danger">{{activeSpaces.length}}</span>
                 </a>
-                <button class="btn btn-link animated zoomIn"
-                        ui-sref="search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
-                    <i class="fa fa-map"></i> Vezi harta
-                </button>
+            </li>
+            <li class="nav-item">
+                <a href="" id="futureTab" data-target="#future" data-toggle="tab" role="tab" class="nav-link">
+                    Viitoare <span class="badge badge-dark">{{futureSpaces.length}}</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="" id="pastTab" data-target="#past" data-toggle="tab" role="tab" class="nav-link">
+                    Trecute <span class="badge badge-dark">{{pastSpaces.length}}</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="active" role="tabpanel">
+                <h5 class="text-center p-3 text-muted mt-3" ng-hide="activeSpaces.length">
+                    <i class="fa fa-ban"></i> Nicio rezervare curentă
+                </h5>
+
+                <div class="bids-area panel mt-3 " ng-repeat="space in activeSpaces " ng-click="zoomTo(space)">
+
+                    <!-- title -->
+                    <h6 class="py-1 bid-title">
+                        {{space.address_line_1}} -
+                        <span class="bid-amount">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
+                            {{space.currency}} / h</span>
+                    </h6>
+
+                    <!-- thumbnails -->
+                    <div class="d-flex flex-nowrap scroll-x">
+                        <i class="fa fa-3x fa-photo py-3 text-muted" ng-if="!space.images.length"></i>
+                        <div ng-repeat="img in space.images" ng-if="space.images.length">
+                            <div class="img-container">
+                                <img ng-click="showFullImageThumb($event,space)"
+                                     ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{img.name}}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <bid-table offers="space.activeOffers" space="space"></bid-table>
+
+
+                    <!-- payment -->
+                    <div ng-if="!space.activeOffers[0].paid" class="text-center" ng-click="pay(space,space.activeOffers[0])">
+                        <!-- only one unpaid offer should be present per space-->
+                        <a href class="btn btn-block btn-link animated zoomIn">
+                            <i class="fa fa-credit-card"></i> Plătește
+                        </a>
+                    </div>
+
+
+                    <!-- Action buttons for offer -->
+                    <div class="mt-3 d-flex justify-content-center">
+                        <a tabindex ng-href="tel:{{space.owner_prefix + space.owner_phone_number}}"
+                           class="btn btn-link animated zoomIn">
+                            <i class="fa fa-phone"></i> Apel propr.
+                        </a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{space.location_lat}},{{space.location_lat}}"
+                           class="btn btn-link  animated zoomIn">
+                            <i class="fa fa-location-arrow "></i> Navighează la parcare
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade pb-2" id="future" role="tabpanel">
+                <h5 class="text-center p-3 text-muted mt-3" ng-hide="futureSpaces.length">
+                    <i class="fa fa-ban"></i> Nicio rezervare
+                </h5>
+                <div class="bids-area panel mt-3 " ng-repeat="space in futureSpaces " ng-click="zoomTo(space)">
+
+                    <h6 class="pb-1 bid-title">
+                        {{space.address_line_1}} -
+                        <span class="bid-amount">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
+                             {{space.currency}} / h</span>
+                    </h6>
+
+                    <!-- thumbnails -->
+                    <div class="d-flex flex-nowrap scroll-x">
+                        <i class="fa fa-3x fa-photo py-3 text-muted" ng-if="!space.images.length"></i>
+                        <div ng-repeat="img in space.images" ng-if="space.images.length">
+                            <div class="img-container">
+                                <img ng-click="showFullImageThumb($event,space)"
+                                     ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{img.name}}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <bid-table offers="space.futureOffers" space="space"></bid-table>
+
+                    <!-- Action buttons for offer -->
+                    <div class="mt-3 d-flex justify-content-center">
+                        <a tabindex ng-href="tel:{{space.owner_prefix + space.owner_phone_number}}"
+                           class="btn btn-link animated zoomIn">
+                            <i class="fa fa-phone"></i> Apel propr.
+                        </a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{space.location_lat}},{{space.location_lat}}"
+                           class="btn btn-link  animated zoomIn">
+                            <i class="fa fa-location-arrow "></i> Navighează la parcare
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade pb-2" id="past" role="tabpanel">
+                <h5 class="text-center p-3 text-muted mt-3" ng-hide="pastSpaces.length">
+                    <i class="fa fa-ban"></i> Nicio rezervare
+                </h5>
+                <div class="bids-area panel mt-3 " ng-repeat="space in pastSpaces " ng-click="zoomTo(space)">
+
+                    <h6 class="pb-1 bid-title">
+                        {{space.address_line_1}} -
+                        <span class="bid-amount">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
+                             {{space.currency}} / h</span>
+                    </h6>
+
+                    <!-- thumbnails -->
+                    <div class="d-flex flex-nowrap scroll-x">
+                        <i class="fa fa-3x fa-photo py-3 text-muted" ng-if="!space.images.length"></i>
+                        <div ng-repeat="img in space.images" ng-if="space.images.length">
+                            <div class="img-container">
+                                <img ng-click="showFullImageThumb($event,space)"
+                                     ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{img.name}}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <bid-table offers="space.pastOffers" space="space"></bid-table>
+
+                    <!-- Action buttons for offer -->
+                    <div class="mt-3 d-flex justify-content-center">
+                        <a tabindex ng-href="tel:{{space.owner_prefix + space.owner_phone_number}}"
+                           class="btn btn-link animated zoomIn">
+                            <i class="fa fa-phone"></i> Apel propr.
+                        </a>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{space.location_lat}},{{space.location_lat}}"
+                           class="btn btn-link  animated zoomIn">
+                            <i class="fa fa-location-arrow "></i> Navighează la parcare
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 

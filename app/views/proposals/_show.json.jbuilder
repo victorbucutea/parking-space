@@ -10,10 +10,15 @@ json.currency proposal.bid_currency
 json.start_date proposal.start_date
 json.end_date proposal.end_date
 json.owner_is_current_user proposal.user.id == current_user.id
-json.amount proposal.amount.to_f
-json.amount_with_vat proposal.amount_with_vat.to_f
-json.comision proposal.comision.to_f
-json.comision_with_vat proposal.comision_with_vat.to_f
+if proposal.paid?
+  json.amount proposal.payment_amount.to_f
+  json.comision proposal.payment_comision.to_f
+else
+  json.amount proposal.amount.to_f
+  json.amount_with_vat proposal.amount_with_vat.to_f
+  json.comision proposal.comision.to_f
+  json.comision_with_vat proposal.comision_with_vat.to_f
+end
 json.owner_name proposal.user.full_name
 json.owner_license proposal.user.license
 json.owner_phone_number proposal.user.phone_number

@@ -8,7 +8,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ConfirmPhoneCtrl',
 
             $scope.validateCode = function () {
                 userService.validateCode($scope.confirmationCode).then( (data) => {
-                    $state.go('search');
+                    $state.go('map.search');
                     $rootScope.$emit('http.notif', 'Ai validat numărul de telefon. ' +
                         'Acum poți publica sau rezerva locuri de parcare!')
                 }, (data) => {

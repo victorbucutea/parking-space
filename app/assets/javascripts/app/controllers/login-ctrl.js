@@ -15,7 +15,7 @@ angular.module('ParkingSpaceMobile.controllers')
 
                     userService.login(user, password).then(() => {
                         $scope.loading = true;
-                        $state.go('search', $stateParams);
+                        $state.go('map.search', $stateParams);
                     })
                 };
 
@@ -57,7 +57,7 @@ angular.module('ParkingSpaceMobile.controllers')
 
 
                     userService.loginFb(accessToken).then(() => {
-                        $state.go('search')
+                        $state.go('map.search')
                     }, (err) => {
                         $scope.loadingFb = false;
                         if (err.status === 422) {
@@ -81,7 +81,7 @@ angular.module('ParkingSpaceMobile.controllers')
                 } else {
                     userService.getUser().then((user) => {
                         if (user)
-                            $state.go('search', $stateParams);
+                            $state.go('map.search', $stateParams);
                     });
                 }
 

@@ -466,16 +466,6 @@ div.daterangepicker {
       border-top: 1px solid #ddd;
       border-bottom: 1px solid #ddd;
       background: #fff;
-
-      .space-desc {
-        font-size: .9em;
-        white-space: pre-line;
-        overflow-wrap: break-spaces;
-        max-height: 70px;
-        transition: max-height .2s ease-in-out;
-        overflow: hidden;
-        color: $gray-700;
-      }
     }
 
     &:hover {
@@ -483,6 +473,24 @@ div.daterangepicker {
     }
   }
 }
+
+.space-desc {
+  font-size: .85em;
+  white-space: pre-line;
+  overflow-wrap: break-spaces;
+  max-height: 70px;
+  transition: max-height .2s ease-in-out;
+  overflow: hidden;
+  color: $gray-700;
+}
+
+.space-desc-show {
+  position: absolute;
+  bottom: -100%;
+  right: 0;
+  font-size: .85em;
+}
+
 
 .scroll-to-top {
   position: fixed;

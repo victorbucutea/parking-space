@@ -21,6 +21,18 @@ map {
   height: 100%;
 }
 
+.map-controls {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+
+  &.scrolled {
+    position: absolute;
+    right: -100%;
+  }
+}
+
 .info-btn {
   position: absolute;
   bottom: 160px;
@@ -68,13 +80,16 @@ map {
   &.wide {
     width: 118px;
     font-size: initial;
+  }
 
+  &.wider {
+    width: 165px;
+    font-size: initial;
   }
 
   &.main {
     position: static;
     box-shadow: none;
-
   }
 
   &.help {
@@ -83,13 +98,12 @@ map {
     position: absolute;
   }
 
+  &.on-top {
+    z-index: 3;
+  }
+
 }
 
-@include media-breakpoint-down(sm) {
-  .add-btn, .center-btn, .info-btn {
-    position: fixed;
-  }
-}
 
 .realtime-notif {
   background-color: $warning;
@@ -331,6 +345,8 @@ nav.navbar {
   z-index: 8;
   overflow: scroll;
   height: 100vh;
+  transition: left .2s ease-in-out;
+
 
   &.image {
     position: fixed;
@@ -346,6 +362,10 @@ nav.navbar {
 
   .list {
     overflow: hidden;
+  }
+
+  &.slide-left {
+    left: -50%;
   }
 }
 
@@ -456,6 +476,11 @@ nav.navbar {
   &.shadow {
     box-shadow: 2px 2px 12px 1px $gray-700;
   }
+
+  &.right {
+    right: -100%;
+    left: 100%;
+  }
 }
 
 .legal-contract-txt {
@@ -513,8 +538,9 @@ nav.navbar {
       height: 100px;
       max-width: 120px;
       transition: .1s ease-out;
+      object-fit: cover;
 
-      &:hover:focus {
+      &:hover {
         cursor: pointer;
         transform: scale(1.1);
       }
@@ -579,6 +605,7 @@ nav.navbar {
 
   }
 }
+
 
 .carousel-img {
   max-height: 90vh;
@@ -787,7 +814,8 @@ parking-spot-info-box {
       //max-width: 100%;
       //max-height: 100%;
       //transform: translate(-50%,-50%);
-     object-fit: cover;
+      object-fit: cover;
+
       &:hover {
         background-color: $gray-200;
         cursor: pointer;
@@ -901,6 +929,9 @@ parking-spot-info-box {
 }
 
 .existing-offers {
+  margin-top: -1px;
+  margin-bottom: -1px;
+
   div.row {
     padding-bottom: 5px;
     padding-top: 5px;
@@ -910,8 +941,15 @@ parking-spot-info-box {
     text-decoration: line-through;
   }
 
-  .panel-body .row:nth-child(2n+1) {
-    background-color: $blue-90;
+  .existing-offers-body {
+    border-top: 1px solid $gray-400;
+    background-color: #fff;
+    border-bottom: 1px solid $gray-400;
+
+
+    .row:nth-child(2n+1) {
+      background-color: $blue-90;
+    }
   }
 
   .green {
@@ -946,9 +984,34 @@ parking-spot-info-box {
     padding-top: $big-measure-unit;
   }
 
+  .nav-new-reservation {
+    font-weight: bold;
+    color: $primary;
+
+    &.active {
+      color: $white;
+    }
+  }
+
+  .img-container {
+    height: 6em;
+
+    img {
+      object-fit: cover;
+      height: 100%;
+    }
+  }
+
   .bid-table {
-    max-height: 210px;
     overflow: scroll;
+
+    .bid-row {
+
+      &:not(:last-child) {
+        border-bottom: 1px dashed $gray;
+      }
+
+    }
 
     .offer {
       background-color: $white;
@@ -960,16 +1023,13 @@ parking-spot-info-box {
       overflow: hidden;
       padding: $measure-unit;
 
-      &:not(:last-child){
-        border-bottom: 1px dashed $gray;
-      }
-
       &.canceled {
         text-decoration: line-through;
       }
 
-      &:focus-within {
-        background-color: darken($blue-90, 10%);
+      &:hover {
+        background-color: $blue-90;
+        cursor: pointer;
       }
 
       .offer-period {
@@ -1222,13 +1282,16 @@ parking-spot-info-box {
   &:after {
     content: ' ';
     background-color: #fff;
-    width: 7px;
-    height: 7px;
+    width: 11px;
+    height: 11px;
     display: block;
     transform: rotate(45deg);
     position: absolute;
-    top: 91%;
+    top: 90%;
     left: 16px;
+    border-bottom: 1px solid $gray-300;
+    border-right: 1px solid $gray-300;
+
   }
 
   &.public:before {
@@ -1258,9 +1321,22 @@ parking-spot-info-box {
   }
 
   &:hover {
-    background-color: $blue-200;
+    background-color: $blue-100;
     cursor: pointer;
     z-index: 2;
+
+    &:after {
+      background-color: $blue-100;
+    }
+  }
+
+  &.selected {
+    &:after {
+      background-color: $blue-100;
+    }
+
+    z-index: 2;
+    background-color: $blue-100;
   }
 }
 

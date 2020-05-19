@@ -41,13 +41,13 @@
 
   <div class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item text-right nav-border-right" ui-sref="search" ui-sref-active="active">
+      <li class="nav-item text-right nav-border-right" ui-sref="map.search" ui-sref-active="active">
         <a class="nav-link px-3" href=""><i class="fa fa-map-o"></i> Hartă</a>
       </li>
-      <li class="nav-item text-right" ui-sref="myposts" ui-sref-active="active">
+      <li class="nav-item text-right" ui-sref="map.myposts" ui-sref-active="active">
         <a class="nav-link px-3" href=""><i class="fa fa-car"></i> Locurile mele </a>
       </li>
-      <li class="nav-item text-right nav-border-right" ui-sref="myoffers" ui-sref-active="active">
+      <li class="nav-item text-right nav-border-right" ui-sref="map.myoffers" ui-sref-active="active">
         <a class="nav-link px-3" href=""><i class="fa fa-calendar"></i> Rezervări </a>
       </li>
 
@@ -61,10 +61,10 @@
           <a class="dropdown-item" ui-sref="account"> <i class="fa fa-credit-card"></i> Plăți și facturi</a>
           <a class="dropdown-item" ui-sref="register({inside:true})"> <i class="fa fa-user"></i> Contul meu </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" ui-sref="search.instructions" href="#">
+          <a class="dropdown-item" ui-sref="map.instructions" href="#">
             Cum rezerv?
           </a>
-          <a class="dropdown-item" ui-sref="search.help" href="#">
+          <a class="dropdown-item" ui-sref="map.help" href="#">
             Cum vând locul meu?
           </a>
           <div class="dropdown-divider"></div>
@@ -88,19 +88,19 @@
 <!-- Navigation drawer menu -->
 <div id="navMenu" style="display: none">
   <div id="drawer" class="menu d-flex flex-column" ng-click="closeMenu()">
-    <div class="logo p-5 d-md-none text-center " ui-sref="search">
+    <div class="logo p-5 d-md-none text-center " ui-sref="map.search">
       <img src="<%= image_path 'logo_sm_dark.png' %>">
     </div>
     <ul class="">
-      <li ui-sref="search" ui-sref-active="selected">
+      <li ui-sref="map.search" ui-sref-active="selected">
         <i class="fa fa-map-o"></i>
         Hartă
       </li>
-      <li class="selected" ui-sref="myposts" ui-sref-active="selected">
+      <li class="selected" ui-sref="map.myposts" ui-sref-active="selected">
         <i class="fa fa-car"></i>
         Locurile mele
       </li>
-      <li ui-sref="myoffers" ui-sref-active="selected">
+      <li ui-sref="map.myoffers" ui-sref-active="selected">
         <i class="fa fa-calendar"></i>
         Rezervările mele
       </li>
@@ -118,7 +118,7 @@
         Logout
       </li>
     </ul>
-    <ul class="terms border-top d-md-none " ui-sref-active="selected" ui-sref="search.terms">
+    <ul class="terms border-top d-md-none " ui-sref-active="selected" ui-sref="map.search.terms">
       <li>
         <i class="fa fa-file"></i> Termeni si condiții Go-Park
       </li>
@@ -151,7 +151,7 @@
       <ui-view name="help"></ui-view>
 
       <div id="imgModal" onclick="$('#imgModal').hide()" style="display: none">
-        <div class="ps-modal p-4 d-flex flex-nowrap align-items-center justify-content-center">
+        <div class="ps-modal ps-no-nav p-4 d-flex flex-nowrap align-items-center justify-content-center">
           <img id="img2" src="" class="img-fluid mb-1 animated zoomIn">
         </div>
       </div>

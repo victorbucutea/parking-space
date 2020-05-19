@@ -25,19 +25,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                     space.address_line_2 = sublocality + ', ' + city;
                     space.location_lat = mapCenter.lat();
                     space.location_long = mapCenter.lng();
-                    space.title = "Loc parcare " + sublocality;
                     space.sublocality = sublocality;
-                    // space.price = 5;
-                    // space.currency = 'Ron';
-                    parameterService.getStartingAskingPrice().then((pr) => {
-                        space.price = pr.price;
-                        space.currency = pr.currency;
-                    });
-                    space.daily_start = new Date(1970, 0, 1, 0, 0);
-                    space.daily_stop = new Date(1970, 0, 1, 23, 59);
-                    space.space_availability_start = new Date();
-                    space.space_availability_stop = moment().add(1, 'd').toDate();
+                    if (!space.title) {
+                        space.title = "Loc parcare " + sublocality;
+                        parameterService.getStartingAskingPrice().then((pr) => {
+                            space.price = pr.price;
+                            space.currency = pr.currency;
+                        });
+                        space.daily_start = new Date(1970, 0, 1, 0, 0);
+                        space.daily_stop = new Date(1970, 0, 1, 23, 59);
+                        space.space_availability_start = new Date();
+                        space.space_availability_stop = moment().add(1, 'd').toDate();
+                    }
 
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
                 });
             };
 
@@ -65,6 +68,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 $('#schedule').slideToggle(200);
                 $scope.scheduleOpen = !$scope.scheduleOpen;
             };
+
 
             $scope.step = 0;
             $scope.termsAndConditions = true;
@@ -132,7 +136,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                             return;
                         }
                         parkingSpaceService.uploadDocuments($scope.spaceEdit.id, docs, function (savedDocs) {
-                            $state.go('search');
+                            $state.go('map.search');
                         });
                     }).finally(() => {
                         $scope.loading = false;
@@ -147,5 +151,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
             $scope.close = function () {
                 $state.go('^');
             };
+
+            $scope.pickNewAddress = function () {
+                // emit Edit space
+                $('#postSpaceModal').addClass('slide-left');
+                $('.map-controls.search').hide();
+                $scope.editingSpot = true;
+            }
+
+            $scope.$on('$stateChangeStart', function (s){
+                $('.map-controls.search').show();
+            } )
+
+            $scope.selectNewAddress = function () {
+                $('#postSpaceModal').removeClass('slide-left');
+                $scope.editingSpot = false;
+                $scope.calculateAddress()
+            }
 
         }]);

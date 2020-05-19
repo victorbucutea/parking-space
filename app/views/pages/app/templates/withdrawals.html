@@ -2,7 +2,7 @@
 
     <h4 class="text-center"> Listă retrageri </h4>
 
-    <div class="bids-area mt-4 mt-md-5 pb-3 panel " >
+    <div class="bids-area mt-4 mt-md-5 pb-3 panel ">
 
         <div class="no-items-msg loading-finished-withd"> Nu ai efectuat nici o retragere.</div>
 
@@ -10,29 +10,24 @@
             <i class="fa fa-spin fa-2x text-secondary fa-spinner"></i>
         </div>
 
-        <div class="bid-table "  ng-show="withdrawals.length">
+        <div class="bid-table " ng-show="withdrawals.length">
 
             <div class="offer d-flex justify-content-between" ng-repeat="withd in withdrawals"
                  ng-click="selectWithd(withd)" ng-class="{selected: selWithd == withd}">
 
                 <span class="offer-price">
-                    {{withd.amount}}
+                    {{withd.amount}} {{account.currency}}
                 </span>
 
                 <span>{{ withd.created_at | moment: 'D/MM HH:mm' }}</span>
                 <span class="text-capitalize">{{ withd.status}}</span>
                 <span>
-                    <button class="btnbtn-sm btn-link" ng-click="getDetails(payment)">Detalii</button>
+                      <button class="btn btn-sm btn-link text-danger animated zoomIn"
+                              ng-show="withd.pending" ng-click="cancelWithdrawal(withd)">
+                        <i class="fa fa-close "></i> Anuleaza
+                    </button>
                 </span>
             </div>
         </div>
-
-        <!-- Action buttons for offer -->
-        <div class="mt-3 d-flex justify-content-center" ng-show="selWithd">
-            <button class="btn btn-link animated zoomIn" ng-click="cancelWithdrawal()">
-                <i class="fa fa-calendar"></i> Anuleaza
-            </button>
-        </div>
     </div>
-
 </div>

@@ -5,12 +5,12 @@
 
 
   <div class="spaces-list p-3 ">
-    <div ng-hide="spaces.length">
-      <div class="no-items-msg loading-finished" ng-hide="spaces.length">
+    <div ng-hide="spacesClustered.length">
+      <div class="no-items-msg loading-finished">
         Nu sunt locuri in zonă.<br/>
         Fii primul care
         <u>
-          <a ui-sref="search">
+          <a ui-sref="map.search">
             postează un loc.
           </a>
         </u>
@@ -19,19 +19,22 @@
     <div ng-repeat="item in spacesClustered" class="panel mb-3 p-0">
       <div ng-if="item.elements.length == 1" ng-init="space = item.elements[0][2]" ng-click="zoomTo(space)">
         <parking-spot-info-box space="space" class="left-side"></parking-spot-info-box>
+        <div class="m-2 small">
+          <u> {{space.owner_name}} </u>
+          <i class="fa fa-star text-warning"></i>
+          <i class="fa fa-star text-warning"></i>
+          <i class="fa fa-star text-warning"></i>
+          <i class="fa fa-star text-warning"></i>
+          <i class="fa fa-star text-warning"></i>
+          (0 reviews)
+        </div>
         <div class="m-0 offer-availability">
-          <div class="m-3 small"><u> {{space.owner_name}} </u>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            (0 reviews)
-          </div>
-          <div class="m-3" ng-show="space.description && !space.owner_is_current_user">
+          <div class="mx-3 mt-3" ng-show="space.description && !space.owner_is_current_user">
             <div id="spaceDesc-{{space.id}}" class="space-desc">{{space.description}}</div>
-            <div ng-click="showDesc(space)" class="text-right">
-              <a href> vezi tot <i class="fa fa-angle-double-down"></i> </a>
+            <div class="position-relative">
+              <div ng-click="showDesc(space)" class="space-desc-show">
+                <a href> vezi tot <i class="fa fa-angle-double-down"></i> </a>
+              </div>
             </div>
           </div>
           <button class="btn btn-block btn-link border-top" ng-hide="space.owner_is_current_user"
@@ -45,7 +48,7 @@
             <i class="fa fa-user"></i>
             Loc personal
           </button>
-          <space-availability-box space="space" ng-if="space.showAv" ></space-availability-box>
+          <space-availability-box space="space" ng-if="space.showAv"></space-availability-box>
         </div>
         <div class="my-2 d-flex justify-content-around">
           <button class="btn btn-outline-primary " ng-show="space.from_user && !space.owner_is_current_user" ui-sref=".post-bids({spaceId: space.id})">
@@ -91,7 +94,8 @@
                 <div class="col-4 d-flex text-danger align-items-center justify-content-center">
                   <div>
                     {{space[2].price | units }}.<small>{{space[2].price | subunits}}</small>
-                    <currency val="space[2].currency"></currency> / h
+                    <currency val="space[2].currency"></currency>
+                    / h
                   </div>
                 </div>
                 <div class="col-12 d-flex align-items-end justify-content-end">
@@ -123,7 +127,7 @@
              id="scream"
              crossorigin="anonymous"
              ng-show="selectedSpaces[0].perimeter.section.interior_map"
-             ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+selectedSpaces[0].perimeter.section.interior_map}}">
+             ng-src="{{'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+selectedSpaces[0].perimeter.section.interior_map}}">
 
         <ul>
           <li class="list-group-item list-group-item-action p-0" ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
@@ -136,4 +140,28 @@
       </div>
     </div>
   </div>
+
+
+  <div class="map-controls search">
+
+    <button class="info-btn btn btn-info" ui-sref=".instructions">
+      <i class="fa fa-question"></i>
+    </button>
+
+    <button class="center-btn btn btn-secondary" ng-click="centerMap()">
+      <i class="fa fa-crosshairs"></i>
+    </button>
+
+    <button class="btn btn-primary add-btn" ng-click="showPostSpace()" ng-class="{wide: placingSpot}">
+       <span ng-hide="placingSpot">
+           <i class="fa fa-plus"></i> <br/> Vinde
+       </span>
+      <span ng-show="placingSpot">
+            Continuă
+            <i class="fa fa-arrow-right"></i>
+        </span>
+    </button>
+  </div>
+
+
 </div>

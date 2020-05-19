@@ -207,7 +207,8 @@ angular.module('ParkingSpace.directives')
                 let _this = this;
                 let div = document.createElement('DIV');
 
-                div.className = "html-marker";
+                div.className = "html-marker ";
+                div.id = "htmlMarker-" + this.spaces[0].id;
                 let noOfSpaces = this.spaces.length;
                 let owned = noOfSpaces === this.spaces.filter((e) => {
                     return e.owner_is_current_user
@@ -239,6 +240,9 @@ angular.module('ParkingSpace.directives')
 
 
                 $(div).on('click touchstart', function (evt) {
+                    $('.html-marker').removeClass('selected');
+                    $(div).addClass('selected');
+
                     if (noOfSpaces > 1) {
                         let zoom = _this.getMap().getZoom();
                         if (zoom >= 19) {
@@ -251,7 +255,7 @@ angular.module('ParkingSpace.directives')
                             lats.push([sp.location_lat, sp.location_long, sp]);
                         });
                         let zoomLvl = $rootScope.map.zoom;
-                        let zoomFactor = (22 - zoomLvl) / 5;
+                        let zoomFactor = (22 - zoomLvl) / 3;
                         let zoomIn = 1;
 
                         let cluster = geocluster(lats, (zoomFactor + 1));
@@ -520,14 +524,13 @@ angular.module('ParkingSpace.directives')
     .directive('searchCenterIcon', ['$rootScope', function ($rootScope) {
         return {
             scope: {
-                shown: '='
+                shown: '=',
+                right: '='
             },
             restrict: 'E',
-            template: '<div ' +
-                '               ng-show="shown"' +
-                '               id="searchCenterIcon" ' +
-                '               class="search-center-icon animated bounce"' +
-                '               ></div>',
+            template: '<div ng-show="shown"' +
+                '           id="searchCenterIcon" ' +
+                '           class="search-center-icon animated bounce" ng-class="{right: right}"></div>',
             link: function ($scope, $element, $attr) {
                 $scope.shown = angular.isDefined($scope.shown) ? $scope.shown : false;
 
@@ -545,7 +548,7 @@ angular.module('ParkingSpace.directives')
             restrict: 'E',
             template:
                 '<div class="parking-spot-details row no-gutters" >' +
-                '          <div class="col-5 col-md-4 justify-content-center d-flex" style="overflow: hidden" >' +
+                '          <div class="col-5 col-md-4 justify-content-center d-flex full-height" style="overflow: hidden" >' +
                 '               <i class="fa fa-3x fa-photo align-self-center text-muted" ng-if="!space.images.length"></i>' +
                 '               <img ng-click="showFullImageThumb($event)" ' +
                 '                    ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.images[0].name}}"' +
@@ -652,71 +655,66 @@ angular.module('ParkingSpace.directives')
         return {
             restrict: 'E',
             scope: {
-                noContact: '=',
                 offers: '=?',
                 space: '='
             },
             template: '<div class="bids-area ">' +
                 '      <div class="bid-table">' +
-                '        <div class="offer row no-gutters py-1" ng-click="selectOffer(offer)"' +
-                '             ng-repeat="offer in offers | orderBy: \'start_date\'"' +
-                '             ng-class="{canceled : !offer.approved}" >' +
-                '          <div class="col-3 offer-owner">' +
-                '            <div>{{offer.owner_name}}</div>' +
-                '            <div class="license text-monospace">{{offer.owner_license}}</div>' +
+                '        <div class="row no-gutters bid-row" ng-click="selectOffer(offer)"' +
+                '             ng-repeat="offer in offers | orderBy: \'start_date\'">' +
+                '          <div class="offer row no-gutters col-12" ng-class="{canceled : !offer.approved}">' +
+                '              <div class="col-3 offer-owner" ng-hide="offer.owner_is_current_user">' +
+                '                <div>{{offer.owner_name}}</div>' +
+                '                <div class="license text-monospace">{{offer.owner_license}}</div>' +
+                '              </div>' +
+                '              <div class="col-6 offer-period" ng-class="{\'col-8\': offer.owner_is_current_user} " >' +
+                '                      <span>' +
+                '                        {{validity(offer)}}' +
+                '                      </span>' +
+                '                    <div > ' +
+                '                      <span ng-show="offer.canceled" ' +
+                '                            class="text-danger d-inline-block">Anulată</span> ' +
+                '                      <span ng-show="offer.rejected" ' +
+                '                            class="text-danger d-inline-block">Respinsă</span> ' +
+                '                      <span ng-show="!offer.paid" ' +
+                '                            class="text-danger d-inline-block">Neplătită</span> ' +
+                '                    </div>' +
+                '              </div>' +
+                '              <span class="offer-price col-3">' +
+                '                <div>{{offer.amount}} {{ offer.currency }}</div>' +
+                '              <div class="offer-duration"> {{offer | totalPeriod}}</div>' +
+                '            </span>' +
                 '          </div>' +
-                '          <div class="col-6 offer-period" >' +
-                '                  <span>' +
-                '                    {{validity(offer)}}' +
-                '                  </span>' +
-                '                <div > ' +
-                '                  <span ng-show="offer.canceled" ' +
-                '                        class="text-danger d-inline-block">Anulată</span> ' +
-                '                  <span ng-show="offer.rejected" ' +
-                '                        class="text-danger d-inline-block">Respinsă</span> ' +
-                '                  <span ng-show="!offer.paid" ' +
-                '                        class="text-danger d-inline-block">Neplătită</span> ' +
-                '                </div>' +
-                '          </div>' +
-                '          <span class="offer-price col-3">' +
-                '            <div>{{offer.amount}} {{ offer.currency }}</div>' +
-                '            <div class="offer-duration"> {{offer | totalPeriod}}</div>' +
-                '          </span>' +
-                '       </div>' +
-                '      </div>' +
-                '       <div class="ps-dialog mt-5 showPhoneNumber" >' +
-                '        <div class="ps-dialog-content animated zoomIn">' +
-                '            <div class="ps-question">' +
-                '                <parking-spot-info-box space="space"></parking-spot-info-box>' +
-                '                <hr class="m-0"/>' +
+                '          <div class="col-12 existing-offers" ng-if="offer.showDetails">' +
+                '            <div class="existing-offers-body px-1">' +
                 '                <div class="row ps-row py-2">' +
                 '                    <div class="col-4">Utilizator</div>' +
                 '                    <div class="col-8 ">' +
-                '                        {{selOffer.owner_name}}' +
+                '                        {{offer.owner_name}}' +
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="row ps-row py-2">' +
                 '                    <div class="col-4">Nr. Înm.</div>' +
                 '                    <div class="col-8 text-monospace text-uppercase">' +
-                '                        {{selOffer.owner_license}}' +
+                '                        {{offer.owner_license}}' +
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="row ps-row">' +
                 '                    <div class="col-4">Durata</div>' +
                 '                    <div class="col-8">' +
-                '                        {{selOffer | totalPeriod}}' +
+                '                        {{offer | totalPeriod}}' +
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="row ps-row">' +
                 '                    <div class="col-4">Start</div>' +
                 '                    <div class="col-8">' +
-                '                        {{selOffer.start_date | moment: \'ddd, D MMM, HH:mm\'}}' +
+                '                        {{offer.start_date | moment: \'ddd, D MMM, HH:mm\'}}' +
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="row ps-row">' +
                 '                    <div class="col-4">Stop</div>' +
                 '                    <div class="col-8">' +
-                '                        {{selOffer.end_date | moment: \'ddd, D MMM, HH:mm\'}}' +
+                '                        {{offer.end_date | moment: \'ddd, D MMM, HH:mm\'}}' +
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="row ps-row">' +
@@ -724,26 +722,31 @@ angular.module('ParkingSpace.directives')
                 '                        Status' +
                 '                    </div>' +
                 '                    <div class="col-8">' +
-                '                        <span ng-show="selOffer.approved" class="text-success">Acceptat</span>' +
-                '                        <span ng-show="selOffer.canceled" class="text-danger">' +
+                '                        <span ng-show="offer.approved" class="text-success">Acceptat</span>' +
+                '                        <span ng-show="offer.canceled" class="text-danger">' +
                 '                        <div>Anulată</div>' +
                 '                          <span class="text-secondary">' +
                 '                             <i class="fa fa-info-circle"></i> ' +
                 '                             Rezervarea a fost anulată de către proprietar.' +
                 '                           </span> ' +
                 '                        </span>' +
-                '                        <span ng-show="selOffer.rejected" class="text-danger">Respins' +
+                '                        <span ng-show="offer.rejected" class="text-danger">Respins' +
                 '                         <div>Respinsă</div>' +
                 '                           <span class="text-secondary">' +
                 '                             <i class="fa fa-info-circle"></i>  ' +
                 '                             Rezervarea a fost respinsă de către operator' +
                 '                           </span> ' +
                 '                         </span>' +
-                '                        <span ng-show="!selOffer.paid" class="text-danger">' +
+                '                        <span ng-show="!offer.paid" class="text-danger">' +
                 '                           <div>Neplătită</div>' +
                 '                           <span class="text-secondary">' +
                 '                             <i class="fa fa-info-circle"></i> O rezervare neplătită nu atrage nici o obligatie din partea proprietarului' +
                 '                           </span> ' +
+                '                           <div ng-show="offer.owner_is_current_user"> ' +
+                '                               <button class="btn btn-outline-primary" ui-sref=".pay({offer: offer, space: space})">' +
+                '                                  <i class="fa fa-credit-card"></i> Achită' +
+                '                               </button>' +
+                '                           </div>' +
                 '                       </span>' +
                 '                    </div>' +
                 '                </div>' +
@@ -755,22 +758,20 @@ angular.module('ParkingSpace.directives')
                 '                        La 15 min' +
                 '                    </div>' +
                 '                </div>' +
-                '                <div class="mt-3 pt-3 text-center" ng-hide="noContact" >' +
-                '                    <h5>Apelează <br/> {{selOffer.owner_name}} </h5>' +
-                '                    <div class="ps-text-xbig">' +
-                '                        <a ng-href="tel:{{selOffer.owner_prefix + selOffer.owner_phone_number}}">' +
+                '                <div class="mt-3 text-center" ng-hide="offer.owner_is_current_user" >' +
+                '                    <h6>Apelează <br/> {{offer.owner_name}} </h6>' +
+                '                    <div class="ps-text-big">' +
+                '                        <a ng-href="tel:{{offer.owner_prefix + offer.owner_phone_number}}">' +
                 '                            <i class="fa fa-phone"></i>' +
-                '                            {{selOffer.owner_prefix + selOffer.owner_phone_number}}' +
+                '                            {{offer.owner_prefix + offer.owner_phone_number}}' +
                 '                        </a>' +
                 '                    </div>' +
                 '                </div>' +
                 '            </div>' +
-                '            <div class="ps-control-buttons">' +
-                '                <button class="btn  btn-secondary" onclick="$(\'.showPhoneNumber\').hide()">Înapoi</button>' +
-                '            </div>' +
-                '        </div>' +
-                '    </div>' +
-                '      </div>',
+                '         </div>' +
+                '       </div>' +
+                '     </div>' +
+                ' </div>',
             link: function ($scope, $elm) {
                 $scope.validity = function (offer) {
                     if (!offer) return 'n/a';
@@ -778,8 +779,8 @@ angular.module('ParkingSpace.directives')
                 }
 
                 $scope.selectOffer = function (offer) {
-                    $scope.selOffer = offer;
-                    $elm.find('.showPhoneNumber').show();
+                    $('.showDetails' + offer.id).slideToggle(200);
+                    offer.showDetails = !offer.showDetails
                 };
             }
         }
@@ -898,11 +899,12 @@ angular.module('ParkingSpace.directives')
         return {
             restrict: 'E',
             scope: {
-                space: '='
+                space: '=',
+                noValiationStatus: '='
             },
             template: '<div>' +
-                '         <space-missing-doc-box space="space"></space-missing-doc-box>' +
-                '         <space-validated-box space="space"></space-validated-box>' +
+                '         <space-missing-doc-box ng-hide="noValiationStatus" space="space"></space-missing-doc-box>' +
+                '         <space-validated-box ng-hide="noValiationStatus" space="space"></space-validated-box>' +
                 '         <div class="p-2">' +
                 '            <h5 class="text-center font-weight-bold p-2 "><u>Rezervări</u></h5>' +
                 '            <ul class="nav nav-tabs" role="tablist">' +
@@ -927,19 +929,19 @@ angular.module('ParkingSpace.directives')
                 '                    <div class="text-center p-3 text-muted" ng-hide="activeOffers.length"> ' +
                 '                         <i class="fa fa-ban"></i> Nicio rezervare curentă ' +
                 '                    </div>' +
-                '                    <bid-table space="space" offers="activeOffers" ></bid-table>' +
+                '                    <bid-table  space="space" offers="activeOffers" ></bid-table>' +
                 '               </div>' +
                 '               <div class="tab-pane fade" id="future-{{space.id}}" role="tabpanel"  class="pb-2">' +
                 '                    <div class="text-center p-3 text-muted" ng-hide="futureOffers.length"> ' +
                 '                         <i class="fa fa-ban"></i> Nicio rezervare ' +
                 '                    </div>' +
-                '                    <bid-table space="space" offers="futureOffers"  class="pb-2"></bid-table>' +
+                '                    <bid-table  space="space" offers="futureOffers"  class="pb-2"></bid-table>' +
                 '               </div>' +
                 '               <div class="tab-pane fade" id="past-{{space.id}}" role="tabpanel"  class="pb-2">' +
                 '                    <div class="text-center p-3 text-muted" ng-hide="pastOffers.length"> ' +
                 '                         <i class="fa fa-ban"></i> Nicio rezervare' +
                 '                    </div>' +
-                '                    <bid-table space="space" offers="pastOffers"  class="pb-2"></bid-table>' +
+                '                    <bid-table  space="space" offers="pastOffers"  class="pb-2"></bid-table>' +
                 '               </div>' +
                 '            </div>' +
                 '         </div>' +
@@ -1105,42 +1107,42 @@ angular.module('ParkingSpace.directives')
                 '          </div> ' +
                 '        <div class="existing-offers panel p-3 my-2" ng-class="{canceled:bid.rejected || bid.canceled}"' +
                 '           ng-repeat="bid in offers">' +
-                '        <div class="row" ng-click="show(\'offerDetails\'+\'-\'+$index)">' +
-                '          <div class="col-12 mb-2 text-center">' +
-                '            <h5 class="mb-0" ng-show="bid.approved">' +
-                '              <i class="fa fa-check text-success"></i>' +
-                '              Rezervare confirmată' +
-                '            </h5>' +
-                '            <h5 class="mb-0" ng-show="bid.rejected">' +
-                '              <i class="fa fa-ban text-danger"></i>' +
-                '              Rezervare respinsă' +
-                '            </h5>' +
-                '            <h5 class="mb-0" ng-show="bid.canceled">' +
-                '              <i class="fa fa-ban text-danger"></i>' +
-                '              Rezervare anulată' +
-                '            </h5>' +
-                '            <div ng-show="bid.pending">' +
-                '              <h5 class="mb-0">' +
-                '                <i class="fa fa-exclamation-triangle text-danger"></i> Rezervare neplătită' +
-                '              </h5>' +
-                '              <div class="text-muted">Achitați taxa pentru a putea accesa locul de parcare.</div>' +
+                '         <div class="row" ng-click="show(\'offerDetails\'+\'-\'+$index)">' +
+                '            <div class="col-12 mb-2 text-center">' +
+                '               <h5 class="mb-0" ng-show="bid.approved">' +
+                '                 <i class="fa fa-check text-success"></i>' +
+                '                 Rezervare confirmată' +
+                '               </h5>' +
+                '               <h5 class="mb-0" ng-show="bid.rejected">' +
+                '                 <i class="fa fa-ban text-danger"></i>' +
+                '                 Rezervare respinsă' +
+                '               </h5>' +
+                '               <h5 class="mb-0" ng-show="bid.canceled">' +
+                '                 <i class="fa fa-ban text-danger"></i>' +
+                '                 Rezervare anulată' +
+                '               </h5>' +
+                '               <div ng-show="bid.pending">' +
+                '                 <h5 class="mb-0">' +
+                '                   <i class="fa fa-exclamation-triangle text-danger"></i> Rezervare neplătită' +
+                '                 </h5>' +
+                '                 <div class="text-muted">Achitați taxa pentru a putea accesa locul de parcare.</div>' +
+                '               </div>' +
+                '               <h5>' +
+                '                 <small class="font-weight-light">' +
+                '                   ({{bid.start_date | moment: \'D MMM HH:mm\'}} - {{bid.end_date | moment: \'D MMM HH:mm\'}})' +
+                '                 </small>' +
+                '               </h5>' +
                 '            </div>' +
-                '            <h5>' +
-                '              <small class="font-weight-light">' +
-                '                ({{bid.start_date | moment: \'D MMM HH:mm\'}} - {{bid.end_date | moment: \'D MMM HH:mm\'}})' +
-                '              </small>' +
-                '            </h5>' +
-                '          </div>' +
-                '          <div class="col-6">' +
-                '            Cost total' +
-                '            <h5>{{bid.amount}} {{selectedSpace.currency}}</h5>' +
-                '          </div>' +
-                '          <div class="col-6">' +
-                '            Durata' +
-                '            <h5>{{bid | totalPeriod}}</h5>' +
-                '          </div>' +
+                '            <div class="col-6">' +
+                '              Cost total' +
+                '              <h5>{{bid.amount}} {{selectedSpace.currency}}</h5>' +
+                '            </div>' +
+                '            <div class="col-6">' +
+                '              Durata' +
+                '              <h5>{{bid | totalPeriod}}</h5>' +
+                '            </div>' +
                 '        </div>' +
-                '        <div class="panel-body p-0 animated" id="offerDetails-{{$index}}">' +
+                '        <div class="existing-offers-body" style="display: none" id="offerDetails-{{$index}}">' +
                 '          <div class="row no-gutters px-1">' +
                 '            <div class="col-4">Dată start</div>' +
                 '            <div class="col-8">' +

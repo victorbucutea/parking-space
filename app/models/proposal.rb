@@ -141,6 +141,9 @@ class Proposal < ActiveRecord::Base
     self.skip_expiration_check = true
     self.skip_paid_check = true
     self.payment_date = DateTime.now
+    self.payment_amount = amount
+    self.payment_comision = comision
+    self.payment_vat = APP_CONFIG['vat'].to_f
     paid!
     approved!
   end

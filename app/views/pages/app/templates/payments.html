@@ -29,21 +29,9 @@
 
             </div>
         </div>
-
-        <!-- Action buttons for offer -->
-        <div class="mt-3 d-flex justify-content-center" ng-show="payments.length">
-
-            <button class="btn btn-link animated zoomIn" ng-click="showReservationDetails()">
-                <i class="fa fa-calendar"></i> Vezi rezervare
-            </button>
-            <button class="btn btn-link animated zoomIn"
-                    ui-sref="search({lat:space.location_lat, lng:space.location_long,zoom: 18 })">
-                <i class="fa fa-map"></i> Vezi locul pe hartă
-            </button>
-        </div>
     </div>
 
-    <div class="ps-dialog mt-5" id="showDetails">
+    <div class="ps-dialog " id="showDetails">
         <div class="ps-dialog-content animated zoomIn">
             <div class="ps-question">
                 <div ng-repeat="detail in paymentDetails">
@@ -61,7 +49,7 @@
                         </div>
                     </div>
                     <div class="row ps-row">
-                        <div class="col-4">Pret</div>
+                        <div class="col-4">Pret cu TVA</div>
                         <div class="col-8">
                             {{detail.total_amount}}
                         </div>
@@ -81,57 +69,4 @@
         </div>
     </div>
 
-    <!-- Additional info dialog -->
-    <div class="ps-dialog mt-5" id="showReservation">
-        <div class="ps-dialog-content animated zoomIn">
-            <div class="ps-question">
-                <parking-spot-info-box space="selectedSpace" class="mb-3"></parking-spot-info-box>
-                <hr/>
-                <div class="row ps-row">
-                    <div class="col-4">Durata</div>
-                    <div class="col-8">
-                        {{selOffer | totalPeriod}}
-                    </div>
-                </div>
-                <div class="row ps-row">
-                    <div class="col-4">Start</div>
-                    <div class="col-8">
-                        {{selOffer.start_date | moment: 'ddd, D MMM, HH:mm'}}
-                    </div>
-                </div>
-                <div class="row ps-row">
-                    <div class="col-4">Stop</div>
-                    <div class="col-8">
-                        {{selOffer.end_date | moment: 'ddd, D MMM, HH:mm'}}
-                    </div>
-                </div>
-                <div class="row ps-row">
-                    <div class="col-4">
-                        Taxare
-                    </div>
-                    <div class="col-8">
-                        La 15 min
-                    </div>
-                </div>
-                <div class="mt-3 pt-3 text-center" ng-hide="selOffer.approved">
-                    <h5>Oferta nu a fost încă acceptată</h5>
-                    <div class="ps-text-xxbig">
-                        :(
-                    </div>
-                </div>
-                <div class="mt-3 pt-3 text-center" ng-show="selOffer.approved">
-                    <h5>Apelează <br/> {{selectedSpace.owner_name}} </h5>
-                    <div class="ps-text-xbig">
-                        <a ng-href="tel:{{selectedSpace.owner_phone_number}}">
-                            <i class="fa fa-phone"></i>
-                            {{selectedSpace.owner_phone_number}}
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="ps-control-buttons">
-                <button class="btn  btn-secondary" onclick="$('#showReservation').hide()">Înapoi</button>
-            </div>
-        </div>
-    </div>
 </div>

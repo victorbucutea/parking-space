@@ -6,6 +6,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('PayCtrl',
 
 
     $scope.offer = $stateParams.offer;
+    $scope.selectedSpace = $scope.selectedSpace || $stateParams.space;
+
     let elm = $('#paymentRoot');
 
     $('.start-payment').hide();

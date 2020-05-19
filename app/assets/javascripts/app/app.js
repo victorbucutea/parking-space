@@ -168,18 +168,26 @@ angular.module('ParkingSpaceMobile', [
                     'subcontent': { templateUrl: "templates/my-posts.html"}
                 }
             })
-            .state('myoffers', {
+            .state('map.myposts.post', {
+                url: '/post?spaceId',
+                views: {
+                    'place-bid': {
+                        templateUrl: "templates/post-space.html"
+                    }
+                },
+                params: {
+                    spaceId: null
+                }
+            })
+            .state('map.myoffers', {
                 url: '/myoffers',
                 views: {
-                    'content': {
+                    'subcontent': {
                         templateUrl: "templates/my-offers.html"
-                    },
-                    'search-bar': {
-                        templateUrl: "templates/search-bar.html"
                     }
                 }
             })
-            .state('myoffers.pay', {
+            .state('map.myoffers.pay', {
                 url: '/pay',
                 views: {
                     'pay': {

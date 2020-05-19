@@ -1,193 +1,214 @@
-<div class="ps-modal ">
-    <div class="mt-md-4 animated zoomIn" ng-controller="EditParkingSpaceCtrl">
-        <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm" novalidate="novalidate">
-            <div >
-                <h3 class="px-3 pt-2 ">
-                    <i class="fa fa-car text-success"></i>
-                    <small ng-show="step == 0" class="text-muted px-3"><b>Adresa</b> și <b>disponibilitatea</b></small>
-                    <small ng-show="step == 1" class="text-muted px-3"> <b>Locul tău</b> si <b>accesul</b> la
-                        acesta.</small>
-                    <small ng-show="step == 2" class="text-muted px-3"> Termeni legali </small>
+<div ng-controller="EditParkingSpaceCtrl">
+    <div class="ps-modal  " id="postSpaceModal">
+        <div class="mt-md-4 animated zoomIn">
+            <form class="form-edit-details" id="postSpaceForm" name="postSpaceForm" novalidate="novalidate">
+                <div>
+                    <h3 class="px-3 pt-2 ">
+                        <i class="fa fa-car text-success"></i>
+                        <small ng-show="step == 0" class="text-muted px-3"><b>Adresa</b> și
+                            <b>disponibilitatea</b></small>
+                        <small ng-show="step == 1" class="text-muted px-3"> <b>Locul tău</b> si <b>accesul</b> la
+                            acesta.</small>
+                        <small ng-show="step == 2" class="text-muted px-3"> Termeni legali </small>
 
-                </h3>
-            </div>
-            <hr/>
-            <!-- Step 0 -->
-            <div class="container" ng-show="step == 0">
-
-                <div class="form-group row align-items-center">
-                    <label for="bidAmount" class="col-form-label col-form-label-lg col-3">Preț:</label>
-                    <bid-amount class="col-9" id="bidAmount" bid-amount="spaceEdit.price"
-                                bid-currency="spaceEdit.currency"></bid-amount>
+                    </h3>
                 </div>
-
-
-                <div class="form-group row">
-                    <label for="addr" class="col-form-label col-form-label-lg col-3">Titlu:</label>
-                    <div class="col-9">
-                        <input id="title" type="text" placeholder="" class="form-control form-control-lg"
-                               ng-model="spaceEdit.title" required>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="addr" class="col-form-label col-form-label-lg col-3">Adresă:</label>
-                    <div class="col-9">
-                        <input id="addr" type="text" placeholder="Adresă" class="form-control form-control-lg"
-                               ng-model="spaceEdit.address_line_1" required>
-                        <smal class="text-muted form-text">Pentru a fi găsit ușor, asigură-te ca <b>adresa</b> si <a class="text-muted" ui-sref="^"><b>locația</b></a> pe hartă sunt exacte.</smal>
-                    </div>
-                </div>
-
                 <hr/>
-                <div class="form-group row">
-                    <label class="col-form-label col-form-label-lg col-4"
-                           for="dateStart">Disp. din:</label>
-                    <div class="col-8">
-                        <date-time id="dateStart"  large="true"
-                                   date-model="spaceEdit.space_availability_start" day></date-time>
+                <!-- Step 0 -->
+                <div class="container" ng-show="step == 0">
+
+                    <div class="form-group row align-items-center">
+                        <label for="bidAmount" class="col-form-label col-form-label-lg col-3">Preț:</label>
+                        <bid-amount class="col-9" id="bidAmount" bid-amount="spaceEdit.price"
+                                    bid-currency="spaceEdit.currency"></bid-amount>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label  col-form-label-lg col-4 pr-0"
-                           for="dateStop">Disp. până la:</label>
-                    <div class="col-8">
-                        <date-time id="dateStop" large="true" date-model="spaceEdit.space_availability_stop"
-                                   day></date-time>
-                        <div class="invalid-feedback">
-                            Perioada minimă e de 15 min
+
+
+                    <div class="form-group row">
+
+                        <label for="addr" class="col-form-label col-form-label-lg col-xsm-2 col-sm-3">Titlu:</label>
+                        <div class="col-xsm-10 col-sm-9">
+                            <input id="title" type="text" placeholder="" class="form-control form-control-lg"
+                                   ng-model="spaceEdit.title" required>
+                            <span class="text-muted form-text">
+                            <b>Tipul</b> locului (garaj, alee, subteran, etc.) și <b>titlul</b> anunțului  </span>
                         </div>
-                        <span class="form-text text-muted pt-2" ng-click="showSched()">
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="addr" class="col-form-label col-form-label-lg col-xsm-2 col-sm-3">Adresă:</label>
+                        <div class="col-xsm-10 col-sm-9">
+                            <input id="addr" type="text" placeholder="Adresă" class="form-control form-control-lg"
+                                   ng-model="spaceEdit.address_line_1" required>
+                            <span class="text-muted form-text">
+                            Asigură-te ca <b>adresa</b> si <a class="text-muted"><b>locația</b></a> pe hartă sunt exacte.
+                        </span>
+                            <span class="text-right form-text pick-map" ng-click="pickNewAddress(spaceEdit)"> <u>Alege pe harta</u> </span>
+                        </div>
+                    </div>
+
+                    <hr/>
+                    <div class="form-group row">
+                        <label class="col-form-label col-form-label-lg col-4"
+                               for="dateStart">Disp. din:</label>
+                        <div class="col-8">
+                            <date-time id="dateStart" large="true"
+                                       date-model="spaceEdit.space_availability_start" day></date-time>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label  col-form-label-lg col-4 pr-0"
+                               for="dateStop">Disp. până la:</label>
+                        <div class="col-8">
+                            <date-time id="dateStop" large="true" date-model="spaceEdit.space_availability_stop"
+                                       day></date-time>
+                            <div class="invalid-feedback">
+                                Perioada minimă e de 15 min
+                            </div>
+                            <span class="form-text text-muted pt-2" ng-click="showSched()">
                             <u>Orar pe zile / ore >> </u>
                         </span>
-                    </div>
-                </div>
-
-                <!-- Daily and weekly custom schedule -->
-                <div id="schedule" class="mt-4" style="display: none;">
-                    <div class="form-group row">
-                        <label class="col-form-label col-4 pr-2"
-                               for="timeStart">Disp. între:</label>
-                        <div class="col-8 row no-gutters">
-                            <div class="col-5 ">
-                                <input id="timeStart" ng-required="scheduleOpen" ng-model="spaceEdit.daily_start"
-                                       type="time"
-                                       class="form-control">
-                            </div>
-                            <label class="col-form-label col-2 text-center "
-                                   for="timeStop">și</label>
-                            <div class="col-5 ">
-                                <input id="timeStop" ng-required="scheduleOpen" ng-model="spaceEdit.daily_stop"
-                                       type="time"
-                                       class="form-control">
-                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <div class="col-12 text-center">
-                            <div class="btn-group week-sched">
-                                <label class="btn  btn-lg btn-secondary" ng-model="spaceEdit.weekly_schedule.mon"
-                                       uib-btn-checkbox>
-                                    Lu
-                                </label>
-                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.tue"
-                                       uib-btn-checkbox>
-                                    M
-                                </label>
-                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.wed"
-                                       uib-btn-checkbox>
-                                    Mi
-                                </label>
-                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.thu"
-                                       uib-btn-checkbox>
-                                    J
-                                </label>
-                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.fri"
-                                       uib-btn-checkbox>
-                                    V
-                                </label>
-                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.sat"
-                                       uib-btn-checkbox>
-                                    S
-                                </label>
-                                <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.sun"
-                                       uib-btn-checkbox>
-                                    D
-                                </label>
+                    <!-- Daily and weekly custom schedule -->
+                    <div id="schedule" class="mt-4" style="display: none;">
+                        <div class="form-group row">
+                            <label class="col-form-label col-4 pr-2"
+                                   for="timeStart">Disp. între:</label>
+                            <div class="col-8 row no-gutters">
+                                <div class="col-5 ">
+                                    <input id="timeStart" ng-required="scheduleOpen" ng-model="spaceEdit.daily_start"
+                                           type="time"
+                                           class="form-control">
+                                </div>
+                                <label class="col-form-label col-2 text-center "
+                                       for="timeStop">și</label>
+                                <div class="col-5 ">
+                                    <input id="timeStop" ng-required="scheduleOpen" ng-model="spaceEdit.daily_stop"
+                                           type="time"
+                                           class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-12 text-center">
+                                <div class="btn-group week-sched">
+                                    <label class="btn  btn-lg btn-secondary" ng-model="spaceEdit.weekly_schedule.mon"
+                                           uib-btn-checkbox>
+                                        Lu
+                                    </label>
+                                    <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.tue"
+                                           uib-btn-checkbox>
+                                        M
+                                    </label>
+                                    <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.wed"
+                                           uib-btn-checkbox>
+                                        Mi
+                                    </label>
+                                    <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.thu"
+                                           uib-btn-checkbox>
+                                        J
+                                    </label>
+                                    <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.fri"
+                                           uib-btn-checkbox>
+                                        V
+                                    </label>
+                                    <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.sat"
+                                           uib-btn-checkbox>
+                                        S
+                                    </label>
+                                    <label class="btn btn-lg  btn-secondary" ng-model="spaceEdit.weekly_schedule.sun"
+                                           uib-btn-checkbox>
+                                        D
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Step 1 -->
-            <div class="container animated slideInRight" ng-show="step == 1">
+                <!-- Step 1 -->
+                <div class="container animated slideInRight" ng-show="step == 1">
 
-                <!-- Start image upload -->
-                <div class="my-4" id="dropZone">
-                    <file-upload accept="'image/*'" label="'Încarcă foto'"
-                                 existing-files="spaceEdit.images"
-                                 uploaded-files="uploadedFiles"></file-upload>
-                </div>
-                <!-- End image upload-->
+                    <!-- Start image upload -->
+                    <div class="my-4" id="dropZone">
+                        <file-upload accept="'image/*'" label="'Încarcă foto'"
+                                     existing-files="spaceEdit.images"
+                                     uploaded-files="uploadedFiles"></file-upload>
+                    </div>
+                    <!-- End image upload-->
 
-                <h4>Descrie locul de parcare</h4>
-                <div class="form-group row">
-                    <div class="col-12">
+                    <h4>Descrie locul de parcare</h4>
+                    <div class="form-group row">
+                        <div class="col-12">
                         <textarea id="description"
                                   class="form-control" ng-model="spaceEdit.description"
-                                  placeholder="Indicații acces, tip parcare, sugestii, etc..."></textarea>
+                                  required
+                                  placeholder="Indicații acces, tip parcare, instructiuni parcare"></textarea>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group my-4 mark small">
-                    <div class="form-check pl-4">
-                        <input class="form-check-input" type="checkbox" id="termsAndConditions"
-                               ng-model="termsAndConditions" required value="">
-                        <label for="termsAndConditions" class="form-check-label">
-                            Accept <a class="text-primary" ui-sref="search.terms">termenii și condițiile </a>
-                            Go-Park și voi respecta orice obligații se regăsesc in acești termeni.
-                        </label>
-                        <div class="invalid-feedback">
-                            Pentru a continua trebuie să accepți termenii si condițiile Go-Park
+                    <div class="form-group my-4 mark small">
+                        <div class="form-check pl-4">
+                            <input class="form-check-input" type="checkbox" id="termsAndConditions"
+                                   ng-model="termsAndConditions" required value="">
+                            <label for="termsAndConditions" class="form-check-label">
+                                Accept <a class="text-primary" ui-sref="map.search.terms">termenii și condițiile </a>
+                                Go-Park și voi respecta orice obligații se regăsesc in acești termeni.
+                            </label>
+                            <div class="invalid-feedback">
+                                Pentru a continua trebuie să accepți termenii si condițiile Go-Park
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="container animate slideInRight" ng-show="step == 2">
-                <div class="p-2 legal-contract-txt">
-                    Pentru ca e prima oară când postezi acest loc, trebuie sa faci dovada dreptului de a sub-închiria.
-                    Te rugăm încarcă un act doveditor (titlu de proprietate, contract închiriere, etc. )
+                <div class="container animate slideInRight" ng-show="step == 2">
+                    <div class="p-2 legal-contract-txt">
+                        Pentru ca e prima oară când postezi acest loc, trebuie sa faci dovada dreptului de a
+                        sub-închiria.
+                        Te rugăm încarcă un act doveditor (titlu de proprietate, contract închiriere, etc. )
+                    </div>
+                    <div class="my-4">
+                        <file-upload accept="'*'" icon="'fa-file'"
+                                     label="'Încarcă document'"
+                                     folder="'documents'"
+                                     uploaded-files="uploadedDocs"></file-upload>
+                    </div>
                 </div>
-                <div class="my-4">
-                    <file-upload accept="'*'" icon="'fa-file'"
-                                 label="'Încarcă document'"
-                                 folder="'documents'"
-                                 uploaded-files="uploadedDocs"></file-upload>
+                <hr class="mb-0"/>
+
+                <div class="ps-control-buttons">
+                    <button class="btn btn-secondary" ng-show="step == 1" ng-click="prevStep()">
+                        <i class="fa fa-angle-double-left"></i>
+                    </button>
+                    <button class="btn btn-primary btn-lg"
+                            ng-disabled="loading"
+                            ng-click="nextStep()">
+                        <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+                        <span ng-show="step == 1">Postează locul</span>
+                        <span ng-show="step == 0 ">Următorul </span>
+                        <span ng-show="step == 2 ">Salvează documentele </span>
+                        <i class="fa fa-angle-double-right" ng-show="step == 0"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-lg" ng-click="close()">
+                        Anulează
+                    </button>
                 </div>
-            </div>
-            <hr/>
 
-            <div class="mt-3 ps-control-buttons">
-                <button class="btn btn-secondary" ng-show="step == 1" ng-click="prevStep()">
-                    <i class="fa fa-angle-double-left"></i>
-                </button>
-                <button class="btn btn-primary btn-lg"
-                        ng-disabled="loading"
-                        ng-click="nextStep()">
-                    <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
-                    <span ng-show="step == 1">Postează locul</span>
-                    <span ng-show="step == 0 ">Următorul </span>
-                    <span ng-show="step == 2 ">Salvează documentele </span>
-                    <i class="fa fa-angle-double-right" ng-show="step == 0"></i>
-                </button>
-                <button class="btn btn-secondary btn-lg" ng-click="close()">
-                    Anulează
-                </button>
-            </div>
+            </form>
+        </div>
+    </div>
 
-        </form>
+    <search-center-icon right="true" shown="editingSpot"></search-center-icon>
+    <div class="map-controls " ng-show="editingSpot">
+        <button class="btn btn-primary add-btn wider" ng-click="selectNewAddress()" >
+        <span>
+            Alege noul loc
+            <i class="fa fa-arrow-right"></i>
+        </span>
+        </button>
     </div>
 </div>

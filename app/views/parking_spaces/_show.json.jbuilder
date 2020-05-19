@@ -37,8 +37,8 @@ end
 #     json.paid proposal.paid?
 #     json.status proposal.approval_status
 #     json.pending proposal.pending?
-#     json.bid_price proposal.bid_amount.to_f
-#     json.bid_currency proposal.bid_currency
+#     json.price proposal.bid_amount.to_f
+#     json.currency proposal.bid_currency
 #     json.start_date proposal.start_date
 #     json.end_date proposal.end_date
 #     json.owner_is_current_user proposal.user.id == current_user.id

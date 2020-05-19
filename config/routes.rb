@@ -52,6 +52,9 @@ Rails.application.routes.draw do
   resources :accounts do
     post 'withdraw'
     get 'withdrawals'
+    post 'cancel_withdrawal'
+    post 'reject_withdrawal'
+    post 'execute_withdrawal'
   end
 
   resources :parking_spaces do

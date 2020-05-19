@@ -21,11 +21,11 @@ class ParkingSpacesController < ApplicationController
     lon_max = params[:lon_max]
 
     unless lat_min && lon_min && lat_max && lon_max
-      render json: {Error: {general: "Missing parameters 'lat' or 'lon' min/max"}}, status: :unprocessable_entity
+      render json: { Error: { general: "Missing parameters 'lat' or 'lon' min/max" } }, status: :unprocessable_entity
       return
     end
 
-    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
+    query_attrs = { lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max }
     @parking_spaces = ParkingSpace.not_expired.active(current_user)
                           .includes(:user, :images)
                           .within_boundaries(query_attrs)
@@ -33,7 +33,7 @@ class ParkingSpacesController < ApplicationController
 
   # GET /parking_spaces/1/phone_number
   def phone_number
-    render json: {number: @parking_space.user.phone_number}, status: :ok
+    render json: { number: @parking_space.user.phone_number }, status: :ok
   end
 
   # GET /parking_spaces/1
@@ -41,23 +41,24 @@ class ParkingSpacesController < ApplicationController
   def show; end
 
   def myspaces
-    @parking_spaces = ParkingSpace.includes(:images, :user)
+    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
                           .where(user: current_user)
 
-    render :index, status: :ok
+    render :myspaces, status: :ok
   end
 
   def myoffers
-    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
-                          .where(proposals: {user: current_user})
+    @parking_spaces =
+      ParkingSpace.includes(:proposals, :images, :user, proposals: :user)
+          .where(proposals: { user: current_user })
 
-    render :index, status: :ok
+    render :myspaces, status: :ok
   end
 
   def attach_documents
     docs = params[:docs]
     if docs.empty?
-      return render json: {Error: 'No documents uploaded!'}, status: :unprocessable_entity
+      return render json: { Error: 'No documents uploaded!' }, status: :unprocessable_entity
     end
 
     @parking_space.documents.destroy_all
@@ -65,7 +66,7 @@ class ParkingSpacesController < ApplicationController
     docs.each do |d|
       doc = @parking_space.documents.create(file: d, comment: 'User upload', status: 'uploaded')
       unless doc.errors.empty?
-        return render json: {Error: doc.errors}, status: :unprocessable_entity
+        return render json: { Error: doc.errors }, status: :unprocessable_entity
       end
     end
     # move to title_deed_pending
@@ -82,7 +83,7 @@ class ParkingSpacesController < ApplicationController
     imgs.each do |d|
       img = @parking_space.images.create(image: d[:name], comment: 'User upload')
       unless img.errors.empty?
-        return render json: {Error: img.errors}, status: :unprocessable_entity
+        return render json: { Error: img.errors }, status: :unprocessable_entity
       end
     end
 
@@ -105,7 +106,7 @@ class ParkingSpacesController < ApplicationController
     if @parking_space.save
       render :show, status: :created, location: @parking_space
     else
-      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
+      render json: { Error: @parking_space.errors }, status: :unprocessable_entity
     end
   end
 
@@ -115,7 +116,7 @@ class ParkingSpacesController < ApplicationController
     if @parking_space.update(parking_space_params)
       render :show, status: :ok, location: @parking_space
     else
-      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
+      render json: { Error: @parking_space.errors }, status: :unprocessable_entity
     end
   end
 

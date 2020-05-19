@@ -40,13 +40,14 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                 $scope.newImage.submit().then((publicIds) => {
                     if (publicIds.length)
                         user.image = publicIds[0].name;
+
                     if ($stateParams.inside) {
                         userService.saveUser(user, function () {
-                            $state.go('search');
+                            $state.go('map.search');
                         });
                     } else {
                         userService.registerUser(user, function () {
-                            $state.go('search');
+                            $state.go('map.search');
                         });
                     }
                 })
@@ -69,7 +70,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
 
             $scope.back = function () {
                 if ($scope.inside) {
-                    $state.go('search');
+                    $state.go('map.search');
                 } else {
                     $state.go('login');
                 }

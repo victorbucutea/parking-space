@@ -1,12 +1,12 @@
 'use strict'
 
 angular.module('ParkingSpaceMobile.controllers').controller('WithdrawalsCtrl',
-    ['$rootScope', '$state', '$scope', 'offerService', 'parkingSpaceService', 'paymentService',
-        function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
+    ['$rootScope', '$state', '$scope', 'offerService', 'parkingSpaceService', 'paymentService', 'replaceById',
+        function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService, replaceById) {
 
             $('.loading-finished-withd').hide();
             $('.loading-withd').show();
-            paymentService.getWithdrawals((withd) => {
+            paymentService.getWithdrawals( (withd) => {
                 $('.loading-withd').hide();
                 if (withd.length <= 0)
                     $('.loading-finished-withd').show();
@@ -17,16 +17,21 @@ angular.module('ParkingSpaceMobile.controllers').controller('WithdrawalsCtrl',
 
 
             $scope.selectWithd = function (withd) {
-                $scope.withd = withd;
+                $scope.selWithd = withd;
             };
 
             $scope.cancelWithdrawal = function (withd) {
-                paymentService.cancelWithdrawal((withd) => {
-                    if (withd.length <= 0)
-                        $('.loading-finished-withd').show();
-                    $scope.withdrawals = withd;
+                paymentService.cancelWithdrawal( withd, (withd) => {
+                    replaceById(withd, $scope.withdrawals);
                 });
             }
+
+            $scope.getDetails = function (payment) {
+                paymentService.getPaymentDetails(payment.id, function (data) {
+                    $scope.paymentDetails = data;
+                    $('#showDetails').show();
+                })
+            };
 
 
         }]);

@@ -59,6 +59,17 @@ angular.module('ParkingSpace.services')
                     });
                     clusteredSpaces = geocluster(latLngs, zoomFactor);
                 }
+                clusteredSpaces.sort((a, b) => {
+                    let compa = a.elements[0][2].id;
+                    let compb = b.elements[0][2].id;
+                    if (compa < compb) {
+                        return -1;
+                    }
+                    if (compa > compb) {
+                        return 1;
+                    }
+                    return 0;
+                });
                 return clusteredSpaces;
             }
 
@@ -83,11 +94,6 @@ angular.module('ParkingSpace.services')
                 $http.get('/parking_spaces/myoffers.json')
                     .then(function (response) {
                         let data = response.data;
-                        if (data) {
-                            data.forEach(function (p_space) {
-                                _this.convert(p_space);
-                            });
-                        }
                         if (clbk)
                             clbk(data);
                     }, function (errorResponse) {
@@ -116,22 +122,7 @@ angular.module('ParkingSpace.services')
                 })
             };
 
-            this.deleteSpace = function (spaceId, clbk) {
-                $http.delete('/parking_spaces/' + spaceId + '.json')
-                    .then(function (res) {
-                        let data = res.data;
-                        $rootScope.$emit('http.notif', 'Locul de parcare a fost șters!');
-                        if (clbk) {
-                            clbk(data);
-                        }
-                    }, function (err) {
-                        errorHandlingService.handle(err.data, err.status);
-                    })
-
-            };
-
             this.uploadDocuments = function (spaceId, docs, clbk) {
-
                 $http.post(`/parking_spaces/${spaceId}/attach_documents.json`, {docs: docs})
                     .then(function (res) {
                         let data = res.data;
@@ -145,7 +136,6 @@ angular.module('ParkingSpace.services')
                         errorHandlingService.handle(err.data, err.status);
                     })
             };
-
 
             this.uploadImages = function (spaceId, imgs) {
                 return $http.post(`/parking_spaces/${spaceId}/attach_images.json`, {imgs: imgs})
@@ -405,11 +395,27 @@ angular.module('ParkingSpace.services')
                     }
                 })
             }
+
+            _this.cancelWithdrawal = function (withd, clbk) {
+                $http.post(`/accounts/1/reject_withdrawal.json`,
+                    {withdrawal_id: withd.id}
+                ).then(function (resp) {
+                    $rootScope.$emit('http.warning', 'Retragerea a fost anulata!');
+
+                    if (clbk) {
+                        let data = resp.data;
+                        clbk(data);
+                    }
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
+                })
+
+            }
         }])
 
     .service('companyUserService', ['$rootScope', '$http', 'errorHandlingService',
         function ($rootScope, $http, errorHandlingService) {
-            var _this = this;
+            let _this = this;
 
             _this.loadCompanyUsers = function (query, clbk) {
                 $http.get('/employees/list.json', {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_124551) do
+ActiveRecord::Schema.define(version: 2020_05_17_083825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_124551) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "iban"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
@@ -169,6 +170,10 @@ ActiveRecord::Schema.define(version: 2020_04_16_124551) do
     t.integer "payment_status"
     t.datetime "payment_date"
     t.bigint "user_id"
+    t.string "payment_id"
+    t.decimal "payment_amount"
+    t.decimal "payment_comision"
+    t.decimal "payment_vat"
     t.index ["bid_amount"], name: "index_proposals_on_bid_amount"
     t.index ["end_date"], name: "index_proposals_on_end_date"
     t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"

@@ -4,10 +4,8 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
-    ['$rootScope', '$scope', '$state', 'parkingSpaceService', 'userService', 'offerService',
-        function ($rootScope, $scope, $state, parkingSpaceService, userService, offerService) {
-
-            $('.map-controls').show();
+    ['$rootScope', '$scope', '$state', 'parkingSpaceService', 'userService', 'geoService',
+        function ($rootScope, $scope, $state, parkingSpaceService, userService, geoService) {
             $scope.cloudName = window.cloudinaryName;
 
             let dragHandle = null;
@@ -35,6 +33,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 $scope.scheduleDrawSpaces();
                 $scope.$on('$stateChangeStart', function (stateEventm, next, current) {
                     if (!next.name.startsWith('map.search')) {
+                        observer.disconnect();
                         event.removeListener(dragHandle);
                         event.removeListener(zoomHandle);
                     }
@@ -64,24 +63,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 }
             });
 
-            $rootScope.$on('postSpace', function (rvt) {
-                $scope.spaceEdit = {};
-                $state.go('.post');
-            })
-
-
-            $scope.showDesc = function (space) {
-                let esc = $('#spaceDesc-' + space.id);
-                let height = esc[0].scrollHeight;
-                let open = esc.data('open')
-                if (open) {
-                    esc.css('max-height', '70px');
-                    esc.data('open', '');
-                } else {
-                    esc.css('max-height', height + 'px');
-                    esc.data('open', 'true');
-                }
-            };
 
             $scope.showFullImageThumb = function (evt, space) {
                 $rootScope.$emit('showCarouselImages', space.images);
@@ -116,5 +97,38 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
             }
 
 
+            $scope.centerMap = function () {
+                geoService.getCurrentPosition((position) => {
+                    let pos = new google.maps.LatLng(position.lat, position.lng);
+                    $rootScope.map.setCenter(pos);
+                });
+            };
+
+            $rootScope.$on( 'editSpace', () => {
+                $scope.placingSpot = true;
+            })
+
+            $scope.showPostSpace = function () {
+                if (!$scope.placingSpot) {
+                    $scope.placingSpot = !$scope.placingSpot;
+                    return;
+                }
+                $scope.spaceEdit = {};
+                $state.go('.post');
+                $scope.placingSpot = true;
+            };
+
+
+            let observer = new IntersectionObserver(function (entries) {
+                let ctrls = $('.map-controls');
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        ctrls.addClass('scrolled')
+                    } else {
+                        ctrls.removeClass('scrolled')
+                    }
+                });
+            });
+            observer.observe(document.getElementById('footer'));
         }]);
 

@@ -41,22 +41,22 @@ module PayApi
     addr = @proposal.parking_space.address_line_1
     total_amount = (@proposal.amount_with_vat + @proposal.comision_with_vat)
     line_items = [{
-                      description: "Parcare #{addr} intre  #{@proposal.start_date} - #{@proposal.end_date}",
-                      kind: 'debit',
-                      name: 'Inchiriere spatiu parcare',
-                      quantity: 1,
-                      total_amount: @proposal.amount_with_vat,
-                      unit_amount: @proposal.amount_with_vat,
-                      tax_amount: @proposal.amount_with_vat - @proposal.amount
-                  }, {
-                      description: 'Comision operare (8%) + 2.5 Ron',
-                      kind: 'debit',
-                      name: 'Comision',
-                      quantity: 1,
-                      total_amount: @proposal.comision_with_vat,
-                      unit_amount: @proposal.comision_with_vat,
-                      tax_amount: @proposal.comision_with_vat - @proposal.comision
-                  }
+      description: "Parcare #{addr} intre  #{@proposal.start_date} - #{@proposal.end_date}",
+      kind: 'debit',
+      name: 'Inchiriere spatiu parcare',
+      quantity: 1,
+      total_amount: @proposal.amount_with_vat,
+      unit_amount: @proposal.amount_with_vat,
+      tax_amount: @proposal.amount_with_vat - @proposal.amount
+    }, {
+      description: "Comision operare (#{APP_CONFIG['vat']}%) + 2.5 Ron",
+      kind: 'debit',
+      name: 'Comision',
+      quantity: 1,
+      total_amount: @proposal.comision_with_vat,
+      unit_amount: @proposal.comision_with_vat,
+      tax_amount: @proposal.comision_with_vat - @proposal.comision
+    }
     ]
 
     # 4000111111111115
@@ -67,13 +67,13 @@ module PayApi
         merchant_account_id: ENV['SECONDARY_MERCHANT_ID'],
         order_id: @proposal.id,
         customer: {
-            first_name: current_user.full_name,
-            email: current_user.email,
-            phone: current_user.phone_number
+          first_name: current_user.full_name,
+          email: current_user.email,
+          phone: current_user.phone_number
         },
         line_items: line_items,
         options: {
-            store_in_vault_on_success: true
+          store_in_vault_on_success: true
         }
       )
       if result.success?
@@ -81,7 +81,7 @@ module PayApi
         current_user.save
       end
       log_error(line_items, result)
-      register_payment result, @proposal
+      increment_owner_balance result, @proposal
       !result.respond_to? :errors
     else
       result = gateway.transaction.sale(
@@ -93,7 +93,7 @@ module PayApi
         line_items: line_items
       )
       log_error(line_items, result)
-      register_payment result,  @proposal
+      increment_owner_balance result, @proposal
       !result.respond_to? :errors
     end
   end
@@ -110,12 +110,13 @@ module PayApi
     end
   end
 
-  def register_payment(result, prop)
+  def increment_owner_balance(result, prop)
     user = prop.parking_space.user
     if result.success?
       begin
+        prop.payment_id = result.transaction.id
         account = user.account
-        if current_user.account.nil?
+        if account.nil?
           account = Account.new
           account.amount = prop.amount
           account.user = current_user

@@ -21,18 +21,18 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
                     $scope.bid.bid_currency = selectedSpace.currency;
                     if ($state.params.start) {
                         $scope.bid.start_date = $state.params.start;
-                    } else
+                        $('#newTab').tab('show');
+                    } else {
                         $scope.bid.start_date = new Date();
+                        $('#activeTab').tab('show');
+                    }
 
                     if ($state.params.stop) {
                         $scope.bid.end_date = $state.params.stop;
                     } else {
                         $scope.bid.end_date = moment().add(1, 'd').toDate();
                     }
-                    selectedSpace.userOffers = [];
                     selectedSpace.showAvail = false;
-
-                    $scope.hideRentForm = !selectedSpace.userOffers.length;
                 }
             }
 
@@ -58,17 +58,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
                 })
             }
 
-            $scope.expireDuration = function () {
-                if (!$scope.selectedSpace) {
-                    return;
-                }
-
-                if (moment($scope.selectedSpace.space_availability_stop).isBefore(moment())) {
-                    return " a expirat";
-                }
-
-                return moment($scope.selectedSpace.space_availability_stop).fromNow();
-            };
+            if($state.params)
 
 
             $scope.$watchCollection('selectedSpace.offers', function (newValue, oldValue) {
@@ -94,18 +84,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
                     $state.go('.pay', {offer: bid});
                     initBid();
                 });
-            };
-
-            $scope.confirmApproval = function (offer) {
-                let message = "Accepți oferta de " + offer.bid_price + " " + offer.bid_currency + "/h pentru acest loc?";
-                if (offer.approved) {
-                    message = "Refuzi oferta de " + offer.bid_price + " " + offer.bid_currency + "/h pentru acest loc?";
-                }
-
-                if (confirm(message)) {
-                    $scope.accept($scope.selectedSpace, offer);
-                    $('#approveDialog').hide();
-                }
             };
 
             $scope.selectOffer = function (offer) {

@@ -83,35 +83,24 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
                $rootScope.$emit('markerClick', [data,isMultiple])
             };
 
-
-            $scope.$on('$stateChangeStart', function (event, teoState) {
-                $scope.placingSpot = false;
-            });
-
-
-            $scope.centerMap = function () {
-                geoService.getCurrentPosition((position) => {
-                    let pos = new google.maps.LatLng(position.lat, position.lng);
-                    $rootScope.map.setCenter(pos);
-                });
-            };
-
-
-            $scope.showPostSpace = function () {
-                if (!$scope.placingSpot) {
-                    $scope.placingSpot = true;
-                    return;
-                }
-                $rootScope.$emit('postSpace', '');
-            };
-
-
             $scope.selectPlace = function (newAddr, newLocation) {
                 if (!newLocation) return;
-
                 $rootScope.map.setCenter(newLocation);
             };
 
+
+            $scope.showDesc = function (space) {
+                let esc = $('#spaceDesc-' + space.id);
+                let height = esc[0].scrollHeight;
+                let open = esc.data('open')
+                if (open) {
+                    esc.css('max-height', '70px');
+                    esc.data('open', '');
+                } else {
+                    esc.css('max-height', height + 'px');
+                    esc.data('open', 'true');
+                }
+            };
 
         }]);
 

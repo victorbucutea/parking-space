@@ -58,15 +58,17 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 let lat = space.location_lat;
                 let lng = space.location_long;
                 $rootScope.map.panTo(new google.maps.LatLng(lat, lng));
+                $('.html-marker').removeClass('selected');
+                $('#htmlMarker-' + space.id).addClass('selected');
             };
 
             $scope.zoomToCluster = function (cl) {
                 let lat = cl.centroid[0];
                 let lng = cl.centroid[1];
                 $rootScope.map.panTo(new google.maps.LatLng(lat, lng));
+                $('.html-marker').removeClass('selected');
+                $('#htmlMarker-' + cl.elements[0][2].id).addClass('selected');
             };
-
-
 
 
             $('#navMenu').hide();
