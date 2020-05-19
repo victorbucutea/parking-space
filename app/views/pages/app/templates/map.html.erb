@@ -1,12 +1,11 @@
 <div class="full-height row no-gutters" ng-controller="MapCtrl">
 
-  <div class="col-6" id="contentColumn">
-    <ui-view name="subcontent"></ui-view>
+  <div class="col-6" id="contentColumn" >
+    <ui-view ng-if="showContent" name="subcontent"></ui-view>
   </div>
-  <div class="col-6" id="mapColumn">
-
+  <div class="col-6" id="mapColumn" >
     <ui-view name="help"></ui-view>
-    <div id="map" >
+    <div id="map" ng-if="showMap" >
       <!-- map -->
       <search-bar place-holder="'Caută adresa  ...'" on-select-place="selectPlace(place,location)" on-menu-click="openMenu()"></search-bar>
       <search-center-icon shown="placingSpot"></search-center-icon>

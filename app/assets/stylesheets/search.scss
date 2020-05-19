@@ -435,8 +435,9 @@ div.daterangepicker {
   height: 100vh;
   overflow: scroll;
 
+
   @include media-breakpoint-down(sm) {
-      padding-top: 93px !important;
+      padding-top: 50px !important;
   }
 
   .panel {

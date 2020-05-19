@@ -15,9 +15,26 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
 
             $scope.cloudinaryName = window.cloudinaryName;
 
+            $scope.showMap = true;
+            $scope.showContent = true;
+
+            $rootScope.$on('mapAndContent', function (event, val) {
+                if (val.showMap === false) {
+                    createMap.resolve(false);
+                    $scope.showMap = false;
+                }
+                if (val.showContent === false)
+                    $scope.showContent = false;
+                if (val.colMap)
+                    $('#mapColumn').removeClass('col-6').addClass(val.colMap);
+                if (val.colContent)
+                    $('#contentColumn').removeClass('col-6').addClass(val.colContent);
+            });
+
 
             $scope.drawSpaces = function (spaces) {
                 $scope.spaces = spaces;
+                if (!$rootScope.map) return;
                 $scope.spacesClustered = parkingSpaceService.clusterize(spaces)
 
                 $scope.clearMarkers();
@@ -71,8 +88,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
                 return createMap.resolve(map);
             };
 
-
-
             $scope.mapError = function () {
                 $('#mapBlanket').fadeOut();
                 $rootScope.$emit('http.error', 'Nu se poate inițializa harta. Ești conectat la internet? ');
@@ -80,14 +95,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
             };
 
             $scope.markerClick = function (data, isMultiple) {
-               $rootScope.$emit('markerClick', [data,isMultiple])
+                $rootScope.$emit('markerClick', [data, isMultiple])
             };
 
             $scope.selectPlace = function (newAddr, newLocation) {
                 if (!newLocation) return;
                 $rootScope.map.setCenter(newLocation);
             };
-
 
             $scope.showDesc = function (space) {
                 let esc = $('#spaceDesc-' + space.id);

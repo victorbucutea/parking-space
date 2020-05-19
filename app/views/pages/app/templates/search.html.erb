@@ -4,7 +4,7 @@
   <ui-view name="place-bid"></ui-view>
 
 
-  <div class="spaces-list p-3 ">
+  <div class="spaces-list p-3 " ng-if="showList">
     <div ng-hide="spacesClustered.length">
       <div class="no-items-msg loading-finished">
         Nu sunt locuri in zonă.<br/>

@@ -88,7 +88,9 @@ angular.module('ParkingSpaceMobile', [
             .state('map.search', {
                 url: '/search',
                 views: {
-                    'subcontent': { templateUrl: 'templates/search.html'}
+                    'subcontent': {
+                        templateUrl: 'templates/search.html'
+                    }
                 }
             })
             .state('map.help', {

@@ -28,6 +28,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
             }
 
 
+            if (!$rootScope.desktopScreen)
+                $rootScope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
+            else
+                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap:'col-4'});
+
+
             $scope.cloudName = window.cloudinaryName;
 
             $scope.createMap().then((map) => {

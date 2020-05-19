@@ -12,6 +12,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
             let zoomHandle = null;
 
             let ongoingDrawSpacesReq;
+            $scope.showList = true;
+
+            if (!$rootScope.desktopScreen) {
+                $rootScope.$emit('mapAndContent', {colMap: 'col-12'});
+                $scope.showList = false;
+            }
+
 
             $scope.scheduleDrawSpaces = () => {
                 if (ongoingDrawSpacesReq) {

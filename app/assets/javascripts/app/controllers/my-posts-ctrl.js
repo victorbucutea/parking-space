@@ -9,7 +9,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
         function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams,
                   notificationService, replaceById, $rootScope) {
 
-            $('.map-controls').hide();
+            if (!$rootScope.desktopScreen)
+                $rootScope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
+            else
+                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap:'col-4'});
 
 
             $scope.createMap().then((map) => {

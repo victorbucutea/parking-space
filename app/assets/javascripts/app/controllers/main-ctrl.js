@@ -4,7 +4,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
     ['$rootScope', '$scope', '$document', '$stateParams', 'parameterService', '$state', 'userService',
         function ($rootScope, $scope, $document, $stateParams, parameterService, $state, userService) {
 
-            $rootScope.desktopScreen = $(document).width() > 991;
+            $rootScope.desktopScreen = $(document).width() > 767;
 
 
             $scope.openMenu = function () {
@@ -29,6 +29,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                     $state.go('login');
                 });
             };
+
             $scope.$on('$stateChangeStart', function (event, next, current) {
                 if (['login', 'register', 'confirm-phone'].indexOf(next.name) >= 0)
                     return;
@@ -45,7 +46,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 $scope.currentUser = null;
             });
 
-
             $document.on('click', '.ps-modal', function (event) {
                 let isModal = $(event.target).hasClass('ps-modal');
                 let isSkipNav = $(event.target).hasClass('ps-no-nav')
@@ -53,8 +53,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                     $state.go('^');
             });
 
-
             $scope.zoomTo = function (space) {
+                if (!$rootScope.map) return;
+
                 let lat = space.location_lat;
                 let lng = space.location_long;
                 $rootScope.map.panTo(new google.maps.LatLng(lat, lng));
@@ -69,7 +70,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 $('.html-marker').removeClass('selected');
                 $('#htmlMarker-' + cl.elements[0][2].id).addClass('selected');
             };
-
 
             $('#navMenu').hide();
 
