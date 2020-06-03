@@ -48,6 +48,7 @@ class ParkingSpace < ActiveRecord::Base
 
   def availability_stops_after_start
     return if space_availability_stop.nil?
+
     if space_availability_start > space_availability_stop
       errors.add(:space_availability_start, 'should be lower than stop')
     end
@@ -55,12 +56,12 @@ class ParkingSpace < ActiveRecord::Base
 
   def availability_includes_reservations
     return if space_availability_stop.nil?
+
     props_outside_period = Proposal.for_space(self).active_or_future.outside_period space_availability_start, space_availability_stop
     if props_outside_period.any?
       errors.add(:space_availability_start, 'Există rezervari active pe perioada selectată!')
     end
   end
-
 
   def init
     self.legal_type ||= :private_parking

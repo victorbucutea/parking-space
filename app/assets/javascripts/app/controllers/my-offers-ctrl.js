@@ -31,44 +31,44 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
             if (!$rootScope.desktopScreen)
                 $rootScope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
             else
-                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap:'col-4'});
+                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap: 'col-4'});
 
 
             $scope.cloudName = window.cloudinaryName;
 
-            $scope.createMap().then((map) => {
-                parkingSpaceService.getMyOffers(function (spaces) {
-                    if (!spaces) {
-                        return;
+            parkingSpaceService.getMyOffers(function (spaces) {
+                if (!spaces) {
+                    return;
+                }
+                $scope.drawSpaces(spaces, true);
+
+                $scope.activeSpaces = [];
+                $scope.futureSpaces = [];
+                $scope.pastSpaces = [];
+                $scope.spaces.forEach((s) => {
+                    let activeOffers = s.offers.filter(o => isActive(o));
+                    if (activeOffers.length) {
+                        $scope.activeSpaces.push(s);
+                        s.activeOffers = activeOffers;
+
                     }
+                    let pastOffers = s.offers.filter(o => isPast(o));
+                    if (pastOffers.length) {
+                        $scope.pastSpaces.push(s);
+                        s.pastOffers = pastOffers;
+                    }
+                    let futureOffers = s.offers.filter(o => isFuture(o));
+                    if (futureOffers.length) {
+                        $scope.futureSpaces.push(s);
+                        s.futureOffers = futureOffers;
+                    }
+                })
+            });
 
-                    $scope.spaces = spaces;
-                    $scope.drawSpaces(spaces);
-
-
-                    $scope.activeSpaces = [];
-                    $scope.futureSpaces = [];
-                    $scope.pastSpaces = [];
-                    $scope.spaces.forEach((s) => {
-                        let activeOffers = s.offers.filter(o => isActive(o));
-                        if (activeOffers.length) {
-                            $scope.activeSpaces.push(s);
-                            s.activeOffers = activeOffers;
-
-                        }
-                        let pastOffers = s.offers.filter(o => isPast(o));
-                        if (pastOffers.length) {
-                            $scope.pastSpaces.push(s);
-                            s.pastOffers = pastOffers;
-                        }
-                        let futureOffers = s.offers.filter(o => isFuture(o));
-                        if (futureOffers.length) {
-                            $scope.futureSpaces.push(s);
-                            s.futureOffers = futureOffers;
-                        }
-                    })
-                });
-            })
+            $scope.timeUntilStart = function (offer) {
+                if (!offer) return 'N/A';
+                return moment().twix(offer.start_date).humanizeLength();
+            };
 
 
             $scope.showFullImageThumb = function (evt, space) {
@@ -91,5 +91,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
 
                 }
             });
+
+            $scope.showReviewForm = function (params) {
+                $rootScope.$emit('showReviewForm', params, $scope.reviews);
+            }
 
         }]);

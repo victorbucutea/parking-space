@@ -53,6 +53,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                     $state.go('^');
             });
 
+
+            $scope.select = function (space, $event) {
+                $('#spaceDescContainer-' + space.id).toggleClass('show');
+                $scope.zoomTo(space);
+            }
+
             $scope.zoomTo = function (space) {
                 if (!$rootScope.map) return;
 

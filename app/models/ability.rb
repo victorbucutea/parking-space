@@ -11,11 +11,15 @@ class Ability
       can :manage, Company
       can :manage, Section
       can :manage, ParkingSpace
+      can :manage, Proposal
       # can :manage, Proposal
     else
       can :manage, ParkingSpace, user_id: user.id
-      # can :manage, Proposal, user_id: user.id
+      can :manage, Proposal, user_id: user.id
     end
+
+    #  check private_spaces_admin allowed to validate parking space ( not user )
+    #  private_spaces_admin allowed to manage proposals
 
     can :index, ParkingSpace
     can :show, ParkingSpace

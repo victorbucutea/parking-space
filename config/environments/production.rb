@@ -81,16 +81,16 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
 
-  config.action_mailer.default_url_options = {:host => 'go-park.ro'}
+  config.action_mailer.default_url_options = { host: 'go-park.ro' }
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      :address => "email-smtp.eu-west-1.amazonaws.com",
-      :port => 587, # Port 25 is throttled on AWS
-      :user_name => ENV['SMTP_USER'],
-      :password => ENV['SMTP_PASS'],
-      :authentication => :login,
-      :enable_starttls_auto => true
+    address: 'email-smtp.eu-west-1.amazonaws.com',
+    port: 587, # Port 25 is throttled on AWS
+    user_name: ENV['SMTP_USER'],
+    password: ENV['SMTP_PASS'],
+    authentication: :login,
+    enable_starttls_auto: true
   }
 
 

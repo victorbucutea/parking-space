@@ -116,11 +116,10 @@ angular.module('ParkingSpace.services')
                         });
                 };
 
-                _this.instructionsShown = function (setVal) {
-                    if (!setVal)
-                        return localStorage.getItem('instructionsShown') === 'true';
-                    else
-                        localStorage.setItem('instructionsShown', 'true');
+                _this.instructionsShown = function () {
+                    let val = localStorage.getItem('instructionsShown') === 'true';
+                    localStorage.setItem('instructionsShown', 'true');
+                    return val;
                 }
 
 
@@ -149,7 +148,7 @@ angular.module('ParkingSpace.services')
                 errMsgs.push('Unknown server error');
                 return errMsgs;
             }
-            if (data.skipFlash){
+            if (data.skipFlash) {
                 return [];
             }
             let errors = data.Error || data.errors || data.error;

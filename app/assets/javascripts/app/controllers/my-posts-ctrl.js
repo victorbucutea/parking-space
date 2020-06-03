@@ -5,33 +5,32 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
     ['$scope', '$filter', 'offerService', 'parkingSpaceService', '$state', '$stateParams',
-        'notificationService', 'replaceById', '$rootScope',
+        'notificationService', 'replaceById', '$rootScope', 'paymentService',
         function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams,
-                  notificationService, replaceById, $rootScope) {
+                  notificationService, replaceById, $rootScope, paymentService) {
 
             if (!$rootScope.desktopScreen)
                 $rootScope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
-            else
-                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap:'col-4'});
-
-
-            $scope.createMap().then((map) => {
-                parkingSpaceService.getMySpaces((spaces)=>{
-                    $scope.drawSpaces(spaces);
+            else {
+                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap: 'col-4'});
+                paymentService.getAccountStatus((d) => {
+                    $scope.account = d;
                 })
+            }
 
+
+            parkingSpaceService.getMySpaces((spaces) => {
+                $scope.drawSpaces(spaces, true);
             })
+
 
             $scope.$on('markerClick', function (event, space) {
                 // show edit space
             });
 
-            $scope.acceptOffer = function (space, offer) {
-                if (confirm("Accepti oferta lui " + offer.owner_name + " de " + offer.bid_price + " " + offer.bid_currency + " ?")) {
-                    offerService.acceptOffer(space.id, offer, function (result) {
-                        replaceById(result, space.offers);
-                    });
-                }
+            $scope.timeUntilExpiry = function (space) {
+                if (!space) return 'N/A';
+                return moment().twix(space.space_availability_stop).humanizeLength();
             };
 
             $scope.findActiveOffer = function (space) {
@@ -39,5 +38,30 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                     return of.active
                 });
             };
+
+            $scope.totalSum = function () {
+                if (!$scope.spaces) return 0;
+                let sum = 0;
+                $scope.spaces.forEach((s) => {
+                    if (s.offers)
+                        s.offers.forEach((o) => {
+                            if (o.paid) sum += o.amount;
+                        })
+                });
+                return sum;
+            }
+
+            $scope.accountSum = function () {
+                let sum = 0;
+                if (!$scope.account) return sum;
+                sum += $scope.account.amount;
+                return sum;
+            }
+
+            $scope.currency = function () {
+                if (!$scope.spaces || !$scope.spaces.length) return 'n/a';
+                return $scope.spaces[0].currency
+            }
+
 
         }]);

@@ -16,7 +16,7 @@ class ProposalsController < ApplicationController
 
   # GET /parking_spaces/:p_sp_id/proposals.json
   def index
-    @proposals = Proposal.where parking_space_id: params[:parking_space_id]
+    @proposals = Proposal.joins(:user).where parking_space_id: params[:parking_space_id]
   end
 
   def pay
@@ -36,6 +36,8 @@ class ProposalsController < ApplicationController
     end
 
     if submit_payment && @proposal.pay
+      UserMailer.with(proposal: @proposal).new_offer.deliver_later
+      UserMailer.with(proposal: @proposal).reservation_notif.deliver_later
       send_sms @proposal.parking_space.user.phone_number,
                current_user.full_name + ' a achitat contravaloarea de ' + @proposal.amount_with_vat.to_s +
                    ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
@@ -58,17 +60,19 @@ class ProposalsController < ApplicationController
 
   def reject
     if @proposal.reject
-      format.json { render :show, status: :ok }
+      UserMailer.with(proposal: @proposal).offer_cancel.deliver_now
+      render :show, status: :ok
     else
-      format.json { render json: { Error: @proposal.errors }, status: :unprocessable_entity }
+      render json: { Error: @proposal.errors }, status: :unprocessable_entity
     end
   end
 
   def cancel
     if @proposal.cancel
-      format.json { render :show, status: :ok }
+      UserMailer.with(proposal: @proposal).offer_cancel.deliver_now
+      render :show, status: :ok
     else
-      format.json { render json: { Error: @proposal.errors }, status: :unprocessable_entity }
+      render json: { Error: @proposal.errors }, status: :unprocessable_entity
     end
   end
 
@@ -78,6 +82,15 @@ class ProposalsController < ApplicationController
     else
       format.json { render json: { Error: @proposal.errors }, status: :unprocessable_entity }
     end
+  end
+
+  def next
+    @proposals = Proposal.joins(:parking_space).active_or_future
+                     .approved.for_user(current_user).order(:end_date).limit(1)
+    if @proposals.empty?
+      render json: { Error: 'No offer found.' }, status: :not_found
+    end
+    render :next
   end
 
   # POST /parking_spaces/:p_sp_id/proposals

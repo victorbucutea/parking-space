@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_17_083825) do
+ActiveRecord::Schema.define(version: 2020_06_02_144159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,6 +146,8 @@ ActiveRecord::Schema.define(version: 2020_05_17_083825) do
     t.integer "source_type", default: 0
     t.bigint "company_id"
     t.integer "status"
+    t.decimal "review_avg"
+    t.integer "review_count"
     t.index ["company_id"], name: "index_parking_spaces_on_company_id"
     t.index ["created_at"], name: "index_parking_spaces_on_created_at"
     t.index ["location_lat"], name: "index_parking_spaces_on_location_lat"
@@ -179,6 +181,19 @@ ActiveRecord::Schema.define(version: 2020_05_17_083825) do
     t.index ["parking_space_id"], name: "index_proposals_on_parking_space_id"
     t.index ["start_date"], name: "index_proposals_on_start_date"
     t.index ["user_id"], name: "index_proposals_on_user_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text "comment"
+    t.decimal "rating"
+    t.bigint "parking_space_id"
+    t.bigint "user_id"
+    t.string "owner_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.index ["parking_space_id"], name: "index_reviews_on_parking_space_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -295,6 +310,8 @@ ActiveRecord::Schema.define(version: 2020_05_17_083825) do
   add_foreign_key "parking_spaces", "users"
   add_foreign_key "proposals", "parking_spaces"
   add_foreign_key "proposals", "users"
+  add_foreign_key "reviews", "parking_spaces"
+  add_foreign_key "reviews", "users"
   add_foreign_key "roles", "companies"
   add_foreign_key "roles", "locations"
   add_foreign_key "roles", "users"

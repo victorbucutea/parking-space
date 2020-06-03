@@ -18,42 +18,39 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
             $scope.showMap = true;
             $scope.showContent = true;
 
+
             $rootScope.$on('mapAndContent', function (event, val) {
-                if (val.showMap === false) {
-                    createMap.resolve(false);
-                    $scope.showMap = false;
-                }
-                if (val.showContent === false)
-                    $scope.showContent = false;
+                $scope.showMap = val.showMap !== false;
+                $scope.showContent = val.showContent !== false;
+
+
                 if (val.colMap)
-                    $('#mapColumn').removeClass('col-6').addClass(val.colMap);
+                    $('#mapColumn').removeClass().addClass(val.colMap);
                 if (val.colContent)
-                    $('#contentColumn').removeClass('col-6').addClass(val.colContent);
+                    $('#contentColumn').removeClass().addClass(val.colContent);
             });
 
 
-            $scope.drawSpaces = function (spaces) {
+            $scope.drawSpaces = function (spaces, skipCluster) {
                 $scope.spaces = spaces;
-                if (!$rootScope.map) return;
-                $scope.spacesClustered = parkingSpaceService.clusterize(spaces)
+                $scope.createMap().then(() => {
+                    $scope.spacesClustered = parkingSpaceService.clusterize(spaces, skipCluster)
 
-                $scope.clearMarkers();
+                    $scope.clearMarkers();
 
-                $rootScope.markers = [];
+                    $scope.markers = [];
 
-                $scope.spacesClustered.forEach(function (space) {
-                    addMarker(space);
+                    $scope.spacesClustered.forEach(function (space) {
+                        let htmlMarker = new HtmlMarker(space, $scope, $rootScope.map);
+                        $scope.markers.push(htmlMarker);
+                    })
                 })
             }
 
-            function addMarker(space) {
-                let htmlMarker = new HtmlMarker(space, $scope, $rootScope.map);
-                $rootScope.markers.push(htmlMarker);
-            }
 
             $scope.clearMarkers = function () {
-                if ($rootScope.markers)
-                    $rootScope.markers.forEach(function (d) {
+                if ($scope.markers)
+                    $scope.markers.forEach(function (d) {
                         d.setMap();//clear marker
                     });
             }
@@ -103,18 +100,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
                 $rootScope.map.setCenter(newLocation);
             };
 
-            $scope.showDesc = function (space) {
-                let esc = $('#spaceDesc-' + space.id);
-                let height = esc[0].scrollHeight;
-                let open = esc.data('open')
-                if (open) {
-                    esc.css('max-height', '70px');
-                    esc.data('open', '');
-                } else {
-                    esc.css('max-height', height + 'px');
-                    esc.data('open', 'true');
-                }
-            };
 
         }]);
 

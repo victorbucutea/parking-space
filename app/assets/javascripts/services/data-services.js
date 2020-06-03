@@ -5,7 +5,7 @@ angular.module('ParkingSpace.services')
 
             let _this = this;
 
-            this.getAvailableSpaces = function (latMinMax, clbk, errClbk) {
+            this.getAvailableSpaces = function (latMinMax, clbk) {
 
                 return $http.get('/parking_spaces.json', {
                     params: {
@@ -16,6 +16,7 @@ angular.module('ParkingSpace.services')
                     }
                 }).then(function (response) {
                     let data = response.data;
+                    _this.convert(data);
                     if (clbk)
                         clbk(data);
                 }, function (errorResponse) {
@@ -27,6 +28,8 @@ angular.module('ParkingSpace.services')
                 $http.get('/parking_spaces/myspaces.json')
                     .then(function (response) {
                         let data = response.data;
+                        _this.convert(data);
+
                         if (clbk)
                             clbk(data);
                     }, function (errorResponse) {
@@ -34,44 +37,17 @@ angular.module('ParkingSpace.services')
                     });
             };
 
-            this.convert = function (space) {
-                if (space) {
-                    space.space_availability_start = new Date(space.space_availability_start);
-                    space.space_availability_stop = new Date(space.space_availability_stop);
-                    space.daily_start = new Date(space.daily_start);
-                    space.daily_stop = new Date(space.daily_stop);
-                    space.location_lat = Number.parseFloat(space.location_lat);
-                    space.location_long = Number.parseFloat(space.location_long);
-                    space.weekly_schedule = JSON.parse(space.weekly_schedule);
-                }
-            };
-
-            this.clusterize = function (spaces) {
-                let clusteredSpaces = [];
-                if (spaces) {
-                    let zoomLvl = $rootScope.map.zoom;
-                    let zoomFactor = (22 - zoomLvl) / 5;
-                    let latLngs = [];
-
-                    spaces.forEach(function (p_space) {
-                        _this.convert(p_space);
-                        latLngs.push([p_space.location_lat, p_space.location_long, p_space]);
+            this.getMyOffers = function (clbk) {
+                $http.get('/parking_spaces/myoffers.json')
+                    .then(function (response) {
+                        let data = response.data;
+                        _this.convert(data);
+                        if (clbk)
+                            clbk(data);
+                    }, function (errorResponse) {
+                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
                     });
-                    clusteredSpaces = geocluster(latLngs, zoomFactor);
-                }
-                clusteredSpaces.sort((a, b) => {
-                    let compa = a.elements[0][2].id;
-                    let compb = b.elements[0][2].id;
-                    if (compa < compb) {
-                        return -1;
-                    }
-                    if (compa > compb) {
-                        return 1;
-                    }
-                    return 0;
-                });
-                return clusteredSpaces;
-            }
+            };
 
             this.getSpace = function (parkingSpaceId, clbk, errClbk) {
 
@@ -90,16 +66,6 @@ angular.module('ParkingSpace.services')
                     });
             };
 
-            this.getMyOffers = function (clbk) {
-                $http.get('/parking_spaces/myoffers.json')
-                    .then(function (response) {
-                        let data = response.data;
-                        if (clbk)
-                            clbk(data);
-                    }, function (errorResponse) {
-                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
-                    });
-            };
 
             this.saveSpace = function (space) {
 
@@ -162,6 +128,78 @@ angular.module('ParkingSpace.services')
                 });
             }
 
+            this.getReviews = function (space) {
+                return $http.get('/reviews.json', {
+                    params: {
+                        space_id: space.id
+                    }
+                }).then(function (response) {
+                    return response.data;
+                }, function (errorResponse) {
+                    errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                });
+            }
+
+            this.saveReview = function (review) {
+                return $http.post('/reviews.json', {
+                   review : review
+                }).then(function (response) {
+                    $rootScope.$emit('http.notif', 'Mulțumim, Review-ul tău a fost adăugat!');
+                    return response.data;
+                }, function (errorResponse) {
+                    errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                });
+            }
+
+            this.convert = function (space) {
+                function enrich(space) {
+                    space.space_availability_start = new Date(space.space_availability_start);
+                    space.space_availability_stop = new Date(space.space_availability_stop);
+                    space.daily_start = new Date(space.daily_start);
+                    space.daily_stop = new Date(space.daily_stop);
+                    space.location_lat = Number.parseFloat(space.location_lat);
+                    space.location_long = Number.parseFloat(space.location_long);
+                    space.weekly_schedule = JSON.parse(space.weekly_schedule);
+                }
+
+                if (space instanceof Array) {
+                    space.forEach((s) => enrich(s));
+                    return;
+                }
+                if (space) {
+                    enrich(space);
+                }
+            };
+
+            this.clusterize = function (spaces, skip) {
+                let clusteredSpaces = [];
+                if (spaces) {
+                    let zoomLvl = $rootScope.map.zoom;
+                    let zoomFactor = (22 - zoomLvl) / 5;
+                    // map will draw onlt cluster elements
+                    // easiest is to make a cluster for each elmnt
+                    if (skip) zoomFactor = 0;
+                    let latLngs = [];
+
+                    spaces.forEach(function (p_space) {
+                        latLngs.push([p_space.location_lat, p_space.location_long, p_space]);
+                    });
+                    clusteredSpaces = geocluster(latLngs, zoomFactor);
+                }
+                clusteredSpaces.sort((a, b) => {
+                    let compa = a.elements[0][2].id;
+                    let compb = b.elements[0][2].id;
+                    if (compa < compb) {
+                        return -1;
+                    }
+                    if (compa > compb) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                return clusteredSpaces;
+            }
+
         }])
 
     .service('offerService', ['$http', '$timeout', 'userService', '$rootScope', 'errorHandlingService', 'notificationService',
@@ -186,46 +224,19 @@ angular.module('ParkingSpace.services')
                     })
             };
 
-            this.acceptOffer = function (spaceId, offer, clbk) {
-                $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/approve.json')
+            this.getNextOffer = function () {
+                return $http.get(`/parking_spaces/1/proposals/1/next.json`)
                     .then(function (res) {
-                        let data = res.data;
-                        $rootScope.$emit('http.notif',
-                            'Ai acceptat oferta de ' + offer.bid_price + ' ' + offer.bid_currency + '. Proprietarul a fost notificat!');
-                        if (clbk) {
-                            clbk(data);
-                        }
+                        sessionStorage.setItem("showNextOffer", "false");
+                        return res.data;
                     }, function (err) {
-                        errorHandlingService.handle(err.data, err.status);
+                       // explicitly nothing
                     })
             };
 
-            this.rejectOffer = function (spaceId, offer, clbk) {
-                $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
-                    .then(function (res) {
-                        let data = res.data;
-                        $rootScope.$emit('http.notif',
-                            'Ai respins oferta de ' + offer.bid_price + ' ' + offer.bid_currency + '. Proprietarul a fost notificat'
-                        );
-                        if (clbk) {
-                            clbk(data);
-                        }
-                    }, function (err) {
-                        errorHandlingService.handle(err.data, err.status);
-                    })
-            };
-
-            this.getOffer = function (offerId, clbk) {
-                $http.get('/parking_spaces/1/proposals/' + offerId + '.json')
-                    .then(function (res) {
-                        let data = res.data;
-                        if (clbk) {
-                            clbk(data);
-                        }
-                    }, function (err) {
-                        errorHandlingService.handle(err.data, err.status);
-                    })
-            };
+            this.showNextOffer = function () {
+                return !sessionStorage.getItem("showNextOffer");
+            }
 
             this.getOffers = function (spaceId) {
                 return $http.get(`/parking_spaces/${spaceId}/proposals.json`)
@@ -236,12 +247,12 @@ angular.module('ParkingSpace.services')
                     })
             }
 
-            this.cancelOffer = function (spaceId, offer, clbk) {
-                $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
+            this.rejectOffer = function (spaceId, offer, clbk) {
+                $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
                     .then(function (res) {
                         let data = res.data;
                         $rootScope.$emit('http.notif',
-                            'Ai anulat oferta de ' + offer.bid_price + ' ' + offer.bid_currency + '. Proprietarul a fost notificat'
+                            'Ai respins oferta. Proprietarul a fost notificat'
                         );
                         if (clbk) {
                             clbk(data);
@@ -250,6 +261,22 @@ angular.module('ParkingSpace.services')
                         errorHandlingService.handle(err.data, err.status);
                     })
             };
+
+            this.cancelOffer = function (spaceId, offer, clbk) {
+                $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
+                    .then(function (res) {
+                        let data = res.data;
+                        $rootScope.$emit('http.notif',
+                            'Ai respins oferta . Proprietarul a fost notificat'
+                        );
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    }, function (err) {
+                        errorHandlingService.handle(err.data, err.status);
+                    })
+            };
+
         }])
 
     .service('parameterService', ['$http', '$q', 'errorHandlingService', function ($http, $q, errorHandlingService) {

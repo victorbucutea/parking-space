@@ -17,6 +17,8 @@ json.validated parking_space.validated?
 json.owner_prefix parking_space.user.prefix
 json.owner_phone_number parking_space.user.phone_number
 json.owner_email parking_space.user.email
+json.review_avg parking_space.review_avg
+json.review_count parking_space.review_count
 
 json.images do
   json.array! parking_space.images do |img|

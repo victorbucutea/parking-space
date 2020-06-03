@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :reviews
   get 'employees/list'
   get 'employees/:id' => 'employees#details'
   post 'sensor_auth/authenticate'
@@ -78,6 +79,7 @@ Rails.application.routes.draw do
       post 'pay'
       get 'get_user_payments'
       get 'get_payment_details'
+      get 'next'
       post 'reject'
       post 'approve'
       post 'cancel'

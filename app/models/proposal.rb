@@ -1,6 +1,7 @@
 class Proposal < ActiveRecord::Base
 
   scope :for_space, ->(sp_id) { where('proposals.parking_space_id = ? ', sp_id) }
+  scope :for_user, ->(user) { where('proposals.user_id = ? ', user) }
   scope :price_above, ->(price) { where('proposals.bid_amount >= ? ', price) }
   scope :active_or_future, -> { where('proposals.end_date >= ?', Time.now) }
   scope :outside_period, lambda { |start, end_p|
@@ -108,22 +109,13 @@ class Proposal < ActiveRecord::Base
 
   def reject
     self.skip_overlap_check = true
-    if parking_space.user.id == user.id
-      rejected!
-    else
-      errors.add :general, 'You are not allowed to reject the offer!'
-      false
-    end
+    self.skip_paid_check = true
+    rejected!
   end
 
   def cancel
     self.skip_overlap_check = true
-    if parking_space.user.id == user.id
-      canceled!
-    else
-      errors.add :general, 'You are not allowed to cancel the offer!'
-      false
-    end
+    canceled!
   end
 
   def approve

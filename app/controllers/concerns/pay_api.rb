@@ -119,7 +119,7 @@ module PayApi
         if account.nil?
           account = Account.new
           account.amount = prop.amount
-          account.user = current_user
+          account.user = user
           account.currency = prop.bid_currency
         else
           account.amount += prop.amount

@@ -70,7 +70,7 @@ div.daterangepicker {
   font-size: 1.1em;
   padding: 0;
   margin-top: 7px;
-  box-shadow: 2px 8px 40px 2px $gray-800;
+  box-shadow: 2px 2px 2px 0 $gray-600;
 
   &:after {
     border-bottom-color: $blue-700;
@@ -435,11 +435,6 @@ div.daterangepicker {
   height: 100vh;
   overflow: scroll;
 
-
-  @include media-breakpoint-down(sm) {
-      padding-top: 50px !important;
-  }
-
   .panel {
     background-color: $white;
 
@@ -475,19 +470,30 @@ div.daterangepicker {
   }
 }
 
+.desc-container {
+  transition: max-height .2s linear;
+  max-height: 0;
+  overflow: hidden;
+
+
+  &.show {
+    max-height: 300px;
+    overflow: scroll;
+  }
+}
+
 .space-desc {
   font-size: .85em;
   white-space: pre-line;
   overflow-wrap: break-spaces;
-  max-height: 70px;
-  transition: max-height .2s ease-in-out;
-  overflow: hidden;
+  transition: max-height .2s linear;
   color: $gray-700;
+  padding: $measure-unit;
 }
 
 .space-desc-show {
   position: absolute;
-  bottom: -100%;
+  bottom: 0%;
   right: 0;
   font-size: .85em;
 }

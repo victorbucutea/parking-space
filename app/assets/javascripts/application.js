@@ -24,6 +24,7 @@
 //= require angular/angular.min
 //= require angular-ui-router/release/angular-ui-router.min
 //= require angular-filter/dist/angular-filter
+//= require angular-sanitize/angular-sanitize
 //= require angular-ui-bootstrap/src/buttons/buttons
 //= require tooltip.js/dist/umd/tooltip
 //= require jquery.ui.widget/jquery.ui.widget

@@ -1,31 +1,66 @@
-<div class="p-3 spaces-list" ng-controller="MyPostsCtrl">
-  <div class="hamburger d-md-none">
+<div class="row no-gutters" ng-controller="MyPostsCtrl">
+  <div class="d-md-none col-lg-4 d-lg-flex left-side-menu ">
+
+    <img src="<%= image_path 'map_plain' %>" class="rounded-circle mb-5 " height="100" width="100">
+
+    <h3 class="py-3">
+      <i class="fa fa-car text-success"></i>
+      <small class="text-secondary"> Locurile mele </small>
+    </h3>
+    <p> Ați câștigat in total </p>
+
+    <h2> {{totalSum()}}.<small>00</small> {{currency()}}</h2>
+
+    <hr style="width: 80%;">
+    <p> Aveți în cont </p>
+    <h2> {{accountSum()}}<small>.00</small> Ron </h2>
+
+
+    <a class="btn btn-outline-secondary" ui-sref="account"> Vreau să retrag banii </a>
+
+
+  </div>
+  <div class="col-12 col-lg-8 px-3 pt-0 spaces-list pt-lg-3">
+    <div class="hamburger d-md-none">
         <span ng-click="openMenu()">
             <i class="pac-nav fa fa-bars fa-2x "></i>
         </span>
-  </div>
-
-  <div class="no-items-msg loading-finished" ng-hide="spaces.length">
-    Nu ai postat un loc, sau acestea au expirat.
-    Ajută la traficul și rotunjește-ți veniturile
-    <u>
-      <a ui-sref="map.search">
-        postând un loc.
-      </a>
-    </u>
-  </div>
-  <div class="item mb-3 panel p-0" ng-repeat="space in spaces" ng-click="zoomTo(space)">
-    <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
-    <hr class="m-0"/>
-    <space-status-box space="space"></space-status-box>
-
-    <div class="m-2 text-center">
-      <button class="btn btn-outline-primary" ui-sref=".post({spaceId: space.id})">
-        <i class="fa fa-edit"></i> Modifică datele locului
-      </button>
     </div>
-  </div>
 
-  <ui-view name="place-bid"></ui-view>
-  <ui-view name="help"></ui-view>
+    <h4 class="py-3 mb-0 d-lg-none">
+      <i class="fa fa-car text-success"></i>
+      <small class="text-secondary"> Locurile mele </small>
+    </h4>
+
+    <div class="no-items-msg loading-finished" ng-hide="spaces.length">
+      Nu ai postat un loc, sau acestea au expirat.
+      Ajută la traficul și rotunjește-ți veniturile
+      <u>
+        <a ui-sref="map.search">
+          postând un loc.
+        </a>
+      </u>
+    </div>
+    <div class="item mb-3 panel p-0" ng-repeat="space in spaces" ng-click="select(space)">
+      <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
+      <hr class="m-0"/>
+      <space-status-box spaces="spaces" space="space"></space-status-box>
+
+      <div ng-if="space.validated">
+        <hr/>
+        <p class="text-muted text-center">
+          <i class="fa fa-check text-success"> </i> Valabil inca {{timeUntilExpiry(space)}}
+        </p>
+      </div>
+
+      <div class="m-2 text-center">
+        <button class="btn btn-outline-primary" ui-sref=".post({spaceId: space.id})">
+          <i class="fa fa-edit"></i> Modifică datele locului
+        </button>
+      </div>
+    </div>
+
+    <ui-view name="place-bid"></ui-view>
+    <ui-view name="help"></ui-view>
+  </div>
 </div>

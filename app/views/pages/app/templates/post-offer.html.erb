@@ -20,15 +20,12 @@
     <hr class="m-0"/>
 
     <!-- Parking space info box -->
-    <div class="space-detail-content pt-2 ">
+    <div class="space-detail-content pt-2 " onclick="$(this).find('.desc-container').toggleClass('show')">
       <parking-spot-info-box space="selectedSpace"></parking-spot-info-box>
-      <div id="spaceDesc-{{selectedSpace.id}}"
-           ng-show="selectedSpace.description"
-           class="border-top border-bottom space-desc px-2 py-1">{{selectedSpace.description}}
-      </div>
-      <div class="position-relative">
-        <div ng-click="showDesc(selectedSpace)" class="space-desc-show">
-          <a href> vezi tot <i class="fa fa-angle-double-down"></i> </a>
+      <div class="desc-container position-relative" >
+        <div id="spaceDesc-{{selectedSpace.id}}"
+             ng-show="selectedSpace.description"
+             class="border-top border-bottom space-desc px-2 py-1">{{selectedSpace.description}}
         </div>
       </div>
     </div>
@@ -47,12 +44,12 @@
             Rezervări In curs <span class="badge badge-danger">{{activeOffers.length}}</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" ng-show="futureOffers.length">
           <a href="" id="futureTab" data-target="#future" data-toggle="tab" role="tab" class="nav-link">
             Viitoare
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item"  ng-show="pastOffers.length">
           <a href="" id="pastTab" data-target="#past" data-toggle="tab" role="tab" class="nav-link">
             Trecute
           </a>
@@ -113,7 +110,7 @@
     </div>
 
     <div class="row flex-nowrap ps-control-buttons">
-      <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_lat}}"
+      <a href="https://www.google.com/maps/dir/?api=1&destination={{selectedSpace.location_lat}},{{selectedSpace.location_long}}"
          class="btn btn-lg btn-outline-primary">
         <i class="fa fa-location-arrow "></i> Navighează la parcare
       </a>

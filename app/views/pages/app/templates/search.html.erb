@@ -2,6 +2,7 @@
 
 
   <ui-view name="place-bid"></ui-view>
+  <ui-view name="help"></ui-view>
 
 
   <div class="spaces-list p-3 " ng-if="showList">
@@ -17,27 +18,63 @@
       </div>
     </div>
     <div ng-repeat="item in spacesClustered" class="panel mb-3 p-0">
-      <div ng-if="item.elements.length == 1" ng-init="space = item.elements[0][2]" ng-click="zoomTo(space)">
-        <parking-spot-info-box space="space" class="left-side"></parking-spot-info-box>
-        <div class="m-2 small">
-          <u> {{space.owner_name}} </u>
-          <i class="fa fa-star text-warning"></i>
-          <i class="fa fa-star text-warning"></i>
-          <i class="fa fa-star text-warning"></i>
-          <i class="fa fa-star text-warning"></i>
-          <i class="fa fa-star text-warning"></i>
-          (0 reviews)
+      <div ng-if="item.elements.length == 1" ng-init="space = item.elements[0][2]">
+        <parking-spot-info-box ng-click="select(space, $event)" space="space" class="left-side"></parking-spot-info-box>
+        <div class="mx-2 mb-2 text-right">
+          <reviews space="space"></reviews>
         </div>
+
+        <!-- Space description box-->
         <div class="m-0 offer-availability">
-          <div class="mx-3 mt-3" ng-show="space.description && !space.owner_is_current_user">
-            <div id="spaceDesc-{{space.id}}" class="space-desc">{{space.description}}</div>
-            <div class="position-relative">
-              <div ng-click="showDesc(space)" class="space-desc-show">
-                <a href> vezi tot <i class="fa fa-angle-double-down"></i> </a>
+
+          <div class="desc-container" id="spaceDescContainer-{{space.id}}">
+
+            <!-- desc/reviews tab menu-->
+            <ul class="nav nav-underline nav-fill" role="tablist">
+              <li class="nav-item ">
+                <a href="" id="desc" data-target="#spaceDesc-{{space.id}}" data-toggle="tab" class="nav-link active">
+                  Descriere <span class="badge badge-danger">{{activeSpaces.length}}</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" ng-click="getReviews(space)" id="reviews" data-target="#reviews-{{space.id}}" data-toggle="tab" class="nav-link">
+                  Review-uri
+                </a>
+              </li>
+            </ul>
+
+            <!-- desc/reviews tab panes -->
+            <div class="tab-content">
+              <div id="spaceDesc-{{space.id}}" class="tab-pane fade active show space-desc">{{space.description}}</div>
+              <div id="reviews-{{space.id}}" class="tab-pane fade">
+                <!-- Reviews header -->
+                <div class="row no-gutters p-2 reviews-border">
+                  <div class="col-4 d-flex align-items-center justify-content-center">
+                    <h1> {{space.review_avg}} </h1>
+                  </div>
+                  <div class="col-8 d-flex align-items-center justify-content-center flex-column">
+                    <h4 class="mb-0">
+                      <reviews min="true" space="space"></reviews>
+                    </h4>
+                    <button class="btn btn-sm btn-link" ng-click="showReviewDialog(space)"> Adaugă review</button>
+                  </div>
+                </div>
+                <!-- Reviews comments -->
+                <div class="row no-gutters p-2 reviews-border" ng-repeat="rev in reviews">
+                  <div class="col-4 d-flex align-items-center justify-content-center flex-column">
+                    <img src="<%= image_path 'useravatar_blue_lg.png' %>" height="50" width="50">
+                    <h6 class="py-1"> {{rev.owner_name}} </h6>
+                  </div>
+                  <div class="col-8">
+                    <h5> {{rev.title}} </h5>
+                    <div class="small text-muted"> {{rev.created_at | moment:'DD MMM HH:mm' }}</div>
+                    <div>{{rev.comment}}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <button class="btn btn-block btn-link border-top" ng-hide="space.owner_is_current_user"
+          <button class="btn btn-block btn-link" ng-hide="space.owner_is_current_user"
                   ng-click="space.showAv = !space.showAv">
             <i class="fa fa-calendar-check-o "></i>
             Verifică disponibilitatea
@@ -82,14 +119,7 @@
               <div class="row no-gutters col-8">
                 <div class="col-8 d-flex flex-column align-items-center justify-content-center">
                   {{space[2].title}}
-                  <div class="small">
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    (0 reviews)
-                  </div>
+                  <reviews space="space[2]"></reviews>
                 </div>
                 <div class="col-4 d-flex text-danger align-items-center justify-content-center">
                   <div>
@@ -140,6 +170,11 @@
       </div>
     </div>
   </div>
+
+  <!-- Add review form-->
+  <review-form space="reviewSpace" reviews="reviews"></review-form>
+
+  <search-center-icon shown="placingSpot"></search-center-icon>
 
 
   <div class="map-controls search">

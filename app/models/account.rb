@@ -10,7 +10,7 @@ class Account < ActiveRecord::Base
   after_initialize :init
 
   def init
-    self.amount = 0
+    self.amount ||= 0
   end
 
   def amount_is_sum_of_withdrawals

@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
     render :show
   end
 
-  # GET /accounts/1/withdrawalas
+  # GET /accounts/1/withdrawals
   # GET /accounts/1.json
   def withdrawals
     @withdrawals = Withdrawal.where :account_id => @account.id
@@ -53,6 +53,7 @@ class AccountsController < ApplicationController
       render json: { Error: withdrawal.errors }, status: :unprocessable_entity
       return
     end
+    UserMailer.with(withdrawal: withdrawal).withdrawal.deliver_later
 
     render :show
   end

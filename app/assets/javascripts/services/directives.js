@@ -556,7 +556,7 @@ angular.module('ParkingSpace.directives')
                 '          </div>' +
                 '          <div class="px-2 pt-1 col-7 col-md-8" >' +
                 '              <h2 class="text-truncate"><i class="fa fa-car"></i> {{space.title}}</h2>' +
-                '              <p>{{space.address_line_1}} ' +
+                '              <p class="text-truncate">{{space.address_line_1}} ' +
                 '                     <br  />' +
                 '                 {{space.address_line_2}} ' +
                 '              </p>' +
@@ -786,11 +786,12 @@ angular.module('ParkingSpace.directives')
         }
     })
 
-    .directive('spaceValidatedBox', ['parkingSpaceService', function (parkingSpaceService) {
+    .directive('spaceValidatedBox', ['parkingSpaceService', 'replaceById', function (parkingSpaceService, replaceById) {
         return {
             restrict: 'E',
             scope: {
-                space: '='
+                space: '=',
+                spaces: '='
             },
             template:
                 '      <div class="animated zoomIn delay-2" ng-if="space.validated">' +
@@ -830,6 +831,8 @@ angular.module('ParkingSpace.directives')
                 '        </div>' +
                 '      </div>',
             link: function ($scope, $elm) {
+                $scope.availability_start = moment();
+                $scope.availability_stop = moment().add(1, 'w');
 
                 $scope.initExpiredBox = function () {
                     $('[data-toggle=tooltip]').tooltip();
@@ -900,11 +903,12 @@ angular.module('ParkingSpace.directives')
             restrict: 'E',
             scope: {
                 space: '=',
+                spaces: '=',
                 noValiationStatus: '='
             },
             template: '<div>' +
-                '         <space-missing-doc-box ng-hide="noValiationStatus" space="space"></space-missing-doc-box>' +
-                '         <space-validated-box ng-hide="noValiationStatus" space="space"></space-validated-box>' +
+                '         <space-missing-doc-box ng-if="!noValiationStatus" space="space"></space-missing-doc-box>' +
+                '         <space-validated-box spaces="spaces" ng-if="!noValiationStatus" space="space"></space-validated-box>' +
                 '         <div class="p-2">' +
                 '            <h5 class="text-center font-weight-bold p-2 "><u>Rezervări</u></h5>' +
                 '            <ul class="nav nav-tabs" role="tablist">' +
@@ -915,12 +919,12 @@ angular.module('ParkingSpace.directives')
                 '              </li>' +
                 '              <li class="nav-item"  >' +
                 '                <a href="" data-target="#future-{{space.id}}" data-toggle="tab" role="tab" class="nav-link"  > ' +
-                '                    Viitoare' +
+                '                    Viitoare <span class="badge badge-primary">{{futureOffers.length}}</span>' +
                 '                </a>' +
                 '              </li>' +
                 '             <li class="nav-item"> ' +
                 '                <a href="" data-target="#past-{{space.id}}" data-toggle="tab" role="tab" class="nav-link"  > ' +
-                '                    Trecute ' +
+                '                    Trecute <span class="badge badge-primary">{{pastOffers.length}}</span>' +
                 '                </a>' +
                 '              </li>' +
                 '            </ul>' +
@@ -992,7 +996,7 @@ angular.module('ParkingSpace.directives')
             template: '<div>' +
                 '      <div class="text-center" ng-show="loading"><i class="fa fa-spinner fa-spin"></i></div>' +
                 '      <div class="space-availability px-2" ng-hide="loading">' +
-                '            <h5 class="pt-2">Azi</h5>' +
+                '            <h5 class="pt-2 px-3">Azi</h5>' +
                 '            <div class="text-center text-danger" ng-hide="todayIntervs.length">' +
                 '              <i class="fa fa-ban"></i> Indisponibil' +
                 '            </div>' +
@@ -1005,7 +1009,7 @@ angular.module('ParkingSpace.directives')
                 '                </button>' +
                 '              </div>' +
                 '            </div>' +
-                '            <h5 class="pt-2"> Mâine </h5>' +
+                '            <h5 class="pt-2 px-3"> Mâine </h5>' +
                 '            <div class="text-center text-danger" ng-hide="tomorrowIntervs.length">' +
                 '              <i class="fa fa-ban"></i> Indisponibil' +
                 '            </div>' +
@@ -1018,7 +1022,7 @@ angular.module('ParkingSpace.directives')
                 '                </button>' +
                 '              </div>' +
                 '            </div>' +
-                '            <h5 class="pt-2"> Saptămâna următoare </h5>' +
+                '            <h5 class="pt-2 px-3"> Saptămâna următoare </h5>' +
                 '            <div class="text-center text-danger" ng-hide="thisWeekIntvs.length">' +
                 '              <i class="fa fa-ban"></i> Indisponibil' +
                 '            </div>' +
@@ -1264,6 +1268,130 @@ angular.module('ParkingSpace.directives')
             }
         }
     }])
+
+    .directive('reviews', [function () {
+        return {
+            restrict: 'E',
+            scope: {
+                space: '=',
+                min: '=',
+                onClick: '&'
+            },
+            template: '<div class="small py-1" ng-click="showReviews()">' +
+                '              <span ng-hide="min"> ' +
+                '                  <span class="text-muted"> Opinia clienților :</span>' +
+                '                  {{space.review_avg}} ' +
+                '              </span>' +
+                '              <i class="fa fa-star "></i>' +
+                '              <i class="fa fa-star "></i>' +
+                '              <i class="fa fa-star "></i>' +
+                '              <i class="fa fa-star "></i>' +
+                '              <i class="fa fa-star "></i>' +
+                '              ( {{space.review_count}} )' +
+                '      </div>',
+            link: function ($scope, $elm) {
+                let elms = $($elm).find('.fa');
+                let avg = $scope.space.review_avg;
+                elms.each((idx, elm) => {
+                    let e = $(elm);
+
+                    function addClass(lvl) {
+                        if (avg >= lvl)
+                            e.addClass('text-warning')
+                        else
+                            e.addClass('text-muted');
+                    }
+
+                    addClass(idx + 1);
+                })
+
+                $scope.showReviews = function () {
+                    $scope.onClick({space: $scope.space})
+                }
+
+            }
+        }
+    }])
+
+    .directive('reviewForm', ['$rootScope', 'parkingSpaceService', 'replaceById',
+        function ($rootScope, parkingSpaceService, replaceById) {
+            return {
+                restrict: 'E',
+                scope: {
+                },
+                template: '<div class="ps-dialog animated zoomIn" style="display: block" ng-show="showForm"> ' +
+                    '    <div class="ps-dialog-content"> ' +
+                    '      <h3 class="text-muted px-3"> ' +
+                    '        <i class="fa fa-flash text-success"></i> ' +
+                    '        <small class="px-3">Review parcare <b>privată</b></small> ' +
+                    '      </h3> ' +
+                    '      <h6 class="px-3 py-1 text-muted "> ' +
+                    '        {{space.address_line_1}} - ' +
+                    '        <span class="text-danger">{{space.price | units  }}.<small>{{space.price | subunits}}</small> ' +
+                    '                            {{space.currency}} / h</span> ' +
+                    '      </h6> ' +
+                    '      <form class="p-3" name="reviewsForm" id="reviewsForm" novalidate="novalidate"> ' +
+                    '        <div class="form-group row"> ' +
+                    '          <label for="revRating" class="col-form-label-sm col-3">Rating</label> ' +
+                    '          <div class="col-8"> ' +
+                    '            <select required class="form-control form-control-sm" ng-init="revRating =\'5\'" ng-model="revRating" id="revRating"> ' +
+                    '              <option value="1">1</option> ' +
+                    '              <option value="2">2</option> ' +
+                    '              <option value="3">3</option> ' +
+                    '              <option value="4">4</option> ' +
+                    '              <option value="5">5</option> ' +
+                    '            </select> ' +
+                    '          </div> ' +
+                    '        </div> ' +
+                    '        <div class="form-group row"> ' +
+                    '          <label for="revTitle" class="col-form-label-sm col-3">Titlu</label> ' +
+                    '          <div class="col-8"> ' +
+                    '            <input required class="form-control form-control-sm" ng-model="revTitle" id="revTitle"> ' +
+                    '          </div> ' +
+                    '        </div> ' +
+                    '        <div class="form-group row"> ' +
+                    '          <label for="revComment" class="col-form-label-sm col-3">Comentariu</label> ' +
+                    '          <div class="col-8"> ' +
+                    '            <textarea required class="form-control form-control-sm" ng-model="revComment" id="revComment" rows="3"></textarea> ' +
+                    '          </div> ' +
+                    '        </div> ' +
+                    '        <div class="row"> ' +
+                    '          <div class="col-8 offset-3 d-flex justify-content-around"> ' +
+                    '            <button class="btn btn-primary " ng-click="addReview(space)"> Adaugă</button> ' +
+                    '            <button class="btn btn-secondary " ng-click="showForm = false"> Inapoi</button> ' +
+                    '          </div> ' +
+                    '        </div> ' +
+                    '      </form> ' +
+                    ' ' +
+                    '    </div> ' +
+                    '  </div>',
+                link: function ($scope, $elm) {
+
+                    $scope.addReview = function (space) {
+                        if (!$scope.reviewsForm.$valid) {
+                            $('#reviewsForm').addClass('was-validated');
+                            return;
+                        }
+                        let review = {
+                            comment: $scope.revComment,
+                            title: $scope.revTitle,
+                            rating: $scope.revRating,
+                            parking_space_id: space.id
+                        }
+                        parkingSpaceService.saveReview(review).then((r) => {
+                            replaceById(r, $scope.reviews);
+                        });
+                        $scope.showForm = false;
+                    }
+
+                    $rootScope.$on('showReviewForm', (ev, space, reviews) => {
+                        $scope.space = space;
+                        $scope.reviews = reviews;
+                        $scope.showForm = true;
+                    });
+                }
+            }
+        }])
 
     .directive('currency', ['currencies', function (currencies) {
         return {
@@ -1623,7 +1751,7 @@ angular.module('ParkingSpace.directives')
                 existingFiles: '=?',
             },
             template: '<div class="drop-zone d-flex justify-content-center" >' +
-                '           <input class="fileupload" style="display: none" type="file" name="file" multiple max="3" accept="{{accept}}">' +
+                '           <input required class="fileupload" style="display: none" type="file" name="file" multiple max="3" accept="{{accept}}">' +
                 '           <div class="my-3 ps-carousel d-flex flex-wrap justify-content-center" >' +
                 '             <div ng-repeat="file in existingFiles" ng-hide="file._destroy" class="px-2 thumb-box"> ' +
                 '               <carousel-thumbnail file="file" on-remove="removeFileUpload(file)"></carousel-thumbnail>' +
@@ -1966,26 +2094,42 @@ angular.module('ParkingSpace.directives')
     .directive('notificationMessages', ['$rootScope', function ($rootScope) {
         return {
             restrict: 'E',
-            template: '<div class="notification-area animated zoomIn">' +
-                '    <div class="notification-message error" ng-show="errMsg.length">' +
+            template: '<div class="notification-area animated">' +
+                '    <div class="notification-message alert-danger animated zoomIn" ng-show="errMsg.length">' +
                 '      <ul>' +
-                '        <li ng-repeat="msg in errMsg">{{msg}}</li>' +
+                '        <li ng-repeat="msg in errMsg"> ' +
+                '          <i class="fa fa-ban"></i> {{msg}}' +
+                '        </li>' +
                 '      </ul>' +
                 '    </div>' +
-                '    <div class="notification-message notification" ng-show="notifMsg.length">' +
+                '    <div class="notification-message alert-success animated zoomIn" ng-show="notifMsg.length">' +
                 '      <ul>' +
-                '        <li ng-repeat="msg in notifMsg">{{msg}}</li>' +
+                '        <li ng-repeat="msg in notifMsg">' +
+                '            <i class="fa fa-check float-left pt-1"></i>  {{msg}}' +
+                '        </li>' +
                 '      </ul>' +
                 '    </div>' +
-                '    <div class="notification-message warning" ng-show="warningMsg.length">' +
+                '    <div class="notification-message alert-warning animated zoomIn" ng-show="warningMsg.length">' +
                 '      <ul>' +
-                '        <li ng-repeat="msg in warningMsg">{{msg}}</li>' +
+                '        <li ng-repeat="msg in warningMsg">' +
+                '            <i class="fa fa-exclamation-triangle  float-left pt-1"></i> {{msg}}' +
+                '        </li>' +
                 '      </ul>' +
                 '    </div>' +
-                '    <div class="notification-message warning" ng-show="warningMsgHtml.length">' +
+                '    <div class="notification-message alert-info animated zoomIn" ng-show="notifMsgHtml.length">' +
                 '      <ul>' +
-                '        <li ng-repeat="msg in warningMsgHtml">' +
-                '          <span ng-bind-html="msg"></span>' +
+                '        <li ng-repeat="msg in notifMsgHtml">' +
+                '           <button class="close"><span>&times;</span></button>' +
+                '           <span> {{msg.text}} </span>' +
+                '              <br>' +
+                '              <br>' +
+                '              <a href="{{msg.href1}}"  class="btn alert-link" ng-if="msg.btn1"> ' +
+                '                  <i class="fa {{msg.icon1}}"></i> {{msg.btn1}}  ' +
+                '              </a>' +
+                '              <a href="{{msg.href2}}" class="m-2 btn alert-link" ng-if="msg.btn2">' +
+                '                    <i class="fa {{msg.icon2}}"></i> {{msg.btn2}}  ' +
+                '              </a>' +
+                '           </span>' +
                 '        </li>' +
                 '      </ul>' +
                 '    </div>' +
@@ -1995,7 +2139,8 @@ angular.module('ParkingSpace.directives')
                 $scope.errMsg = [];
                 $scope.notifMsg = [];
                 $scope.warningMsg = [];
-                $scope.warningMsgHtml = [];
+                $scope.notifMsgHtml = [];
+
 
                 let notifArea = $('.notification-area');
 
@@ -2003,7 +2148,7 @@ angular.module('ParkingSpace.directives')
                     $scope.errMsg = [];
                     $scope.notifMsg = [];
                     $scope.warningMsg = [];
-                    $scope.warningMsgHtml = [];
+                    $scope.notifMsgHtml = [];
                     notifArea.removeClass('zoomIn').addClass('zoomOut');
                     setTimeout(function () {
                         notifArea.removeClass('zoomOut').addClass('zoomIn');
@@ -2014,6 +2159,12 @@ angular.module('ParkingSpace.directives')
                 };
 
                 notifArea.on('mousedown', function (evt) {
+                    // do not remove notification dialog
+                    if (evt.target.tagName === "A") {
+                        setTimeout(removeMsgs, 150);
+                        return true;
+                    }
+
                     removeMsgs(evt)
                 });
 
@@ -2028,9 +2179,10 @@ angular.module('ParkingSpace.directives')
                             type.push(msg);
                     }
 
-                    setTimeout(() => {
-                        removeMsgs();
-                    }, 7000);
+                    if (type.indexOf('html') !== -1)
+                        setTimeout(() => {
+                            removeMsgs();
+                        }, 7000);
                 };
 
 
@@ -2040,8 +2192,8 @@ angular.module('ParkingSpace.directives')
                 $rootScope.$on('http.warning', function (event, data) {
                     addMsg($scope.warningMsg, data);
                 });
-                $rootScope.$on('http.warning.html', function (event, data) {
-                    addMsg($scope.warningMsgHtml, data);
+                $rootScope.$on('http.info.html', function (event, data) {
+                    addMsg($scope.notifMsgHtml, data);
                 });
                 $rootScope.$on('http.notif', function (event, data) {
                     addMsg($scope.notifMsg, data);
@@ -2049,9 +2201,4 @@ angular.module('ParkingSpace.directives')
 
             }
         }
-    }])
-    .filter('to_trusted', ['$sce', function ($sce) {
-        return function (text) {
-            return $sce.trustAsHtml(text);
-        };
     }]);

@@ -36,8 +36,7 @@ angular.module('ParkingSpaceMobile', [
         }
     })
 
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider)
-    {
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('login', {
                 url: '/login?fbLogin&lat&lng',
@@ -101,7 +100,7 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
-            .state('map.instructions', {
+            .state('map.search.instructions', {
                 url: '/instructions',
                 views: {
                     'help': {
@@ -127,7 +126,7 @@ angular.module('ParkingSpaceMobile', [
                 params: {
                     spaceId: null,
                     start: null,
-                    stop:null
+                    stop: null
                 }
             })
             .state('map.search.post-bids.pay', {
@@ -167,7 +166,7 @@ angular.module('ParkingSpaceMobile', [
             .state('map.myposts', {
                 url: '/myposts',
                 views: {
-                    'subcontent': { templateUrl: "templates/my-posts.html"}
+                    'subcontent': {templateUrl: "templates/my-posts.html"}
                 }
             })
             .state('map.myposts.post', {
@@ -234,7 +233,7 @@ angular.module('ParkingSpaceMobile', [
                 return "/login?fbLogin=ok";
             } else if ($location.absUrl().indexOf("user_denied")) {
                 return "/login?fbLogin=user_denied";
-            }else if ($location.absUrl().indexOf("error")) {
+            } else if ($location.absUrl().indexOf("error")) {
                 return "/login?fbLogin=err";
             }
 
@@ -251,12 +250,18 @@ angular.module('ParkingSpaceMobile', [
         $httpProvider.interceptors.push(function () {
             return {
                 'request': function (config) {
+                    if (config.url.indexOf('html') !== -1) {
+                        return config; // do not interfere with router
+                    }
                     let loading = $('#loading-progress');
                     loading.removeClass('loading-done');
                     loading.css('width', '100%');
                     return config;
                 },
                 'response': function (response) {
+                    if (response.config.url.indexOf('html') !== -1) {
+                        return response; // do not interfere with router
+                    }
                     let loading = $('#loading-progress');
                     loading.addClass('loading-done');
                     setTimeout(() => {

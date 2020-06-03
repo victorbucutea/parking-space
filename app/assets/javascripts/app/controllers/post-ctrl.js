@@ -90,10 +90,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 }
 
                 let spaceEdit = $scope.spaceEdit;
-                if (!spaceEdit.title) {
-                    alert("Introdu un titlu pentru acest loc.");
-                    return;
-                }
 
                 if (spaceEdit.space_availability_start > spaceEdit.space_availability_stop) {
                     alert("Data de stop nu poate fi inaintea celei de start!");
@@ -101,6 +97,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 }
 
                 if ($scope.step === 1) {
+
                     $scope.loading = true;
 
                     let savePromise = parkingSpaceService.saveSpace($scope.spaceEdit);

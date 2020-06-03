@@ -145,7 +145,7 @@
                         <div class="col-12">
                         <textarea id="description"
                                   class="form-control" ng-model="spaceEdit.description"
-                                  required
+                                  ng-required="step==1"
                                   placeholder="Indicații acces, tip parcare, instructiuni parcare"></textarea>
                         </div>
                     </div>
@@ -202,9 +202,9 @@
         </div>
     </div>
 
-    <search-center-icon right="true" shown="editingSpot"></search-center-icon>
+    <search-center-icon shown="editingSpot"></search-center-icon>
     <div class="map-controls " ng-show="editingSpot">
-        <button class="btn btn-primary add-btn wider" ng-click="selectNewAddress()" >
+        <button class="btn btn-primary add-btn wider" ng-click="selectNewAddress()">
         <span>
             Alege noul loc
             <i class="fa fa-arrow-right"></i>

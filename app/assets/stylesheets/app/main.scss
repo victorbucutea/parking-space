@@ -30,6 +30,10 @@ map {
   &.scrolled {
     position: absolute;
     right: -100%;
+
+    @include media-breakpoint-up(lg) {
+      right: -200%;
+    }
   }
 }
 
@@ -143,7 +147,7 @@ map {
 .marker-instruction-circle {
   position: absolute;
   bottom: 42%;
-  right: 55%;
+  right: 28%;
 }
 
 .btn-instruction-circle {
@@ -163,22 +167,41 @@ map {
   left: 0;
 }
 
-nav.navbar {
+nav {
+  &.navbar {
 
-  .nav-border-right {
-    border-right: 1px solid $gray-700;
-  }
+    .nav-border-right {
+      border-right: 1px solid $gray-700;
+    }
 
-  .nav-item.active {
-    font-weight: normal;
-  }
+    .nav-item.active {
+      font-weight: normal;
+    }
 
-  .dropdown-item {
-    .fa-user {
-      font-size: 1.2em;
-      padding-right: 4px;
+    .dropdown-item {
+      .fa-user {
+        font-size: 1.2em;
+        padding-right: 4px;
+      }
     }
   }
+
+
+}
+
+.nav.nav-underline {
+  .nav-item {
+    .nav-link {
+      margin: 0 $xxxbig-measure-unit;
+      &.active {
+        border-bottom: 3px solid $blue !important;
+      }
+    }
+  }
+}
+
+.reviews-border {
+  border-bottom: 1px dashed $gray-400;
 }
 
 #pac-container {
@@ -277,7 +300,7 @@ nav.navbar {
 
 .hamburger {
   position: fixed;
-  top: .5rem;
+  top: 1rem;
   right: 1rem;
   z-index: 3;
 }
@@ -367,6 +390,11 @@ nav.navbar {
 
   &.slide-left {
     left: -50%;
+
+
+    @include media-breakpoint-down(md) {
+      left: -90%;
+    }
   }
 }
 
@@ -468,19 +496,18 @@ nav.navbar {
   background-color: $blue;
   margin: auto;
   pointer-events: none;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 50%;
   z-index: 1;
 
-  &.shadow {
-    box-shadow: 2px 2px 12px 1px $gray-700;
+  @include media-breakpoint-up(md) {
+    left: 50%;
   }
 
-  &.right {
-    right: -100%;
-    left: 100%;
+  &.shadow {
+    box-shadow: 2px 2px 12px 1px $gray-700;
   }
 }
 
@@ -879,11 +906,18 @@ parking-spot-info-box {
   .notification-message {
     text-align: center;
     border-radius: $border-radius;
-    color: $white;
     padding: $sm-measure-unit;
-    display: none;
+    display: block;
     margin: $measure-unit auto;
-    width: 70%;
+    width: 50%;
+    border-style: solid;
+    border-width: 2px;
+    font-size: 1.05em;
+
+
+    @include media-breakpoint-down(md) {
+      width: 75%;
+    }
 
     ul {
       list-style-type: none;
@@ -891,23 +925,7 @@ parking-spot-info-box {
       padding: 0;
 
       li {
-        font-weight: bold;
       }
-    }
-
-    &.error {
-      background-color: $red;
-      display: block;
-    }
-
-    &.notification {
-      background-color: $green;
-      display: block;
-    }
-
-    &.warning {
-      background-color: $yellow;
-      display: block;
     }
   }
 }
@@ -971,6 +989,16 @@ parking-spot-info-box {
   }
 }
 
+.future-offer-suggestion {
+  text-align: center;
+  width: 100%;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $gray-700;
+  }
+}
+
 .bids-area {
 
   .bid-title {
@@ -1005,6 +1033,7 @@ parking-spot-info-box {
 
   .bid-table {
     overflow: scroll;
+    max-height: 500px;
 
     .bid-row {
 
@@ -1053,6 +1082,7 @@ parking-spot-info-box {
           font-weight: 700;
           color: $gray-600;
           text-transform: uppercase;
+          font-size: 1.2em;
         }
       }
 
@@ -1080,6 +1110,22 @@ parking-spot-info-box {
 
   }
 }
+
+.left-side-menu {
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  background-color: $gray-800;
+  color: $gray-600;
+
+
+  hr {
+    border-color: $gray-600;
+    width: 70%;
+  }
+}
+
 
 // left hand drawer menu
 
@@ -1204,6 +1250,7 @@ parking-spot-info-box {
 
   &.instruction {
     background-color: transparent;
+    width: 200%;
     position: absolute;
     text-align: left;
   }
@@ -1223,7 +1270,7 @@ parking-spot-info-box {
 .rent-place-instruction {
   position: absolute;
   right: 0;
-  width: 50%;
+  width: 35%;
   bottom: 0;
 }
 
@@ -1268,7 +1315,7 @@ parking-spot-info-box {
 
   &.help {
     top: 41%;
-    right: 55%;
+    right: 30%;
     font-size: 1.5em;
   }
 

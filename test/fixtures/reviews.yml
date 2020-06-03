@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  comment: MyText
+  rating: 9.99
+  parking_space: one
+  user: one
+  owner_name: MyString
+
+two:
+  comment: MyText
+  rating: 9.99
+  parking_space: two
+  user: two
+  owner_name: MyString

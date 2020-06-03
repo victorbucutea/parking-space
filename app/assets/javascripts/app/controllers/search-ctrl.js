@@ -4,21 +4,61 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
-    ['$rootScope', '$scope', '$state', 'parkingSpaceService', 'userService', 'geoService',
-        function ($rootScope, $scope, $state, parkingSpaceService, userService, geoService) {
+    ['$rootScope', '$scope', '$state', 'parkingSpaceService', 'userService', 'geoService', 'offerService',
+        function ($rootScope, $scope, $state, parkingSpaceService, userService, geoService, offerService) {
             $scope.cloudName = window.cloudinaryName;
 
             let dragHandle = null;
             let zoomHandle = null;
 
+
             let ongoingDrawSpacesReq;
-            $scope.showList = true;
 
             if (!$rootScope.desktopScreen) {
                 $rootScope.$emit('mapAndContent', {colMap: 'col-12'});
                 $scope.showList = false;
+            } else {
+                $rootScope.$emit('mapAndContent', {colMap: 'col-6 col-lg-8', colContent: 'col-6 col-lg-4'});
+                $scope.showList = true;
             }
 
+            if (offerService.showNextOffer())
+                offerService.getNextOffer().then((d) => {
+                    let st = moment(d.start_date);
+                    let now = moment();
+                    let msg = "Aveți o rezervare activa care "
+                    let timeUntil = now.to(st);
+                    if (now.isBefore(st)) {
+                        msg += 'va începe '
+                    } else {
+                        msg += 'a început cu '
+                    }
+                    $rootScope.$emit('http.info.html', {
+                        text: msg + timeUntil + '. ',
+                        btn1: 'Vezi detalii',
+                        icon1: 'fa-map',
+                        href1: '#!/map/search/post-offer?spaceId=' + d.parking_space_id,
+                        btn2: 'Navighează la locul resp.',
+                        icon2: 'fa-location-arrow',
+                        href2: `https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}`
+                    });
+                })
+
+
+            window.showMsg = function(){
+                /**
+                 * 12
+                 16
+                 17
+                 18
+                 19
+                 76
+                 77
+                 78
+                 79
+                 */
+                offerService.rejectOffer(5, {id:79});
+            }
 
             $scope.scheduleDrawSpaces = () => {
                 if (ongoingDrawSpacesReq) {
@@ -96,13 +136,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 $rootScope.$emit('showCarouselImages', $scope.space.images);
             };
 
-            if (!userService.instructionsShown()) {
-                $state.go('.instructions').then(() => {
-                        userService.instructionsShown(true)
-                    }
-                )
-            }
-
 
             $scope.centerMap = function () {
                 geoService.getCurrentPosition((position) => {
@@ -111,10 +144,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 });
             };
 
-            $rootScope.$on( 'editSpace', () => {
-                $scope.placingSpot = true;
-            })
-
             $scope.showPostSpace = function () {
                 if (!$scope.placingSpot) {
                     $scope.placingSpot = !$scope.placingSpot;
@@ -122,8 +151,25 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 }
                 $scope.spaceEdit = {};
                 $state.go('.post');
-                $scope.placingSpot = true;
+                $scope.placingSpot = false;
             };
+
+            $scope.showReviewDialog = function (space) {
+                $rootScope.$emit('showReviewForm', space, $scope.reviews);
+            };
+
+
+            $scope.getReviews = function (space) {
+                parkingSpaceService.getReviews(space).then((reviews) => {
+                    $scope.reviews = reviews;
+                });
+            }
+
+
+            if (!userService.instructionsShown()) {
+                $state.go('.instructions');
+            }
+
 
 
             let observer = new IntersectionObserver(function (entries) {

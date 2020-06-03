@@ -82,6 +82,9 @@ GEM
     httpclient (2.8.3)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    icalendar (2.6.1)
+      ice_cube (~> 0.16)
+    ice_cube (0.16.3)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
     json (2.2.0)
@@ -235,6 +238,7 @@ DEPENDENCIES
   concurrent-ruby
   devise
   high_voltage (~> 3.0.0)
+  icalendar
   jbuilder (~> 2.0)
   json
   pg (~> 0.20)

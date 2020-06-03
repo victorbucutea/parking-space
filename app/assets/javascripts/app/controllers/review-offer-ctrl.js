@@ -90,6 +90,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
                 $scope.selOffer = offer;
             };
 
+            $scope.select = function (space) {
+                $('#spaceDescContainer-' + space.id).toggleClass('show');
+            }
+
+
             let isActive = function (o) {
                 let st = moment(o.start_date);
                 let now = moment();
