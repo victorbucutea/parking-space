@@ -424,7 +424,7 @@ angular.module('ParkingSpace.services')
             }
 
             _this.cancelWithdrawal = function (withd, clbk) {
-                $http.post(`/accounts/1/reject_withdrawal.json`,
+                $http.post(`/accounts/1/cancel_withdrawal.json`,
                     {withdrawal_id: withd.id}
                 ).then(function (resp) {
                     $rootScope.$emit('http.warning', 'Retragerea a fost anulata!');

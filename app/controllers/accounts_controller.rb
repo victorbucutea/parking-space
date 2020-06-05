@@ -26,8 +26,8 @@ class AccountsController < ApplicationController
 
   # POST /accounts/1/reject_withdrawal
   def reject_withdrawal
-    unless @withdrawal.rejected
-      render json: {Error: @withdrawal.errors}, status: :unprocessable_entity
+    unless @withdrawal.rejected!
+      render json: { Error: @withdrawal.errors }, status: :unprocessable_entity
     end
     render :show_withdrawal
   end
