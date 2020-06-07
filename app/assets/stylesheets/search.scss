@@ -38,31 +38,28 @@ nav {
 
 .find-block {
   height: 100vh;
-  background: cloudinary_url("bg.png");
-  max-height: 700px;
+  background: cloudinary_url("bg_scale_w_1380.jpg") no-repeat center;
+  background-size: cover;
 }
 
 @include media-breakpoint-down(md) {
   .find-block {
-    background: cloudinary_url("bg_sm.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
+    background: cloudinary_url("bg_scale_w_1045.jpg") no-repeat center;
+    background-size: cover;
   }
 }
 
 @include media-breakpoint-down(sm) {
   .find-block {
-    background: cloudinary_url("bg_xs.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
+    background: cloudinary_url("bg_scale_w_500.jpg") no-repeat;
+    background-size: cover;
   }
 }
 
 @include media-breakpoint-up(lg) {
   .find-block {
-    background: cloudinary_url("bg.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
+    background: cloudinary_url("bg_scale_w_1380.jpg") no-repeat center;
+    background-size: cover;
   }
 }
 
@@ -150,17 +147,14 @@ div.daterangepicker {
   input.form-control {
     border: 1px solid $gray-lighter;
     line-height: 2;
-    font-size: 1.4em;
+    font-size: 1.5em;
     height:auto;
     padding-right: 2.5em;
     text-overflow: ellipsis;
     background-color: $blue-80;
     color: $blue-900;
-    box-shadow: 1px 2px 3px 0 $gray-700;
+    box-shadow: 1px 1px 0 0 $gray-500;
 
-    &:focus {
-      box-shadow: 1px 2px 3px 0 $gray-700;
-    }
   }
 
   .btn-search {

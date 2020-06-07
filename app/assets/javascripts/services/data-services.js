@@ -142,7 +142,7 @@ angular.module('ParkingSpace.services')
 
             this.saveReview = function (review) {
                 return $http.post('/reviews.json', {
-                   review : review
+                    review: review
                 }).then(function (response) {
                     $rootScope.$emit('http.notif', 'Mulțumim, Review-ul tău a fost adăugat!');
                     return response.data;
@@ -230,7 +230,7 @@ angular.module('ParkingSpace.services')
                         sessionStorage.setItem("showNextOffer", "false");
                         return res.data;
                     }, function (err) {
-                       // explicitly nothing
+                        // explicitly nothing
                     })
             };
 
@@ -325,6 +325,26 @@ angular.module('ParkingSpace.services')
         this.getCountryList = function () {
             return _this.retrieveParameters();
         };
+
+        this.navigateOnRedirect = function () {
+            return sessionStorage.getItem("navigateOnRedirect") !== "false";
+        }
+
+        this.getNavigateCoords = function () {
+            let item = sessionStorage.getItem("navigateOnRedirect");
+            if (!item) return;
+            let coords = JSON.parse(item);
+            let pos = new google.maps.LatLng(coords.lat, coords.lng);
+            return pos;
+        }
+
+        this.setNavigateOnRedirect = function (latLng) {
+            if (latLng)
+                sessionStorage.setItem("navigateOnRedirect", JSON.stringify(latLng));
+            else
+                sessionStorage.setItem("navigateOnRedirect", "false");
+
+        }
     }])
 
     .service('paymentService', ['$rootScope', '$http', 'errorHandlingService',

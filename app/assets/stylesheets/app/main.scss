@@ -146,8 +146,8 @@ map {
 
 .marker-instruction-circle {
   position: absolute;
-  bottom: 42%;
-  right: 28%;
+  bottom: 57%;
+  right: 26%;
 }
 
 .btn-instruction-circle {
@@ -155,16 +155,6 @@ map {
   bottom: 5px;
   right: 0;
   width: 120px;
-}
-
-.pac-container-dummy {
-  width: 90%;
-  max-width: 700px;
-  margin: $big-measure-unit auto;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
 }
 
 nav {
@@ -1237,8 +1227,8 @@ parking-spot-info-box {
   height: 100%;
   background-color: transparentize($gray-dark, 0.3);
   top: 0;
-  left: 0;
   right: 0;
+  left: 0;
   padding: $measure-unit;
   text-align: center;
   z-index: 10;
@@ -1250,8 +1240,7 @@ parking-spot-info-box {
 
   &.instruction {
     background-color: transparent;
-    width: 200%;
-    position: absolute;
+    position: fixed;
     text-align: left;
   }
 }
@@ -1270,8 +1259,8 @@ parking-spot-info-box {
 .rent-place-instruction {
   position: absolute;
   right: 0;
-  width: 35%;
   bottom: 0;
+  max-width: 300px;
 }
 
 .center-map-to-location {
@@ -1314,7 +1303,7 @@ parking-spot-info-box {
   white-space: nowrap;
 
   &.help {
-    top: 41%;
+    top: 23%;
     right: 30%;
     font-size: 1.5em;
   }

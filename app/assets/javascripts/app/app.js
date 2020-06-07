@@ -46,7 +46,9 @@ angular.module('ParkingSpaceMobile', [
                     }
                 },
                 params: {
-                    fbLogin: null
+                    fbLogin: null,
+                    lat: null,
+                    lng: null
                 }
             })
             .state('register', {

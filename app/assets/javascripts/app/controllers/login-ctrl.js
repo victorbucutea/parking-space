@@ -15,7 +15,7 @@ angular.module('ParkingSpaceMobile.controllers')
 
                     userService.login(user, password).then(() => {
                         $scope.loading = true;
-                        $state.go('map.search', $stateParams);
+                        $state.go('map.search');
                     })
                 };
 
@@ -81,7 +81,7 @@ angular.module('ParkingSpaceMobile.controllers')
                 } else {
                     userService.getUser().then((user) => {
                         if (user)
-                            $state.go('map.search', $stateParams);
+                            $state.go('map.search');
                     });
                 }
 

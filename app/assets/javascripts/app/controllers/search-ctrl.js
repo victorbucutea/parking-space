@@ -4,8 +4,8 @@
 
 
 angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
-    ['$rootScope', '$scope', '$state', 'parkingSpaceService', 'userService', 'geoService', 'offerService',
-        function ($rootScope, $scope, $state, parkingSpaceService, userService, geoService, offerService) {
+    ['$rootScope', '$scope', '$state', 'parkingSpaceService', 'userService', 'geoService', 'offerService', 'parameterService',
+        function ($rootScope, $scope, $state, parkingSpaceService, userService, geoService, offerService, parameterService) {
             $scope.cloudName = window.cloudinaryName;
 
             let dragHandle = null;
@@ -21,6 +21,14 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 $rootScope.$emit('mapAndContent', {colMap: 'col-6 col-lg-8', colContent: 'col-6 col-lg-4'});
                 $scope.showList = true;
             }
+
+            if (parameterService.navigateOnRedirect()) {
+                $scope.createMap().then((map) => {
+                    map.setCenter(parameterService.getNavigateCoords());
+                    parameterService.setNavigateOnRedirect(false);
+                });
+            }
+
 
             if (offerService.showNextOffer())
                 offerService.getNextOffer().then((d) => {
@@ -43,22 +51,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                         href2: `https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}`
                     });
                 })
-
-
-            window.showMsg = function(){
-                /**
-                 * 12
-                 16
-                 17
-                 18
-                 19
-                 76
-                 77
-                 78
-                 79
-                 */
-                offerService.rejectOffer(5, {id:79});
-            }
 
             $scope.scheduleDrawSpaces = () => {
                 if (ongoingDrawSpacesReq) {
@@ -169,7 +161,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
             if (!userService.instructionsShown()) {
                 $state.go('.instructions');
             }
-
 
 
             let observer = new IntersectionObserver(function (entries) {

@@ -180,7 +180,7 @@ angular.module('ParkingSpace.services')
                 //if unauthorized, go to login
                 sessionStorage.removeItem("current_user");
                 sessionStorage.removeItem("current_roles");
-                errorMessages = _this.buildErrorMessages(data);
+                let errorMessages = _this.buildErrorMessages(data);
                 $rootScope.$emit('http.error', errorMessages);
                 $rootScope.$emit('logout', 'logout');
                 $state.go('login', $state.params);
