@@ -32,6 +32,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
 
             if (offerService.showNextOffer())
                 offerService.getNextOffer().then((d) => {
+                    if (!d) return;
                     let st = moment(d.start_date);
                     let now = moment();
                     let msg = "Aveți o rezervare activa care "
