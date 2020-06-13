@@ -405,7 +405,8 @@ div.daterangepicker {
   h5, h4 {
     font-weight: 600;
     color: $dflt-font-color !important;
-    &:hover {
+
+    &.underline:hover {
       text-decoration: underline;
       cursor: pointer;
     }

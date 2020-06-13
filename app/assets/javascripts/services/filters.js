@@ -1,4 +1,4 @@
-angular.module("ParkingSpaceMobile.filters")
+angular.module("ParkingSpace.filters")
 
     .filter('units', function () {
         return function (input, params) {

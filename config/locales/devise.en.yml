@@ -13,16 +13,16 @@ en:
       locked: "Your account is locked."
       last_attempt: "You have one more attempt before your account is locked."
       not_found_in_database: "%{authentication_keys} inexistent sau parolă greșită"
-      timeout: "Your session expired. Please sign in again to continue."
-      unauthenticated: "Pentru a putea rezerva locuri de parcare te rugăm să te autentifici."
+      timeout: "Sesiunea ta a expirat. Te rugăm să te re-autentifici"
+      unauthenticated: "Pentru a putea accesa aplicația te rugăm să te autentifici."
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"
       reset_password_instructions:
-        subject: "Reset password instructions"
+        subject: "Intrucțiuni resetare parolă"
       unlock_instructions:
-        subject: "Unlock instructions"
+        subject: "Instrucțiuni deblocare cont"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."

@@ -5,6 +5,10 @@
   <link rel="icon" type="image/png" href="<%= image_path 'favicon.png' %>"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
+  <script async src="https://js.braintreegateway.com/web/dropin/1.9.4/js/dropin.min.js"></script>
+  <script async src="https://js.braintreegateway.com/web/3.31.0/js/client.min.js"></script>
+  <script async src="https://js.braintreegateway.com/web/3.31.0/js/payment-request.js"></script>
+
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700&amp;subset=latin-ext" rel="stylesheet">
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
@@ -45,39 +49,11 @@
 
 <div class="container ">
 
-  <!-- Notification messages -->
-  <div class="notification-area animated zoomIn">
-    <div class="notification-message error" ng-show="errMsg.length">
-      <ul>
-        <li ng-repeat="msg in errMsg">{{msg}}</li>
-      </ul>
-    </div>
-
-    <div class="notification-message notification" ng-show="notifMsg.length">
-      <ul>
-        <li ng-repeat="msg in notifMsg">{{msg}}</li>
-      </ul>
-    </div>
-
-    <div class="notification-message warning" ng-show="warningMsg.length">
-      <ul>
-        <li ng-repeat="msg in warningMsg">{{msg}}</li>
-      </ul>
-    </div>
-
-    <div class="notification-message warning" ng-show="notifMsgHtml.length">
-      <ul>
-        <li ng-repeat="msg in notifMsgHtml">
-          <span ng-bind-html="msg"></span>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <notification-messages> </notification-messages>
 
 
   <ui-view name="content">
     <div class="d-flex align-items-center flex-column justify-content-around" style="height: 400px">
-      <img WIDTH="300" src="<%= image_path 'logosgebs.png' %>">
       <div class="d-flex">
         <div ui-sref="locations" class="m-2 main-link panel d-flex flex-column justify-content-center align-items-center" style="height: 200px">
           <h4> Locatii parcare </h4>
@@ -90,6 +66,9 @@
       </div>
     </div>
   </ui-view>
+
+  <carousel-images imgs="carouselImgs"></carousel-images>
+
 
 
 </div>

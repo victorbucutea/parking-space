@@ -1,0 +1,63 @@
+<div ng-controller="LoginCtrl" class="container register mb-5">
+
+  <div class="text-center p-4 p-md-5">
+    <a href="/">
+      <img width="200" src="<%= image_path 'logo_sm.png' %>">
+    </a>
+  </div>
+
+
+  <!-- Blanket shown when awaiting for login clbk -->
+  <div class="ps-modal" id="loadingBlanket" style="display: none;">
+    <section class="full-height d-flex justify-content-center align-items-center">
+      <div class=""><i class="fa fa-4x fa-spinner fa-spin mt-5 text-secondary"></i></div>
+    </section>
+  </div>
+
+
+  <div id="login" class="row justify-content-center ">
+
+    <div class="col-10 col-sm-7 col-md-6 col-xl-4 text-center">
+      <h3 class="py-3 mb-3">Înregistrare admin</h3>
+      <form name="loginForm" id="loginForm" novalidate="novalidate">
+        <div class="form-group">
+          <input type="email" class="user-name form-control form-control-lg" placeholder="Email" ng-model="userName" name="user" required/>
+          <div class="invalid-feedback">Introdu o adresă de email validă</div>
+        </div>
+
+        <div class="form-group">
+          <input type="password" class="password form-control  form-control-lg" placeholder="Parolă" ng-model="password" name="pw" required/>
+          <div class="invalid-feedback">Introdu parola</div>
+
+        </div>
+        <a onclick="$('#recoverPassword').show();" class="btn btn-link btn-block p-0 text-right">Recuperare parolă</a>
+
+        <button class="btn btn-lg mt-5 btn-block btn-danger" ng-disabled="loading || loadingFb" ng-click="login()">
+          <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+          Login
+        </button>
+      </form>
+      <div id="recoverPassword" class="ps-dialog">
+        <form id="recoverPwForm" name="recoverPwForm" novalidate="novalidate">
+          <div class="ps-dialog-content">
+            <div class="ps-question">
+              <div class="py-2">
+                Te rugăm introdu adresa de email
+              </div>
+              <input type="email" class="form-control"
+                     placeholder="Email" ng-model="recoveryEmail" name="email" required
+                     minlength="5"
+                     pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"/>
+            </div>
+            <div class="ps-control-buttons">
+              <a tabindex class="btn btn-primary" ng-click="recoverPassword();">Ok</a>
+              <a tabindex class="btn btn-secondary" onclick="$('#recoverPassword').hide()">Înapoi</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+</div>

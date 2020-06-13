@@ -1422,9 +1422,21 @@ parking-spot-info-box {
 }
 
 .users-list {
-  table {
-    .btn-sm {
-      font-size: 80%;
+  .table-row {
+    border-bottom: 1px dashed $gray-400;
+    &:hover {
+      cursor: pointer;
+      background-color: $blue-90;
+    }
+  }
+
+  .expanded-row {
+    background-color: $blue-90;
+    padding: $xbig-measure-unit;
+
+    .expanded-row-pane {
+      background-color: $white;
+      padding: $measure-unit;
     }
   }
 }

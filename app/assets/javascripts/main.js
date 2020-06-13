@@ -3,6 +3,7 @@
 angular.module('ParkingSpace', [
     'ui.router',
     'ParkingSpace.directives',
+    'ParkingSpace.filters',
     'ParkingSpace.services'])
     .run([function () {
         moment.locale('ro');
@@ -21,8 +22,62 @@ angular.module('ParkingSpace', [
             window.location = '/app/index.html#!/home/login';
         }
     }])
+
+    .constant('currencies', [
+        {
+            name: 'Usd',
+            label: "Usd / h",
+            icon: 'fa-usd'
+        },
+        {
+            name: 'Eur',
+            label: "Eur / h",
+            icon: 'fa-eur'
+        },
+        {
+            name: 'Ron',
+            label: "Ron / h",
+            icon: null
+        },
+        {
+            name: 'Rur',
+            label: "Rur / h",
+            icon: 'fa-rub'
+        },
+        {
+            name: 'Gbp',
+            label: "Gbp / h",
+            icon: 'fa-gbp'
+        },
+        {
+            name: 'Yen',
+            label: "Yen / h",
+            icon: 'fa-jpy'
+        },
+        {
+            name: 'Inr',
+            label: "Inr / h",
+            icon: 'fa-inr'
+        },
+        {
+            name: 'Ils',
+            label: "Ils / h",
+            icon: 'fa-ils'
+        },
+        {
+            name: 'Try',
+            label: "Try / h",
+            icon: 'fa-try'
+        },
+        {
+            name: 'Krw',
+            label: "Krw / h",
+            icon: 'fa-krw'
+        }
+    ])
     .constant("GEOCODE_API_URL", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY");
 
 angular.module('ParkingSpace.directives', []);
 angular.module('ParkingSpace.services', []);
+angular.module('ParkingSpace.filters', []);
 

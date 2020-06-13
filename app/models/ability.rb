@@ -12,14 +12,20 @@ class Ability
       can :manage, Section
       can :manage, ParkingSpace
       can :manage, Proposal
-      # can :manage, Proposal
+      can :manage, Account
     else
       can :manage, ParkingSpace, user_id: user.id
       can :manage, Proposal, user_id: user.id
     end
 
-    #  check private_spaces_admin allowed to validate parking space ( not user )
-    #  private_spaces_admin allowed to manage proposals
+    if user.role? 'private_spaces_admin'
+      # check private_spaces_admin allowed to validate parking space ( not user )
+      # when city will be added (pb fk in roles) this role will only
+      # manage parking spaces and reservations in that city
+      can :manage, ParkingSpace
+      can :manage, Proposal
+      can :manage, Account
+    end
 
     can :index, ParkingSpace
     can :show, ParkingSpace

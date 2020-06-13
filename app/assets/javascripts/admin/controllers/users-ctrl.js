@@ -6,7 +6,7 @@ angular.module('ParkingSpaceAdmin.controllers')
 
                 $scope.searchUser = function (searcg) {
 
-                    userService.loadCompanyUsers(searcg, (data) => {
+                    userService.listUsers(searcg, (data) => {
                         $scope.users = data;
                     })
                 };
@@ -17,17 +17,10 @@ angular.module('ParkingSpaceAdmin.controllers')
                     })
                 };
 
+                $scope.showControls = function (user, $event) {
+                    $('#expandedRow-' + user.id).slideToggle();
+                    user.showMenu = 1;
 
-                $scope.goEditRoles = function(user) {
-                    $scope.selectedUser = user;
-                    $scope.getAllRoles();
-                    $state.go('.rights');
-                }
-
-                $scope.getLocations = function() {
-                    locationService.getLocations((data) => {
-                        $scope.locations = data;
-                    })
                 }
 
 

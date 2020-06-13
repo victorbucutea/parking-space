@@ -140,6 +140,15 @@ angular.module('ParkingSpace.services')
                 });
             }
 
+            this.getDocuments = function (space) {
+                return $http.get(`/parking_spaces/${space.id}/documents.json`)
+                    .then(function (response) {
+                    return response.data;
+                }, function (errorResponse) {
+                    errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                });
+            }
+
             this.saveReview = function (review) {
                 return $http.post('/reviews.json', {
                     review: review
@@ -464,8 +473,9 @@ angular.module('ParkingSpace.services')
         function ($rootScope, $http, errorHandlingService) {
             let _this = this;
 
-            _this.loadCompanyUsers = function (query, clbk) {
-                $http.get('/employees/list.json', {
+            _this.listUsers = function (query, clbk) {
+                query = query || '';
+                $http.get('/users/list.json', {
                     params: {
                         query: query
                     }

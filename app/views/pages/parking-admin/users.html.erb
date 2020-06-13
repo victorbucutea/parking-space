@@ -1,47 +1,197 @@
 <div class="users-list pt-3" ng-controller="UsersCtrl">
 
   <form novalidate id="userSearchForm" name="userSearchForm">
-    <div class="input-group my-4">
-      <input type="text" id="searchUsrTxt" class="form-control" ng-model="searchUserTxt"
-             placeholder="Search by username or email" >
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" ng-click="searchUser(searchUserTxt)">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
+    <div class="form-group row ">
+      <label for="searchUsrTxt" class="col-form-label col-3">Nume sau email:</label>
+      <input type="text" id="searchUsrTxt" class="form-control col-9" ng-model="searchUserTxt"
+             placeholder="Cauta dupa nume sau email">
+    </div>
+
+    <div class="form-group row ">
+      <label for="searchPhone" class="col-form-label col-3">Nr tel:</label>
+      <input type="text" id="searchPhone" class="form-control col-9" ng-model="searchPhone"
+             placeholder="Cauta dupa tel">
+    </div>
+
+
+    <div class="text-right">
+      <button class="btn btn-outline-secondary" type="button" ng-click="searchUser(searchUserTxt)">
+        <i class="fa fa-search"></i> Cauta
+      </button>
     </div>
   </form>
 
-  <table class="table table-sm table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Loc asignat</th>
-        <th scope="col">Drepturi</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="user in users">
-        <td>{{user.full_name}}</td>
-        <td>{{user.email}}</td>
-        <td>
-          <div>{{user.assignedSpace || 'N/A'}}</div>
-          <button class="btn btn-sm btn-link"> Asigneaza loc </button>
-        </td>
+  <div class="row border-bottom font-weight-bold my-3">
+    <div class="col-3 text-left ">Name</div>
+    <div class="col-4 text-left ">Email</div>
+    <div class="col-3 text-center">Telefon</div>
+    <div class="col-2 text-center">Actiuni</div>
+  </div>
+  <div class="row py-1 table-row" ng-repeat="user in users">
+    <div class="col-3 text-left text-truncate">{{user.full_name}}</div>
+    <div class="col-4 text-left text-truncate">{{user.email}}</div>
+    <div class="col-3 text-center"> {{user.prefix}}{{user.phone_number}}</div>
+    <div class="col-2 text-center">
+      <div>
+        <button class="btn btn-sm btn-link" ng-click="showControls(user,$event)">Detalii</button>
+      </div>
+    </div>
 
-        <td>
-          <div ng-repeat="role in user.roles">
-            {{role.identifier}}
-          </div>
-          <div>
-            <button class="btn btn-sm btn-link" ng-click="goEditRoles(user)"> Modifica drepturi </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div id="expandedRow-{{user.id}}" class="col-12 expanded-row" n style="display: none">
 
-  <ui-view name="details"></ui-view>
+      <ul class="nav nav-tabs nav-fill" role="tablist">
+        <li class="nav-item ">
+          <a href="" ng-click="user.showMenu = 1" class="nav-link active" data-toggle="tab" role="tab">
+            <i class='fa fa-car'></i> Locuri de parcare
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a href="" ng-click="user.showMenu = 2" class="nav-link" data-toggle="tab" role="tab">
+            <i class='fa fa-calendar'></i> Rezervări
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="" id="accountsTab" ng-click="user.showMenu = 3" data-toggle="tab" role="tab" class="nav-link">
+            <i class="fa fa-credit-card"></i> Plati si facturi
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="" id="detailsTab" ng-click="user.showMenu = 4" data-toggle="tab" role="tab" class="nav-link">
+            <i class="fa fa-list"></i> Detalii cont
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content" ng-if="user.showMenu">
+
+        <!-- User Spaces -->
+        <div class=" expanded-row-pane animated zoomIn pb-2" ng-show="user.showMenu == 1" ng-controller="UserSpacesCtrl">
+          <div class="text-center" ng-hide="user.spaces.length"><i class="fa fa-spinner fa-spin"></i></div>
+          <div class="p-2 panel mb-2 bids-area" ng-repeat="space in user.spaces">
+            <h5 class="py-2 bid-title ng-binding mb-0">
+              {{space.address_line_1}} -
+              <span class="bid-amount">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
+                            {{space.currency}} / h
+              </span>
+
+              <button class="btn btn-outline-primary btn-sm ml-5" ng-click="edit(space)">
+                <i class="fa fa-edit"></i> Editeaza
+              </button>
+              <button class="btn btn-outline-secondary btn-sm ml-5" ng-click="edit(space)">
+                <i class="fa fa-dashboard"></i> Status
+              </button>
+              <button class="btn btn-outline-danger btn-sm ml-5" ng-click="delete(space)">
+                <i class="fa fa-trash"></i> Sterge
+              </button>
+
+              <div class="small text-muted pb-2">
+                {{space.space_availability_start | moment:'d MMM YYYY HH:mm'}} -
+                {{space.space_availability_stop | moment:'d MMM YYYY HH:mm'}}
+                ( {{space.expired? 'Expirat' : 'Activ'}} )
+              </div>
+
+              <reviews space="space"></reviews>
+            </h5>
+            <div class="d-flex flex-nowrap scroll-x">
+              <i class="fa fa-3x fa-photo py-3 text-muted" ng-show="!space.images.length"></i>
+              <div ng-repeat="img in space.images" ng-show="space.images.length">
+                <div class="img-container">
+                  <img ng-click="showFullImageThumb($event,space)"
+                       ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{img.name}}">
+                </div>
+              </div>
+            </div>
+
+            <!-- user spaces nav -->
+
+            <div class="border-top py-2">
+              <ul class="nav nav-pills nav-fill" role="tablist">
+                <li class="nav-item ">
+                  <a href="" ng-click="space.showMenu = 1" class="nav-link" data-toggle="tab" role="tab">
+                    Rezervari
+                  </a>
+                </li>
+                <li class="nav-item ">
+                  <a href="" ng-click="space.showMenu = 2" class="nav-link" data-toggle="tab" role="tab">
+                    Review-uri
+                  </a>
+                </li>
+                <li class="nav-item ">
+                  <a href="" ng-click="space.showMenu = 3" class="nav-link" data-toggle="tab" role="tab">
+                    Documente
+                  </a>
+                </li>
+                <li class="nav-item ">
+                  <a href="" ng-click="space.showMenu = 4" class="nav-link" data-toggle="tab" role="tab">
+                    Detalii
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="tab-content" ng-if="space.showMenu">
+              <!-- spaces reservations -->
+
+              <div class="" ng-show="space.showMenu == 1">
+                <space-status-box no-valiation-status="true" spaces="user.spaces" space="space"></space-status-box>
+              </div>
+
+              <!-- spaces reviews -->
+              <div class="" ng-show="space.showMenu == 2" ng-controller="UserReviewsCtrl">
+                <div ng-show="space.reviews.length">
+                  <i class="fa fa-ban text-muted"></i> Nici un review
+                </div>
+
+                <div class="row no-gutters p-2 reviews-border" ng-repeat="rev in space.reviews">
+                  <div class="col-4 d-flex align-items-center justify-content-center flex-column">
+                    <img src="<%= image_path 'useravatar_blue_lg.png' %>" height="50" width="50">
+                    <h6 class="py-1"> {{rev.owner_name}} </h6>
+                  </div>
+                  <div class="col-8">
+                    <h5> {{rev.rating}} - {{rev.title}} </h5>
+                    <div class="small text-muted"> {{rev.created_at | moment:'DD MMM HH:mm' }}</div>
+                    <div>{{rev.comment}}</div>
+                    <div class="pt-2">
+                      <button class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i> Sterge</button>
+                      <button class="btn btn-sm btn-outline-primary"><i class="fa fa-edit"></i> Editeaza</button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- spaces docs -->
+              <div class="" ng-show="space.showMenu == 3" ng-controller="UserDocumentsCtrl">
+
+                <h5> Documente </h5>
+
+                  <file-upload accept="'*'" icon="'fa-file'"
+                               label="'Document sau foto'"
+                               uploaded-files="space.uploadedFiles"></file-upload>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- User Reservations -->
+        <div class=" expanded-row-pane animated zoomIn pb-2" ng-show="user.showMenu == 2">
+          <h4> Rezervari </h4>
+        </div>
+
+        <!-- User accounts -->
+        <div class=" expanded-row-pane animated zoomIn pb-2" ng-show="user.showMenu == 3" role="tabpanel">
+          <h4> Conturi </h4>
+        </div>
+
+        <!-- User details -->
+        <div class="expanded-row-pane animated zoomIn  " ng-show="user.showMenu == 4" role="tabpanel">
+          <h4> Detalii </h4>
+          <button class="btn btn-link"> Reseteaza parola</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
 
 </div>

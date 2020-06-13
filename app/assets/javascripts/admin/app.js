@@ -11,6 +11,14 @@ angular.module('ParkingSpaceAdmin', [
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('main', {url: '/'})
+            .state('login', {
+                url: '/login',
+                views: {
+                    'content': {
+                        templateUrl: 'login.html'
+                    }
+                }
+            })
             .state('sensor-fleet', {
                 url: '/sensor-fleet',
                 views: {
@@ -99,11 +107,14 @@ angular.module('ParkingSpaceAdmin', [
                 }
             })
             .state('users.spaces', {
-                url: "/spaces",
+                url: "/spaces?userId",
                 views: {
-                    'content': {
+                    'details': {
                         templateUrl: 'users-spaces.html'
                     }
+                },
+                params: {
+                    userId: null
                 }
             });
 

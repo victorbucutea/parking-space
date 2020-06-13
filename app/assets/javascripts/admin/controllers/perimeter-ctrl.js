@@ -68,7 +68,7 @@ angular.module('ParkingSpaceAdmin.controllers')
                         clearTimeout(usertimeoutHandle);
                     }
                     usertimeoutHandle = setTimeout(() => {
-                        userService.loadCompanyUsers(newVal, (data) => {
+                        userService.listUsers(newVal, (data) => {
                             $scope.users = data;
                         })
                     }, 1000)

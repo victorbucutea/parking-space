@@ -65,7 +65,7 @@ class ParkingSpace < ActiveRecord::Base
 
   def init
     self.legal_type ||= :private_parking
-    self.status ||= :missing_title_deed
+    self.status ||= :validated
   end
 
   def has_paid_proposals?

@@ -67,9 +67,18 @@ class RegistrationsController < Devise::RegistrationsController
                 else
                   token.generate customer_id: current_user.payment_id
                 end
-    render json: {token: token_str}
+    render json: { token: token_str }
   end
 
+  def list
+    if params[:query].nil?
+      @users = []
+    else
+      # return employees of current user company
+      @users = User.includes(:roles).with_name(params[:query])
+    end
+
+  end
 
   protected
 

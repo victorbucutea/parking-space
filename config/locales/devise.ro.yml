@@ -10,7 +10,7 @@ ro:
       invalid: "Email sau parolă invalide."
       locked: "Contul tău este blocat."
       not_found_in_database: "Email sau parola greșite."
-      timeout: "Sesiunea de lucru a expirat, te rugăm să te autentifici din nou pentru a continua."
+      timeout: "Sesiunea de lucru a expirat, te rugăm să te re-autentifici pentru a continua."
       unauthenticated: "Trebuie să te autentifici sau să creezi un cont înainte de a continua."
       unconfirmed: "Trebuie să-ți confirmi contul înainte de a continua."
       invalid_token: "Cod de autentificare invalid."
