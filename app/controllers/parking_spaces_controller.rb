@@ -10,8 +10,8 @@ class ParkingSpacesController < ApplicationController
   def index
     if current_user.company
       @parking_spaces = ParkingSpace.not_expired.active
-                                    .includes(:parking_perimeter)
-                                    .for_company current_user.company
+                            .includes(:parking_perimeter)
+                            .for_company current_user.company
       render :index, status: :ok
     end
 
@@ -21,14 +21,14 @@ class ParkingSpacesController < ApplicationController
     lon_max = params[:lon_max]
 
     unless lat_min && lon_min && lat_max && lon_max
-      render json: { Error: { general: "Missing parameters 'lat' or 'lon' min/max" } }, status: :unprocessable_entity
+      render json: {Error: {general: "Missing parameters 'lat' or 'lon' min/max"}}, status: :unprocessable_entity
       return
     end
 
-    query_attrs = { lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max }
+    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
     @parking_spaces = ParkingSpace.not_expired.active(current_user)
-                                  .includes(:user, :images)
-                                  .within_boundaries(query_attrs)
+                          .includes(:user, :images)
+                          .within_boundaries(query_attrs)
   end
 
   # GET /parking_spaces/1
@@ -37,7 +37,7 @@ class ParkingSpacesController < ApplicationController
 
   def myspaces
     @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
-                                  .where(user: current_user)
+                          .where(user: current_user)
 
     render :myspaces, status: :ok
   end
@@ -52,28 +52,25 @@ class ParkingSpacesController < ApplicationController
 
   def attach_documents
     docs = params[:docs]
-    if docs.empty?
-      return render json: { Error: 'No documents uploaded!' }, status: :unprocessable_entity
-    end
 
     @parking_space.documents.destroy_all
     # save to parking_space_documents
+    @docs = []
     docs.each do |d|
-      doc = @parking_space.documents.create(file: d, comment: 'User upload', status: 'uploaded')
+      doc = @parking_space.documents.create(file: d[:file], name: d[:name], resource_type: d[:type],
+                                            comment: 'User upload', status: 'uploaded')
       unless doc.errors.empty?
         return render json: { Error: doc.errors }, status: :unprocessable_entity
       end
+      @docs << doc
     end
-    # move from title_deed_pending
-    @parking_space.validation_pending!
 
-    render :show, status: :created, location: @parking_space
+    render :documents, status: :ok
   end
 
   def documents
     @docs = Document.where(parking_space_id: @parking_space)
   end
-
 
 
   def attach_images
@@ -82,9 +79,9 @@ class ParkingSpacesController < ApplicationController
     @parking_space.images.destroy_all
     # save to parking_space_documents
     imgs.each do |d|
-      img = @parking_space.images.create(image: d[:name], comment: 'User upload')
+      img = @parking_space.images.create(image: d[:file], comment: 'User upload')
       unless img.errors.empty?
-        return render json: { Error: img.errors }, status: :unprocessable_entity
+        return render json: {Error: img.errors}, status: :unprocessable_entity
       end
     end
 
@@ -107,7 +104,7 @@ class ParkingSpacesController < ApplicationController
       UserMailer.with(space: @parking_space).new_space.deliver_later
       render :show, status: :created, location: @parking_space
     else
-      render json: { Error: @parking_space.errors }, status: :unprocessable_entity
+      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
     end
   end
 
@@ -117,7 +114,7 @@ class ParkingSpacesController < ApplicationController
     if @parking_space.update(parking_space_params)
       render :show, status: :ok, location: @parking_space
     else
-      render json: { Error: @parking_space.errors }, status: :unprocessable_entity
+      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
     end
   end
 

@@ -11,6 +11,8 @@ angular.module('ParkingSpaceAdmin.controllers')
 
 
                 $scope.edit = function (space) {
+                    $scope.spaceEdit = space;
+                    $state.go('.edit')
 
                 }
 

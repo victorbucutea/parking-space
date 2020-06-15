@@ -19,8 +19,8 @@ angular.module('ParkingSpaceAdmin.controllers')
 
                 $scope.showControls = function (user, $event) {
                     $('#expandedRow-' + user.id).slideToggle();
-                    user.showMenu = 1;
-
+                    user.showMenu = true;
+                    $state.go('.spaces');
                 }
 
 

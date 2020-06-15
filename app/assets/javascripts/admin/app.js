@@ -6,6 +6,7 @@ angular.module('ParkingSpaceAdmin.controllers', []);
 angular.module('ParkingSpaceAdmin', [
     'ui.router',
     'ParkingSpaceAdmin.controllers',
+    'ParkingSpaceMobile.controllers',
     'ParkingSpace'])
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -109,14 +110,43 @@ angular.module('ParkingSpaceAdmin', [
             .state('users.spaces', {
                 url: "/spaces?userId",
                 views: {
-                    'details': {
+                    'menu': {
                         templateUrl: 'users-spaces.html'
                     }
-                },
-                params: {
-                    userId: null
                 }
-            });
+            })
+            .state('users.spaces.edit', {
+                url: "/edit?userId",
+                views: {
+                    'details': {
+                        templateUrl: '../app/templates/post-space.html'
+                    }
+                }
+            })
+            .state('users.offers', {
+                url: "/offers?userId",
+                views: {
+                    'details': {
+                        templateUrl: 'users-offers.html'
+                    }
+                }
+            })
+            .state('users.accounts', {
+                url: "/accounts?userId",
+                views: {
+                    'details': {
+                        templateUrl: 'users-accounts.html'
+                    }
+                }
+            })
+            .state('users.details', {
+                url: "/details?userId",
+                views: {
+                    'details': {
+                        templateUrl: 'users-details.html'
+                    }
+                }
+            })
 
 
         $urlRouterProvider.otherwise('/')

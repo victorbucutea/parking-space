@@ -9,8 +9,11 @@ angular.module('ParkingSpaceAdmin.controllers')
                 });
 
 
-
-                $scope.$watch('', function (newValue, oldValue) {
-
-                });
+                $scope.upload = function (space) {
+                    $scope.space.docs.submit().then(function (resp) {
+                        parkingSpaceService.uploadDocuments(space.id, resp, (docs) => {
+                            $scope.space.docs = docs;
+                        });
+                    })
+                };
             }]);

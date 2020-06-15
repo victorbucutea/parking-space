@@ -596,13 +596,14 @@ angular.module('ParkingSpace.directives')
 
     .directive('carouselImages', ['$rootScope', function ($rootScope) {
         return {
-            template: '<div id="imgCarouselModal" style="display: none" >' +
+            template: '' +
+                '      <div id="imgCarouselModal" style="display: none" >' +
                 '        <div class="ps-modal d-flex p-3 align-items-center justify-content-center ps-no-nav " ng-click="close($event)">' +
                 '          <span ng-click="prevImg()" class="car-handle left"> <i class="fa fa-angle-left fa-4x px-3"></i> </span>' +
                 '          <div class="car-stage" ng-init="imgIndex = 0">' +
                 '            <DIV ng-repeat="img in carouselImgs" class="car-invisible">' +
                 '              <img  ng-class="{\'d-none\' : $index != imgIndex }"' +
-                '                    ng-src="{{\'https://res.cloudinary.com/\'+cloudName+\'/image/upload/q_auto,f_auto/\'+img.name}}" ' +
+                '                    ng-src="{{\'https://res.cloudinary.com/\'+cloudName+\'/image/upload/q_auto,f_auto/\'+img.file}}" ' +
                 '                    class="carousel-img img-fluid mb-1 animated zoomIn">' +
                 '            </DIV>' +
                 '          </div>' +
@@ -1295,12 +1296,14 @@ angular.module('ParkingSpace.directives')
                     let avg = $scope.space.review_avg;
                     elms.each((idx, elm) => {
                         let e = $(elm);
+
                         function addClass(lvl) {
                             if (avg >= lvl)
                                 e.addClass('text-warning')
                             else
                                 e.addClass('text-muted');
                         }
+
                         addClass(idx + 1);
                     })
 
@@ -1316,8 +1319,7 @@ angular.module('ParkingSpace.directives')
         function ($rootScope, parkingSpaceService, replaceById) {
             return {
                 restrict: 'E',
-                scope: {
-                },
+                scope: {},
                 template: '<div class="ps-dialog animated zoomIn" style="display: block" ng-show="showForm"> ' +
                     '    <div class="ps-dialog-content"> ' +
                     '      <h3 class="text-muted px-3"> ' +
@@ -1739,9 +1741,6 @@ angular.module('ParkingSpace.directives')
             template: '<div class="drop-zone d-flex justify-content-center" >' +
                 '           <input required class="fileupload" style="display: none" type="file" name="file" multiple max="3" accept="{{accept}}">' +
                 '           <div class="my-3 ps-carousel d-flex flex-wrap justify-content-center" >' +
-                '             <div ng-repeat="file in existingFiles" ng-hide="file._destroy" class="px-2 thumb-box"> ' +
-                '               <carousel-thumbnail file="file" on-remove="removeFileUpload(file)"></carousel-thumbnail>' +
-                '             </div>' +
                 '             <div ng-repeat="file in uploadedFiles" ng-hide="file._destroy" class="px-2 thumb-box"> ' +
                 '               <carousel-thumbnail file="file" on-remove="removeFileUpload(file)"></carousel-thumbnail>' +
                 '             </div>' +
@@ -1759,28 +1758,40 @@ angular.module('ParkingSpace.directives')
                 $scope.icon = angular.isDefined($scope.icon) ? $scope.icon : 'fa-image';
                 $scope.maxCount = angular.isDefined($scope.maxCount) ? $scope.maxCount : 3;
                 $scope.uploadedFiles = angular.isDefined($scope.uploadedFiles) ? $scope.uploadedFiles : [];
-                $scope.existingFiles = angular.isDefined($scope.existingFiles) ? $scope.existingFiles : [];
 
-                $scope.uploadedFiles.submit = function () {
-                    return $q(function (resolve) {
-                        let clbks = [];
-                        $scope.uploadedFiles.forEach((f) => {
-                            if (f.submit)
-                                clbks.push(f.submit());
-                        })
+                $scope.$watch('uploadedFiles', function (newValue, oldValue) {
+                    $scope.uploadedFiles.submit = function () {
+                        return $q(function (resolve) {
+                            let clbks = [];
+                            let existing = []
+                            $scope.uploadedFiles.forEach((f) => {
+                                if (f._destroy) return;
+                                if (f.submit)
+                                    clbks.push(f.submit()); // upload clbks
+                                else
+                                    existing.push(f); // existing non deleted docs
+                            })
 
-                        let publicIds = [];
-                        $q.all(clbks).then((response) => {
-                            response.forEach((resp) => {
-                                publicIds.push({name: resp.public_id});
+                            let publicIds = [];
+                            $q.all(clbks).then((response) => {
+                                response.forEach((resp) => {
+                                    publicIds.push(
+                                        {
+                                            file: resp.public_id,
+                                            name: resp.original_filename + "." + resp.format,
+                                            type: resp.format
+                                        });
+                                });
+                                // add existing docs on top off uplooads
+                                publicIds.push(...existing);
+                                resolve(publicIds);
+                            }).catch((e) => {
+                                $rootScope.$emit('http.error', e);
                             });
-                            resolve(publicIds);
-                        }).catch((e) => {
-                            $rootScope.$emit('http.error', e);
-                        });
-                    })
+                        })
+                    }
 
-                }
+                });
 
                 let car = $($elm.find('.ps-carousel'));
 
@@ -1824,22 +1835,18 @@ angular.module('ParkingSpace.directives')
                 $scope.maxCntReached = function () {
 
                     let noUploads = $scope.uploadedFiles.length;
-                    let noExisting = $scope.existingFiles.length;
                     let deletedUpl = $scope.uploadedFiles.filter((i) => {
                         return i._destroy
                     }).length;
-                    let deletedExist = $scope.existingFiles.filter((i) => {
-                        return i._destroy
-                    }).length;
 
-                    return ((noUploads + noExisting) - (deletedUpl + deletedExist)) >= $scope.maxCount;
+                    return ((noUploads) - (deletedUpl)) >= $scope.maxCount;
                 }
             }
 
         }
     }])
 
-    .directive('carouselThumbnail', [function () {
+    .directive('carouselThumbnail', ['$rootScope', '$http', function ($rootScope, $http) {
         return {
             restrict: 'E',
             scope: {
@@ -1847,11 +1854,11 @@ angular.module('ParkingSpace.directives')
                 onRemove: '&'
             },
             template: '<div class="d-flex flex-column justify-content-between position-relative">' +
-                "       <div ng-show='isFile' class=\"d-flex flex-column  py-3 photo-thumbnail\" >" +
+                "       <div ng-show='isFile' class=\"d-flex flex-column  py-3 photo-thumbnail\" ng-click=\"download(file)\">" +
                 "          <i class=\"fa fa-file fa-3x align-self-center\"></i>" +
                 "          <div class='text-truncate'>{{realFile.name}}</div>" +
                 "       </div> " +
-                '       <img ng-hide="isFile" class="photo-thumbnail" ng-src="{{dataUrl}}" ng-click="showThumbnail($event)">' +
+                '       <img ng-hide="isFile" class="photo-thumbnail" ng-src="{{dataUrl}}" ng-click="showThumbnail(file)">' +
                 '       <div class="progress-container">' +
                 '           <div id="uploadProgressBar-{{realFile.name}}"' +
                 '                style="width: 0" class="progress-bar">' +
@@ -1864,16 +1871,21 @@ angular.module('ParkingSpace.directives')
             link: function ($scope, $elm) {
                 $scope.isFile = false;
                 $scope.removeFile = function () {
-                    $scope.onRemove($scope.file);
+                    $scope.onRemove({file: $scope.file});
                 }
 
                 $scope.$watch('file', function (newValue, oldValue) {
                     if (!newValue) return;
-                    let isExisting = newValue.hasOwnProperty("image");
+                    let isExisting = !newValue.files;
 
                     if (isExisting) {
                         $scope.realFile = newValue;
-                        $scope.dataUrl = 'https://res.cloudinary.com/' + window.cloudinaryName + '/image/upload/' + newValue.name;
+                        $scope.dataUrl = 'https://res.cloudinary.com/' + window.cloudinaryName + '/image/upload/' + newValue.file;
+                        if ((/(\.|\/)(jpe?g|png|bmp)$/i).test($scope.realFile.name)) {
+                            $scope.isFile = false;
+                        } else {
+                            $scope.isFile = true;
+                        }
                     } else {
                         let file = newValue.files[0];
                         $scope.realFile = file;
@@ -1887,20 +1899,17 @@ angular.module('ParkingSpace.directives')
                 });
 
 
-                $scope.showThumbnail = function (evt) {
-                    let src = evt.currentTarget.src;
-                    let img = $(evt.currentTarget);
-                    let clicked = img.data('clicked');
-                    $('.photo-thumbnail').data('clicked', false);
-                    if (!clicked && isMobileOrTablet()) {
-                        $elm.find('.delete-thumbnail').show();
-                        img.data('clicked', true);
-                        return;
-                    }
-                    img.data('clicked', false);
-                    let imgModal = $('#imgModal');
-                    imgModal.find('img').attr('src', src);
-                    imgModal.show();
+                $scope.showThumbnail = function (f) {
+                    $rootScope.$emit('showCarouselImages', [f]);
+                }
+
+                $scope.download = function (f) {
+                    $http.get($scope.dataUrl).then((resp) => {
+                        var link = document.createElement('a');
+                        link.download = f.name;
+                        link.href = 'data:,' + resp.data;
+                        link.click();
+                    })
                 }
             }
         }

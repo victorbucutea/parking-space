@@ -23,7 +23,7 @@ json.array! @parking_spaces do |parking_space|
 
   json.images do
     json.array! parking_space.images do |img|
-      json.image img.image
+      json.file img.image
       json.id img.id
       json.name img.image
       json.created_at img.created_at

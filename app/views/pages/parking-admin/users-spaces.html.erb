@@ -1,0 +1,117 @@
+<div class=" expanded-row-pane animated zoomIn pb-2" ng-controller="UserSpacesCtrl">
+  <div class="text-center" ng-hide="user.spaces.length"><i class="fa fa-spinner fa-spin"></i></div>
+
+  <ui-view name="details"></ui-view>
+  
+  <div class="p-2 panel mb-2 bids-area" ng-repeat="space in user.spaces">
+    <h5 class="py-2 bid-title ng-binding mb-0 " style="white-space: inherit">
+      {{space.address_line_1}} -
+      <span class="bid-amount">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
+                            {{space.currency}} / h
+              </span>
+
+      <button class="btn btn-outline-primary btn-sm ml-5 my-2" ng-click="edit(space)">
+        <i class="fa fa-edit"></i> Editeaza
+      </button>
+      <button class="btn btn-outline-secondary btn-sm ml-5 my-2" ng-click="edit(space)">
+        <i class="fa fa-dashboard"></i> Status
+      </button>
+      <button class="btn btn-outline-danger btn-sm ml-5 my-2" ng-click="delete(space)">
+        <i class="fa fa-trash"></i> Sterge
+      </button>
+
+      <div class="small text-muted pb-2">
+        {{space.space_availability_start | moment:'d MMM YYYY HH:mm'}} -
+        {{space.space_availability_stop | moment:'d MMM YYYY HH:mm'}}
+        ( {{space.expired? 'Expirat' : 'Activ'}} )
+      </div>
+
+      <reviews space="space"></reviews>
+    </h5>
+    <div class="d-flex flex-nowrap scroll-x">
+      <i class="fa fa-3x fa-photo py-3 text-muted" ng-show="!space.images.length"></i>
+      <div ng-repeat="img in space.images" ng-show="space.images.length">
+        <div class="img-container">
+          <img ng-click="showFullImageThumb($event,space)"
+               ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{img.name}}">
+        </div>
+      </div>
+    </div>
+
+    <!-- user spaces nav -->
+
+    <div class="border-top py-2">
+      <ul class="nav nav-pills nav-fill" role="tablist">
+        <li class="nav-item ">
+          <a href="" ng-click="space.showMenu = 1" class="nav-link" data-toggle="tab" role="tab">
+            Rezervari
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a href="" ng-click="space.showMenu = 2" class="nav-link" data-toggle="tab" role="tab">
+            Review-uri
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a href="" ng-click="space.showMenu = 3" class="nav-link" data-toggle="tab" role="tab">
+            Documente
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a href="" ng-click="space.showMenu = 4" class="nav-link" data-toggle="tab" role="tab">
+            Detalii
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content" ng-if="space.showMenu">
+
+      <!-- spaces reservations -->
+      <div class="" ng-if="space.showMenu == 1">
+        <space-status-box no-valiation-status="true" spaces="user.spaces" space="space"></space-status-box>
+      </div>
+
+      <!-- spaces reviews -->
+      <div class="" ng-if="space.showMenu == 2" ng-controller="UserReviewsCtrl">
+        <div ng-hide="space.reviews.length" class="p-3 text-center">
+          <i class="fa fa-ban text-muted"></i> Nici un review
+        </div>
+
+        <div class="row no-gutters p-2 reviews-border" ng-repeat="rev in space.reviews">
+          <div class="col-4 d-flex align-items-center justify-content-center flex-column">
+            <img src="<%= image_path 'useravatar_blue_lg.png' %>" height="50" width="50">
+            <h6 class="py-1"> {{rev.owner_name}} </h6>
+          </div>
+          <div class="col-8">
+            <h5> {{rev.rating}} - {{rev.title}} </h5>
+            <div class="small text-muted"> {{rev.created_at | moment:'DD MMM HH:mm' }}</div>
+            <div>{{rev.comment}}</div>
+            <div class="pt-2">
+              <button class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i> Sterge</button>
+              <button class="btn btn-sm btn-outline-primary"><i class="fa fa-edit"></i> Editeaza</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- spaces docs -->
+      <div class="" ng-if="space.showMenu == 3" ng-controller="UserDocumentsCtrl">
+
+        <file-upload accept="'*'" icon="'fa-file'"
+                     label="'Incarca document sau foto'"
+                     folder="'documents'"
+                     uploaded-files="space.docs"></file-upload>
+
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-sm btn-outline-primary" ng-click="upload(space)">
+            <i class="fa fa-upload"></i>
+            Salveaza documente
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

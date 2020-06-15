@@ -92,9 +92,7 @@ angular.module('ParkingSpace.services')
                 $http.post(`/parking_spaces/${spaceId}/attach_documents.json`, {docs: docs})
                     .then(function (res) {
                         let data = res.data;
-                        _this.convert(data);
-                        $rootScope.$emit('http.notif', 'Documentele sunt in curs de verificare. Veți fi ' +
-                            'notificat când locul va deveni disponibil.');
+                        $rootScope.$emit('http.notif', 'Documentele au fost încărcate !');
                         if (clbk) {
                             clbk(data);
                         }
