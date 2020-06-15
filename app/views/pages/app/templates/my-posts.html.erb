@@ -9,7 +9,7 @@
     </h3>
     <p> Ați câștigat in total </p>
 
-    <h2> {{totalSum()}}.<small>00</small> {{currency()}}</h2>
+    <h2> {{totalSum()}}.<small>00</small> {{startCurrency}}</h2>
 
     <hr style="width: 80%;">
     <p> Aveți în cont </p>
@@ -34,7 +34,7 @@
 
     <div class="no-items-msg loading-finished" ng-hide="spaces.length">
       Nu ai postat un loc, sau acestea au expirat.
-      Ajută la traficul și rotunjește-ți veniturile
+      Ajută traficul și rotunjește-ți veniturile
       <u>
         <a ui-sref="map.search">
           postând un loc.

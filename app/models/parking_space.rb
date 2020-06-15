@@ -66,6 +66,8 @@ class ParkingSpace < ActiveRecord::Base
   def init
     self.legal_type ||= :private_parking
     self.status ||= :validated
+    self.review_avg = 0
+    self.review_count = 0
   end
 
   def has_paid_proposals?

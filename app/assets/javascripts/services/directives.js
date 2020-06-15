@@ -1291,24 +1291,23 @@ angular.module('ParkingSpace.directives')
                 '      </div>',
             link: function ($scope, $elm) {
                 let elms = $($elm).find('.fa');
-                let avg = $scope.space.review_avg;
-                elms.each((idx, elm) => {
-                    let e = $(elm);
+                $scope.$watch('space', function (newValue, oldValue) {
+                    let avg = $scope.space.review_avg;
+                    elms.each((idx, elm) => {
+                        let e = $(elm);
+                        function addClass(lvl) {
+                            if (avg >= lvl)
+                                e.addClass('text-warning')
+                            else
+                                e.addClass('text-muted');
+                        }
+                        addClass(idx + 1);
+                    })
 
-                    function addClass(lvl) {
-                        if (avg >= lvl)
-                            e.addClass('text-warning')
-                        else
-                            e.addClass('text-muted');
+                    $scope.showReviews = function () {
+                        $scope.onClick({space: $scope.space})
                     }
-
-                    addClass(idx + 1);
-                })
-
-                $scope.showReviews = function () {
-                    $scope.onClick({space: $scope.space})
-                }
-
+                });
             }
         }
     }])
@@ -1436,16 +1435,6 @@ angular.module('ParkingSpace.directives')
             '       ng-class="{\'form-control-lg\': large }"' +
             '       required >';
 
-        if (isMobileOrTablet()) {
-            template = '<div class="input-group">' +
-                '<input ' +
-                '       type="datetime-local" ' +
-                '       class="form-control"' +
-                '       ng-class="{\'form-control-lg\': large }"' +
-                '       ng-model="dateModel"' +
-                '       required>';
-        }
-
         template += '<div class="input-group-append">' +
             '                                <span class="input-group-text">' +
             '                                    <i class="fa fa-calendar"></i>' +
@@ -1463,9 +1452,6 @@ angular.module('ParkingSpace.directives')
             compile: function (element, attrs) {
                 return {
                     post: function ($scope, elm) {
-                        if (isMobileOrTablet()) {
-                            return;
-                        }
                         elm = $(elm.find('.form-control'));
 
                         $scope.$watch('dateModel', function (newVal) {
@@ -1475,7 +1461,7 @@ angular.module('ParkingSpace.directives')
 
                         elm.daterangepicker({
                             "singleDatePicker": true,
-                            "minDate": moment().startOf('h'),
+                            "minDate": moment(),
                             "autoApply": true,
                             "timePicker": true,
                             "timePicker24Hour": true,

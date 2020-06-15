@@ -11,7 +11,7 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     super
     unless resource.id.nil?
-      send_sms(resource.phone_number,
+      send_sms(resource.phone_with_prefix,
                "Bine ai venit #{resource.full_name}! Codul tau de confirmare este: '#{resource.phone_confirm_code}'")
     end
   end

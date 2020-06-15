@@ -5,9 +5,9 @@
 
 angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
     ['$scope', '$filter', 'offerService', 'parkingSpaceService', '$state', '$stateParams',
-        'notificationService', 'replaceById', '$rootScope', 'paymentService',
+        'notificationService', 'replaceById', '$rootScope', 'paymentService', 'parameterService',
         function ($scope, $filter, offerService, parkingSpaceService, $state, $stateParams,
-                  notificationService, replaceById, $rootScope, paymentService) {
+                  notificationService, replaceById, $rootScope, paymentService, parameterService) {
 
             if (!$rootScope.desktopScreen)
                 $rootScope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
@@ -58,9 +58,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                 return sum;
             }
 
-            $scope.currency = function () {
-                if (!$scope.spaces || !$scope.spaces.length) return 'n/a';
-                return $scope.spaces[0].currency
+            if (!$scope.spaces || !$scope.spaces.length) {
+                parameterService.getStartingAskingPrice().then((price) => {
+                    $scope.startCurrency = price.currency;
+                });
+            } else {
+                $scope.startCurrency = $scope.spaces[0].currency
             }
 
 

@@ -112,10 +112,12 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                         if (!savedSpaceAndFiles[0]) return;
                         let savedSpace = savedSpaceAndFiles[0];
                         $scope.spaceEdit = savedSpace;
+                        replaceById($scope.spaceEdit, $scope.spaces);
                         let uploadedFiles = [...savedSpaceAndFiles[1], ...existingImgs];
                         parkingSpaceService.uploadImages(savedSpace.id, uploadedFiles).then((resp) => {
                             $rootScope.$emit('http.notif', 'Locul de parcare a fost salvat!');
                             $scope.spaceEdit = resp;
+                            replaceById($scope.spaceEdit, $scope.spaces);
                         });
                         if (savedSpace.missing_title_deed) {
                             $scope.step++;
