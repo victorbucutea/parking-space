@@ -1448,7 +1448,7 @@ angular.module('ParkingSpace.directives')
             restrict: 'E',
             scope: {
                 dateModel: '=',
-                day: '=',
+                noMinDate: '=',
                 large: '='
             },
             compile: function (element, attrs) {
@@ -1461,9 +1461,8 @@ angular.module('ParkingSpace.directives')
                             elm.data('daterangepicker').setEndDate(moment(newVal));
                         });
 
-                        elm.daterangepicker({
+                        let options = {
                             "singleDatePicker": true,
-                            "minDate": moment(),
                             "autoApply": true,
                             "timePicker": true,
                             "timePicker24Hour": true,
@@ -1504,7 +1503,13 @@ angular.module('ParkingSpace.directives')
                                 ]
                             },
 
-                        }, function (start, end, label) {
+                        };
+
+                        if(!$scope.noMinDate) {
+                            options.minDate = moment();
+                        }
+
+                        elm.daterangepicker(options, function (start, end, label) {
                             $scope.dateModel = start;
                             if (!$scope.$$phase)
                                 $scope.$apply();

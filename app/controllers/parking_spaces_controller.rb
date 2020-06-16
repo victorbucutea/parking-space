@@ -42,6 +42,13 @@ class ParkingSpacesController < ApplicationController
     render :myspaces, status: :ok
   end
 
+  def list_spaces
+    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
+                          .where(user: params[:user_id])
+
+    render :myspaces, status: :ok
+  end
+
   def myoffers
     @parking_spaces =
       ParkingSpace.includes(:proposals, :images, :user, proposals: :user)

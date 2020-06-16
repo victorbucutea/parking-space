@@ -37,6 +37,19 @@ angular.module('ParkingSpace.services')
                     });
             };
 
+            this.listSpaces = function (user, clbk) {
+                $http.get('/parking_spaces/list_spaces.json', {params: {user_id: user.id}})
+                    .then(function (response) {
+                        let data = response.data;
+                        _this.convert(data);
+
+                        if (clbk)
+                            clbk(data);
+                    }, function (errorResponse) {
+                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                    });
+            };
+
             this.getMyOffers = function (clbk) {
                 $http.get('/parking_spaces/myoffers.json')
                     .then(function (response) {
@@ -141,10 +154,10 @@ angular.module('ParkingSpace.services')
             this.getDocuments = function (space) {
                 return $http.get(`/parking_spaces/${space.id}/documents.json`)
                     .then(function (response) {
-                    return response.data;
-                }, function (errorResponse) {
-                    errorHandlingService.handle(errorResponse.data, errorResponse.status);
-                });
+                        return response.data;
+                    }, function (errorResponse) {
+                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                    });
             }
 
             this.saveReview = function (review) {
@@ -381,7 +394,7 @@ angular.module('ParkingSpace.services')
             };
 
             _this.getPayments = function (clbk, errClbk) {
-                $http.get('/parking_spaces/1/proposals/1/get_user_payments.json').then(function (resp) {
+                $http.get('/accounts/payments.json').then(function (resp) {
                     if (clbk) {
                         let data = resp.data;
                         clbk(data);
@@ -395,7 +408,7 @@ angular.module('ParkingSpace.services')
             };
 
             _this.getPaymentDetails = function (paymentId, clbk, errClbk) {
-                $http.get('/parking_spaces/1/proposals/1/get_payment_details.json?payment_id=' + paymentId).then(function (resp) {
+                $http.get('/accounts/payment_details.json?payment_id=' + paymentId).then(function (resp) {
                     if (clbk) {
                         let data = resp.data;
                         clbk(data);
@@ -423,7 +436,7 @@ angular.module('ParkingSpace.services')
             };
 
             _this.withdraw = function (amnt, iban, clbk, errClbk) {
-                $http.post('/accounts/1/withdraw.json', {amount: amnt, iban: iban}).then(function (resp) {
+                $http.post('/accounts/withdraw.json', {amount: amnt, iban: iban}).then(function (resp) {
                     if (clbk) {
                         let data = resp.data;
                         clbk(data);
@@ -437,7 +450,7 @@ angular.module('ParkingSpace.services')
             };
 
             _this.getWithdrawals = function (clbk, errClbk) {
-                $http.get('/accounts/1/withdrawals.json').then(function (resp) {
+                $http.get('/accounts/withdrawals.json').then(function (resp) {
                     if (clbk) {
                         let data = resp.data;
                         clbk(data);
@@ -451,7 +464,7 @@ angular.module('ParkingSpace.services')
             }
 
             _this.cancelWithdrawal = function (withd, clbk) {
-                $http.post(`/accounts/1/cancel_withdrawal.json`,
+                $http.post(`/accounts/cancel_withdrawal.json`,
                     {withdrawal_id: withd.id}
                 ).then(function (resp) {
                     $rootScope.$emit('http.warning', 'Retragerea a fost anulata!');

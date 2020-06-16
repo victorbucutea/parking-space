@@ -1,8 +1,10 @@
 <div class=" expanded-row-pane animated zoomIn pb-2" ng-controller="UserSpacesCtrl">
-  <div class="text-center" ng-hide="user.spaces.length"><i class="fa fa-spinner fa-spin"></i></div>
+  <div class="text-center text-muted" ng-hide="user.spaces.length">
+    <i class="fa fa-ban"></i> Utilizatorul nu a postat nici un loc
+  </div>
 
   <ui-view name="details"></ui-view>
-  
+
   <div class="p-2 panel mb-2 bids-area" ng-repeat="space in user.spaces">
     <h5 class="py-2 bid-title ng-binding mb-0 " style="white-space: inherit">
       {{space.address_line_1}} -
@@ -21,8 +23,8 @@
       </button>
 
       <div class="small text-muted pb-2">
-        {{space.space_availability_start | moment:'d MMM YYYY HH:mm'}} -
-        {{space.space_availability_stop | moment:'d MMM YYYY HH:mm'}}
+        {{space.space_availability_start | moment:'DD MMM YYYY HH:mm'}} -
+        {{space.space_availability_stop | moment:'DD MMM YYYY HH:mm'}}
         ( {{space.expired? 'Expirat' : 'Activ'}} )
       </div>
 

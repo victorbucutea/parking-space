@@ -5,7 +5,7 @@ angular.module('ParkingSpaceAdmin.controllers')
 
                 $scope.cloudName = window.cloudinaryName;
 
-                parkingSpaceService.getMySpaces((spaces) => {
+                parkingSpaceService.listSpaces($scope.user, (spaces) => {
                     $scope.user.spaces = spaces;
                 });
 

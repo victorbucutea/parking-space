@@ -43,19 +43,9 @@ class ProposalsController < ApplicationController
                    ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
       render :show, status: :ok
     else
-      render json: {Error: 'Eroare in procesarea platii. Va rugam incercati din nou.'}, status: :unprocessable_entity
+      render json: { Error: 'Eroare in procesarea platii. Va rugam incercati din nou.' }, status: :unprocessable_entity
     end
 
-  end
-
-  def get_user_payments
-    @payments = get_payments
-    render :payments
-  end
-
-  def get_payment_details
-    @payment_details = get_payment_details_for params[:payment_id]
-    render :payment_details
   end
 
   def reject
@@ -63,7 +53,7 @@ class ProposalsController < ApplicationController
       UserMailer.with(proposal: @proposal).offer_cancel.deliver_now
       render :show, status: :ok
     else
-      render json: {Error: @proposal.errors}, status: :unprocessable_entity
+      render json: { Error: @proposal.errors }, status: :unprocessable_entity
     end
   end
 
@@ -72,7 +62,7 @@ class ProposalsController < ApplicationController
       UserMailer.with(proposal: @proposal).offer_cancel.deliver_now
       render :show, status: :ok
     else
-      render json: {Error: @proposal.errors}, status: :unprocessable_entity
+      render json: { Error: @proposal.errors }, status: :unprocessable_entity
     end
   end
 
@@ -80,7 +70,7 @@ class ProposalsController < ApplicationController
     if @proposal.approve
       format.json { render :show, status: :ok }
     else
-      format.json { render json: {Error: @proposal.errors}, status: :unprocessable_entity }
+      format.json { render json: { Error: @proposal.errors }, status: :unprocessable_entity }
     end
   end
 
@@ -113,7 +103,7 @@ class ProposalsController < ApplicationController
   # PATCH/PUT /parking_spaces/:p_sp_id/proposals
   # PATCH/PUT /parking_spaces/:p_sp_id/proposals.json
   def update
-    render json: {Error: {general: 'Offers cannot be updated'}}, status: :unprocessable_entity
+    render json: { Error: { general: 'Offers cannot be updated' } }, status: :unprocessable_entity
   end
 
   private

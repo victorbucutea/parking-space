@@ -15,7 +15,10 @@ class Ability
       can :manage, Account
     else
       can :manage, ParkingSpace, user_id: user.id
+      cannot :list_spaces, user_id: user.id
       can :manage, Proposal, user_id: user.id
+      can :manage, Account, user_id: user.id
+
     end
 
     if user.role? 'private_spaces_admin'

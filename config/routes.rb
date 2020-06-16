@@ -50,40 +50,35 @@ Rails.application.routes.draw do
   resources :parameters
 
   resources :accounts do
-    post 'withdraw'
-    get 'withdrawals'
-    post 'cancel_withdrawal'
-    post 'reject_withdrawal'
-    post 'execute_withdrawal'
+    collection do
+      post 'withdraw'
+      post 'cancel_withdrawal'
+      post 'reject_withdrawal'
+      post 'execute_withdrawal'
+      get 'withdrawals'
+      get 'payments'
+      get 'payment_details'
+    end
   end
 
   resources :parking_spaces do
 
-    get 'mark_offers_as_read'
-
     post 'attach_documents'
-    get 'documents'
     post 'attach_images'
-
-    get 'phone_number'
+    get 'documents'
 
     collection do
       get 'myspaces'
-    end
-
-    collection do
       get 'myoffers'
+      get 'list_spaces'
     end
 
     resources :proposals do
       post 'pay'
-      get 'get_user_payments'
-      get 'get_payment_details'
       get 'next'
       post 'reject'
       post 'approve'
       post 'cancel'
-      resources :messages
     end
   end
 

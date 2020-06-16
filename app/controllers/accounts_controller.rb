@@ -1,5 +1,8 @@
 class AccountsController < ApplicationController
+  include PayApi
+
   before_action :authenticate_user!
+  load_and_authorize_resource
   before_action :set_account, only: %i[index withdraw withdrawals]
   before_action :set_withdrawal, only: %i[cancel_withdrawal reject_withdrawal execute_withdrawal]
 
@@ -11,20 +14,29 @@ class AccountsController < ApplicationController
     render :show
   end
 
-  # GET /accounts/1/withdrawals
-  # GET /accounts/1.json
+
+  def payments
+    @payments = get_payments
+  end
+
+  def payment_details
+    @payment_details = get_payment_details_for params[:payment_id]
+  end
+
+
+  # GET /accounts/withdrawals
   def withdrawals
     @withdrawals = Withdrawal.where :account_id => @account.id
     render :show_withdrawals
   end
 
-  # POST /accounts/1/cancel_withdrawal
+  # POST /accounts/cancel_withdrawal
   def cancel_withdrawal
     @withdrawal.canceled!
     render :show_withdrawal
   end
 
-  # POST /accounts/1/reject_withdrawal
+  # POST /accounts/reject_withdrawal
   def reject_withdrawal
     unless @withdrawal.rejected!
       render json: { Error: @withdrawal.errors }, status: :unprocessable_entity
@@ -32,7 +44,7 @@ class AccountsController < ApplicationController
     render :show_withdrawal
   end
 
-  # POST /accounts/1/reject_withdrawal
+  # POST /accounts/execute_withdrawal
   def execute_withdrawal
     @withdrawal.executed!
     render :show_withdrawal
@@ -40,6 +52,10 @@ class AccountsController < ApplicationController
 
   def withdraw
     withdrawal = Withdrawal.new(account_params)
+    unless withdrawal.valid?
+      render json: { Error: withdrawal.errors }, status: :unprocessable_entity
+      return
+    end
 
     @account.amount -= withdrawal.amount
     @account.iban = withdrawal.iban
@@ -49,10 +65,7 @@ class AccountsController < ApplicationController
     end
 
     @account.withdrawals << withdrawal
-    unless withdrawal.valid?
-      render json: { Error: withdrawal.errors }, status: :unprocessable_entity
-      return
-    end
+
     UserMailer.with(withdrawal: withdrawal).withdrawal.deliver_later
 
     render :show

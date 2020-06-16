@@ -3,26 +3,12 @@ module PayApi
 
 
   def get_payments
-    gateway = Braintree::Gateway.new(
-      environment: ENV['PAYMENT_ENV'].to_sym,
-      merchant_id: ENV['MERCHANT_ID'],
-      public_key: ENV['MERCHANT_PUB_KEY'],
-      private_key: ENV['MERCHANT_PRIV_KEY']
-    )
-
     gateway.transaction.search do |search|
       search.customer_id.is current_user.payment_id
     end
   end
 
-  def get_payment_details_for (tx_id)
-    gateway = Braintree::Gateway.new(
-      environment: ENV['PAYMENT_ENV'].to_sym,
-      merchant_id: ENV['MERCHANT_ID'],
-      public_key: ENV['MERCHANT_PUB_KEY'],
-      private_key: ENV['MERCHANT_PRIV_KEY']
-    )
-
+  def get_payment_details_for(tx_id)
     gateway.transaction_line_item.find_all(tx_id)
   end
 
@@ -31,12 +17,7 @@ module PayApi
     # begin payment flow
     nonce = params[:nonce]
 
-    gateway = Braintree::Gateway.new(
-      environment: ENV['PAYMENT_ENV'].to_sym,
-      merchant_id: ENV['MERCHANT_ID'],
-      public_key: ENV['MERCHANT_PUB_KEY'],
-      private_key: ENV['MERCHANT_PRIV_KEY']
-    )
+    gateway_i = gateway
 
     addr = @proposal.parking_space.address_line_1
     total_amount = (@proposal.amount_with_vat + @proposal.comision_with_vat)
@@ -49,7 +30,10 @@ module PayApi
       unit_amount: @proposal.amount_with_vat,
       tax_amount: @proposal.amount_with_vat - @proposal.amount
     }, {
-      description: "Comision operare (#{APP_CONFIG['vat']}%) + 2.5 Ron",
+      description: "Comision operare
+                    (#{APP_CONFIG['comision_percent'].to_f * 100}%) +
+                     #{APP_CONFIG['comision_fixed']} Ron +
+                     #{APP_CONFIG['vat'].to_f * 100}% TVA",
       kind: 'debit',
       name: 'Comision',
       quantity: 1,
@@ -61,7 +45,7 @@ module PayApi
 
     # 4000111111111115
     if current_user.payment_id.nil?
-      result = gateway.transaction.sale(
+      result = gateway_i.transaction.sale(
         amount: total_amount,
         payment_method_nonce: nonce,
         merchant_account_id: ENV['SECONDARY_MERCHANT_ID'],
@@ -84,7 +68,7 @@ module PayApi
       increment_owner_balance result, @proposal
       !result.respond_to? :errors
     else
-      result = gateway.transaction.sale(
+      result = gateway_i.transaction.sale(
         amount: total_amount,
         customer_id: current_user.payment_id,
         payment_method_nonce: nonce,
@@ -130,5 +114,16 @@ module PayApi
         true
       end
     end
+  end
+
+  private
+
+  def gateway
+    Braintree::Gateway.new(
+      environment: ENV['PAYMENT_ENV'].to_sym,
+      merchant_id: ENV['MERCHANT_ID'],
+      public_key: ENV['MERCHANT_PUB_KEY'],
+      private_key: ENV['MERCHANT_PRIV_KEY']
+    )
   end
 end
