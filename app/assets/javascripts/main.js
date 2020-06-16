@@ -18,9 +18,24 @@ angular.module('ParkingSpace', [
     .controller('IndexCtrl', ['$scope', 'parameterService', function ($scope, parameterService) {
 
         $scope.placeSelected = function (place, location) {
+            if (!place || !location) {
+                return;
+            }
             parameterService.setNavigateOnRedirect(location);
             window.location = '/app/index.html#!/home/login';
         }
+
+        let observer = new IntersectionObserver(function (entries) {
+            let ctrls = $('.scroll-to-top');
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    ctrls.show();
+                } else {
+                    ctrls.hide();
+                }
+            });
+        });
+        observer.observe(document.getElementById('body'));
     }])
 
     .config(function () {

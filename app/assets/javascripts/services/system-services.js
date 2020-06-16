@@ -23,7 +23,10 @@ angular.module('ParkingSpace.services')
                             let userjson = JSON.stringify(data);
                             sessionStorage.setItem("current_user", userjson);
                             return data;
-                        }, _this.errFunc);
+                        }, () => {
+                            // do not show message in this case
+                            sessionStorage.removeItem("current_user");
+                        });
                 };
 
                 /* save details */

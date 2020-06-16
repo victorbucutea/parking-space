@@ -15,7 +15,7 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin href="<%= asset_path 'fontawesome-webfont.woff2' %>">
   <%= csrf_meta_tags %>
 </head>
-<body  ng-app="ParkingSpace" ng-controller="IndexCtrl">
+<body ng-app="ParkingSpace" ng-controller="IndexCtrl">
 
 <!-- Navigation Block -->
 <nav id="navbar" class="navbar navbar-dark navbar-expand-lg">
@@ -43,7 +43,7 @@
 
     <div class="navbar-form text-right">
       <a href="/app/index.html#!/home/login" class="btn btn-outline-secondary">
-        <i class="fa fa-user"></i> ÎNTRĂ ÎN CONT
+        <i class="fa fa-user"></i> INTRĂ ÎN CONT
       </a>
     </div>
   </div>
@@ -171,289 +171,290 @@
 <!-- Search Block END -->
 
 <!-- faq -->
-<div class=" mt-4 mt-md-5 faq" id="faq">
-  <div class="container">
-    <div class="row no-gutters">
-      <div class="col-12">
-        <h1 class="my-3 my-md-4 text-center animated fadeInUp">
-          Cum funcționează?
-        </h1>
-        <hr>
-      </div>
-      <div class="col-12 col-sm-4  ">
-        <div class="faq-box p-3  m-2">
-          <div class="my-3 pricing-icon">
-            <img src="<%= image_path 'marker_on_map_mdpi.png' %>">
-          </div>
-          <div>
-            <h4>Găsești locul pe hartă</h4>
-            <hr/>
-            <span>
+<div id="body">
+  <div class=" mt-4 mt-md-5 faq" id="faq">
+    <div class="container">
+      <div class="row no-gutters">
+        <div class="col-12">
+          <h1 class="my-3 my-md-4 text-center animated fadeInUp">
+            Cum funcționează?
+          </h1>
+          <hr>
+        </div>
+        <div class="col-12 col-sm-4  ">
+          <div class="faq-box p-3  m-2">
+            <div class="my-3 pricing-icon">
+              <img src="<%= image_path 'marker_on_map_mdpi.png' %>">
+            </div>
+            <div>
+              <h4>Găsești locul pe hartă</h4>
+              <hr/>
+              <span>
                   Nimic mai simplu. Instalezi și navighezi spre locul de parcare.
                 </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-12 col-sm-4 mt-2">
-        <div class="faq-box p-3  m-2">
-          <div class="my-3  pricing-icon disp">
-            <i class="fa fa-money fa-3x"></i>
-            <hr style="width: 100%"/>
-            <i class="fa fa-calendar fa-3x"></i>
-          </div>
+        <div class="col-12 col-sm-4 mt-2">
+          <div class="faq-box p-3  m-2">
+            <div class="my-3  pricing-icon disp">
+              <i class="fa fa-money fa-3x"></i>
+              <hr style="width: 100%"/>
+              <i class="fa fa-calendar fa-3x"></i>
+            </div>
 
-          <h4>Setezi perioada</h4>
-          <hr/>
-          <span>
+            <h4>Setezi perioada</h4>
+            <hr/>
+            <span>
                 Alegi locul potrivit, selectezi perioada de timp si poți parca.
                 Vei fi notificat in momentul când rezervarea a expirat.
                 <br/>
               </span>
-        </div>
-      </div>
-      <div class="col-12 col-sm-4 mt-2 ">
-        <div class="faq-box p-3  m-2">
-          <div class="my-3  pricing-icon disp">
-            <img class="pt-5" src="<%= image_path 'phone_map_blue.png' %>">
           </div>
+        </div>
+        <div class="col-12 col-sm-4 mt-2 ">
+          <div class="faq-box p-3  m-2">
+            <div class="my-3  pricing-icon disp">
+              <img class="pt-5" src="<%= image_path 'phone_map_blue.png' %>">
+            </div>
 
-          <h4> Navighezi la locul de parcare </h4>
+            <h4> Navighezi la locul de parcare </h4>
 
-          <hr/>
-          <span>
+            <hr/>
+            <span>
                 Aplicația te conduce la locul de parcare iar plata poate fi făcuta prin aplicație
                 ( valabil doar pentru unele parcări )
               </span>
-        </div>
-      </div>
-
-      <div class="col-12 mt-5 ">
-        <div class="panel underline my-3">
-          <h5 class="panel-title" onclick="$('#one').slideToggle(200)">
-            <a>Ce tipuri de locuri găsesc in aplicație?</a>
-          </h5>
-          <div class="panel-body" id="one">
-            Aplicația oferă 2 tipuri:
-            <ol>
-              <li>
-                <b>Locuri publice</b> - Aceste locuri sunt parcări publice sau private păzite, pentru
-                care garantăm faptul ca locul este liber ( detecție cu ajutorul senzorilor ).
-                Parcarea vehicului pe aceste locuri este taxată conform prețului afișat.
-              </li>
-              <li>
-                <b>Locuri private </b> - Acestea sunt locuri private contractate de go-park (e.g parcări
-                rezidențiale, parcări ale instituțiilor, alei private, garaje, curți cu acces stradal, etc.) puse la
-                dispoziția ta de catre alți utilizatori.
-                Rezervarea unui loc se poate face doar prin intermediul aplicației, iar plata se poate face
-                online cât și cash direct la proprietar.
-              </li>
-            </ol>
-          </div>
-        </div>
-        <div class="panel underline my-3">
-          <h5 class="panel-title" onclick="$('#two').slideToggle(200)">
-            <a>Cum închiriez un loc de parcare? </a>
-          </h5>
-          <div class="panel-body" id="two">
-            Foarte simplu. Odată ce ai gasit locul dorit, îl vei rezerva din aplicație pe perioada dorită.
-            Plata se poate face cash direct la proprietar sau prin card bancar din aplicație.
-
-            <ol>
-              <li>
-                Pentru <b>locurile private</b> (acestea sunt locuri postate de utilizatori), puteți staționa
-                în limitele făcute publice de de proprietar. Depășirea intervalului rezervat, atrage după sine
-                sancțiuni financiare cât și blocarea contului de utilizator.
-              </li>
-              <li>
-                Pentru <b>locurile publice</b>, garantăm faptul ca locul e liber pentru moment, rezervarea
-                nefiind posibilă.
-              </li>
-            </ol>
           </div>
         </div>
 
-        <div class="panel underline my-3">
-          <h5 class="panel-title" onclick="$('#four').slideToggle(200)">
-            <a aria-expanded="false">Cum pot fi sigur ca spațiul de parcare este disponibil?</a>
-          </h5>
-          <div class="panel-body" id="four">
-            <b>Locurile oferite </b> sunt sub-contractate de go-park iar proprietarul se obligă prin
-            contract sa respecte ofertele utilizatorilor (adica oferta ta). În caz contrar, contul acestuia va fi
-            blocat iar daunele
-            (dacă acestea există) vor fi sustrase din contul proprietarului.
-            <br/>
-            <br/>
-            Utilizatorul (adică tu) va avea acces la datele de contact ale proprietarului odată ce a rezervat un loc
-            pe o perioadă.
-            <br/>
-            <br/>
-            Go-park încearcă să asigure o calitate cât mai bună a serviciilor oferite și acordă o importanța
-            extrem de mare feedback-ului utilizatorilor. Dacă un utilizator nu iși respecta angajamentele luate
-            față de go-park (e.g. nu ridică mașina la termenul stabilit, ocupă spațiul înainte ca rezervarea
-            acestuia sa înceapă)
-            contul acestuia va fi blocat.
-            <br/>
-            <br/>
-            Go-park își asuma dreptul de a media orice fel de conflict între un utilizator si proprietar.
+        <div class="col-12 mt-5 ">
+          <div class="panel underline my-3">
+            <h5 class="panel-title" onclick="$('#one').slideToggle(200)">
+              <a>Ce tipuri de locuri găsesc in aplicație?</a>
+            </h5>
+            <div class="panel-body" id="one">
+              Aplicația oferă 2 tipuri:
+              <ol>
+                <li>
+                  <b>Locuri publice</b> - Aceste locuri sunt parcări publice sau private păzite, pentru
+                  care garantăm faptul ca locul este liber ( detecție cu ajutorul senzorilor ).
+                  Parcarea vehicului pe aceste locuri este taxată conform prețului afișat.
+                </li>
+                <li>
+                  <b>Locuri private </b> - Acestea sunt locuri private contractate de go-park (e.g parcări
+                  rezidențiale, parcări ale instituțiilor, alei private, garaje, curți cu acces stradal, etc.) puse la
+                  dispoziția ta de catre alți utilizatori.
+                  Rezervarea unui loc se poate face doar prin intermediul aplicației, iar plata se poate face
+                  online cât și cash direct la proprietar.
+                </li>
+              </ol>
+            </div>
           </div>
-        </div>
+          <div class="panel underline my-3">
+            <h5 class="panel-title" onclick="$('#two').slideToggle(200)">
+              <a>Cum închiriez un loc de parcare? </a>
+            </h5>
+            <div class="panel-body" id="two">
+              Foarte simplu. Odată ce ai gasit locul dorit, îl vei rezerva din aplicație pe perioada dorită.
+              Plata se poate face cash direct la proprietar sau prin card bancar din aplicație.
 
-        <div class="panel underline my-3">
-          <h5 class="panel-title" onclick="$('#five').slideToggle(200)">
-            <a aria-expanded="false">Cum pot valorifica un loc de parcare?</a>
-          </h5>
-          <div class="panel-body" id="five">
-            Dacă dispui de un loc de parcare, îl poți publica in aplicație și poți cere
-            o sumă de bani pe oră. În momentul când vei retrage banii, va trebui semnat un contract de
-            sub-închiriere
-            între go-park si dvs. Prin acest contract proprietarul se obligă sa respecte rezervarile din sistem,
-            iar go-park îi va plăti sumele aferente.
+              <ol>
+                <li>
+                  Pentru <b>locurile private</b> (acestea sunt locuri postate de utilizatori), puteți staționa
+                  în limitele făcute publice de de proprietar. Depășirea intervalului rezervat, atrage după sine
+                  sancțiuni financiare cât și blocarea contului de utilizator.
+                </li>
+                <li>
+                  Pentru <b>locurile publice</b>, garantăm faptul ca locul e liber pentru moment, rezervarea
+                  nefiind posibilă.
+                </li>
+              </ol>
+            </div>
           </div>
-        </div>
-        <div class="panel underline my-3">
-          <h5 class="panel-title" onclick="$('#six').slideToggle(200)">
-            <a aria-expanded="false">De ce detalii bancare e nevoie pentru a pune la dispoziție un loc?</a>
-          </h5>
-          <div class="panel-body" id="six">
-            Pentru tranzacțiile online, banii se vor aduna in contul tău din aplicație.
-            În setările contului vei putea introduce un cont bancar unde sa îți fie virați banii.
+
+          <div class="panel underline my-3">
+            <h5 class="panel-title" onclick="$('#four').slideToggle(200)">
+              <a aria-expanded="false">Cum pot fi sigur ca spațiul de parcare este disponibil?</a>
+            </h5>
+            <div class="panel-body" id="four">
+              <b>Locurile oferite </b> sunt sub-contractate de go-park iar proprietarul se obligă prin
+              contract sa respecte ofertele utilizatorilor (adica oferta ta). În caz contrar, contul acestuia va fi
+              blocat iar daunele
+              (dacă acestea există) vor fi sustrase din contul proprietarului.
+              <br/>
+              <br/>
+              Utilizatorul (adică tu) va avea acces la datele de contact ale proprietarului odată ce a rezervat un loc
+              pe o perioadă.
+              <br/>
+              <br/>
+              Go-park încearcă să asigure o calitate cât mai bună a serviciilor oferite și acordă o importanța
+              extrem de mare feedback-ului utilizatorilor. Dacă un utilizator nu iși respecta angajamentele luate
+              față de go-park (e.g. nu ridică mașina la termenul stabilit, ocupă spațiul înainte ca rezervarea
+              acestuia sa înceapă)
+              contul acestuia va fi blocat.
+              <br/>
+              <br/>
+              Go-park își asuma dreptul de a media orice fel de conflict între un utilizator si proprietar.
+            </div>
           </div>
-        </div>
-        <div class="panel underline my-3">
-          <h5 class="panel-title" onclick="$('#seven').slideToggle(200)">
-            <a aria-expanded="false">Cum contactez persoana care închiriază?</a>
-          </h5>
-          <div class="panel-body" id="seven">
-            Foarte simplu. Odata ce oferta a fost acceptată vei avea datele de contact ale clientului.
-            Iar el la rândul lui va avea datele tale de contact.
+
+          <div class="panel underline my-3">
+            <h5 class="panel-title" onclick="$('#five').slideToggle(200)">
+              <a aria-expanded="false">Cum pot valorifica un loc de parcare?</a>
+            </h5>
+            <div class="panel-body" id="five">
+              Dacă dispui de un loc de parcare, îl poți publica in aplicație și poți cere
+              o sumă de bani pe oră. În momentul când vei retrage banii, va trebui semnat un contract de
+              sub-închiriere
+              între go-park si dvs. Prin acest contract proprietarul se obligă sa respecte rezervarile din sistem,
+              iar go-park îi va plăti sumele aferente.
+            </div>
+          </div>
+          <div class="panel underline my-3">
+            <h5 class="panel-title" onclick="$('#six').slideToggle(200)">
+              <a aria-expanded="false">De ce detalii bancare e nevoie pentru a pune la dispoziție un loc?</a>
+            </h5>
+            <div class="panel-body" id="six">
+              Pentru tranzacțiile online, banii se vor aduna in contul tău din aplicație.
+              În setările contului vei putea introduce un cont bancar unde sa îți fie virați banii.
+            </div>
+          </div>
+          <div class="panel underline my-3">
+            <h5 class="panel-title" onclick="$('#seven').slideToggle(200)">
+              <a aria-expanded="false">Cum contactez persoana care închiriază?</a>
+            </h5>
+            <div class="panel-body" id="seven">
+              Foarte simplu. Odata ce oferta a fost acceptată vei avea datele de contact ale clientului.
+              Iar el la rândul lui va avea datele tale de contact.
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Rent products -->
-<div class="mt-3 mt-md-4 rent container" id="rent">
-
-
-  <div class="col-12">
-    <h1 class="my-3 my-md-4 text-center animated fadeInUp">
-      Închiriază loc personal
-    </h1>
-    <hr>
-  </div>
+  <!-- Rent products -->
+  <div class="mt-3 mt-md-4 rent container" id="rent">
 
 
-  <!-- Start Free offering -->
-  <div class="  item p-1 p-md-0">
-    <div class="pricing-box-1">
-      <div class="mt-3 pricing-icon">
-        <img src="<%= image_path 'marker_on_map_mdpi.png' %>">
-      </div>
+    <div class="col-12">
+      <h1 class="my-3 my-md-4 text-center animated fadeInUp">
+        Închiriază loc personal
+      </h1>
+      <hr>
+    </div>
 
-      <hr/>
-      <div class="pricing-title">Valorifică locul tău de parcare</div>
-      <hr/>
 
-      <ul class="pricing-list mt-3">
-        <li>
-          <span> Stabilești un orar în care parcarea e disponibilă și câștigi bani pe închirierea ei.</span>
-        </li>
-        <li
-          data-toggle="popover"
-          tabindex="0"
-          data-html="true"
-          data-placement="top"
-          data-content="Nimic mai simplu. Instalează aplicația și valorifică locul tău. <br/>
+    <!-- Start Free offering -->
+    <div class="  item p-1 p-md-0">
+      <div class="pricing-box-1">
+        <div class="mt-3 pricing-icon">
+          <img src="<%= image_path 'marker_on_map_mdpi.png' %>">
+        </div>
+
+        <hr/>
+        <div class="pricing-title">Valorifică locul tău de parcare</div>
+        <hr/>
+
+        <ul class="pricing-list mt-3">
+          <li>
+            <span> Stabilești un orar în care parcarea e disponibilă și câștigi bani pe închirierea ei.</span>
+          </li>
+          <li
+            data-toggle="popover"
+            tabindex="0"
+            data-html="true"
+            data-placement="top"
+            data-content="Nimic mai simplu. Instalează aplicația și valorifică locul tău. <br/>
                      Pentru alte intrebări, te rugăm să verifici secțiunea de
                    <a href='#faq'>FAQ</a>. "
-          title="Încearcă">
-          Publicați disponibilitatea locului de parcare
-          prin intermediul aplicației.
-          <br/>
-          Utilizatorii (șoferii) vor vedea locurile disponibile pe hartă si le vor putea închiria.
-          <i class="fa fa-info-circle"></i>
-        </li>
-        <li>
-          Poți publica orice loc de parcare pe care il deții: alee intrare, garaj, loc privat.
-        </li>
-      </ul>
-      <hr>
+            title="Încearcă">
+            Publicați disponibilitatea locului de parcare
+            prin intermediul aplicației.
+            <br/>
+            Utilizatorii (șoferii) vor vedea locurile disponibile pe hartă si le vor putea închiria.
+            <i class="fa fa-info-circle"></i>
+          </li>
+          <li>
+            Poți publica orice loc de parcare pe care il deții: alee intrare, garaj, loc privat.
+          </li>
+        </ul>
+        <hr>
 
-      <div class="price-wrap">
-        <span class="price">0 Ron</span>
-        <span>pe lună</span>
+        <div class="price-wrap">
+          <span class="price">0 Ron</span>
+          <span>pe lună</span>
+        </div>
+        <a class="btn btn-primary px-5" href="/app/index.html#!/home/search">Încearcă</a>
       </div>
-      <a class="btn btn-primary px-5" href="/app/index.html#!/home/search">Încearcă</a>
     </div>
-  </div>
-  <!-- End Free Offering -->
-</div>
-
-<div class="mt-3 mt-md-4 rent container" id="business">
-  <!-- Start business offering -->
-  <div class="col-12 mt-5">
-    <h1 class="my-3 my-md-4 text-center animated fadeInUp">
-      Soluții parcări private
-    </h1>
-    <hr>
+    <!-- End Free Offering -->
   </div>
 
-  <div class="item  p-1 p-md-0">
-    <div class="pricing-box-1">
-      <div class="mt-3 pricing-icon">
-        <img src="<%= image_path 'sensorxhdpi.png' %>">
-      </div>
+  <div class="mt-3 mt-md-4 rent container" id="business">
+    <!-- Start business offering -->
+    <div class="col-12 mt-5">
+      <h1 class="my-3 my-md-4 text-center animated fadeInUp">
+        Soluții parcări private
+      </h1>
+      <hr>
+    </div>
 
-      <hr/>
-      <div class="pricing-title">Publică locurile nefolosite</div>
-      <hr/>
+    <div class="item  p-1 p-md-0">
+      <div class="pricing-box-1">
+        <div class="mt-3 pricing-icon">
+          <img src="<%= image_path 'sensorxhdpi.png' %>">
+        </div>
 
-      <ul class="pricing-list mt-3">
-        <li
-          data-toggle="popover"
-          tabindex="0"
-          data-html="true"
-          data-placement="top"
-          data-content="Aplicația poate fi utilizată intern pentru a gestiona locurile din
+        <hr/>
+        <div class="pricing-title">Publică locurile nefolosite</div>
+        <hr/>
+
+        <ul class="pricing-list mt-3">
+          <li
+            data-toggle="popover"
+            tabindex="0"
+            data-html="true"
+            data-placement="top"
+            data-content="Aplicația poate fi utilizată intern pentru a gestiona locurile din
               cadrul companiei, cât și extern pentru a publica locuri disponibile tuturor șoferilor.
               Contactati-ne in formularul de mai jos pentru a afla detaliile. "
-          title="Încearcă">
-          <br/>
-          <i class="fa fa-info-circle"></i>
-          <span>
+            title="Încearcă">
+            <br/>
+            <i class="fa fa-info-circle"></i>
+            <span>
               Platforma ofera gestionarea inteligentă a locurilor interne (asignate sau rezervabile către angajați)  cât și cele publice.
               Definește planul și orarul parcării și valorifică locurile libere închiriând șoferilor. </span>
-        </li>
-        <li>
-          <span>Alege locurile, setează disponibiliatea și prețul iar banii pentru subînchiriere vor intra direct în cont. </span>
-        </li>
+          </li>
+          <li>
+            <span>Alege locurile, setează disponibiliatea și prețul iar banii pentru subînchiriere vor intra direct în cont. </span>
+          </li>
 
-        <li>
-          Vei avea toate datele șoferului iar plata se face prin intermediul aplicației,
-        </li>
-      </ul>
-      <hr>
+          <li>
+            Vei avea toate datele șoferului iar plata se face prin intermediul aplicației,
+          </li>
+        </ul>
+        <hr>
 
-      <div class="price-wrap">
-        <span class="price">450 Ron</span>
-        <span>pe lună</span>
+        <div class="price-wrap">
+          <span class="price">450 Ron</span>
+          <span>pe lună</span>
+        </div>
+        <a class="btn btn-primary px-5" href="/app/index.html#!/home/search">Încearcă</a>
       </div>
-      <a class="btn btn-primary px-5" href="/app/index.html#!/home/search">Încearcă</a>
     </div>
+    <!-- End business Offering -->
   </div>
-  <!-- End business Offering -->
+  <!-- Rent products END -->
+
+
+  <!-- $.scrollToTop Button -->
+  <a class="scroll-to-top" onclick="$.scrollTo('#navbar',200)">
+    <i class="fa fa-chevron-up"></i>
+  </a>
+  <!-- $.scrollToTop Button END-,200-->
 </div>
-<!-- Rent products END -->
-
-
-<!-- $.scrollToTop Button -->
-<a class="scroll-to-top" onclick="$.scrollTo('#navbar',200)">
-  <i class="fa fa-chevron-up"></i>
-</a>
-<!-- $.scrollToTop Button END-,200-->
-
 <!-- Footer - bloc-8 -->
 <div class="footer mt-5 d-none d-md-block" id="footer">
   <div class="row no-gutters align-items-center justify-content-center">

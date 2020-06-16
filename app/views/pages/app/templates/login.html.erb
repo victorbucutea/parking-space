@@ -21,12 +21,14 @@
       <h3 class="py-3 mb-3">Înregistrare</h3>
       <form name="loginForm" id="loginForm" novalidate="novalidate">
         <div class="form-group">
-          <input type="email" class="user-name form-control form-control-lg" placeholder="Email" ng-model="userName" name="user" required/>
+          <input type="email" class="user-name form-control form-control-lg"
+                 pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"
+                 placeholder="Email" ng-model="userName" name="user" required/>
           <div class="invalid-feedback">Introdu o adresă de email validă</div>
         </div>
 
         <div class="form-group">
-          <input type="password" class="password form-control  form-control-lg" placeholder="Parolă" ng-model="password" name="pw" required/>
+          <input type="password" class="password form-control  form-control-lg" minlength="5" placeholder="Parolă" ng-model="password" name="pw" required/>
           <div class="invalid-feedback">Introdu parola</div>
 
         </div>

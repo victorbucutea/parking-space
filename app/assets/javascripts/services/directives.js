@@ -2098,7 +2098,7 @@ angular.module('ParkingSpace.directives')
                 '    <div class="notification-message alert-danger animated zoomIn" ng-show="errMsg.length">' +
                 '      <ul>' +
                 '        <li ng-repeat="msg in errMsg"> ' +
-                '          <i class="fa fa-ban"></i> {{msg}}' +
+                '          <i class="fa fa-exclamation-triangle"></i> {{msg}}' +
                 '        </li>' +
                 '      </ul>' +
                 '    </div>' +
@@ -2112,7 +2112,7 @@ angular.module('ParkingSpace.directives')
                 '    <div class="notification-message alert-warning animated zoomIn" ng-show="warningMsg.length">' +
                 '      <ul>' +
                 '        <li ng-repeat="msg in warningMsg">' +
-                '            <i class="fa fa-exclamation-triangle  float-left pt-1"></i> {{msg}}' +
+                '            <i class="fa fa-exclamation  float-left pt-1"></i> {{msg}}' +
                 '        </li>' +
                 '      </ul>' +
                 '    </div>' +

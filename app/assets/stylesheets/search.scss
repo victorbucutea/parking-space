@@ -155,7 +155,13 @@ div.daterangepicker {
     color: $blue-900;
     box-shadow: 1px 1px 0 0 $gray-500;
 
+
+    @include media-breakpoint-down(sm) {
+      font-size: 1.4em;
+    }
   }
+
+
 
   .btn-search {
     font-size: 1.4rem;
