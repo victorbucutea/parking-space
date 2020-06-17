@@ -6,9 +6,9 @@
   <ui-view name="details"></ui-view>
 
   <div class="p-2 panel mb-2 bids-area" ng-repeat="space in user.spaces">
-    <h5 class="py-2 bid-title ng-binding mb-0 " style="white-space: inherit">
+    <h5 class="py-2 bid-title mb-0 " style="white-space: inherit">
       {{space.address_line_1}} -
-      <span class="bid-amount">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
+      <span class="bid-amount text-muted">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
                             {{space.currency}} / h
               </span>
 
@@ -22,7 +22,7 @@
         <i class="fa fa-trash"></i> Sterge
       </button>
 
-      <div class="small text-muted pb-2">
+      <div class="small pb-2" ng-class="{'text-danger': space.expired} ">
         {{space.space_availability_start | moment:'DD MMM YYYY HH:mm'}} -
         {{space.space_availability_stop | moment:'DD MMM YYYY HH:mm'}}
         ( {{space.expired? 'Expirat' : 'Activ'}} )
@@ -89,8 +89,8 @@
             <div class="small text-muted"> {{rev.created_at | moment:'DD MMM HH:mm' }}</div>
             <div>{{rev.comment}}</div>
             <div class="pt-2">
-              <button class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i> Sterge</button>
-              <button class="btn btn-sm btn-outline-primary"><i class="fa fa-edit"></i> Editeaza</button>
+              <button class="btn btn-sm btn-outline-danger" ng-click="delete(rev)"><i class="fa fa-trash"></i> Sterge</button>
+              <button class="btn btn-sm btn-outline-primary" ng-click="edit(space, rev)"><i class="fa fa-edit"></i> Editeaza</button>
             </div>
           </div>
         </div>

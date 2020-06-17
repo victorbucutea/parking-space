@@ -18,7 +18,7 @@ class ParkingSpace < ActiveRecord::Base
     where('parking_spaces.space_availability_stop >= ?
                               or parking_spaces.space_availability_stop is null', Time.now) }
 
-  scope :active, lambda { |current_user|
+  scope :active_or_owned, lambda { |current_user|
     where('parking_spaces.space_availability_start <= ?
                     AND parking_spaces.status = ?
                     OR parking_spaces.user_id = ? ', Time.now, 2, current_user) }
@@ -30,6 +30,7 @@ class ParkingSpace < ActiveRecord::Base
                     AND parking_spaces.location_long <= :lon_max', attrs) }
 
   scope :for_company, ->(c) { where(' parking_spaces. company_id = ?', c) }
+  scope :for_user, ->(u) { where(' parking_spaces.user_id = ?', u) }
 
 
   validates :location_lat, presence: true, numericality: {greater_than_or_equal_to: -90, less_than_or_equal_to: 90}

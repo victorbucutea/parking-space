@@ -1,5 +1,5 @@
 class ReviewsController < ApplicationController
-  before_action :set_review, only: %i[show edit update]
+  before_action :set_review, only: %i[show edit update destroy]
 
   # GET /reviews
   # GET /reviews.json
@@ -25,7 +25,7 @@ class ReviewsController < ApplicationController
     if @review.save
       render :show, status: :created, location: @review
     else
-      render json: { Error: @review.errors }, status: :unprocessable_entity
+      render json: {Error: @review.errors}, status: :unprocessable_entity
     end
   end
 
@@ -37,6 +37,11 @@ class ReviewsController < ApplicationController
     else
       render json: @review.errors, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @review.destroy
+    head :no_content
   end
 
   private

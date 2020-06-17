@@ -1,73 +1,87 @@
 <div ng-controller="AccountCtrl">
 
-    <div class="hamburger d-md-none">
+  <div class="hamburger d-md-none">
         <span ng-click="openMenu()">
             <i class="pac-nav fa fa-bars fa-2x "></i>
         </span>
+  </div>
+
+  <div class="row no-gutters">
+    <div class="col-12 col-md-3 mt-5 text-center">
+      <img class=" pt-3" src="<%= image_path 'credit_card_plain.png' %>">
     </div>
+    <div class="col-12 col-md-8 col-lg-6 mt-5 px-3">
+      <div class="panel">
+        <h4 class="text-center">Sold disponibil</h4>
+        <h1 class="text-center display-4 text-primary mb-3">
+          <b>{{sum | units}}</b>.<small>{{sum | subunits}}</small> {{account.currency}}
+        </h1>
 
-    <div class="row no-gutters">
-        <div class="col-12 col-md-3 mt-5 text-center">
-            <img class=" pt-3" src="<%= image_path 'credit_card_plain.png'%>" >
+        <div id="waitingBalance" class="d-flex align-items-center flex-column">
+          <h5><span class="text-muted"> Sold în așteptare <i class="fa fa-question-circle"></i></span></h5>
+          <h3 class="font-weight-light text-muted">
+            <b class="">{{account.amount_pending | units}}</b>.<small class="">{{account.amount_pending |
+            subunits}}</small> {{account.currency}}
+          </h3>
         </div>
-        <div class="col-12 col-md-8 col-lg-6 mt-5 px-3">
-            <div class="panel">
-                <h4 class="text-center"> Balanță cont </h4>
-                <h1 class="text-center display-4 text-primary">
-                    <b>{{account.amount | units}}</b>.<small>{{account.amount | subunits}}</small> {{account.currency}}
-                </h1>
-                <div class="mt-3 d-flex justify-content-around flex-wrap">
 
-                    <ul class="nav nav-pills" role="tablist">
-                        <li class="nav-item " >
-                            <a href="" ui-sref="account" data-toggle="tab" role="tab" class="nav-link" >
-                                <i class="fa fa-credit-card"></i> Retrage banii
-                            </a>
-                        </li>
-                        <li class="nav-item" >
-                            <a href="" ui-sref=".withdrawals" data-toggle="tab" role="tab" class="nav-link" ui-sref-active="active">
-                                <i class="fa fa-upload"></i> Listă retrageri
-                            </a>
-                        </li>
-                        <li class="nav-item" >
-                            <a href="" ui-sref=".payments" data-toggle="tab" role="tab" class="nav-link" ui-sref-active="active">
-                                <i class="fa fa-list"></i> Plăți efectuate
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+      </div>
+      <div class="mt-3 d-flex justify-content-around flex-wrap">
+        <ul class="nav nav-pills nav-fill" role="tablist">
+          <li class="nav-item ">
+            <a href="" ui-sref="account" data-toggle="tab" role="tab" class="nav-link">
+              <i class="fa fa-credit-card"></i> Retrage banii
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" ui-sref=".withdrawals" data-toggle="tab" role="tab" class="nav-link" ui-sref-active="active">
+              <i class="fa fa-upload"></i> Listă retrageri
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" ui-sref=".payments-received" data-toggle="tab" role="tab" class="nav-link" ui-sref-active="active">
+              <i class="fa fa-list"></i> Plăți primite
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" ui-sref=".payments" data-toggle="tab" role="tab" class="nav-link" ui-sref-active="active">
+              <i class="fa fa-list"></i> Plăți efectuate
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <ui-view name="financial">
+        <div class="animated zoomIn my-4">
+
+          <form name="withdrawForm">
+            <div class="form-row">
+              <div class="form-group  col-3">
+                <label for="sum" class="labe">Suma transfer</label>
+                <input type="number" ng-model="sum" class="form-control form-control-lg" id="sum">
+                <small ng-show="isSumInvalid" class="text-danger"> Suma nu poate depăși
+                  {{account.amount}} {{account.currency}}</small>
+              </div>
             </div>
-            <ui-view name="financial">
-                <div class="animated zoomIn my-4">
+            <div class="form-group">
+              <label for="iban" class="labe">Cont bancar destinatar (IBAN)</label>
+              <input type="text" ng-model="iban" class="form-control" id="iban">
+              <small class="text-danger" ng-show="isIbanInvalid"> Numar IBAN invalid</small>
+              <small ng-hide="isIbanInvalid"> Contul bancar în care doriți să fie virați banii</small>
+            </div>
 
-                    <form name="withdrawForm">
-                        <div class="form-row">
-                            <div class="form-group  col-3">
-                                <label for="sum" class="labe">Suma transfer</label>
-                                <input type="number" ng-model="sum" class="form-control form-control-lg" id="sum">
-                                <small ng-show="isSumInvalid" class="text-danger"> Suma nu poate depăși
-                                    {{account.amount}} {{account.currency}}</small>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="iban" class="labe">Cont bancar destinatar (IBAN)</label>
-                            <input type="text" ng-model="iban" class="form-control" id="iban">
-                            <small class="text-danger" ng-show="isIbanInvalid"> Numar IBAN invalid</small>
-                            <small ng-hide="isIbanInvalid"> Contul bancar în care doriți să fie virați banii</small>
-                        </div>
+            <div class="my-4 text-center mark small">
+              Go Park va plăti această suma la sfărșit de lună contabila, conform contractului
+              de sub-închiriere
+            </div>
 
-                        <div class="my-4 text-center mark small">
-                            Go Park va plăti această suma la sfărșit de lună contabila, conform contractului
-                            de sub-închiriere
-                        </div>
-
-                        <button class="btn btn-danger btn-lg btn-block" ng-click="withdraw(sum,iban)">Retrage</button>
-                    </form>
-                </div>
-
-
-            </ui-view>
+            <button class="btn btn-danger btn-lg btn-block" ng-click="withdraw(sum,iban)">Retrage</button>
+          </form>
         </div>
+
+
+      </ui-view>
     </div>
+  </div>
 </div>
 

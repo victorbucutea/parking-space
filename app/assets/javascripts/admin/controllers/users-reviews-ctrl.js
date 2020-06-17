@@ -12,4 +12,15 @@ angular.module('ParkingSpaceAdmin.controllers')
                 $scope.$watch('', function (newValue, oldValue) {
 
                 });
+
+                $scope.edit = function (space, review) {
+
+                };
+
+                $scope.delete = function ( review) {
+                    parkingSpaceService.deleteReview(review).then(() => {
+                       let idx= $scope.space.reviews.indexOf(review);
+                        $scope.space.reviews.splice(idx, 1);
+                    })
+                };
             }]);

@@ -216,6 +216,14 @@ angular.module('ParkingSpaceMobile', [
                     }
                 }
             })
+            .state('account.payments-received', {
+                url: "/payments-received",
+                views: {
+                    'financial': {
+                        templateUrl: "templates/payments-received.html"
+                    }
+                }
+            })
             .state('account.withdrawals', {
                 url: "/withdrawals",
                 views: {

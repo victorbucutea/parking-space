@@ -9,7 +9,7 @@ class ParkingSpacesController < ApplicationController
   # GET /parking_spaces.json
   def index
     if current_user.company
-      @parking_spaces = ParkingSpace.not_expired.active
+      @parking_spaces = ParkingSpace.not_expired.active_or_owned
                             .includes(:parking_perimeter)
                             .for_company current_user.company
       render :index, status: :ok
@@ -26,7 +26,7 @@ class ParkingSpacesController < ApplicationController
     end
 
     query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
-    @parking_spaces = ParkingSpace.not_expired.active(current_user)
+    @parking_spaces = ParkingSpace.not_expired.active_or_owned(current_user)
                           .includes(:user, :images)
                           .within_boundaries(query_attrs)
   end

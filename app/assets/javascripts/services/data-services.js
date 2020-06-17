@@ -79,7 +79,6 @@ angular.module('ParkingSpace.services')
                     });
             };
 
-
             this.saveSpace = function (space) {
 
                 // massage space a to fit the back end model
@@ -145,6 +144,15 @@ angular.module('ParkingSpace.services')
                         space_id: space.id
                     }
                 }).then(function (response) {
+                    return response.data;
+                }, function (errorResponse) {
+                    errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                });
+            }
+
+            this.deleteReview = function (review) {
+                return $http['delete'](`/reviews/${review.id}.json`).then(function (response) {
+                    $rootScope.$emit('http.notif', 'Review-ul a fost sters');
                     return response.data;
                 }, function (errorResponse) {
                     errorHandlingService.handle(errorResponse.data, errorResponse.status);

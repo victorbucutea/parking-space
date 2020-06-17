@@ -1,6 +1,7 @@
 class Proposal < ActiveRecord::Base
 
   scope :for_space, ->(sp_id) { where('proposals.parking_space_id = ? ', sp_id) }
+  scope :for_spaces, ->(ids) { where('proposals.parking_space_id in (?) ', ids) }
   scope :for_user, ->(user) { where('proposals.user_id = ? ', user) }
   scope :price_above, ->(price) { where('proposals.bid_amount >= ? ', price) }
   scope :active_or_future, -> { where('proposals.end_date >= ?', Time.now) }

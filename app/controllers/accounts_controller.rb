@@ -57,9 +57,7 @@ class AccountsController < ApplicationController
       return
     end
 
-    @account.amount -= withdrawal.amount
-    @account.iban = withdrawal.iban
-    unless @account.save
+    unless @account.withdraw withdrawal, current_user
       render json: { Error: @account.errors }, status: :unprocessable_entity
       return
     end

@@ -731,7 +731,7 @@ angular.module('ParkingSpace.directives')
                 '                             Rezervarea a fost anulată de către proprietar.' +
                 '                           </span> ' +
                 '                        </span>' +
-                '                        <span ng-show="offer.rejected" class="text-danger">Respins' +
+                '                        <span ng-show="offer.rejected" class="text-danger">' +
                 '                         <div>Respinsă</div>' +
                 '                           <span class="text-secondary">' +
                 '                             <i class="fa fa-info-circle"></i>  ' +
@@ -1744,7 +1744,7 @@ angular.module('ParkingSpace.directives')
                 existingFiles: '=?',
             },
             template: '<div class="drop-zone d-flex justify-content-center" >' +
-                '           <input required class="fileupload" style="display: none" type="file" name="file" multiple max="3" accept="{{accept}}">' +
+                '           <input required class="fileupload" style="display: none" type="file" name="file" multiple max="{{maxCount}}" accept="{{accept}}">' +
                 '           <div class="my-3 ps-carousel d-flex flex-wrap justify-content-center" >' +
                 '             <div ng-repeat="file in uploadedFiles" ng-hide="file._destroy" class="px-2 thumb-box"> ' +
                 '               <carousel-thumbnail file="file" on-remove="removeFileUpload(file)"></carousel-thumbnail>' +
@@ -1816,6 +1816,11 @@ angular.module('ParkingSpace.directives')
 
                         if (data.files[0].size > 8000000) {
                             alert('File is too big');
+                            return;
+                        }
+
+                        if ($scope.maxCntReached()) {
+                            alert('Cannot upload more than '+$scope.maxCount +" files.");
                             return;
                         }
 
