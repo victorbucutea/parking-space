@@ -103,6 +103,7 @@ Rule.seed(:id, { id: 1,
           stop: 60,
           type: 'WorkingHoursRule')
 
+ParameterValue.where(key: 'en').destroy_all
 
 ParameterValue.seed(:key,
                     { parameter_id: 1, key: 'us', value: 5, value1: ' ', value2: 'Usd', value3: '+1', value4: 'United States of America', value5: '2,3,4,5,6,7,8,9', value6: '10', value7: '201 555 1234' },
@@ -141,3 +142,4 @@ ParameterValue.seed(:key,
                     { parameter_id: 1, key: 'il', value3: '+972', value4: 'Israel', value5: '50,52,53,54,55,58', value6: '9', value7: '50 234 5678' },
                     { parameter_id: 1, key: 'tr', value3: '+90', value4: 'Turkey', value5: '50,53,54,55', value6: '10', value7: '501 234 56 78' },
                     { parameter_id: 1, key: 'kr', value3: '+82', value4: 'South Korea', value5: '10,11,16,17,18,19', value6: '10', value7: '10 2000 0000' })
+
