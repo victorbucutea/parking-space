@@ -1,1 +1,1 @@
-json.partial! 'proposals/show', {proposal: @proposal}
+json.partial! 'proposals/show', proposal: @proposal

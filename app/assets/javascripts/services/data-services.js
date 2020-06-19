@@ -253,7 +253,7 @@ angular.module('ParkingSpace.services')
             };
 
             this.getNextOffer = function () {
-                return $http.get(`/parking_spaces/1/proposals/1/next.json`)
+                return $http.get(`/parking_spaces/1/proposals/next.json`)
                     .then(function (res) {
                         sessionStorage.setItem("showNextOffer", "false");
                         return res.data;
@@ -275,8 +275,26 @@ angular.module('ParkingSpace.services')
                     })
             }
 
-            this.rejectOffer = function (spaceId, offer, clbk) {
-                $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/reject.json')
+            this.getOffers = function (spaceId) {
+                return $http.get(`/parking_spaces/${spaceId}/proposals.json`)
+                    .then(function (res) {
+                        return res.data;
+                    }, function (err) {
+                        errorHandlingService.handle(err.data, err.status);
+                    })
+            }
+
+            this.getSchedule = function (spaceId) {
+                return $http.get(`/parking_spaces/${spaceId}/proposals/schedule.json`)
+                    .then(function (res) {
+                        return res.data;
+                    }, function (err) {
+                        errorHandlingService.handle(err.data, err.status);
+                    })
+            }
+
+            this.rejectOffer = function (space, offer, clbk) {
+                $http.post('/parking_spaces/' + space.id+ '/proposals/' + offer.id + '/reject.json')
                     .then(function (res) {
                         let data = res.data;
                         $rootScope.$emit('http.notif',
@@ -290,12 +308,12 @@ angular.module('ParkingSpace.services')
                     })
             };
 
-            this.cancelOffer = function (spaceId, offer, clbk) {
-                $http.post('/parking_spaces/' + spaceId + '/proposals/' + offer.id + '/cancel.json')
+            this.cancelOffer = function (space, offer, clbk) {
+                $http.post('/parking_spaces/' + space.id + '/proposals/' + offer.id + '/cancel.json')
                     .then(function (res) {
                         let data = res.data;
                         $rootScope.$emit('http.notif',
-                            'Ai respins oferta . Proprietarul a fost notificat'
+                            'Ai anulat oferta . Proprietarul a fost notificat'
                         );
                         if (clbk) {
                             clbk(data);

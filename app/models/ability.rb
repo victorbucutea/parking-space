@@ -23,26 +23,27 @@ class Ability
       can :manage, Account
       can :manage, Review
     else
-      can :manage, ParkingSpace, user_id: user.id
-      cannot :list_spaces, user_id: user.id
-      can :manage, Proposal, user_id: user.id
+      can :manage, Proposal, user_id: user.id # proposal owner
+      can :manage, Proposal, parking_space: { user_id: user.id } # parking space owner
       can :manage, Account, user_id: user.id
       can :manage, Review, user_id: user.id
+      can :manage, ParkingSpace, user_id: user.id
       can :index, ParkingSpace
       can :show, ParkingSpace
+      cannot :list_spaces, ParkingSpace
     end
 
     if user.role? 'parking_lot_admin'
-      can %i[read update], Location, roles: {user_id: user.id}
-      can :manage, Section, location: {roles: {user_id: user.id}}
+      can %i[read update], Location, roles: { user_id: user.id }
+      can :manage, Section, location: { roles: { user_id: user.id } }
     end
 
 
     if user.role? 'company_admin'
-      can :manage, Company, roles: {user_id: user.id}
+      can :manage, Company, roles: { user_id: user.id }
       can :manage, Company, id: user.company_id
-      can :manage, Location, company: {roles: {user_id: user.id}}
-      can :manage, Section, location: {company: {roles: {user_id: user.id}}}
+      can :manage, Location, company: { roles: { user_id: user.id } }
+      can :manage, Section, location: { company: { roles: { user_id: user.id } } }
     end
 
 

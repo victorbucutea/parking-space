@@ -21,11 +21,11 @@ class ParkingSpacesController < ApplicationController
     lon_max = params[:lon_max]
 
     unless lat_min && lon_min && lat_max && lon_max
-      render json: {Error: {general: "Missing parameters 'lat' or 'lon' min/max"}}, status: :unprocessable_entity
+      render json: { Error: { general: "Missing parameters 'lat' or 'lon' min/max" } }, status: :unprocessable_entity
       return
     end
 
-    query_attrs = {lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max}
+    query_attrs = { lon_min: lon_min, lon_max: lon_max, lat_min: lat_min, lat_max: lat_max }
     @parking_spaces = ParkingSpace.not_expired.active_or_owned(current_user)
                           .includes(:user, :images)
                           .within_boundaries(query_attrs)
@@ -37,7 +37,6 @@ class ParkingSpacesController < ApplicationController
 
   def myspaces
     @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
-                          .where(user: current_user)
 
     render :myspaces, status: :ok
   end
@@ -50,9 +49,8 @@ class ParkingSpacesController < ApplicationController
   end
 
   def myoffers
-    @parking_spaces =
-      ParkingSpace.includes(:proposals, :images, :user, proposals: :user)
-                  .where(proposals: { user: current_user })
+    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user, proposals: :user)
+                          .where(proposals: { user: current_user })
 
     render :myspaces, status: :ok
   end
@@ -88,7 +86,7 @@ class ParkingSpacesController < ApplicationController
     imgs.each do |d|
       img = @parking_space.images.create(image: d[:file], comment: 'User upload')
       unless img.errors.empty?
-        return render json: {Error: img.errors}, status: :unprocessable_entity
+        return render json: { Error: img.errors }, status: :unprocessable_entity
       end
     end
 
@@ -111,7 +109,7 @@ class ParkingSpacesController < ApplicationController
       UserMailer.with(space: @parking_space).new_space.deliver_later
       render :show, status: :created, location: @parking_space
     else
-      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
+      render json: { Error: @parking_space.errors }, status: :unprocessable_entity
     end
   end
 
@@ -121,16 +119,14 @@ class ParkingSpacesController < ApplicationController
     if @parking_space.update(parking_space_params)
       render :show, status: :ok, location: @parking_space
     else
-      render json: {Error: @parking_space.errors}, status: :unprocessable_entity
+      render json: { Error: @parking_space.errors }, status: :unprocessable_entity
     end
   end
 
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-
     # todo do not delete just expire validity
-
     @parking_space.destroy
     respond_to do |format|
       format.json { head :no_content }
@@ -141,11 +137,7 @@ class ParkingSpacesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_parking_space
-    @parking_space = if params[:id].nil?
-                       ParkingSpace.find(params[:parking_space_id])
-                     else
-                       ParkingSpace.find(params[:id])
-                     end
+    @parking_space = ParkingSpace.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

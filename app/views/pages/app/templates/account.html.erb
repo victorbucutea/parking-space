@@ -17,12 +17,14 @@
           <b>{{sum | units}}</b>.<small>{{sum | subunits}}</small> {{account.currency}}
         </h1>
 
-        <div id="waitingBalance" class="d-flex align-items-center flex-column">
-          <h5><span class="text-muted"> Sold în așteptare <i class="fa fa-question-circle"></i></span></h5>
-          <h3 class="font-weight-light text-muted">
-            <b class="">{{account.amount_pending | units}}</b>.<small class="">{{account.amount_pending |
-            subunits}}</small> {{account.currency}}
-          </h3>
+        <div class="d-flex align-items-center flex-column">
+          <div id="waitingBalance">
+            <h5 class="text-center"><span class="text-muted"> Sold în așteptare <i class="fa fa-question-circle"></i></span></h5>
+            <h3 class="text-center font-weight-light text-muted">
+              <b class="">{{account.amount_pending | units}}</b>.<small class="">{{account.amount_pending |
+              subunits}}</small> {{account.currency}}
+            </h3>
+          </div>
         </div>
 
       </div>

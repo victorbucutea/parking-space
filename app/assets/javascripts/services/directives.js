@@ -652,7 +652,7 @@ angular.module('ParkingSpace.directives')
         }
     }])
 
-    .directive('bidTable', function () {
+    .directive('bidTable', ['offerService', 'replaceById', function (offerService, replaceById) {
         return {
             restrict: 'E',
             scope: {
@@ -661,9 +661,8 @@ angular.module('ParkingSpace.directives')
             },
             template: '<div class="bids-area ">' +
                 '      <div class="bid-table">' +
-                '        <div class="row no-gutters bid-row" ng-click="selectOffer(offer)"' +
-                '             ng-repeat="offer in offers | orderBy: \'start_date\'">' +
-                '          <div class="offer row no-gutters col-12" ng-class="{canceled : !offer.approved}">' +
+                '        <div class="row no-gutters bid-row" ng-repeat="offer in offers | orderBy: \'start_date\'">' +
+                '          <div class="offer row no-gutters col-12" ng-click="selectOffer(offer)" ng-class="{canceled : !offer.approved}">' +
                 '              <div class="col-3 offer-owner" ng-hide="offer.owner_is_current_user">' +
                 '                <div>{{offer.owner_name}}</div>' +
                 '                <div class="license text-monospace">{{offer.owner_license}}</div>' +
@@ -686,7 +685,7 @@ angular.module('ParkingSpace.directives')
                 '              <div class="offer-duration"> {{offer | totalPeriod}}</div>' +
                 '            </span>' +
                 '          </div>' +
-                '          <div class="col-12 existing-offers" ng-if="offer.showDetails">' +
+                '          <div id="showDetails-{{offer.id}}" class="col-12 existing-offers" ng-if="offer.showDetails">' +
                 '            <div class="existing-offers-body px-1">' +
                 '                <div class="row ps-row py-2">' +
                 '                    <div class="col-4">Utilizator</div>' +
@@ -698,6 +697,12 @@ angular.module('ParkingSpace.directives')
                 '                    <div class="col-4">Nr. Înm.</div>' +
                 '                    <div class="col-8 text-monospace text-uppercase">' +
                 '                        {{offer.owner_license}}' +
+                '                    </div>' +
+                '                </div>' +
+                '                <div class="row ps-row py-2">' +
+                '                    <div class="col-4">Data creare</div>' +
+                '                    <div class="col-8 ">' +
+                '                        {{offer.created_at | moment: \'ddd, D MMM, HH:mm\'}}' +
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="row ps-row">' +
@@ -743,11 +748,6 @@ angular.module('ParkingSpace.directives')
                 '                           <span class="text-secondary">' +
                 '                             <i class="fa fa-info-circle"></i> O rezervare neplătită nu atrage nici o obligatie din partea proprietarului' +
                 '                           </span> ' +
-                '                           <div ng-show="offer.owner_is_current_user"> ' +
-                '                               <button class="btn btn-outline-primary" ui-sref=".pay({offer: offer, space: space})">' +
-                '                                  <i class="fa fa-credit-card"></i> Achită' +
-                '                               </button>' +
-                '                           </div>' +
                 '                       </span>' +
                 '                    </div>' +
                 '                </div>' +
@@ -759,14 +759,21 @@ angular.module('ParkingSpace.directives')
                 '                        La 15 min' +
                 '                    </div>' +
                 '                </div>' +
-                '                <div class="mt-3 text-center" ng-hide="offer.owner_is_current_user" >' +
-                '                    <h6>Apelează <br/> {{offer.owner_name}} </h6>' +
-                '                    <div class="ps-text-big">' +
-                '                        <a ng-href="tel:{{offer.owner_prefix + offer.owner_phone_number}}">' +
-                '                            <i class="fa fa-phone"></i>' +
-                '                            {{offer.owner_prefix + offer.owner_phone_number}}' +
-                '                        </a>' +
-                '                    </div>' +
+                '                <div class="my-3 text-center"  >' +
+                '                      <a class="btn btn-outline-primary btn-sm " ng-href="tel:{{offer.owner_prefix + offer.owner_phone_number}}">' +
+                '                         <i class="fa fa-phone"></i> ' +
+                '                         Apelează {{offer.owner_name}} ' +
+                '                     </a>' +
+                '                     <button class="btn btn-outline-danger btn-sm ml-3"' +
+                '                             ng-show="offer.approved" ' +
+                '                             ng-click="cancel(space, offer)"> ' +
+                '                       <i class="fa fa-ban"></i> Anulează' +
+                '                     </button> ' +
+                '                     <button class="btn btn-sm btn-outline-primary" ' +
+                '                             ng-show="offer.owner_is_current_user && !offer.paid"' +
+                '                             ui-sref=".pay({offer: offer, space: space})">' +
+                '                        <i class="fa fa-credit-card"></i> Achită' +
+                '                     </button>' +
                 '                </div>' +
                 '            </div>' +
                 '         </div>' +
@@ -780,12 +787,23 @@ angular.module('ParkingSpace.directives')
                 }
 
                 $scope.selectOffer = function (offer) {
-                    $('.showDetails' + offer.id).slideToggle(200);
+                    $('.showDetails-' + offer.id).slideToggle(100);
                     offer.showDetails = !offer.showDetails
+                };
+
+                $scope.cancel = function (space, offer) {
+                    offerService.cancelOffer(space, offer, (newOf) => {
+                        replaceById(newOf, $scope.offers);
+                    });
+                };
+                $scope.reject = function (space, offer) {
+                    offerService.rejectOffer(space, offer, (newOf) => {
+                        replaceById(newOf, $scope.offers);
+                    });
                 };
             }
         }
-    })
+    }])
 
     .directive('spaceValidatedBox', ['parkingSpaceService', 'replaceById', function (parkingSpaceService, replaceById) {
         return {
@@ -1042,7 +1060,7 @@ angular.module('ParkingSpace.directives')
 
                 $scope.loading = true;
                 let space = $scope.space;
-                offerService.getOffers(space.id).then((offers) => {
+                offerService.getSchedule(space.id).then((offers) => {
 
                     function calculateIntervals(dt, space) {
                         let intervals = [];
@@ -1505,7 +1523,7 @@ angular.module('ParkingSpace.directives')
 
                         };
 
-                        if(!$scope.noMinDate) {
+                        if (!$scope.noMinDate) {
                             options.minDate = moment();
                         }
 
@@ -1820,7 +1838,7 @@ angular.module('ParkingSpace.directives')
                         }
 
                         if ($scope.maxCntReached()) {
-                            alert('Cannot upload more than '+$scope.maxCount +" files.");
+                            alert('Cannot upload more than ' + $scope.maxCount + " files.");
                             return;
                         }
 

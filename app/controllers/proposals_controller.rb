@@ -1,5 +1,6 @@
-require 'pushmeup'
+# frozen_string_literal: true
 
+require 'pushmeup'
 
 class ProposalsController < ApplicationController
   include SmsApi
@@ -7,31 +8,39 @@ class ProposalsController < ApplicationController
   include NotificationApi
 
   before_action :authenticate_user!
-  before_action :set_proposal, only: %i[pay reject cancel approve]
+  load_and_authorize_resource
+  before_action :set_proposal, only: %i[show pay reject cancel approve]
 
-
-  def show
-    @proposal = Proposal.find(params[:id])
-  end
+  def show; end
 
   # GET /parking_spaces/:p_sp_id/proposals.json
   def index
-    @proposals = Proposal.joins(:user).where parking_space_id: params[:parking_space_id]
+    @proposals = @proposals.includes(:user).where parking_space_id: params[:parking_space_id]
+  end
+
+  # GET /parking_spaces/:p_sp_id/proposals/schedule.json
+  def schedule
+    @proposals = Proposal.approved.includes(:user).where parking_space_id: params[:parking_space_id]
+  end
+
+  def next
+    @proposals = @proposals.joins(:parking_space).active_or_future
+                     .approved.order(:end_date).limit(1)
+    if @proposals.empty?
+      render json: { Error: 'No offer found.' }, status: :not_found
+    else
+      render :next
+    end
   end
 
   def pay
-    if @proposal.user != current_user
-      render json: {Error: 'Cannot pay an offer which doesn\'t belong to the current user'}, status: :unprocessable_entity
-      return
-    end
-
     unless @proposal.pending?
-      render json: {Error: 'Nu se poate achita. Oferta a fost respinsa de proprietar sau a expirat.'}, status: :unprocessable_entity
+      render json: { Error: 'Nu se poate achita. Oferta a fost respinsa.' }, status: :unprocessable_entity
       return
     end
 
     if @proposal.paid?
-      render json: {Error: 'Nu se poate achita. Oferta a fost plătită deja.'}, status: :unprocessable_entity
+      render json: { Error: 'Nu se poate achita. Oferta a fost plătită deja.' }, status: :unprocessable_entity
       return
     end
 
@@ -40,15 +49,15 @@ class ProposalsController < ApplicationController
       UserMailer.with(proposal: @proposal).reservation_notif.deliver_later
       send_sms @proposal.parking_space.user.phone_number,
                current_user.full_name + ' a achitat contravaloarea de ' + @proposal.amount_with_vat.to_s +
-                   ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
+               ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
       render :show, status: :ok
     else
       render json: { Error: 'Eroare in procesarea platii. Va rugam incercati din nou.' }, status: :unprocessable_entity
     end
-
   end
 
   def reject
+    # record history
     if @proposal.reject
       UserMailer.with(proposal: @proposal).offer_cancel.deliver_now
       render :show, status: :ok
@@ -58,6 +67,7 @@ class ProposalsController < ApplicationController
   end
 
   def cancel
+    # record history
     if @proposal.cancel
       UserMailer.with(proposal: @proposal).offer_cancel.deliver_now
       render :show, status: :ok
@@ -74,16 +84,6 @@ class ProposalsController < ApplicationController
     end
   end
 
-  def next
-    @proposals = Proposal.joins(:parking_space).active_or_future
-                     .approved.for_user(current_user).order(:end_date).limit(1)
-    if @proposals.empty?
-      render json: { Error: 'No offer found.' }, status: :not_found
-    else
-      render :next
-    end
-  end
-
   # POST /parking_spaces/:p_sp_id/proposals
   # POST /parking_spaces/:p_sp_id/proposals.json
   def create
@@ -93,10 +93,11 @@ class ProposalsController < ApplicationController
     @proposal.user = current_user
 
     if @proposal.save
-      send_notification @proposal.parking_space.user, 'Ofertă pt locul tău din ' + @proposal.parking_space.address_line_1
+      send_notification @proposal.parking_space.user,
+                        'Ofertă pt locul tău din ' + @proposal.parking_space.address_line_1
       render :show, status: :created
     else
-      render json: {Error: @proposal.errors}, status: :unprocessable_entity
+      render json: { Error: @proposal.errors }, status: :unprocessable_entity
     end
   end
 
@@ -117,7 +118,6 @@ class ProposalsController < ApplicationController
   end
 
   def set_proposal
-    @proposal = Proposal.find(params[:proposal_id])
+    @proposal = Proposal.find(params[:id])
   end
-
 end

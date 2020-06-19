@@ -32,7 +32,7 @@ Rails.application.routes.draw do
 
   match "users*" => "registrations#cors_preflight_check", via: [:options]
 
-  devise_for :users, :controllers => {sessions: 'sessions', registrations: 'registrations', passwords: 'passwords'}
+  devise_for :users, :controllers => { sessions: 'sessions', registrations: 'registrations', passwords: 'passwords' }
 
   #provide a screen to confirm the password reset
   devise_scope :user do
@@ -63,9 +63,11 @@ Rails.application.routes.draw do
 
   resources :parking_spaces do
 
-    post 'attach_documents'
-    post 'attach_images'
-    get 'documents'
+    member do
+      post 'attach_documents'
+      post 'attach_images'
+      get 'documents'
+    end
 
     collection do
       get 'myspaces'
@@ -74,11 +76,16 @@ Rails.application.routes.draw do
     end
 
     resources :proposals do
-      post 'pay'
-      get 'next'
-      post 'reject'
-      post 'approve'
-      post 'cancel'
+      member do
+        post 'pay'
+        post 'reject'
+        post 'approve'
+        post 'cancel'
+      end
+      collection do
+        get 'next'
+        get 'schedule'
+      end
     end
   end
 

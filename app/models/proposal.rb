@@ -32,6 +32,8 @@ class Proposal < ActiveRecord::Base
 
   after_initialize :init
 
+  before_update :archive
+
   def init
     self.approval_status ||= :pending
     self.payment_status ||= :unpaid
@@ -108,25 +110,37 @@ class Proposal < ActiveRecord::Base
     end
   end
 
+  def archive
+    # add current user and archive
+    print 'archiving'
+  end
+
   def reject
     self.skip_overlap_check = true
     self.skip_paid_check = true
+    if active? or expired?
+      errors.add :general, 'Nu se poate refuza o ofertă expirată sau activă'
+      return false
+    end
+    # archive and return money
     rejected!
   end
 
   def cancel
     self.skip_overlap_check = true
+    self.skip_paid_check = true
+
+    if active? or expired?
+      errors.add :general, 'Nu se poate anula o ofertă din trecut sau activă (în curs)'
+      return false
+    end
+    # archive and return money
+
     canceled!
   end
 
   def approve
-    # only the owner of the parking space can approve or reject an offer
-    if parking_space.user.id != user.id
-      errors.add :general, 'You are not allowed to accept the offer!'
-      false
-    else
-      approved!
-    end
+    approved!
   end
 
   def pay
