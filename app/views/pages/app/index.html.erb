@@ -88,8 +88,10 @@
 <!-- Navigation drawer menu -->
 <div id="navMenu" style="display: none">
   <div id="drawer" class="menu d-flex flex-column" ng-click="closeMenu()">
-    <div class="logo p-5 d-md-none text-center " ui-sref="map.search">
-      <img src="<%= image_path 'logo_sm_dark.png' %>">
+    <div class="logo p-5 d-md-none text-center ">
+      <a href="/">
+        <img src="<%= image_path 'logo_sm_dark.png' %>">
+      </a>
     </div>
     <ul class="">
       <li ui-sref="map.search" ui-sref-active="selected">
