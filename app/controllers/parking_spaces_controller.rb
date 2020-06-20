@@ -36,7 +36,7 @@ class ParkingSpacesController < ApplicationController
   def show; end
 
   def myspaces
-    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
+    @parking_spaces = @parking_spaces.includes(:proposals, :images, :user)
 
     render :myspaces, status: :ok
   end
@@ -49,7 +49,7 @@ class ParkingSpacesController < ApplicationController
   end
 
   def myoffers
-    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user, proposals: :user)
+    @parking_spaces = @parking_spaces.includes(:proposals, :images, :user, proposals: :user)
                           .where(proposals: { user: current_user })
 
     render :myspaces, status: :ok

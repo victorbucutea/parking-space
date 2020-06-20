@@ -60,7 +60,7 @@ class ParkingSpace < ActiveRecord::Base
 
     props_outside_period = Proposal.for_space(self).active_or_future.outside_period space_availability_start, space_availability_stop
     if props_outside_period.any?
-      errors.add(:space_availability_start, 'Există rezervari active pe perioada selectată!')
+      errors.add(:space_availability_start, 'Există rezervari active inafara perioadei selectate!')
     end
   end
 
@@ -81,7 +81,7 @@ class ParkingSpace < ActiveRecord::Base
   end
 
   def expired?
-    !space_availability_stop.nil? and Time.now >= space_availability_stop
+    !space_availability_stop.nil? and DateTime.now >= space_availability_stop
   end
 
 end

@@ -852,9 +852,9 @@ angular.module('ParkingSpace.directives')
             link: function ($scope, $elm) {
                 $scope.availability_start = moment();
                 $scope.availability_stop = moment().add(1, 'w');
-
                 $scope.initExpiredBox = function () {
                     $('[data-toggle=tooltip]').tooltip();
+                    $('#validityDetails').hide();
                 };
 
 

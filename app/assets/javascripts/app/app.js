@@ -63,6 +63,15 @@ angular.module('ParkingSpaceMobile', [
                     inside: null
                 }
             })
+            .state('terms', {
+                url: '/terms',
+                views: {
+                    'content': {
+                        templateUrl: "templates/terms.html"
+                    }
+                }
+            })
+
             .state('confirm-phone', {
                 url: '/confirm-phone',
                 views: {

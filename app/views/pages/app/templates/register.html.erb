@@ -40,7 +40,9 @@
                   <input type="text" class="form-control form-control-lg"
                          placeholder="Nr. înmatriculare (e.g. B 10 INM) "
                          ng-model="user.license" name="licensePlate"
-                         required minlength="5"
+                         required
+                         maxlength="15"
+                         pattern="[a-zA-Z0-9]{5}.*"
                          autocomplete="none" autocapitalize="none"/>
                   <div class="invalid-tooltip">Nr de înamtriculare (e.g. B 10 AAA)</div>
                 </div>
@@ -53,7 +55,8 @@
                   </div>
                   <input type="email" class="form-control form-control-lg"
                          placeholder="Email" ng-model="user.email" name="email"
-                         required minlength="5" autocomplete="none" autocapitalize="none"
+                         required
+                         minlength="5" autocomplete="none" autocapitalize="none"
                          pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,5}$"/>
                 </div>
               </div>
@@ -61,7 +64,9 @@
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" placeholder="Nume și prenume"
                          ng-model="user.full_name" name="firstName" required
-                         minlength="5" autocomplete="none" autocapitalize="none"/>
+                         maxlength="100"
+                         pattern="[a-zA-Z0-9]{5}.*"
+                         autocomplete="none" autocapitalize="none"/>
                   <div class="form-text text-muted">Numele dvs. <b>întreg</b> așa cum îl vor vedea ceilalți utilizatori
                   </div>
                 </div>
@@ -86,7 +91,7 @@
                   <input class="form-check-input" type="checkbox" id="termsAndConditions"
                          ng-model="termsAndConditions" required value="">
                   <label for="termsAndConditions" class="form-check-label">
-                    Sunt de acord cu <a class="text-primary" ui-sref="map.search.terms">termenii și condițiile </a>
+                    Sunt de acord cu <a class="text-primary" ui-sref="terms">termenii și condițiile </a>
                     și de asemenea îmi dau acordul ca Go-Park sa proceseze datele personale.
                   </label>
                   <div class="invalid-feedback">
