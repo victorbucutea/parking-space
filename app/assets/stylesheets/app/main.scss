@@ -776,6 +776,9 @@ bid-amount {
 
   a {
     color: $gray-lighter;
+    &:hover {
+      cursor:pointer;
+    }
   }
 }
 
