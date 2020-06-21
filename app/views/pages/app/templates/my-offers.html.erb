@@ -82,16 +82,6 @@
             <bid-table offers="space.activeOffers" space="space"></bid-table>
 
 
-            <!-- payment -->
-            <div ng-if="!space.activeOffers[0].paid" class="text-center"
-                 ng-click="pay(space,space.activeOffers[0])">
-              <!-- only one unpaid offer should be present per space-->
-              <a href class="btn btn-block btn-link animated zoomIn">
-                <i class="fa fa-credit-card"></i> Plătește
-              </a>
-            </div>
-
-
             <!-- Action buttons for offer -->
             <div class="mt-3 d-flex justify-content-center">
               <a tabindex ng-href="tel:{{space.owner_prefix + space.owner_phone_number}}"

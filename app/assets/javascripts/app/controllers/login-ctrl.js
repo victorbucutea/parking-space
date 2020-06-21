@@ -42,7 +42,8 @@ angular.module('ParkingSpaceMobile.controllers')
                         'client_id=1725456304415807' +
                         '&redirect_uri=' + curLoc +
                         '&state=no_state_needed' +
-                        '&response_type=token';
+                        '&response_type=token' +
+                        '&scope=email';
                 };
 
 

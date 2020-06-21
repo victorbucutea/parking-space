@@ -36,7 +36,7 @@ class RegistrationsController < Devise::RegistrationsController
       current_user.notif_auth = params[:keys][:auth]
       current_user.p256dh = params[:keys][:p256dh]
     end
-    render json: {message: 'OK'}, status: 200 if current_user.save
+    render json: { message: 'OK' }, status: 200 if current_user.save
   end
 
   def validate_code
@@ -56,10 +56,10 @@ class RegistrationsController < Devise::RegistrationsController
 
   def client_token
     gateway = Braintree::Gateway.new(
-        environment: ENV['PAYMENT_ENV'].to_sym,
-        merchant_id: ENV['MERCHANT_ID'],
-        public_key: ENV['MERCHANT_PUB_KEY'],
-        private_key: ENV['MERCHANT_PRIV_KEY']
+      environment: ENV['PAYMENT_ENV'].to_sym,
+      merchant_id: ENV['MERCHANT_ID'],
+      public_key: ENV['MERCHANT_PUB_KEY'],
+      private_key: ENV['MERCHANT_PRIV_KEY']
     )
     token = gateway.client_token
     token_str = if current_user.payment_id.nil?
@@ -71,13 +71,26 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def list
-    if params[:query].nil?
-      @users = []
-    else
-      # return employees of current user company
-      @users = User.includes(:roles).with_name(params[:query])
+    @users = if params[:query].nil?
+               []
+             else
+               User.includes(:roles).with_name(params[:query])
+             end
+  end
+
+  def attach_images
+    imgs = params[:images]
+
+    current_user.images.destroy_all
+    # save to parking_space_documents
+    imgs.each do |d|
+      img = current_user.images.create(image: d[:file], name: d[:name], comment: 'User upload')
+      unless img.errors.empty?
+        return render json: { Error: img.errors }, status: :unprocessable_entity
+      end
     end
 
+    render :edit, status: :created
   end
 
   protected
@@ -86,7 +99,7 @@ class RegistrationsController < Devise::RegistrationsController
   # :country
   def configure_permitted_parameters
     permitted = %i[full_name license phone_number country
-                  email password password_confirmation prefix image]
+                   email password password_confirmation prefix image image_name]
     devise_parameter_sanitizer.permit(:sign_up, keys: permitted)
     devise_parameter_sanitizer.permit(:account_update, keys: permitted)
     devise_parameter_sanitizer.permit(:sign_in, keys: permitted)
@@ -105,5 +118,4 @@ class RegistrationsController < Devise::RegistrationsController
   def random_str
     (0...4).map { ('a'..'z').to_a[rand(26)] }.join
   end
-
 end

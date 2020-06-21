@@ -19,8 +19,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                 $scope.inside = true;
                 userService.getUser().then((user) => {
                     $scope.user = user;
-                    if (user.image)
-                        $scope.existingImage.push(user.image);
                 })
             }
 
@@ -37,17 +35,19 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                     user.password_confirmation = user.password;
                 }
 
-                $scope.newImage.submit().then((publicIds) => {
-                    if (publicIds.length)
-                        user.image = publicIds[0].name;
-
+                $scope.user.images.submit().then((publicIds) => {
+                    user.images = null;
                     if ($stateParams.inside) {
                         userService.saveUser(user, function () {
-                            $state.go('map.search');
+                            userService.attach_images(publicIds).then( () => {
+                                $state.go('map.search');
+                            })
                         });
                     } else {
                         userService.registerUser(user, function () {
-                            $state.go('map.search');
+                            userService.attach_images(publicIds).then( () => {
+                                $state.go('map.search');
+                            })
                         });
                     }
                 })

@@ -29,6 +29,15 @@ angular.module('ParkingSpace.services')
                         });
                 };
 
+                _this.attach_images = function( images) {
+                   return $http.post('/users/attach_images.json', {images: images})
+                        .then(function (res) {
+                            let data = res.data;
+                            sessionStorage.setItem('current_user', JSON.stringify(data));
+                            return data;
+                        }, _this.errFunc);
+                }
+
                 /* save details */
                 _this.saveUser = function (user, clbk) {
                     $http.put('/users.json', {user: user})
@@ -134,6 +143,7 @@ angular.module('ParkingSpace.services')
                 }
 
                 _this.errFunc = function (err) {
+                    console.error(err);
                     sessionStorage.removeItem("current_user");
                     errorHandlingService.handle(err.data, err.status);
                 };

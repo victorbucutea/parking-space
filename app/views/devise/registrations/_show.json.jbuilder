@@ -1,9 +1,10 @@
 json.extract! user, :full_name, :phone_number, :country, :email,
               :phone_no_confirm, :license, :prefix
-unless user.image.nil?
-  json.image do
-    json.name user.image
-    json.image user.image
+
+json.images do
+  json.array! user.images do |img|
+    json.name img.name
+    json.file img.image
   end
 end
 json.roles do

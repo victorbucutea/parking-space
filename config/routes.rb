@@ -1,5 +1,6 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   resources :reviews
   post 'sensor_auth/authenticate'
 
@@ -30,21 +31,21 @@ Rails.application.routes.draw do
     end
   end
 
-  match "users*" => "registrations#cors_preflight_check", via: [:options]
+  match 'users*' => 'registrations#cors_preflight_check', via: [:options]
 
-  devise_for :users, :controllers => { sessions: 'sessions', registrations: 'registrations', passwords: 'passwords' }
+  devise_for :users, controllers: { sessions: 'sessions', registrations: 'registrations', passwords: 'passwords' }
 
-  #provide a screen to confirm the password reset
+  # provide a screen to confirm the password reset
   devise_scope :user do
-    get "/users/client_token" => "registrations#client_token", :as => "client_token"
-    get "/users/create_payment_method" => "registrations#create_payment_method", :as => "create_payment_method"
-    get "/users/password/done" => "passwords#done", :as => "done_user_password"
+    get '/users/client_token' => 'registrations#client_token', :as => 'client_token'
+    get '/users/create_payment_method' => 'registrations#create_payment_method', :as => 'create_payment_method'
+    get '/users/password/done' => 'passwords#done', :as => 'done_user_password'
     get '/users/list' => 'registrations#list', :as => 'list'
-    post "/users/sign_in_fb" => "sessions#sign_in_fb", :as => "sign_in_fb"
-    post "/users/validate_code" => "registrations#validate_code", :as => "validate_code"
-    post "/users/send_new_code" => "registrations#send_new_code", :as => "send_new_code"
-    post "/users/register_for_notifications" => "registrations#register_for_notifications", :as => "register_for_notifications"
-
+    post '/users/attach_images' => 'registrations#attach_images', :as => 'attach_images'
+    post '/users/sign_in_fb' => 'sessions#sign_in_fb', :as => 'sign_in_fb'
+    post '/users/validate_code' => 'registrations#validate_code', :as => 'validate_code'
+    post '/users/send_new_code' => 'registrations#send_new_code', :as => 'send_new_code'
+    post '/users/register_for_notifications' => 'registrations#register_for_notifications', :as => 'register_for_notifications'
   end
 
   resources :parameters
@@ -62,7 +63,6 @@ Rails.application.routes.draw do
   end
 
   resources :parking_spaces do
-
     member do
       post 'attach_documents'
       post 'attach_images'
@@ -88,7 +88,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

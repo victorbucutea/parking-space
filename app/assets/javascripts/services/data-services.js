@@ -85,6 +85,7 @@ angular.module('ParkingSpace.services')
                 space.target_price = space.price;
                 space.target_price_currency = space.currency;
                 space.weekly_schedule = JSON.stringify(space.weekly_schedule);
+
                 let parking_space = {parking_space: space};
 
                 let url = space.id ? '/parking_spaces/' + space.id + '.json' : '/parking_spaces.json';

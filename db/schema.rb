@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_15_172557) do
+ActiveRecord::Schema.define(version: 2020_06_21_153058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,7 +54,10 @@ ActiveRecord::Schema.define(version: 2020_06_15_172557) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parking_space_id"
+    t.string "name"
+    t.bigint "user_id"
     t.index ["parking_space_id"], name: "index_images_on_parking_space_id"
+    t.index ["user_id"], name: "index_images_on_user_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -303,6 +306,7 @@ ActiveRecord::Schema.define(version: 2020_06_15_172557) do
 
   add_foreign_key "documents", "parking_spaces"
   add_foreign_key "images", "parking_spaces"
+  add_foreign_key "images", "users"
   add_foreign_key "locations", "companies"
   add_foreign_key "parking_perimeters", "parking_spaces"
   add_foreign_key "parking_perimeters", "sections"

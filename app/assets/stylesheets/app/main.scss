@@ -500,6 +500,10 @@ nav {
     left: 50%;
   }
 
+  @include media-breakpoint-up(lg) {
+    left: 40%;
+  }
+
   &.shadow {
     box-shadow: 2px 2px 12px 1px $gray-700;
   }
@@ -575,6 +579,13 @@ nav {
       display: none;
       z-index: 1;
       border-radius: 50%;
+    }
+
+
+    @include media-breakpoint-down(sm) {
+      .delete-thumbnail {
+        display: block;
+      }
     }
 
 

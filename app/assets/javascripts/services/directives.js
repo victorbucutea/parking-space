@@ -551,7 +551,7 @@ angular.module('ParkingSpace.directives')
                 '          <div class="col-5 col-md-4 justify-content-center d-flex full-height" style="overflow: hidden" >' +
                 '               <i class="fa fa-3x fa-photo align-self-center text-muted" ng-if="!space.images.length"></i>' +
                 '               <img ng-click="showFullImageThumb($event)" ' +
-                '                    ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.images[0].name}}"' +
+                '                    ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space.images[0].file}}"' +
                 '                    ng-if="space.images.length">' +
                 '          </div>' +
                 '          <div class="px-2 pt-1 col-7 col-md-8" >' +
@@ -603,7 +603,7 @@ angular.module('ParkingSpace.directives')
                 '          <div class="car-stage" ng-init="imgIndex = 0">' +
                 '            <DIV ng-repeat="img in carouselImgs" class="car-invisible">' +
                 '              <img  ng-class="{\'d-none\' : $index != imgIndex }"' +
-                '                    ng-src="{{\'https://res.cloudinary.com/\'+cloudName+\'/image/upload/q_auto,f_auto/\'+img.file}}" ' +
+                '                    ng-src="{{img.dataUrl}}" ' +
                 '                    class="carousel-img img-fluid mb-1 animated zoomIn">' +
                 '            </DIV>' +
                 '          </div>' +
@@ -620,6 +620,15 @@ angular.module('ParkingSpace.directives')
                 $rootScope.$on('showCarouselImages', function (event, val) {
                     $scope.imgIndex = 0;
                     $scope.carouselImgs = val;
+                    val.forEach((v) => {
+                        if (v.files) {
+                            // file system file
+                            v.dataUrl= URL.createObjectURL(v.files[0]);
+                        } else {
+                            // uploaded file
+                            v.dataUrl = 'https://res.cloudinary.com/' + $scope.cloudName + '/image/upload/q_auto,f_auto/' + v.file
+                        }
+                    })
                     $elm.find('#imgCarouselModal').show();
                 })
 
@@ -760,6 +769,11 @@ angular.module('ParkingSpace.directives')
                 '                    </div>' +
                 '                </div>' +
                 '                <div class="my-3 text-center"  >' +
+                '                     <button class="btn btn-sm btn-outline-primary" ' +
+                '                             ng-show="offer.owner_is_current_user && !offer.paid"' +
+                '                             ui-sref=".pay({offer: offer, space: space})">' +
+                '                        <i class="fa fa-credit-card"></i> Achită' +
+                '                     </button>' +
                 '                      <a class="btn btn-outline-primary btn-sm " ng-href="tel:{{offer.owner_prefix + offer.owner_phone_number}}">' +
                 '                         <i class="fa fa-phone"></i> ' +
                 '                         Apelează {{offer.owner_name}} ' +
@@ -769,11 +783,6 @@ angular.module('ParkingSpace.directives')
                 '                             ng-click="cancel(space, offer)"> ' +
                 '                       <i class="fa fa-ban"></i> Anulează' +
                 '                     </button> ' +
-                '                     <button class="btn btn-sm btn-outline-primary" ' +
-                '                             ng-show="offer.owner_is_current_user && !offer.paid"' +
-                '                             ui-sref=".pay({offer: offer, space: space})">' +
-                '                        <i class="fa fa-credit-card"></i> Achită' +
-                '                     </button>' +
                 '                </div>' +
                 '            </div>' +
                 '         </div>' +
@@ -1759,7 +1768,6 @@ angular.module('ParkingSpace.directives')
                 accept: '=?',
                 folder: '=?',
                 uploadedFiles: '=',
-                existingFiles: '=?',
             },
             template: '<div class="drop-zone d-flex justify-content-center" >' +
                 '           <input required class="fileupload" style="display: none" type="file" name="file" multiple max="{{maxCount}}" accept="{{accept}}">' +
@@ -1782,7 +1790,7 @@ angular.module('ParkingSpace.directives')
                 $scope.maxCount = angular.isDefined($scope.maxCount) ? $scope.maxCount : 3;
                 $scope.uploadedFiles = angular.isDefined($scope.uploadedFiles) ? $scope.uploadedFiles : [];
 
-                $scope.$watch('uploadedFiles', function (newValue, oldValue) {
+                $scope.$watchCollection('uploadedFiles', function (newValue, oldValue) {
                     $scope.uploadedFiles.submit = function () {
                         return $q(function (resolve) {
                             let clbks = [];

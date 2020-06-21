@@ -100,31 +100,25 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
                     $scope.loading = true;
 
-                    let savePromise = parkingSpaceService.saveSpace($scope.spaceEdit);
-                    let uploadFilesPromise = $scope.uploadedFiles.submit();
-                    let images = $scope.spaceEdit.images;
-                    let existingImgs = [];
-                    if (images) {
-                        existingImgs = images.filter(i => !i._destroy);
-                    }
+                    let uploadFilesPromise = $scope.spaceEdit.images ? $scope.spaceEdit.images.submit() : $q.resolve([]);
 
-                    $q.all([savePromise, uploadFilesPromise]).then((savedSpaceAndFiles) => {
-                        if (!savedSpaceAndFiles[0]) return;
-                        let savedSpace = savedSpaceAndFiles[0];
-                        $scope.spaceEdit = savedSpace;
-                        replaceById($scope.spaceEdit, $scope.spaces);
-                        let uploadedFiles = [...savedSpaceAndFiles[1], ...existingImgs];
-                        parkingSpaceService.uploadImages(savedSpace.id, uploadedFiles).then((resp) => {
-                            $rootScope.$emit('http.notif', 'Locul de parcare a fost salvat!');
-                            $scope.spaceEdit = resp;
+                    uploadFilesPromise.then(( files) => {
+                        $scope.spaceEdit.images = $scope.spaceEdit.images.filter(im => !im.files );
+                        parkingSpaceService.saveSpace($scope.spaceEdit).then( (savedSpace) => {
+                            $scope.spaceEdit = savedSpace;
                             replaceById($scope.spaceEdit, $scope.spaces);
-                        });
-                        if (savedSpace.missing_title_deed) {
-                            $scope.step++;
-                        } else {
-                            $state.go('^');
-                        }
-                    }).finally(() => {
+                            parkingSpaceService.uploadImages(savedSpace.id, files).then((resp) => {
+                                $rootScope.$emit('http.notif', 'Locul de parcare a fost salvat!');
+                                $scope.spaceEdit = resp;
+                                replaceById($scope.spaceEdit, $scope.spaces);
+                                if (savedSpace.missing_title_deed) {
+                                    $scope.step++;
+                                } else {
+                                    $state.go('^');
+                                }
+                            });
+                        })
+                    } ).finally( () => {
                         $scope.loading = false;
                     })
 

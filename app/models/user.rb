@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   belongs_to :company
   has_many :parking_spaces
   has_many :roles
+  has_many :images
   validate :phone_number_format
 
 

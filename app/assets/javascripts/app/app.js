@@ -50,7 +50,7 @@ angular.module('ParkingSpaceMobile', [
                 }
             })
             .state('register', {
-                url: '/register',
+                url: '/register?fromfb&inside&email&firstName',
                 views: {
                     'content': {
                         templateUrl: "templates/register.html"

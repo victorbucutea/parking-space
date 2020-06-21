@@ -84,7 +84,7 @@ class ParkingSpacesController < ApplicationController
     @parking_space.images.destroy_all
     # save to parking_space_documents
     imgs.each do |d|
-      img = @parking_space.images.create(image: d[:file], comment: 'User upload')
+      img = @parking_space.images.create(image: d[:file],name: d[:name], comment: 'User upload')
       unless img.errors.empty?
         return render json: { Error: img.errors }, status: :unprocessable_entity
       end
