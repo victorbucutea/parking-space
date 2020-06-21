@@ -155,7 +155,11 @@ angular.module('ParkingSpace.directives')
     })
 
     .factory('loadGmaps', ['geocluster', '$rootScope', function (geocluster, $rootScope) {
+        if (document.getElementById("gmapsScript")) {
+            return; // assume this has already run
+        }
         let s = document.createElement('script');
+        s.id =  "gmapsScript";
         s.onload = function () {
             window.onLoadMaps()
         };

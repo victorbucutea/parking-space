@@ -63,6 +63,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
 
             $scope.mapCreated = function (map, overlay, geocoder) {
                 $('#mapBlanket').fadeOut();
+                console.log('map created ', map);
                 $rootScope.map = map;
                 $rootScope.overlay = overlay;
                 $rootScope.geocoder = geocoder;
