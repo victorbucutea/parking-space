@@ -1253,7 +1253,8 @@ angular.module('ParkingSpace.directives')
                 ' <div class="row no-gutters align-items-center">' +
                 '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
                 '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
-                '<input type="number" maxlength="3" ng-model="bidAmount" class="form-control" required>' +
+                '<input type="number" maxlength="3" max="100" ng-model="bidAmount" class="form-control" required>' +
+                ' <div class="invalid-tooltip" style="left:20%">Max 100</div>'+
                 '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
                 '</div>' +
                 '<div class="col-4 col-sm-5 col-md-5">' +
