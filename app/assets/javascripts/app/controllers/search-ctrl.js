@@ -15,10 +15,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
             let ongoingDrawSpacesReq;
 
             if (!$rootScope.desktopScreen) {
-                $rootScope.$emit('mapAndContent', {colMap: 'col-12'});
+                $scope.$emit('mapAndContent', {colMap: 'col-12'});
                 $scope.showList = false;
             } else {
-                $rootScope.$emit('mapAndContent', {colMap: 'col-6 col-lg-8', colContent: 'col-6 col-lg-4'});
+                $scope.$emit('mapAndContent', {colMap: 'col-6 col-lg-8', colContent: 'col-6 col-lg-4'});
                 $scope.showList = true;
             }
 
@@ -81,7 +81,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
             })
 
 
-            $rootScope.$on('markerClick', function (event, payload) {
+            $scope.$on('markerClick', function (event, payload) {
                 let isMultiple = payload[1];
                 let data = payload[0];
                 $('#showMultipleSpaces').hide();

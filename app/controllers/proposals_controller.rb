@@ -34,13 +34,13 @@ class ProposalsController < ApplicationController
   end
 
   def pay
-    unless @proposal.pending?
-      render json: { Error: 'Nu se poate achita. Oferta a fost respinsa.' }, status: :unprocessable_entity
+    if @proposal.paid?
+      render json: { Error: 'Nu se poate achita. Oferta a fost plătită deja.' }, status: :unprocessable_entity
       return
     end
 
-    if @proposal.paid?
-      render json: { Error: 'Nu se poate achita. Oferta a fost plătită deja.' }, status: :unprocessable_entity
+    unless @proposal.pending?
+      render json: { Error: 'Nu se poate achita. Oferta a fost respinsa.' }, status: :unprocessable_entity
       return
     end
 

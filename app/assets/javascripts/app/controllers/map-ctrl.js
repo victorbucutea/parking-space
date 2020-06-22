@@ -18,8 +18,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
             $scope.showMap = true;
             $scope.showContent = true;
 
-
-            $rootScope.$on('mapAndContent', function (event, val) {
+            $scope.$on('mapAndContent', function (event, val) {
                 $scope.showMap = val.showMap !== false;
                 $scope.showContent = val.showContent !== false;
 
@@ -93,7 +92,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
             };
 
             $scope.markerClick = function (data, isMultiple) {
-                $rootScope.$emit('markerClick', [data, isMultiple])
+                $scope.$broadcast('markerClick', [data, isMultiple])
             };
 
             $scope.selectPlace = function (newAddr, newLocation) {

@@ -778,7 +778,9 @@ angular.module('ParkingSpace.directives')
                 '                             ui-sref=".pay({offer: offer, space: space})">' +
                 '                        <i class="fa fa-credit-card"></i> Achită' +
                 '                     </button>' +
-                '                      <a class="btn btn-outline-primary btn-sm " ng-href="tel:{{offer.owner_prefix + offer.owner_phone_number}}">' +
+                '                      <a class="btn btn-outline-primary btn-sm " ' +
+                '                         ng-hide="offer.owner_is_current_user"' +
+                '                         ng-href="tel:{{offer.owner_prefix + offer.owner_phone_number}}">' +
                 '                         <i class="fa fa-phone"></i> ' +
                 '                         Apelează {{offer.owner_name}} ' +
                 '                     </a>' +

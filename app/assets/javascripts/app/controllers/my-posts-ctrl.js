@@ -10,9 +10,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                   notificationService, replaceById, $rootScope, paymentService, parameterService) {
 
             if (!$rootScope.desktopScreen)
-                $rootScope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
+                $scope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
             else {
-                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap: 'col-4'});
+                $scope.$emit('mapAndContent', {colContent: 'col-8', colMap: 'col-4'});
                 paymentService.getAccountStatus((d) => {
                     $scope.account = d;
                 })

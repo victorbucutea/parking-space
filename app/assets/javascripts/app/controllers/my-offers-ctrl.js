@@ -29,9 +29,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
 
 
             if (!$rootScope.desktopScreen)
-                $rootScope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
+                $scope.$emit('mapAndContent', {showMap: false, colContent: 'col-12'});
             else
-                $rootScope.$emit('mapAndContent', {colContent: 'col-8', colMap: 'col-4'});
+                $scope.$emit('mapAndContent', {colContent: 'col-8', colMap: 'col-4'});
 
 
             $scope.cloudName = window.cloudinaryName;
@@ -41,7 +41,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
                     return;
                 }
                 $scope.drawSpaces(spaces, true);
-
                 $scope.activeSpaces = [];
                 $scope.futureSpaces = [];
                 $scope.pastSpaces = [];
@@ -50,7 +49,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
                     if (activeOffers.length) {
                         $scope.activeSpaces.push(s);
                         s.activeOffers = activeOffers;
-
                     }
                     let pastOffers = s.offers.filter(o => isPast(o));
                     if (pastOffers.length) {
@@ -65,6 +63,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
                 })
             });
 
+
             $scope.timeUntilStart = function (offer) {
                 if (!offer) return 'N/A';
                 return moment().twix(offer.start_date).humanizeLength();
@@ -76,8 +75,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyOffersCtrl',
                 evt.stopPropagation();
             };
 
-            $rootScope.$on('markerClick', function (event, payload) {
-                let isMultiple = payload[1];
+            $scope.$on('markerClick', function (event, payload) {
                 let data = payload[0];
                 if ($scope.activeSpaces.indexOf(data) !== -1) {
                     $('#activeTab').tab('show');
