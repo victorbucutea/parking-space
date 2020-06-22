@@ -5,6 +5,7 @@ nav {
   .navbar-brand {
     color: $blue-100;
   }
+
   .navbar-nav {
     & > li {
       &.active {
@@ -68,6 +69,15 @@ div.daterangepicker {
   padding: 0;
   margin-top: 7px;
   box-shadow: 2px 2px 2px 0 $gray-600;
+
+  @include media-breakpoint-down(xsm) {
+    top: 10% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto !important;
+    position: fixed !important;
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
 
   &:after {
     border-bottom-color: $blue-700;
@@ -148,7 +158,7 @@ div.daterangepicker {
     border: 1px solid $gray-lighter;
     line-height: 2;
     font-size: 1.5em;
-    height:auto;
+    height: auto;
     padding-right: 2.5em;
     text-overflow: ellipsis;
     background-color: $blue-80;
@@ -160,7 +170,6 @@ div.daterangepicker {
       font-size: 1.4em;
     }
   }
-
 
 
   .btn-search {
@@ -227,6 +236,7 @@ div.daterangepicker {
   date-input {
 
     box-shadow: 0px -1px 3px 0 $gray-700;
+
     &.err {
       border: 1px solid $red;
     }
@@ -322,10 +332,10 @@ div.daterangepicker {
   }
 
 
-
   .t-bar {
     z-index: 2;
   }
+
   .pricing-list {
     list-style: none;
     padding: 0;
@@ -375,6 +385,7 @@ div.daterangepicker {
       text-decoration: underline;
     }
   }
+
   .pricing-icon {
     display: flex;
     align-items: center;
@@ -417,6 +428,7 @@ div.daterangepicker {
       cursor: pointer;
     }
   }
+
   .panel-body {
     display: none;
     border-top: 1px solid $gray-400;
@@ -428,7 +440,6 @@ div.daterangepicker {
     box-shadow: none;
   }
 }
-
 
 
 .spaces-list {
@@ -532,6 +543,7 @@ div.daterangepicker {
         color: $gray-400;
         font-size: 1em;
       }
+
       margin-bottom: 4px;
     }
   }
@@ -565,6 +577,7 @@ div.daterangepicker {
         background-color: $blue-900;
         border: 0;
       }
+
       textarea {
         height: 67px;
         background-color: $blue-900;
