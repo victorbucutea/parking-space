@@ -43,11 +43,11 @@
     </div>
     <div class="item mb-3 panel p-0" ng-repeat="space in spaces" ng-click="select(space)">
       <parking-spot-info-box ng-click="show(space,'item-'+$index)" space="space" thumbnail-modal="true"></parking-spot-info-box>
-      <hr class="m-0"/>
+      <hr class="mt-0"/>
       <space-status-box spaces="spaces" space="space"></space-status-box>
 
       <div ng-if="space.validated">
-        <hr/>
+        <hr class="mt-0"/>
         <p class="text-muted text-center">
           <i class="fa fa-check text-success"> </i> Valabil inca {{timeUntilExpiry(space)}}
         </p>

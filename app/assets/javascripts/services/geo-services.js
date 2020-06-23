@@ -58,12 +58,13 @@ angular.module('ParkingSpace.services')
             });
         };
 
-        this.getAddress = function (lat, lng, clbk) {
+        _this.getAddress = function (lat, lng, clbk) {
+            _this.geocoder = new google.maps.Geocoder();
             var latLng = {
                 'latLng': new google.maps.LatLng(lat, lng)
             };
 
-            $rootScope.geocoder.geocode(latLng, function (result) {
+            _this.geocoder.geocode(latLng, function (result) {
 
                 if (!result)
                     return;

@@ -154,12 +154,12 @@ angular.module('ParkingSpace.directives')
         return geocluster;
     })
 
-    .factory('loadGmaps', ['geocluster', '$rootScope', function (geocluster, $rootScope) {
+    .service('loadGmaps', ['geocluster', '$rootScope', function (geocluster, $rootScope) {
         if (document.getElementById("gmapsScript")) {
             return; // assume this has already run
         }
         let s = document.createElement('script');
-        s.id =  "gmapsScript";
+        s.id = "gmapsScript";
         s.onload = function () {
             window.onLoadMaps()
         };
@@ -169,22 +169,38 @@ angular.module('ParkingSpace.directives')
         document.body.appendChild(s);
 
 
-        let lazyLoadGmapsApi = function () {
-            let deffered = $.Deferred();
-            window.onLoadMaps = function () {
-                deffered.resolve();
-            };
-            setTimeout(() => {
-                if (!window.google || !window.google.maps) {
-                    console.error('gmaps not loaded');
-                    deffered.reject();
-                    return;
-                }
-            }, 4000)
-            return deffered.promise();
+        let deferred = $.Deferred();
+        window.onLoadMaps = function () {
+            deferred.resolve(function (elm) {
+                // nasty workaroung to send an initialization functino
+                // which will be called in then() resolve function
+                // if this code were to be present in the resolve function (e.g. map directive)
+                // it wouldd not work :OOOOOO
+                let mapOptions = {
+                    center: new google.maps.LatLng(44.412, 26.113),
+                    zoom: 18,
+                    minZoom: 16,
+                    maxZoom: 20,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    streetViewControl: false,
+                    scaleControl: false,
+                    rotateControl: false,
+                    disableDefaultUI: true,
+                    gestureHandling: 'greedy',
+                    clickableIcons: false
+                };
+                let map = new google.maps.Map(elm, mapOptions);
+            });
         };
+        setTimeout(() => {
+            if (!window.google || !window.google.maps) {
+                console.error('gmaps not loaded');
+                deferred.reject();
+                return;
+            }
+        }, 4000)
 
-        return lazyLoadGmapsApi().then(function () {
+        let then = deferred.promise().then(function (initF) {
             if (!window.google || !window.google.maps) {
                 console.error('gmaps not loaded');
                 return;
@@ -345,12 +361,13 @@ angular.module('ParkingSpace.directives')
             };
 
             window.HtmlMarker = HtmlMarker;
-
+            return initF;
         }, function () {
             console.error('promise rejected');
             $rootScope.$emit('http.error', 'Nu se poate incărca harta. Ești conectat la internet?')
             $rootScope.$apply();
         });
+        return then;
     }])
 
     .directive('map', ['loadGmaps', function (loadGmaps) {
@@ -361,40 +378,20 @@ angular.module('ParkingSpace.directives')
                 onError: '&',
             },
             link: function ($scope, $element, $attr) {
-
-                loadGmaps.then(() => {
-                    function initialize() {
-                        let mapOptions = {
-                            center: new google.maps.LatLng(44.412, 26.113),
-                            zoom: 18,
-                            minZoom: 16,
-                            maxZoom: 20,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP,
-                            streetViewControl: false,
-                            scaleControl: false,
-                            rotateControl: false,
-                            disableDefaultUI: true,
-                            gestureHandling: 'greedy',
-                            clickableIcons: false
-                        };
-                        let map = new google.maps.Map($element[0], mapOptions);
-                        let overlay = new google.maps.OverlayView();
-                        overlay.setMap(map);
-                        overlay.draw = function () {
-                        };
-
-                        let geocoder = new google.maps.Geocoder();
-
-                        $scope.onCreate({map: map, overlay: overlay, geocoder: geocoder});
+                console.log('loading map directive')
+                loadGmaps.then(function (initF) {
+                    console.log('map resolved promise after manual creation')
+                    if (initF) {
+                        initF($element[0]);
                     }
-
-                    initialize();
+                    $scope.onCreate({map: map});
                 }, (err) => {
                     // bad internet, a message should be shown
                     // to warn the user. No sense to initialize the map.
                     $scope.onError();
                     return;
                 })
+
             }
         };
     }])
@@ -627,7 +624,7 @@ angular.module('ParkingSpace.directives')
                     val.forEach((v) => {
                         if (v.files) {
                             // file system file
-                            v.dataUrl= URL.createObjectURL(v.files[0]);
+                            v.dataUrl = URL.createObjectURL(v.files[0]);
                         } else {
                             // uploaded file
                             v.dataUrl = 'https://res.cloudinary.com/' + $scope.cloudName + '/image/upload/q_auto,f_auto/' + v.file
@@ -943,7 +940,7 @@ angular.module('ParkingSpace.directives')
             template: '<div>' +
                 '         <space-missing-doc-box ng-if="!noValiationStatus" space="space"></space-missing-doc-box>' +
                 '         <space-validated-box spaces="spaces" ng-if="!noValiationStatus" space="space"></space-validated-box>' +
-                '         <div class="p-2">' +
+                '         <div class="px-2">' +
                 '            <h5 class="text-center font-weight-bold p-2 "><u>Rezervări</u></h5>' +
                 '            <ul class="nav nav-tabs" role="tablist">' +
                 '              <li class="nav-item " >' +
@@ -1254,7 +1251,7 @@ angular.module('ParkingSpace.directives')
                 '<div class="col-8 col-sm-7 col-md-6 d-flex align-items-center">' +
                 '<a class="fa fa-caret-left fa-5x" ng-click="decrease()"></a>' +
                 '<input type="number" maxlength="3" max="100" ng-model="bidAmount" class="form-control" required>' +
-                ' <div class="invalid-tooltip" style="left:20%">Max 100</div>'+
+                ' <div class="invalid-tooltip" style="left:20%">Max 100</div>' +
                 '<a class="fa fa-caret-right fa-5x" ng-click="increase()" style=""></a>' +
                 '</div>' +
                 '<div class="col-4 col-sm-5 col-md-5">' +

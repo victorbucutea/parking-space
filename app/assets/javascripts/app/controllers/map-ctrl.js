@@ -60,12 +60,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
                 return createMap.promise;
             }
 
-            $scope.mapCreated = function (map, overlay, geocoder) {
+            $scope.mapCreated = function (map) {
                 $('#mapBlanket').fadeOut();
                 console.log('map created ', map);
                 $rootScope.map = map;
-                $rootScope.overlay = overlay;
-                $rootScope.geocoder = geocoder;
+
                 $rootScope.map.addListener('click', function (evt) {
                     // to avoid mobile ggl autocomplete keeping focus when clicking on map
                     $('#pac-input').blur();
