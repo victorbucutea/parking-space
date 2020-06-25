@@ -742,7 +742,7 @@ angular.module('ParkingSpace.directives')
                 '                        <div>Anulată</div>' +
                 '                          <span class="text-secondary">' +
                 '                             <i class="fa fa-info-circle"></i> ' +
-                '                             Rezervarea a fost anulată de către proprietar.' +
+                '                             Rezervarea a fost anulată.' +
                 '                           </span> ' +
                 '                        </span>' +
                 '                        <span ng-show="offer.rejected" class="text-danger">' +
