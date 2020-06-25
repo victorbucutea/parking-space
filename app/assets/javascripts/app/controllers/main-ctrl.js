@@ -78,6 +78,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                 $('#htmlMarker-' + cl.elements[0][2].id).addClass('selected');
             };
 
+
+            $scope.showTerms = function () {
+                $rootScope.$emit('terms');
+            };
+
             $('#navMenu').hide();
 
         }]);

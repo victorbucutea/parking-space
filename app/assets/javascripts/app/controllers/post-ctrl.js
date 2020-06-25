@@ -162,4 +162,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
                 $scope.calculateAddress()
             }
 
+
+            $scope.showTerms = function () {
+                $rootScope.$emit('terms');
+            };
+
         }]);

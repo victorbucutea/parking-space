@@ -831,7 +831,7 @@ angular.module('ParkingSpace.directives')
                 '                În consecință locul nu mai este disponibil pentru închiriere">' +
                 '              Valabilitate expirată <i class="fa fa-question-circle-o"></i>' +
                 '            </div>' +
-                '            <button class="btn btn-link btn-sm" onclick="$(\'#validityDetails\').slideToggle()">' +
+                '            <button class="btn btn-link btn-sm py-0" onclick="$(\'#validityDetails\').slideToggle()">' +
                 '              <i class="fa fa-angle-down"></i> Prelungește valabilitatea' +
                 '            </button>' +
                 '          </div>' +
@@ -1794,6 +1794,7 @@ angular.module('ParkingSpace.directives')
                 $scope.uploadedFiles = angular.isDefined($scope.uploadedFiles) ? $scope.uploadedFiles : [];
 
                 $scope.$watchCollection('uploadedFiles', function (newValue, oldValue) {
+                    if (!newValue) return;
                     $scope.uploadedFiles.submit = function () {
                         return $q(function (resolve) {
                             let clbks = [];
@@ -1873,7 +1874,7 @@ angular.module('ParkingSpace.directives')
                 }
 
                 $scope.maxCntReached = function () {
-
+                    if (!$scope.uploadedFiles) return false;
                     let noUploads = $scope.uploadedFiles.length;
                     let deletedUpl = $scope.uploadedFiles.filter((i) => {
                         return i._destroy
@@ -1961,7 +1962,8 @@ angular.module('ParkingSpace.directives')
             template: '<div class="input-group mt-3 input-group-lg">' +
                 '                <country-select selected-country="selectedCountry" ></country-select>' +
                 '                <input class="phone-number form-control" type="text" id="phoneNo"' +
-                '                       autocorrect="off" autocapitalize="none" ng-model="phoneNumberFormatted" ' +
+                '                       autocorrect="off" autocapitalize="none" ' +
+                '                       ng-model="user.phone_number" ' +
                 '                       autocomplete="none"' +
                 '                       placeholder="e.g. {{example}}"' +
                 '                       name="phoneNumber"' +
@@ -1997,10 +1999,10 @@ angular.module('ParkingSpace.directives')
 
                 $scope.$watch('selectedCountry', function (newValue, oldValue) {
                     if (!newValue) return;
-                    $scope.example = newValue.mobile_example;
+                    $scope.example = newValue.mobile_example.replace(/ /g, "");
                     $scope.prefixPatterns = "(" + newValue.mobile_prefixes.split(",").join("|") + ")";
-                    $scope.pattern = $scope.example.replaceAll(" ", "").replace(/\d/g, "\\d");
-                    $scope.maxlength= newValue.mobile_no_length;
+                    $scope.pattern = $scope.example.replace(/\d/g, "\\d");
+                    $scope.maxlength = newValue.mobile_no_length;
                     $scope.pattern = $scope.prefixPatterns + "\\d+";
                     if ($scope.user) {
                         $scope.user.country = newValue.code;
@@ -2154,6 +2156,19 @@ angular.module('ParkingSpace.directives')
                     addMsg($scope.notifMsg, data);
                 });
 
+            }
+        }
+    }])
+
+    .directive('termsAndConditions', ['$rootScope', function ($rootScope) {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/terms.html',
+            link: function ($scope, elm) {
+
+                $rootScope.$on('terms', function (event, data) {
+                    $('#termsModal').show();
+                });
             }
         }
     }]);

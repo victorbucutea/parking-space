@@ -1,4 +1,4 @@
-<div class="ps-modal  animated fadeIn p-4" >
+<div class="ps-modal  animated zoomIn p-4" id="termsModal" style="display: none">
     <div class="search-space-modal container animated zoomIn mt-md-5 py-3 py-md-4">
         <h2> Termeni utilizare Go-park</h2>
         <hr/>
@@ -27,7 +27,7 @@
             <li> Asigure accesul <b>Clientului</b> la locul de parcare și să nu intervină in nici o formă la blocarea/alterarea/incomodarea accesului pe toată
                  durata rezervării.</li>
             <li> Asigure securitatea <b>Clientului</b> orice daună ulterioară raportată de <b>Client</b> va fi rezolvată conform legislației în vigoare,
-            go-park asumându-și doar rolul de 'intermediar' al tranzacției</li>
+            go-park asumându-și doar rolul de 'intermediar' al <b>Rezerării</b>.</li>
             <li> Respecte Go-Park ca <b>mediator</b> în orice dispută ar putea aparea cu privire la Rezervare si să admită penalizările sau daunele cerute
             de <b>mediator</b> </li>
         </ul>
@@ -48,7 +48,7 @@
         </ul>
 
         <div class="text-center text-truncate">
-            <button class="btn btn-lg btn-danger" ui-sref="login">Am înțeles și sunt de acord cu condițiile</button>
+            <button class="btn btn-lg btn-danger" onclick="$('#termsModal').hide()">Sunt de acord cu condițiile</button>
         </div>
     </div>
 </div>

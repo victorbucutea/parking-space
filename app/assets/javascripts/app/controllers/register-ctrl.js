@@ -67,6 +67,10 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                 });
             };
 
+            $scope.showTerms = function () {
+                $rootScope.$emit('terms');
+            };
+
 
             $scope.back = function () {
                 if ($scope.inside) {
