@@ -35,7 +35,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('MainCtrl',
                     return;
                 userService.getUser().then((user) => {
                     $scope.currentUser = user;
-                    if (!user.phone_no_confirm) {
+
+                    if (user && !user.phone_no_confirm) {
                         $state.go('confirm-phone');
                         event.preventDefault();
                     }

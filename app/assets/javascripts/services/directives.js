@@ -172,7 +172,7 @@ angular.module('ParkingSpace.directives')
         let deferred = $.Deferred();
         window.onLoadMaps = function () {
             deferred.resolve(function (elm) {
-                // nasty workaroung to send an initialization functino
+                // nasty workaround to send an initialization function
                 // which will be called in then() resolve function
                 // if this code were to be present in the resolve function (e.g. map directive)
                 // it wouldd not work :OOOOOO
@@ -190,6 +190,7 @@ angular.module('ParkingSpace.directives')
                     clickableIcons: false
                 };
                 let map = new google.maps.Map(elm, mapOptions);
+                return map
             });
         };
         setTimeout(() => {
@@ -378,13 +379,11 @@ angular.module('ParkingSpace.directives')
                 onError: '&',
             },
             link: function ($scope, $element, $attr) {
-                console.log('loading map directive')
                 loadGmaps.then(function (initF) {
-                    console.log('map resolved promise after manual creation')
                     if (initF) {
-                        initF($element[0]);
+                        let map = initF($element[0]);
+                        $scope.onCreate({map: map});
                     }
-                    $scope.onCreate({map: map});
                 }, (err) => {
                     // bad internet, a message should be shown
                     // to warn the user. No sense to initialize the map.
@@ -1537,7 +1536,7 @@ angular.module('ParkingSpace.directives')
                         };
 
                         if (!$scope.noMinDate) {
-                            options.minDate = moment();
+                            options.minDate = moment()
                         }
 
                         elm.daterangepicker(options, function (start, end, label) {
@@ -1854,6 +1853,7 @@ angular.module('ParkingSpace.directives')
                             return;
                         }
 
+
                         $scope.uploadedFiles.push(data);
                         $scope.onSelect({file: data});
                         $scope.$apply();
@@ -1961,12 +1961,15 @@ angular.module('ParkingSpace.directives')
             template: '<div class="input-group mt-3 input-group-lg">' +
                 '                <country-select selected-country="selectedCountry" ></country-select>' +
                 '                <input class="phone-number form-control" type="text" id="phoneNo"' +
-                '                       autocorrect="off" autocapitalize="none" ng-model="phoneNumberFormatted" autocomplete="none"' +
+                '                       autocorrect="off" autocapitalize="none" ng-model="phoneNumberFormatted" ' +
+                '                       autocomplete="none"' +
                 '                       placeholder="e.g. {{example}}"' +
-                '                        name="phoneNumber"' +
+                '                       name="phoneNumber"' +
+                '                       maxlength="{{maxlength}}"' +
+                '                       minlength="{{maxlength}}"' +
+                '                       max="{{maxlength}}"' +
                 '                       required ' +
-                '                       ng-pattern="pattern"' +
-                '                       pattern="{{pattern}}"/>' +
+                '                       pattern="{{pattern}}" />' +
                 '                <div class="invalid-tooltip" style="left:20%">' +
                 '                  e.g. {{example}}' +
                 '                </div>' +
@@ -1978,67 +1981,6 @@ angular.module('ParkingSpace.directives')
             },
             link: function ($scope, elm, attrs) {
 
-                let inserted = [];
-                let input = $(elm).find('#phoneNo');
-                let phNo = $(elm).find('.phone-number');
-                let isInternalChange = false;
-                let format = function () {
-                    let finaVal = '';
-                    for (let i = 0, tplIdx = 0; i < inserted.length; i++, tplIdx++) {
-                        let tmpl = $scope.format.charAt(tplIdx);
-                        let ch = inserted[i];
-                        if (tmpl === ' ') {
-                            finaVal += tmpl + ch;
-                            tplIdx++;
-                        } else if (tmpl = '') {
-                        } else {
-                            finaVal += ch;
-                        }
-                    }
-                    $scope.phoneNumberFormatted = finaVal;
-                }
-                let insert = function (e) {
-
-                    let idx = inserted.length;
-                    var keyCode = e.keyCode || e.charCode;
-                    if (keyCode == 8 || keyCode == 46) {
-                        inserted = [];
-                        input.val('');
-                        return false;
-                    }
-
-                    if (idx >= $scope.mob_length) {
-                        return false;
-                    }
-
-                    let prefix = $scope.prefixes.split(",").find((pr) => {
-                        let insrtTmp = inserted.join("") + e.key;
-                        let prTmp = pr.slice(0, idx + 1);
-                        return insrtTmp.startsWith(prTmp);
-                    })
-
-
-                    if (!prefix) {
-                        return false;
-                    }
-
-                    if (/\d/.test(e.key)) {
-                        inserted.push(e.key);
-                    }
-                    return true;
-
-
-                }
-
-                input.keydown((e) => {
-                    e.preventDefault();
-                    insert(e);
-                    format();
-                    isInternalChange = true;
-                    $scope.user.phone_number = inserted.join('');
-                    $scope.$apply();
-                    isInternalChange = false;
-                });
 
                 $scope.$watch('user', function (newValue, oldValue) {
                     parameterService.getCountryList().then((list) => {
@@ -2056,37 +1998,15 @@ angular.module('ParkingSpace.directives')
                 $scope.$watch('selectedCountry', function (newValue, oldValue) {
                     if (!newValue) return;
                     $scope.example = newValue.mobile_example;
-                    $scope.prefixes = newValue.mobile_prefixes;
-                    $scope.mob_length = newValue.mobile_no_length;
-                    $scope.format = $scope.example.replace(/\d/g, "x");
-                    $scope.phoneNumberFormatted = '';
-                    inserted = [];
-                    $scope.pattern = $scope.example.replace(/\d/g, "\\d");
+                    $scope.prefixPatterns = "(" + newValue.mobile_prefixes.split(",").join("|") + ")";
+                    $scope.pattern = $scope.example.replaceAll(" ", "").replace(/\d/g, "\\d");
+                    $scope.maxlength= newValue.mobile_no_length;
+                    $scope.pattern = $scope.prefixPatterns + "\\d+";
                     if ($scope.user) {
                         $scope.user.country = newValue.code;
                         $scope.user.prefix = newValue.prefix;
                     }
-                    input.attr('pattern', $scope.pattern);
                 });
-
-                $scope.$watch('phoneNumber', function (newVal) {
-                        if (!newVal) return;
-                        if (isInternalChange) return;
-
-                        let split = newVal.split('');
-                        for (let i = 0; i < split.length; i++) {
-                            if (!insert({key: split[i]})) {
-                                break;
-                            }
-                        }
-                        format();
-                        if ($scope.user) {
-                            $scope.user.phone_number = newVal;
-                        }
-                    }
-                )
-
-
             }
         }
     }])

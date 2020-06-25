@@ -62,26 +62,27 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
 
             $scope.mapCreated = function (map) {
                 $('#mapBlanket').fadeOut();
-                console.log('map created ', map);
                 $rootScope.map = map;
 
-                $rootScope.map.addListener('click', function (evt) {
-                    // to avoid mobile ggl autocomplete keeping focus when clicking on map
-                    $('#pac-input').blur();
-                });
+                setTimeout(() => {
+                    $rootScope.map.addListener('click', function (evt) {
+                        // to avoid mobile ggl autocomplete keeping focus when clicking on map
+                        $('#pac-input').blur();
+                    });
 
-                // center on request params if need be
-                if ($stateParams.lat && $stateParams.lng) {
-                    let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
-                    if ($stateParams.zoom) {
-                        map.setZoom(parseInt($stateParams.zoom));
-                    } else {
-                        map.setZoom(17);
+                    // center on request params if need be
+                    if ($stateParams.lat && $stateParams.lng) {
+                        let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
+                        if ($stateParams.zoom) {
+                            map.setZoom(parseInt($stateParams.zoom));
+                        } else {
+                            map.setZoom(17);
+                        }
+                        map.setCenter(pos);
                     }
-                    map.setCenter(pos);
-                }
+                    createMap.resolve(map);
+                }, 1000);
 
-                return createMap.resolve(map);
             };
 
             $scope.mapError = function () {
