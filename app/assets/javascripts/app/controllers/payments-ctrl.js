@@ -12,12 +12,8 @@ angular.module('ParkingSpaceMobile.controllers').controller('PaymentsCtrl',
 
 
             $scope.selectPayment = function (paym) {
-                $scope.selPayment = paym;
-            };
-
-
-            $scope.getDetails = function (payment) {
-                paymentService.getPaymentDetails(payment.id, function (data) {
+                paymentService.getPaymentDetails(paym.id, function (data) {
+                    data.payment = paym;
                     $scope.paymentDetails = data;
                     $('#showDetails').show();
                 })
