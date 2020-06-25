@@ -5,6 +5,7 @@ class Proposal < ActiveRecord::Base
   scope :for_user, ->(user) { where('proposals.user_id = ? ', user) }
   scope :price_above, ->(price) { where('proposals.bid_amount >= ? ', price) }
   scope :active_or_future, -> { where('proposals.end_date >= ?', Time.now) }
+  scope :past, -> { where('proposals.end_date <= ?', Time.now) }
   scope :outside_period, lambda { |start, end_p|
     where('proposals.start_date <= ?
                                   OR proposals.end_date >= ? ', start, end_p) }
