@@ -107,7 +107,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
 
             $scope.timeUntilExpiry = function (space) {
                 if (!space) return 'N/A';
-                return moment().twix(space.space_availability_stop).humanizeLength();
+                let now = moment();
+                if (now.isBefore(space.space_availability_start)) {
+                    return "în viitor";
+                }
+                return now.twix(space.space_availability_stop).humanizeLength();
             };
 
 
