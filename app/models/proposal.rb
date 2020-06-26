@@ -110,7 +110,7 @@ class Proposal < ActiveRecord::Base
       errors.add :general, 'Locul de parcare a expirat!'
     end
 
-    if end_date >= parking_space.space_availability_stop
+    if end_date > parking_space.space_availability_stop
       errors.add :general, 'Rezervarea depășește valabilitatea spațiului'
     end
   end

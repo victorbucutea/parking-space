@@ -3,15 +3,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('ReviewBidsCtrl',
         function ($rootScope, paymentService, $state, $scope, offerService, parkingSpaceService, replaceById, $q) {
 
 
-            $scope.validity = function (space) {
-                if (!space) return 'N/A';
-                return moment(space.space_availability_start).twix(space.space_availability_stop).format();
-            };
 
-            $scope.timeUntilExpiry = function (space) {
-                if (!space) return 'N/A';
-                return moment().twix(space.space_availability_stop).humanizeLength();
-            };
 
             function initBid() {
                 $scope.bid = {};

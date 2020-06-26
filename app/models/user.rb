@@ -34,6 +34,11 @@ class User < ActiveRecord::Base
     prefix + phone_number
   end
 
+  def timezone
+    ctry = country.nil? ? 'RO' : country.upcase
+    TZInfo::Country.get(ctry).zone_info.first.timezone
+  end
+
   def phone_number_format
     return if phone_number.nil?
 

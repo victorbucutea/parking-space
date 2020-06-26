@@ -5,9 +5,14 @@
 
 
     <div class="bids-area my-3 pb-3 panel ">
-        <div class="no-items-msg" ng-hide="spaces.length">
+        <div class="no-items-msg" ng-show="loading">
             <i class="fa fa-spin fa-2x text-secondary fa-spinner"></i>
         </div>
+        {{loading}}
+        <div class="no-items-msg text-muted" ng-show="noOffers(spaces) && !loading">
+            <i class="fa fa-ban"></i> Nu ai primit nici o plată până acum
+        </div>
+
         <div class="bid-table " ng-repeat="space in spaces">
             <h6 class="py-2 bid-title mb-0 " style="white-space: inherit" ng-show="space.offers.length">
                 {{space.address_line_1}} -
@@ -16,7 +21,7 @@
               </span>
 
             </h6>
-            <div class="offer d-flex justify-content-between" ng-repeat="offer in space.offers">
+            <div class="offer d-flex justify-content-between" ng-repeat="offer in space.offers" ng-show="offer.paid">
 
                 <span class="offer-price">
                     {{offer.amount}} {{ offer.currency }}

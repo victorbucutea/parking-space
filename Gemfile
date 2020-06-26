@@ -6,7 +6,7 @@ ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 
-gem 'rails', '5.2.1'
+gem 'rails', '5.2.4'
 
 gem 'pg', '~>0.20'
 group :development do
@@ -25,7 +25,7 @@ gem 'concurrent-ruby', require: 'concurrent'
 gem 'devise'
 gem 'high_voltage', '~> 3.0.0'
 gem 'icalendar'
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder'
 gem 'json'
 gem 'pusher'
 gem 'pushmeup'
@@ -36,6 +36,7 @@ gem 'sendgrid-ruby'
 gem 'serviceworker-rails'
 gem 'swagger_client_go_park'
 gem 'turbolinks'
+gem 'tzinfo'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker', '~> 3.5', require: false
 gem 'webpush'

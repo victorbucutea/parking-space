@@ -825,18 +825,18 @@ angular.module('ParkingSpace.directives')
             },
             template:
                 '      <div class="animated zoomIn delay-2" ng-if="space.validated">' +
-                '        <div class="p-2 expired-box alert-warning " ng-show="space.expired" ng-init="initExpiredBox()">' +
+                '        <div class="p-2 expired-box alert-warning " ng-show="space.expired" ng-init="initExpiredBox(space)">' +
                 '          <div class="d-flex justify-content-between">' +
                 '            <div class="font-weight-bold text-warning" data-toggle="tooltip" title="Perioada de valabilitate s-a încheiat.' +
                 '                În consecință locul nu mai este disponibil pentru închiriere">' +
                 '              Valabilitate expirată <i class="fa fa-question-circle-o"></i>' +
                 '            </div>' +
-                '            <button class="btn btn-link btn-sm py-0" onclick="$(\'#validityDetails\').slideToggle()">' +
+                '            <button class="btn btn-link btn-sm py-0" ng-click="showValidityForm()">' +
                 '              <i class="fa fa-angle-down"></i> Prelungește valabilitatea' +
                 '            </button>' +
                 '          </div>' +
                 '          <form>' +
-                '            <div class="form-row" id="validityDetails">' +
+                '            <div class="form-row validityDetails" >' +
                 '              <div class="col-md-2"></div>' +
                 '              <div class="form-group col-6 col-md-4">' +
                 '                <label for="validStart"> Data start' +
@@ -863,9 +863,12 @@ angular.module('ParkingSpace.directives')
             link: function ($scope, $elm) {
                 $scope.availability_start = moment();
                 $scope.availability_stop = moment().add(1, 'w');
-                $scope.initExpiredBox = function () {
+                $scope.initExpiredBox = function (space) {
                     $('[data-toggle=tooltip]').tooltip();
-                    $('#validityDetails').hide();
+                    $($elm).find('.validityDetails').hide();
+                };
+                $scope.showValidityForm = function (space) {
+                    $($elm).find('.validityDetails').slideToggle();
                 };
 
 
@@ -940,7 +943,7 @@ angular.module('ParkingSpace.directives')
                 '         <space-missing-doc-box ng-if="!noValiationStatus" space="space"></space-missing-doc-box>' +
                 '         <space-validated-box spaces="spaces" ng-if="!noValiationStatus" space="space"></space-validated-box>' +
                 '         <div class="px-2">' +
-                '            <h5 class="text-center font-weight-bold p-2 "><u>Rezervări</u></h5>' +
+                '            <h5 class="text-center font-weight-bold p-2 mt-3 "><u>Rezervări</u></h5>' +
                 '            <ul class="nav nav-tabs" role="tablist">' +
                 '              <li class="nav-item " >' +
                 '                <a href="" data-target="#active-{{space.id}}" data-toggle="tab" role="tab"  class="nav-link active" >' +

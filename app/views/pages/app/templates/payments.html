@@ -1,4 +1,4 @@
-<div class="animated zoomIn mt-4" ng-controller="PaymentsCtrl">
+<div class="mt-4" ng-controller="PaymentsCtrl">
 
     <h4 class="text-center"> Listă plăți efectuate </h4>
     <div class="no-items-msg loading-finished" ng-hide="payments.length"> Nu ai nici efectuat nici o plată.</div>
@@ -28,16 +28,10 @@
     </div>
 
     <div class="ps-dialog " id="showDetails">
-        <div class="ps-dialog-content animated zoomIn">
+        <div class="ps-dialog-content animated zoomIn mb-2">
             <div class="ps-question">
                 <div ng-repeat="detail in paymentDetails">
-                    <h5> Linie {{$index}}</h5>
-                    <div class="row ps-row">
-                        <div class="col-4">Nume</div>
-                        <div class="col-8">
-                            {{detail.name}}
-                        </div>
-                    </div>
+                    <h5> {{detail.name}} </h5>
                     <div class="row ps-row">
                         <div class="col-4">TVA</div>
                         <div class="col-8">

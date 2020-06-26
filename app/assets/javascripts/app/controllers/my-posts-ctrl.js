@@ -28,11 +28,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                 // show edit space
             });
 
-            $scope.timeUntilExpiry = function (space) {
-                if (!space) return 'N/A';
-                return moment().twix(space.space_availability_stop).humanizeLength();
-            };
-
             $scope.findActiveOffer = function (space) {
                 return space.offers.find((of) => {
                     return of.active

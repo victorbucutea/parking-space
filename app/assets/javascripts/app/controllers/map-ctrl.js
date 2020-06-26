@@ -100,6 +100,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
                 $rootScope.map.setCenter(newLocation);
             };
 
+            $scope.validity = function (space) {
+                if (!space) return 'N/A';
+                return moment(space.space_availability_start).twix(space.space_availability_stop).format();
+            };
+
+            $scope.timeUntilExpiry = function (space) {
+                if (!space) return 'N/A';
+                return moment().twix(space.space_availability_stop).humanizeLength();
+            };
+
 
         }]);
 

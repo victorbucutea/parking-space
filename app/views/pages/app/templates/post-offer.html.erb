@@ -7,6 +7,10 @@
         <i class="fa fa-car text-success"></i>
         <small class="px-3">Parcare <b>privată</b></small>
       </h3>
+      <div class="text-muted pb-1">
+        <b>Activ pentru {{timeUntilExpiry(selectedSpace)}}: </b>
+        {{validity(selectedSpace)}}
+      </div>
       <reviews space="selectedSpace"></reviews>
     </div>
     <hr class="m-0"/>

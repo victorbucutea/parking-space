@@ -12,6 +12,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('PaymentsReceivedCtr
             });
 
 
+            $scope.noOffers = function (spaces) {
+                if (!spaces || !spaces.length) {
+                    return true;
+                }
+                let spacesWithOffers = spaces.find(s => s.offers.length > 0);
+                return spacesWithOffers.length > 0;
+            }
 
 
         }]);
