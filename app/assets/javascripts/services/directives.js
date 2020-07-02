@@ -1183,13 +1183,19 @@ angular.module('ParkingSpace.directives')
                 '          <div class="row no-gutters px-1">' +
                 '            <div class="col-4">Dată start</div>' +
                 '            <div class="col-8">' +
-                '              {{bid.start_date | moment: \'ddd, D MMM hh:mm\'}}' +
+                '              {{bid.start_date | moment: \'ddd, D MMM HH:mm\'}}' +
                 '            </div>' +
                 '          </div>' +
                 '          <div class="row no-gutters px-1">' +
                 '            <div class="col-4">Dată stop</div>' +
                 '            <div class="col-8">' +
-                '              {{bid.end_date | moment: \'ddd, D MMM hh:mm\'}}' +
+                '              {{bid.end_date | moment: \'ddd, D MMM HH:mm\'}}' +
+                '            </div>' +
+                '          </div>' +
+                '          <div class="row no-gutters px-1">' +
+                '            <div class="col-4">Dată creare</div>' +
+                '            <div class="col-8">' +
+                '              {{bid.created_at | moment: \'ddd, D MMM HH:mm\'}}' +
                 '            </div>' +
                 '          </div>' +
                 '          <div class="row no-gutters px-1">' +
