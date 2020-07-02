@@ -1094,6 +1094,10 @@ parking-spot-info-box {
           color: $gray-600;
           text-transform: uppercase;
           font-size: 1.2em;
+
+          @include media-breakpoint-down(sm) {
+            font-size: 1.1em;
+          }
         }
       }
 
