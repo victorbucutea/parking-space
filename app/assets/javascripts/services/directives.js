@@ -1228,7 +1228,7 @@ angular.module('ParkingSpace.directives')
                 '          <button class="mt-1 btn btn-outline-primary" ui-sref=".pay({offer:bid})" ng-if="!bid.paid">' +
                 '            <i class="fa fa-credit-card"></i> Plătește online' +
                 '          </button>' +
-                '          <button class="mt-1 btn btn-link" ng-if="bid.paid">' +
+                '          <button class="mt-1 btn btn-link" disabled ng-if="bid.paid">' +
                 '            <i class="fa fa-credit-card"></i> Achitat online' +
                 '          </button>' +
                 '          <a class="mt-1 btn btn-outline-info" id="callOwner"' +
