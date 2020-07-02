@@ -1,0 +1,42 @@
+<div class=" ps-dialog animated zoomIn pb-2" style="display: block" ng-controller="UserSpacesStatusCtrl">
+  <div class="ps-dialog-content container">
+
+    <h3 class="p-3"> Status loc parcare </h3>
+
+    <form name="statusForm" id="statusForm">
+      <div class="form-group row">
+
+        <label for="status" class="col-form-label  col-xsm-2 col-sm-3">Status:</label>
+        <div class="col-xsm-10 col-sm-9">
+
+          <select id="status" class="form-control" required
+                  ng-model="spaceEdit.status"
+                  ng-options="status for status in statuses"></select>
+
+          <span class="text-muted form-text"> </span>
+        </div>
+      </div>
+      <div class="form-group row">
+
+        <label for="comment" class="col-form-label col-xsm-2 col-sm-3">Comment:</label>
+        <div class="col-xsm-10 col-sm-9">
+
+          <textarea ng-model="spaceEdit.comment" id="comment" required class="form-control"></textarea>
+
+          <span class="text-muted form-text"> </span>
+        </div>
+      </div>
+      <div class="ps-control-buttons">
+        <button class="btn btn-primary "
+                ng-disabled="loading"
+                ng-click="save(spaceEdit)">
+          <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+          Salveaza
+        </button>
+        <button class="btn btn-secondary " ui-sref="^">
+          Anulează
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

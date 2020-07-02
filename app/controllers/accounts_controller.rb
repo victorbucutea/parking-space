@@ -1,19 +1,24 @@
+# frozen_string_literal: true
+
 class AccountsController < ApplicationController
   include PayApi
 
   before_action :authenticate_user!
   load_and_authorize_resource
   before_action :set_account, only: %i[index withdraw withdrawals]
+  before_action :set_user_account, only: %i[list_account]
   before_action :set_withdrawal, only: %i[cancel_withdrawal reject_withdrawal execute_withdrawal]
 
-
-  # GET /accounts/1
-  # GET /accounts/1.json
+  # GET /accounts.json
   def index
     @account = helpers.new_if_not_exists @account
     render :show
   end
 
+  # GET /list_account.json
+  def list_account
+    @withdrawals = Withdrawal.where account_id: @account.id
+  end
 
   def payments
     @payments = get_payments
@@ -23,10 +28,9 @@ class AccountsController < ApplicationController
     @payment_details = get_payment_details_for params[:payment_id]
   end
 
-
   # GET /accounts/withdrawals
   def withdrawals
-    @withdrawals = Withdrawal.where :account_id => @account.id
+    @withdrawals = Withdrawal.where account_id: @account.id
     render :show_withdrawals
   end
 
@@ -38,6 +42,7 @@ class AccountsController < ApplicationController
 
   # POST /accounts/reject_withdrawal
   def reject_withdrawal
+    @withdrawal.status_message = params[:comment]
     unless @withdrawal.rejected!
       render json: { Error: @withdrawal.errors }, status: :unprocessable_entity
     end
@@ -46,6 +51,7 @@ class AccountsController < ApplicationController
 
   # POST /accounts/execute_withdrawal
   def execute_withdrawal
+    @withdrawal.status_message = params[:comment]
     @withdrawal.executed!
     render :show_withdrawal
   end
@@ -69,12 +75,17 @@ class AccountsController < ApplicationController
     render :show
   end
 
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_account
     @account = Account.find_by_user_id current_user.id
+  end
+
+  def set_user_account
+    @account = Account.find_by_user_id params[:user_id]
+    @account = helpers.new_if_not_exists @account
+
   end
 
   # Use callbacks to share common setup or constraints between actions.

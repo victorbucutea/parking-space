@@ -24,4 +24,10 @@ angular.module('ParkingSpaceAdmin.controllers')
                 }
 
 
+                $scope.showFullImageThumb = function (evt, space) {
+                    $rootScope.$emit('showCarouselImages', space.images);
+                    evt.stopPropagation();
+                };
+
+
             }]);

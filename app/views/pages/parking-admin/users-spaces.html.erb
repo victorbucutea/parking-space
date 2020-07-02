@@ -15,7 +15,7 @@
       <button class="btn btn-outline-primary btn-sm ml-5 my-2" ng-click="edit(space)">
         <i class="fa fa-edit"></i> Editeaza
       </button>
-      <button class="btn btn-outline-secondary btn-sm ml-5 my-2" ng-click="edit(space)">
+      <button class="btn btn-outline-secondary btn-sm ml-5 my-2" ng-click="status(space)">
         <i class="fa fa-dashboard"></i> Status
       </button>
       <button class="btn btn-outline-danger btn-sm ml-5 my-2" ng-click="delete(space)">
@@ -35,7 +35,7 @@
       <div ng-repeat="img in space.images" ng-show="space.images.length">
         <div class="img-container">
           <img ng-click="showFullImageThumb($event,space)"
-               ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{img.name}}">
+               ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{img.file}}">
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 angular.module('ParkingSpaceAdmin.controllers')
-    .controller('UserSpacesCtrl',
+    .controller('UserOffersCtrl',
         ['$scope', '$state', '$rootScope', 'parkingSpaceService', 'replaceById',
             function ($scope, $state, $rootScope, parkingSpaceService, replaceById) {
 
                 $scope.cloudName = window.cloudinaryName;
 
-                parkingSpaceService.listSpaces($scope.user, (spaces) => {
+                parkingSpaceService.listOffers($scope.user, (spaces) => {
                     $scope.user.spaces = spaces;
                 });
 
@@ -15,14 +15,15 @@ angular.module('ParkingSpaceAdmin.controllers')
                     $state.go('.edit')
 
                 }
+
                 $scope.status = function (space) {
                     $scope.spaceEdit = space;
                     $state.go('.status')
 
                 }
 
-
                 $scope.delete = function (space) {
+
                 }
 
             }]);

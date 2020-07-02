@@ -1,3 +1,43 @@
-<div class=" expanded-row-pane animated zoomIn pb-2" role="tabpanel">
-  <h4> Conturi </h4>
+<div class=" expanded-row-pane animated zoomIn pb-2" role="tabpanel" ng-controller="UserAccountCtrl">
+
+  <h4> Sold Disponibil: {{account.amount}} {{account.currency}}</h4>
+  <h5 class="text-muted"> Sold in asteptare:
+    {{account.amount_pending | units }}.<small>{{account.amount_pending | subunits}}</small>
+    {{account.currency}}
+  </h5>
+
+
+    <div class="border-top py-1 d-flex justify-content-between" ng-repeat="withd in account.withdrawals"
+         ng-click="selectWithd(withd)" ng-class="{selected: selWithd == withd}">
+
+      <span class="offer-price">{{withd.iban}}</span>
+      <span class="offer-price">{{withd.amount}} {{account.currency}}</span>
+
+      <span>{{ withd.created_at | moment: 'D/MM HH:mm' }}</span>
+      <span class="text-capitalize">{{ withd.status}}</span>
+      <span>
+          <button class="btn btn-sm btn-link text-primary animated zoomIn"
+                  ng-show="withd.pending" ng-click="changeWithdrawalStatus(withd)">
+            <i class="fa fa-cogs "></i> Schimba status
+        </button>
+      </span>
+    </div>
+
+  <div id="commentDialog" class="ps-dialog">
+    <form id="commentForm" name="commentForm" novalidate="novalidate">
+      <div class="ps-dialog-content">
+        <div class="ps-question">
+          <div class="py-2">
+            Te rugăm introdu motivul pentru schimbarea statusului
+          </div>
+          <textarea required class="form-control" ng-model="comment"></textarea>
+        </div>
+        <div class="ps-control-buttons">
+          <a tabindex class="btn btn-success" ng-click="executeWithdrawal(selectedWithd);"> <i class="fa fa-check"></i> Executat </a>
+          <a tabindex class="btn btn-danger" ng-click="rejectWithdrawal(selectedWithd);"> <i class="fa fa-ban"></i> Refuzat </a>
+          <a tabindex class="btn btn-secondary" onclick="$('#commentDialog').hide()">Înapoi</a>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

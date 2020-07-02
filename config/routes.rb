@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       get 'withdrawals'
       get 'payments'
       get 'payment_details'
+      get 'list_account'
     end
   end
 
@@ -73,6 +74,7 @@ Rails.application.routes.draw do
       get 'myspaces'
       get 'myoffers'
       get 'list_spaces'
+      get 'list_offers'
     end
 
     resources :proposals do

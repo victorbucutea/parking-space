@@ -35,7 +35,6 @@ class ParkingSpace < ActiveRecord::Base
 
   validates :location_lat, presence: true, numericality: {greater_than_or_equal_to: -90, less_than_or_equal_to: 90}
   validates :location_long, presence: true, numericality: {greater_than_or_equal_to: -180, less_than_or_equal_to: 180}
-
   validates :address_line_1, presence: true
   validates :title, presence: true
   validates :target_price, presence: true
@@ -44,8 +43,10 @@ class ParkingSpace < ActiveRecord::Base
   validate :availability_stops_after_start
   validate :availability_includes_reservations
 
-  after_initialize :init
+  before_save :archive
 
+  after_initialize :init
+  attr_accessor :current_user, :comment
 
   def availability_stops_after_start
     return if space_availability_stop.nil?
@@ -73,15 +74,18 @@ class ParkingSpace < ActiveRecord::Base
 
   def has_paid_proposals?
     proposals.each do |offer|
-      if offer.end_date > DateTime.now && offer.paid?
-        return true
-      end
+      return true if offer.end_date > DateTime.now && offer.paid?
     end
     false
   end
 
   def expired?
     !space_availability_stop.nil? and DateTime.now >= space_availability_stop
+  end
+
+  def archive
+    # TODO add comment and user to archive
+    ParkingSpaceArchive.new(attributes).save_for self
   end
 
 end

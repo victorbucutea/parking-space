@@ -50,6 +50,19 @@ angular.module('ParkingSpace.services')
                     });
             };
 
+            this.listOffers = function (user, clbk) {
+                $http.get('/parking_spaces/list_offers.json', {params: {user_id: user.id}})
+                    .then(function (response) {
+                        let data = response.data;
+                        _this.convert(data);
+
+                        if (clbk)
+                            clbk(data);
+                    }, function (errorResponse) {
+                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                    });
+            };
+
             this.getMyOffers = function (clbk) {
                 $http.get('/parking_spaces/myoffers.json')
                     .then(function (response) {
@@ -295,7 +308,7 @@ angular.module('ParkingSpace.services')
             }
 
             this.rejectOffer = function (space, offer, clbk) {
-                $http.post('/parking_spaces/' + space.id+ '/proposals/' + offer.id + '/reject.json')
+                $http.post('/parking_spaces/' + space.id + '/proposals/' + offer.id + '/reject.json')
                     .then(function (res) {
                         let data = res.data;
                         $rootScope.$emit('http.notif',
@@ -461,6 +474,16 @@ angular.module('ParkingSpace.services')
                     }
                 })
             };
+            _this.listAccount = function (user, clbk) {
+                $http.get('/accounts/list_account.json', {params: {user_id: user.id}}).then(function (resp) {
+                    if (clbk) {
+                        let data = resp.data;
+                        clbk(data);
+                    }
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
+                })
+            };
 
             _this.withdraw = function (amnt, iban, clbk, errClbk) {
                 $http.post('/accounts/withdraw.json', {amount: amnt, iban: iban}).then(function (resp) {
@@ -503,7 +526,36 @@ angular.module('ParkingSpace.services')
                 }, function (err) {
                     errorHandlingService.handle(err.data, err.status);
                 })
+            }
 
+            _this.rejectWithdrawal = function (withd, comment,  clbk) {
+                $http.post(`/accounts/reject_withdrawal.json`,
+                    {withdrawal_id: withd.id, comment: comment}
+                ).then(function (resp) {
+                    $rootScope.$emit('http.warning', 'Retragerea a fost refuzata!');
+
+                    if (clbk) {
+                        let data = resp.data;
+                        clbk(data);
+                    }
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
+                })
+            }
+
+            _this.executeWithdrawal = function (withd, comment, clbk) {
+                $http.post(`/accounts/execute_withdrawal.json`,
+                    {withdrawal_id: withd.id, comment: comment}
+                ).then(function (resp) {
+                    $rootScope.$emit('http.warning', 'Retragerea a fost marcata ca si executata!');
+
+                    if (clbk) {
+                        let data = resp.data;
+                        clbk(data);
+                    }
+                }, function (err) {
+                    errorHandlingService.handle(err.data, err.status);
+                })
             }
         }])
 

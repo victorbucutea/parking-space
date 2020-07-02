@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_21_153058) do
+ActiveRecord::Schema.define(version: 2020_06_28_191131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,36 @@ ActiveRecord::Schema.define(version: 2020_06_21_153058) do
     t.index ["section_id"], name: "index_parking_perimeters_on_section_id"
     t.index ["sensor_id"], name: "index_parking_perimeters_on_sensor_id"
     t.index ["user_id"], name: "index_parking_perimeters_on_user_id"
+  end
+
+  create_table "parking_space_archives", force: :cascade do |t|
+    t.decimal "location_lat"
+    t.decimal "location_long"
+    t.decimal "target_price"
+    t.string "phone_number"
+    t.string "owner_name"
+    t.string "address_line_1"
+    t.string "address_line_2"
+    t.string "title"
+    t.string "description"
+    t.text "target_price_currency"
+    t.datetime "space_availability_start"
+    t.datetime "space_availability_stop"
+    t.integer "legal_type"
+    t.string "weekly_schedule"
+    t.time "daily_start"
+    t.time "daily_stop"
+    t.bigint "user_id"
+    t.integer "source_type"
+    t.bigint "company_id"
+    t.integer "status"
+    t.decimal "review_avg"
+    t.integer "review_count"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "space_id"
+    t.string "created_by"
   end
 
   create_table "parking_spaces", force: :cascade do |t|

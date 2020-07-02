@@ -100,7 +100,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('EditParkingSpaceCtr
 
                     $scope.loading = true;
 
-                    let uploadFilesPromise = $scope.spaceEdit.images ? $scope.spaceEdit.images.submit() : $q.resolve([]);
+                    let uploadFilesPromise = ( $scope.spaceEdit.images && $scope.spaceEdit.images.length) ? $scope.spaceEdit.images.submit() : $q.resolve([]);
 
                     uploadFilesPromise.then(( files) => {
                         $scope.spaceEdit.images = $scope.spaceEdit.images.filter(im => !im.files );

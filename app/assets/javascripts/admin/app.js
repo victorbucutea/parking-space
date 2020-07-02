@@ -123,10 +123,19 @@ angular.module('ParkingSpaceAdmin', [
                     }
                 }
             })
+            .state('users.spaces.status', {
+                url: "/status?userId",
+                views: {
+                    'details': {
+                        templateUrl: 'users-spaces-status.html'
+                    }
+                }
+            })
+
             .state('users.offers', {
                 url: "/offers?userId",
                 views: {
-                    'details': {
+                    'menu': {
                         templateUrl: 'users-offers.html'
                     }
                 }
@@ -134,7 +143,7 @@ angular.module('ParkingSpaceAdmin', [
             .state('users.accounts', {
                 url: "/accounts?userId",
                 views: {
-                    'details': {
+                    'menu': {
                         templateUrl: 'users-accounts.html'
                     }
                 }

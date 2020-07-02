@@ -1,9 +1,8 @@
 json.array! @parking_spaces do |parking_space|
   json.extract! parking_space, :id, :location_lat, :location_long, :title,
                 :address_line_1, :address_line_2, :description, :space_availability_start, :space_availability_stop,
-                :daily_start, :daily_stop, :weekly_schedule, :updated_at, :created_at
+                :status, :daily_start, :daily_stop, :weekly_schedule, :updated_at, :created_at
 
-  json.timestamp parking_space.created_at
   json.price parking_space.target_price.to_f
   json.currency parking_space.target_price_currency
   json.owner_is_current_user parking_space.user.id == current_user.id unless parking_space.user.nil?
@@ -25,7 +24,7 @@ json.array! @parking_spaces do |parking_space|
     json.array! parking_space.images do |img|
       json.file img.image
       json.id img.id
-      json.name img.image
+      json.name img.name
       json.created_at img.created_at
       json.updated_at img.updated_at
     end

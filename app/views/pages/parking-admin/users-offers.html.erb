@@ -1,3 +1,13 @@
-<div class=" expanded-row-pane animated zoomIn pb-2">
-  <h4> Rezervari </h4>
+<div class=" expanded-row-pane animated zoomIn pb-2" ng-controller="UserOffersCtrl">
+  <div class="bids-area panel mt-3 ng-scope" ng-repeat="space in user.spaces ">
+
+    <h6 class="py-1 bid-title">
+      {{space.address_line_1}} -
+      <span class="bid-amount">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
+                            {{space.currency}} / h</span>
+    </h6>
+
+    <space-status-box space="space" spaces="user.spaces" ></space-status-box>
+
+  </div>
 </div>

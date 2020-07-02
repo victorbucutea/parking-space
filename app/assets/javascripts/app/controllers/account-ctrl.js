@@ -28,7 +28,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl',
                     return;
                 }
 
-
                 paymentService.withdraw(sum, iban, function (resp) {
                     $scope.account = resp;
                     $scope.sum = resp.amount;

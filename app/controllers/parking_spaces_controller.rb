@@ -1,5 +1,6 @@
-class ParkingSpacesController < ApplicationController
+# frozen_string_literal: true
 
+class ParkingSpacesController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
   before_action :set_parking_space, only: %i[documents show update destroy attach_documents validate attach_images]
@@ -37,21 +38,24 @@ class ParkingSpacesController < ApplicationController
 
   def myspaces
     @parking_spaces = @parking_spaces.includes(:proposals, :images, :user)
-
     render :myspaces, status: :ok
   end
 
   def list_spaces
-    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user)
+    @parking_spaces = ParkingSpace.includes(:proposals, :images, :user, proposals: :user)
                           .where(user: params[:user_id])
-
     render :myspaces, status: :ok
   end
 
   def myoffers
     @parking_spaces = ParkingSpace.includes(:proposals, :images, :user, proposals: :user)
                           .where(proposals: { user: current_user })
+    render :myspaces, status: :ok
+  end
 
+  def list_offers
+    @parking_spaces = ParkingSpace.includes(:images, :user, proposals: :user)
+                          .where(proposals: { user: params[:user_id] })
     render :myspaces, status: :ok
   end
 
@@ -67,6 +71,7 @@ class ParkingSpacesController < ApplicationController
       unless doc.errors.empty?
         return render json: { Error: doc.errors }, status: :unprocessable_entity
       end
+
       @docs << doc
     end
 
@@ -77,14 +82,13 @@ class ParkingSpacesController < ApplicationController
     @docs = Document.where(parking_space_id: @parking_space)
   end
 
-
   def attach_images
     imgs = params[:imgs]
 
     @parking_space.images.destroy_all
     # save to parking_space_documents
     imgs.each do |d|
-      img = @parking_space.images.create(image: d[:file],name: d[:name], comment: 'User upload')
+      img = @parking_space.images.create(image: d[:file], name: d[:name], comment: 'User upload')
       unless img.errors.empty?
         return render json: { Error: img.errors }, status: :unprocessable_entity
       end
@@ -92,7 +96,6 @@ class ParkingSpacesController < ApplicationController
 
     render :show, status: :created, location: @parking_space
   end
-
 
   def validate
     @parking_space.validated!
@@ -126,7 +129,7 @@ class ParkingSpacesController < ApplicationController
   # DELETE /parking_spaces/1
   # DELETE /parking_spaces/1.json
   def destroy
-    # todo do not delete just expire validity
+    # TODO: do not delete just expire validity
     @parking_space.destroy
     respond_to do |format|
       format.json { head :no_content }
@@ -144,11 +147,9 @@ class ParkingSpacesController < ApplicationController
   def parking_space_params
     params.require(:parking_space).permit(:location_lat, :location_long,
                                           :target_price, :target_price_currency,
-                                          :phone_number, :owner_name, :title,
-                                          :address_line_1, :address_line_2,
+                                          :phone_number, :owner_name, :title, :comment,
+                                          :address_line_1, :address_line_2, :status,
                                           :space_availability_start, :space_availability_stop,
-                                          :daily_start, :daily_stop, :weekly_schedule, :description,
-                                          parking_space_images_attributes: [:image, :comment, :id])
+                                          :daily_start, :daily_stop, :weekly_schedule, :description)
   end
-
 end

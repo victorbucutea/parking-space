@@ -31,6 +31,10 @@ class Ability
       can :index, ParkingSpace
       can :show, ParkingSpace
       cannot :list_spaces, ParkingSpace
+      cannot :list_offers, ParkingSpace
+      cannot :list_account, Account
+      cannot :execute_withdrawal, Account
+      cannot :reject_withdrawal, Account
     end
 
     if user.role? 'parking_lot_admin'
