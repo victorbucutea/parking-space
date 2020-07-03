@@ -4,21 +4,18 @@ angular.module('ParkingSpaceMobile.controllers').controller('PaymentsReceivedCtr
     ['$rootScope', '$state', '$scope', 'offerService', 'parkingSpaceService', 'paymentService',
         function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
 
-            $('.loading-finished').show();
-            parkingSpaceService.getMySpaces((spaces) => {
-                $('.loading-finished').hide();
+            $('#loadingSpinner').show();
+            $('#loadingFinished').hide();
 
+            parkingSpaceService.getMySpaces((spaces) => {
+                $('#loadingSpinner').hide();
+                $('#loadingFinished').show();
+
+                spaces.forEach((s) => {
+                    s.offers = s.offers.filter(o => o.paid);
+                })
                 $scope.spaces = spaces;
             });
-
-
-            $scope.noOffers = function (spaces) {
-                if (!spaces || !spaces.length) {
-                    return true;
-                }
-                let spacesWithOffers = spaces.find(s => s.offers.length > 0);
-                return spacesWithOffers.length > 0;
-            }
 
 
         }]);

@@ -1,16 +1,15 @@
 <div class="mt-4" ng-controller="PaymentsCtrl">
 
-    <h4 class="text-center"> Listă plăți efectuate </h4>
-    <div class="no-items-msg loading-finished" ng-hide="payments.length"> Nu ai nici efectuat nici o plată.</div>
+    <div class="no-items-msg loading-finished" id="loadingFinished" ng-hide="payments.length"> Nu ai nici efectuat nici o plată.</div>
 
 
-    <div class="bids-area my-3 pb-3 panel ">
-        <div class="no-items-msg" ng-hide="payments.length">
+    <div class="bids-area my-3 pb-3 panel " >
+        <div class="no-items-msg" id="loadingSpinner">
             <i class="fa fa-spin fa-2x text-secondary fa-spinner"></i>
         </div>
         <div class="bid-table " ng-show="payments.length">
 
-            <div class="offer d-flex justify-content-between" ng-repeat="payment in payments"
+            <div class="offer d-flex justify-content-between " ng-repeat="payment in payments"
                  ng-click="selectPayment(payment)" ng-class="{selected: selPayment == payment}">
 
                     <span class="offer-price">
@@ -20,7 +19,7 @@
                     <span>
                             {{ payment.created_at | moment: 'D/MM HH:mm' }}
                     </span>
-                <span class="text-capitalize">
+                <span class="text-capitalize text-truncate">
                             {{ payment.status}}
                     </span>
             </div>
@@ -35,7 +34,7 @@
                     <div class="row ps-row">
                         <div class="col-4">TVA</div>
                         <div class="col-8">
-                            {{detail.tax_amount}}
+                            {{detail.tax_amount}}N
                         </div>
                     </div>
                     <div class="row ps-row">

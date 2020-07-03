@@ -972,9 +972,9 @@ parking-spot-info-box {
   }
 
   .existing-offers-body {
-    border-top: 1px solid $gray-400;
+    border-top: 2px solid $gray-400;
     background-color: #fff;
-    border-bottom: 1px solid $gray-400;
+    border-bottom: 2px solid $gray-400;
 
 
     .row:nth-child(2n+1) {
@@ -1064,6 +1064,11 @@ parking-spot-info-box {
       overflow: hidden;
       padding: $measure-unit;
 
+      @include media-breakpoint-down(sm) {
+        font-size: .9em;
+        padding: $measure-unit $xxsm-measure-unit;
+      }
+
       &.canceled {
         text-decoration: line-through;
       }
@@ -1075,11 +1080,6 @@ parking-spot-info-box {
 
       .offer-period {
         text-align: center;
-        font-size: .9em;
-
-        @include media-breakpoint-up(md) {
-          font-size: $base-font-size;
-        }
       }
 
 

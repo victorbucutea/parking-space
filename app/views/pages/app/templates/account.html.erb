@@ -18,7 +18,7 @@
         </h1>
 
         <div class="d-flex align-items-center flex-column">
-          <div id="waitingBalance">
+          <div id="waitingBalance" data-toggle="tooltip" title="Sume plătite pentru rezervările în curs sau rezervări viitoare. Acești bani nu pot fi retrași">
             <h5 class="text-center"><span class="text-muted"> Sold în așteptare <i class="fa fa-question-circle"></i></span></h5>
             <h3 class="text-center font-weight-light text-muted">
               <b class="">{{account.amount_pending | units}}</b>.<small class="">{{account.amount_pending |
@@ -31,7 +31,7 @@
       <div class="mt-3 d-flex justify-content-around flex-wrap">
         <ul class="nav nav-pills nav-fill" role="tablist">
           <li class="nav-item ">
-            <a href="" ui-sref="account" data-toggle="tab" role="tab" class="nav-link" ui-sref-active="active">
+            <a href="" ui-sref=".withdraw" data-toggle="tab" role="tab" class="nav-link " ui-sref-active="active">
               <i class="fa fa-credit-card"></i> Retrage banii
             </a>
           </li>
@@ -53,36 +53,7 @@
         </ul>
       </div>
 
-      <ui-view name="financial">
-        <div class="animated zoomIn my-4">
-
-          <form name="withdrawForm">
-            <div class="form-row">
-              <div class="form-group  col-3">
-                <label for="sum" class="labe">Suma transfer</label>
-                <input type="number" ng-model="sum" class="form-control form-control-lg" id="sum">
-                <small ng-show="isSumInvalid" class="text-danger"> Suma nu poate depăși
-                  {{account.amount}} {{account.currency}}</small>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="iban" class="labe">Cont bancar destinatar (IBAN)</label>
-              <input type="text" ng-model="iban" class="form-control" id="iban">
-              <small class="text-danger" ng-show="isIbanInvalid"> Numar IBAN invalid</small>
-              <small ng-hide="isIbanInvalid"> Contul bancar în care doriți să fie virați banii</small>
-            </div>
-
-            <div class="my-4 text-center mark small">
-              Go Park va plăti această suma la sfărșit de lună contabila, conform contractului
-              de sub-închiriere
-            </div>
-
-            <button class="btn btn-danger btn-lg btn-block" ng-click="withdraw(sum,iban)">Retrage</button>
-          </form>
-        </div>
-
-
-      </ui-view>
+      <ui-view name="financial"></ui-view>
     </div>
   </div>
 </div>

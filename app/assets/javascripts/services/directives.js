@@ -673,7 +673,7 @@ angular.module('ParkingSpace.directives')
                 '        <div class="row no-gutters bid-row" ng-repeat="offer in offers | orderBy: \'start_date\'">' +
                 '          <div class="offer row no-gutters col-12" ng-click="selectOffer(offer)" ng-class="{canceled : !offer.approved}">' +
                 '              <div class="col-3 offer-owner" ng-hide="offer.owner_is_current_user">' +
-                '                <div>{{offer.owner_name}}</div>' +
+                '                <div class="text-truncate">{{offer.owner_name}}</div>' +
                 '                <div class="license text-monospace">{{offer.owner_license}}</div>' +
                 '              </div>' +
                 '              <div class="col-6 offer-period" ng-class="{\'col-8\': offer.owner_is_current_user} " >' +
@@ -832,7 +832,7 @@ angular.module('ParkingSpace.directives')
                 '              Valabilitate expirată <i class="fa fa-question-circle-o"></i>' +
                 '            </div>' +
                 '            <button class="btn btn-link btn-sm py-0" ng-click="showValidityForm()">' +
-                '              <i class="fa fa-angle-down"></i> Prelungește valabilitatea' +
+                '              <i class="fa fa-angle-down"></i> Prelungește' +
                 '            </button>' +
                 '          </div>' +
                 '          <form>' +

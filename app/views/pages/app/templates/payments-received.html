@@ -1,38 +1,38 @@
 <div class="animated zoomIn mt-4" ng-controller="PaymentsReceivedCtrl">
 
-    <h4 class="text-center"> Listă plăți primite </h4>
-    <div class="no-items-msg loading-finished" ng-hide="spaces.length"> Nu ai primit nici o plată.</div>
-
-
-    <div class="bids-area my-3 pb-3 panel ">
-        <div class="no-items-msg" ng-show="loading">
+    <div class="bids-area my-3 pb-3 panel p-2">
+        <div class="no-items-msg" id="loadingSpinner">
             <i class="fa fa-spin fa-2x text-secondary fa-spinner"></i>
         </div>
-        {{loading}}
-        <div class="no-items-msg text-muted" ng-show="noOffers(spaces) && !loading">
-            <i class="fa fa-ban"></i> Nu ai primit nici o plată până acum
+        <div class="no-items-msg text-muted" id="loadingFinished" ng-show="!spaces.length">
+            <i class="fa fa-ban"></i> Nu ai postat niciun loc de parcare
         </div>
 
-        <div class="bid-table " ng-repeat="space in spaces">
-            <h6 class="py-2 bid-title mb-0 " style="white-space: inherit" ng-show="space.offers.length">
+        <div ng-repeat="space in spaces">
+            <h6 class="py-2 bid-title mb-0 " style="white-space: inherit" >
                 {{space.address_line_1}} -
                 <span class="bid-amount ">{{space.price | units  }}.<small>{{space.price | subunits}}</small>
                             {{space.currency}} / h
               </span>
 
             </h6>
-            <div class="offer d-flex justify-content-between" ng-repeat="offer in space.offers" ng-show="offer.paid">
+            <div class="text-muted text-center my-2" ng-hide="space.offers.length">
+                <i class="fa fa-ban"></i> Nu ai primit nici o plată până acum
+            </div>
+            <div class="bid-table">
+                <div class="offer d-flex justify-content-between p-1 p-md-2" ng-repeat="offer in space.offers">
 
-                <span class="offer-price">
+                    <span class="offer-price">
                     {{offer.amount}} {{ offer.currency }}
                 </span>
 
-                <span>
+                    <span class="text-truncate">
                    {{ offer.owner_name }}
                 </span>
-                <span>
+                    <span>
                    {{ offer.end_date | moment: 'D/MM HH:mm' }}
                 </span>
+                </div>
             </div>
         </div>
     </div>

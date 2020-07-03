@@ -1,0 +1,26 @@
+<div class="animated zoomIn my-4">
+
+    <form name="withdrawForm">
+        <div class="form-row">
+            <div class="form-group  col-3">
+                <label for="sum" class="labe">Suma transfer</label>
+                <input type="number" ng-model="sum" class="form-control form-control-lg" id="sum">
+                <small ng-show="isSumInvalid" class="text-danger"> Suma nu poate depăși
+                    {{account.amount}} {{account.currency}}</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="iban" class="labe">Cont bancar destinatar (IBAN)</label>
+            <input type="text" ng-model="iban" class="form-control" id="iban">
+            <small class="text-danger" ng-show="isIbanInvalid"> Numar IBAN invalid</small>
+            <small ng-hide="isIbanInvalid"> Contul bancar în care doriți să fie virați banii</small>
+        </div>
+
+        <div class="my-4 text-center mark small">
+            Go Park va plăti această suma la sfărșit de lună contabila, conform contractului
+            de sub-închiriere
+        </div>
+
+        <button class="btn btn-danger btn-lg btn-block" ng-click="withdraw(sum,iban)">Retrage</button>
+    </form>
+</div>

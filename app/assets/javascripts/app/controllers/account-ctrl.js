@@ -36,9 +36,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl',
 
             }
 
-            new Tooltip($('#waitingBalance'), {placement: 'bottom', title: 'Sume p' +
-                    'latite pentru rezervarile in curs sau rezervari ' +
-                    'viitoare. Acesti bani nu pot fi retrasi'});
+            $('#waitingBalance').tooltip();
 
         }]);
 

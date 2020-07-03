@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module PayApi
   extend ActiveSupport::Concern
 
-
   def get_payments
+    return [] if current_user.payment_id.nil?
+
     gateway.transaction.search do |search|
       search.customer_id.is current_user.payment_id
     end
@@ -13,7 +16,6 @@ module PayApi
   end
 
   def submit_payment
-
     # begin payment flow
     nonce = params[:nonce]
 
@@ -24,8 +26,8 @@ module PayApi
     start_date = current_user.timezone.utc_to_local(@proposal.start_date)
     end_date = current_user.timezone.utc_to_local(@proposal.start_date)
     line_items = [{
-      description: "Parcare #{addr} intre"+
-          " #{start_date.strftime('%F %T')} - #{end_date.strftime('%F %T')}",
+      description: "Parcare #{addr} intre" \
+        " #{start_date.strftime('%F %T')} - #{end_date.strftime('%F %T')}",
       kind: 'debit',
       name: 'Inchiriere spatiu parcare',
       quantity: 1,
@@ -43,8 +45,7 @@ module PayApi
       total_amount: @proposal.comision_with_vat,
       unit_amount: @proposal.comision_with_vat,
       tax_amount: @proposal.comision_with_vat - @proposal.comision
-    }
-    ]
+    }]
 
     # 4000111111111115
     if current_user.payment_id.nil?
@@ -91,9 +92,9 @@ module PayApi
       result.errors.each do |err|
         res_str += err.code + ' - ' + err.attribute + ' - ' + err.message
       end
-      logger.tagged("#{current_user.email}", "#{line_items}") {
+      logger.tagged(current_user.email.to_s, line_items.to_s) do
         logger.error("error while executing tx for existing customer: #{res_str}")
-      }
+      end
     end
   end
 
@@ -112,7 +113,7 @@ module PayApi
           account.amount += prop.amount
         end
         account.save
-      rescue
+      rescue StandardError
         # failsafe so as not to return an error to the user if tx was successful
         true
       end

@@ -4,9 +4,13 @@ angular.module('ParkingSpaceMobile.controllers').controller('PaymentsCtrl',
     ['$rootScope', '$state', '$scope', 'offerService', 'parkingSpaceService', 'paymentService',
         function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
 
-            $('.loading-finished').hide();
+            $('#loadingSpinner').show();
+            $('#loadingFinished').hide();
+
             paymentService.getPayments((payments) => {
-                $('.loading-finished').show();
+                $('#loadingSpinner').hide();
+                $('#loadingFinished').show();
+
                 $scope.payments = payments
             });
 

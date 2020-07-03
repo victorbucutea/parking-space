@@ -209,6 +209,14 @@ angular.module('ParkingSpaceMobile', [
                     },
                 }
             })
+            .state('account.withdraw', {
+                url: "/withdraw",
+                views: {
+                    'financial': {
+                        templateUrl: "templates/withdraw.html"
+                    }
+                }
+            })
             .state('account.payments', {
                 url: "/payments",
                 views: {
