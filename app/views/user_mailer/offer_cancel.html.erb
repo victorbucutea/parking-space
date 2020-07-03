@@ -13,9 +13,12 @@
 
   <div class="content text-center">
     <h3 class="py-3 mb-3">Rezervare <%= @subject %></h3>
-
+    <%
+      start_date = @proposal.user.timezone.utc_to_local(@proposal.start_date)
+      end_date = @proposal.user.timezone.utc_to_local(@proposal.end_date)
+    %>
     <p class="text-muted">
-      Rezervarea din data de <span style="font-size: 1.15em; font-weight: bold" > <%= @proposal.start_date.strftime '%Y-%m-%d %H:%M' %>  </span> pentru locul de parcare din <%= @proposal.parking_space.address_line_1 %> a fost <%= @subject %>
+      Rezervarea din data de <span style="font-size: 1.15em; font-weight: bold" > <%= start_date.strftime '%Y-%m-%d %H:%M' %>  </span> pentru locul de parcare din <%= @proposal.parking_space.address_line_1 %> a fost <%= @subject %>
       <% if @proposal.rejected? %>
         de către echipa go-park.
       <% end %>
