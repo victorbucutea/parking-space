@@ -30,7 +30,7 @@
     <hr style="border-top: 1px solid #ddd;">
 
     <%= link_to 'Click aici pentru mai multe informații',
-                Rails.configuration.action_mailer.default_url_options[:host] +
+                'https://'+Rails.configuration.action_mailer.default_url_options[:host] +
                     '/app/index.html?#!/map/search/review-bid?spaceId=' + @proposal.parking_space.id.to_s %>
     </p>
   </div>

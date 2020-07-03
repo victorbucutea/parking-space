@@ -1544,10 +1544,6 @@ angular.module('ParkingSpace.directives')
 
                         };
 
-                        if (!$scope.noMinDate) {
-                            options.minDate = moment()
-                        }
-
                         elm.daterangepicker(options, function (start, end, label) {
                             $scope.dateModel = start;
                             if (!$scope.$$phase)

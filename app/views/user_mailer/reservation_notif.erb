@@ -19,15 +19,19 @@
       Adaugă atașamentul în calendarul tău.
     </p>
 
+    <%
+      start_date = @proposal.user.timezone.utc_to_local(@proposal.start_date)
+      end_date = @proposal.user.timezone.utc_to_local(@proposal.end_date)
+    %>
 
     <p class="">
       Perioada :
     <h4 style="display: inline-block;border: 1px dashed #ddd;padding: 7px;border-radius: 5px;color:#1d426c">
-      <%= @proposal.start_date.strftime '%Y-%m-%d %H:%M' %>
+      <%= start_date.strftime '%Y-%m-%d %H:%M' %>
     </h4>
     -
     <h4 style="display: inline-block;border: 1px dashed #ddd;padding: 7px;border-radius: 5px;color:#1d426c">
-      <%= @proposal.end_date.strftime '%Y-%m-%d %H:%M' %>
+      <%= end_date.strftime '%Y-%m-%d %H:%M' %>
     </h4>
     </p>
 
@@ -37,7 +41,7 @@
 
     <p>
       <%= link_to 'Click aici pentru mai multe informații',
-                  Rails.configuration.action_mailer.default_url_options[:host] +
+                  'https://'+ Rails.configuration.action_mailer.default_url_options[:host] +
                       '/app/index.html?#!/map/search/post-offer?spaceId=' + @proposal.parking_space.id.to_s %>
     </p>
   </div>

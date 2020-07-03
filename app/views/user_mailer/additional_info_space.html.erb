@@ -1,9 +1,8 @@
-
 <div class="register mb-5 ">
 
 
   <div class="text-center p-4 p-md-5">
-    <a href="https://<%=Rails.configuration.action_mailer.default_url_options[:host] %>/app/index.html?#!/map/search">
+    <a href="https://<%= Rails.configuration.action_mailer.default_url_options[:host] %>/app/index.html?#!/map/search">
       <img width="200" src="https://res.cloudinary.com/hbwkmonnw/image/asset/logo_sm-b86778747088dd345a129575366132b0.png">
     </a>
   </div>
@@ -26,11 +25,14 @@
     </h4>
 
     </p>
-
+    <%
+      start_date = @space.user.timezone.utc_to_local(@space.space_availability_start)
+      end_date = @space.user.timezone.utc_to_local(@space.space_availability_stop)
+    %>
 
     <p class="">
-      Perioada : <span class="text-muted"> <%= @space.space_availability_start.strftime '%Y-%m-%d %H:%M' %>
-      - <%= @space.space_availability_stop.strftime '%Y-%m-%d %H:%M' %>  </span>
+      Perioada : <span class="text-muted"> <%= start_date.strftime '%Y-%m-%d %H:%M' %>
+      - <%= end_date.strftime '%Y-%m-%d %H:%M' %>  </span>
     </p>
 
     <hr style="border-top: 1px solid #ddd;">
@@ -39,7 +41,7 @@
 
     <p>
       <%= link_to 'Click aici pentru detalii',
-                  Rails.configuration.action_mailer.default_url_options[:host] +
+                  'https://' + Rails.configuration.action_mailer.default_url_options[:host] +
                       '/app/index.html?#!/map/search/review-bid?spaceId=' + @space.id.to_s %>
     </p>
   </div>

@@ -31,9 +31,13 @@
       <span style="font-family: monospace; text-transform: uppercase" class="text-muted "> <%= @proposal.user.license %>  </span>
     </p>
 
+    <%
+      start_date = @proposal.user.timezone.utc_to_local(@proposal.start_date)
+      end_date = @proposal.user.timezone.utc_to_local(@proposal.end_date)
+    %>
     <p class="">
-      Perioada : <span class="text-muted"> <%= @proposal.start_date.strftime '%Y-%m-%d %H:%M' %>
-      - <%= @proposal.end_date.strftime '%Y-%m-%d %H:%M' %>  </span>
+      Perioada : <span class="text-muted"> <%= start_date.strftime '%Y-%m-%d %H:%M' %>
+      - <%= end_date.strftime '%Y-%m-%d %H:%M' %>  </span>
     </p>
     <p class="">
       Utilizator : <span class="text-muted"> <%= @proposal.user.full_name %> </span>
@@ -45,7 +49,7 @@
 
     <p>
       <%= link_to 'Click aici pentru mai multe informații',
-                  Rails.configuration.action_mailer.default_url_options[:host] +
+                  'https://'+Rails.configuration.action_mailer.default_url_options[:host] +
                       '/app/index.html?#!/map/search/review-bid?spaceId=' + @proposal.parking_space.id.to_s %>
     </p>
   </div>
