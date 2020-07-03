@@ -1,6 +1,6 @@
 <div class="animated zoomIn mt-4" ng-controller="PaymentsReceivedCtrl">
 
-    <div class="bids-area my-3 pb-3 panel p-2">
+    <div class="bids-area my-3 pb-3 panel ">
         <div class="no-items-msg" id="loadingSpinner">
             <i class="fa fa-spin fa-2x text-secondary fa-spinner"></i>
         </div>
@@ -20,7 +20,7 @@
                 <i class="fa fa-ban"></i> Nu ai primit nici o plată până acum
             </div>
             <div class="bid-table">
-                <div class="offer d-flex justify-content-between p-1 p-md-2" ng-repeat="offer in space.offers">
+                <div class="offer d-flex justify-content-between " ng-repeat="offer in space.offers">
 
                     <span class="offer-price">
                     {{offer.amount}} {{ offer.currency }}

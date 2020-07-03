@@ -1066,7 +1066,7 @@ parking-spot-info-box {
 
       @include media-breakpoint-down(sm) {
         font-size: .9em;
-        padding: $measure-unit $xxsm-measure-unit;
+        padding:  $xxsm-measure-unit;
       }
 
       &.canceled {

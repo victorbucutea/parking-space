@@ -58,7 +58,7 @@
           <img class="mx-1 mb-1" src="<%= image_path('useravatar_blue.png') %>" height="16">
         </a>
         <div class="dropdown-menu text-right text-lg-left">
-          <a class="dropdown-item" ui-sref="account"> <i class="fa fa-credit-card"></i> Plăți și facturi</a>
+          <a class="dropdown-item" ui-sref="account.withdraw"> <i class="fa fa-credit-card"></i> Plăți și facturi</a>
           <a class="dropdown-item" ui-sref="register({inside:true})"> <i class="fa fa-user"></i> Contul meu </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" ui-sref="map.instructions" href="#">
@@ -110,7 +110,7 @@
         <i class="fa fa-user"></i>
         Contul meu
       </li>
-      <li ui-sref="account" ui-sref-active="selected">
+      <li ui-sref="account.withdraw" ui-sref-active="selected">
         <i class="fa fa-credit-card"></i>
         Plăți și facturi
       </li>

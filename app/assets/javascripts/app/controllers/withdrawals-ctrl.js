@@ -23,6 +23,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('WithdrawalsCtrl',
             $scope.cancelWithdrawal = function (withd) {
                 paymentService.cancelWithdrawal( withd, (withd) => {
                     replaceById(withd, $scope.withdrawals);
+                    $scope.$emit('refreshAccount');
                 });
             }
 

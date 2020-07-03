@@ -3,7 +3,7 @@ class Withdrawal < ActiveRecord::Base
 
   enum status: %i[pending rejected executed canceled]
   belongs_to :account
-  validate :withdraw_amount
+  validate :min_amount
   before_update :check_status
   after_initialize :init
 
@@ -12,7 +12,7 @@ class Withdrawal < ActiveRecord::Base
     self.status ||= :pending
   end
 
-  def withdraw_amount
+  def min_amount
     unless amount >= 1
       errors.add :general, 'Nu puteți retrage suma mai mică de 1'
     end
@@ -25,6 +25,11 @@ class Withdrawal < ActiveRecord::Base
     unless old_status == 'pending'
       errors.add :general, 'Statusul retragerii nu mai permite anularea.'
     end
+  end
+
+  def rollback_amount
+    account.amount += amount
+    account.save
   end
 
 

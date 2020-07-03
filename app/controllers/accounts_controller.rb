@@ -36,6 +36,7 @@ class AccountsController < ApplicationController
 
   # POST /accounts/cancel_withdrawal
   def cancel_withdrawal
+    @withdrawal.rollback_amount
     @withdrawal.canceled!
     render :show_withdrawal
   end
@@ -43,6 +44,7 @@ class AccountsController < ApplicationController
   # POST /accounts/reject_withdrawal
   def reject_withdrawal
     @withdrawal.status_message = params[:comment]
+    @withdrawal.rollback_amount
     unless @withdrawal.rejected!
       render json: { Error: @withdrawal.errors }, status: :unprocessable_entity
     end

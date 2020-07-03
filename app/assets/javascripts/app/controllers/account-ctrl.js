@@ -4,15 +4,22 @@ angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl',
     ['$rootScope', '$state', '$scope', 'offerService', 'parkingSpaceService', 'paymentService',
         function ($rootScope, $state, $scope, offerService, parkingSpaceService, paymentService) {
 
-            paymentService.getAccountStatus((acc) => {
-                if (!acc) {
-                    acc = {amount: 0};
-                }
-                $scope.sum = acc.amount - acc.amount_pending;
-                $scope.account = acc
-                $scope.iban = acc.iban;
-            });
+            function loadAccount() {
+                paymentService.getAccountStatus((acc) => {
+                    if (!acc) {
+                        acc = {amount: 0};
+                    }
+                    $scope.sum = acc.amount - acc.amount_pending;
+                    $scope.account = acc
+                    $scope.iban = acc.iban;
+                });
+            }
 
+            loadAccount();
+
+            $scope.$on('refreshAccount', (evt)=> {
+                loadAccount();
+            })
 
             $scope.withdraw = function (sum, iban) {
 
