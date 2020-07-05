@@ -1850,12 +1850,12 @@ angular.module('ParkingSpace.directives')
                     add: function (e, data) {
 
                         if (data.files[0].size > 8000000) {
-                            alert('File is too big');
+                            alert('Dimensiunea fisierului e prea mare (max 8mb)!');
                             return;
                         }
 
                         if ($scope.maxCntReached()) {
-                            alert('Cannot upload more than ' + $scope.maxCount + " files.");
+                            alert('Nu se pot încărca mai mult de' + $scope.maxCount + " fișiere.");
                             return;
                         }
 
