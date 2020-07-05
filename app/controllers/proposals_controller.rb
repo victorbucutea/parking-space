@@ -48,7 +48,7 @@ class ProposalsController < ApplicationController
       UserMailer.with(proposal: @proposal).new_offer.deliver_later
       UserMailer.with(proposal: @proposal).reservation_notif.deliver_later
       send_sms @proposal.parking_space.user.phone_with_prefix,
-               current_user.full_name + ' a achitat contravaloarea de ' + @proposal.amount_with_vat.to_s +
+               current_user.full_name + ' a achitat contravaloarea de ' + @proposal.payment_amount.to_s +
                ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'
       render :show, status: :ok
     else
