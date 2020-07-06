@@ -23,6 +23,7 @@ angular.module('ParkingSpaceAdmin.controllers')
 
 
                 $scope.delete = function (space) {
+                    parkingSpaceService.deleteSpace(space)
                 }
 
             }]);

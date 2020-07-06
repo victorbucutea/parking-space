@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_28_191131) do
+ActiveRecord::Schema.define(version: 2020_07_05_103935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,8 +192,30 @@ ActiveRecord::Schema.define(version: 2020_06_28_191131) do
     t.index ["user_id"], name: "index_parking_spaces_on_user_id"
   end
 
+  create_table "proposal_archives", force: :cascade do |t|
+    t.integer "proposal_id"
+    t.integer "parking_space_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "bid_amount"
+    t.string "bid_currency"
+    t.string "bidder_name"
+    t.integer "approval_status"
+    t.string "phone_number"
+    t.datetime "start_date", null: false
+    t.datetime "end_date", null: false
+    t.integer "payment_status"
+    t.datetime "payment_date"
+    t.bigint "user_id"
+    t.string "payment_id"
+    t.decimal "payment_amount"
+    t.decimal "payment_comision"
+    t.decimal "payment_vat"
+    t.text "comment"
+    t.string "created_by"
+  end
+
   create_table "proposals", force: :cascade do |t|
-    t.string "title_message"
     t.integer "parking_space_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

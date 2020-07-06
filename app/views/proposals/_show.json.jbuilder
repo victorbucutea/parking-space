@@ -1,4 +1,4 @@
-json.extract! proposal, :id, :title_message, :phone_number, :created_at
+json.extract! proposal, :id, :phone_number, :created_at
 json.approved proposal.approved?
 json.rejected proposal.rejected?
 json.canceled proposal.canceled?

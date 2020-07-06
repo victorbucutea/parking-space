@@ -114,6 +114,19 @@ angular.module('ParkingSpace.services')
                 })
             };
 
+            this.deleteSpace = function (space) {
+                $http["delete"](`/parking_spaces/${space.id}.json`, {params: {user_id: user.id}})
+                    .then(function (response) {
+                        let data = response.data;
+                        _this.convert(data);
+
+                        if (clbk)
+                            clbk(data);
+                    }, function (errorResponse) {
+                        errorHandlingService.handle(errorResponse.data, errorResponse.status);
+                    });
+            }
+
             this.uploadDocuments = function (spaceId, docs, clbk) {
                 $http.post(`/parking_spaces/${spaceId}/attach_documents.json`, {docs: docs})
                     .then(function (res) {

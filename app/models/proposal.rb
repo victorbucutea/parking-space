@@ -27,13 +27,12 @@ class Proposal < ActiveRecord::Base
   validate :cannot_update_expired, on: :update, unless: :skip_expiration_check
   validate :cannot_update_paid, on: :update, unless: :skip_paid_check
 
-  attr_accessor :skip_overlap_check
-  attr_accessor :skip_expiration_check
-  attr_accessor :skip_paid_check
+  attr_accessor :skip_overlap_check, :skip_expiration_check, :skip_paid_check, :comment
 
   after_initialize :init
 
-  before_update :archive
+  after_save :archive
+  before_destroy :archive
 
   def init
     self.approval_status ||= :pending
@@ -115,11 +114,6 @@ class Proposal < ActiveRecord::Base
     end
   end
 
-  def archive
-    # add current user and archive
-    print 'archiving'
-  end
-
   def reject
     self.skip_overlap_check = true
     self.skip_paid_check = true
@@ -189,5 +183,9 @@ class Proposal < ActiveRecord::Base
 
   def active?
     start_date <= Time.now && Time.now <= end_date
+  end
+
+  def archive
+    ProposalArchive.new(attributes).save_for self
   end
 end

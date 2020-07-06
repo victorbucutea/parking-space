@@ -13,7 +13,7 @@ class Account < ActiveRecord::Base
 
   def amount_pending(user)
     user_spaces = ParkingSpace.for_user(user).select([:id])
-    active_reservations = Proposal.paid.active_or_future.for_spaces user_spaces
+    active_reservations = Proposal.approved.paid.active_or_future.for_spaces user_spaces
     sum = 0
     active_reservations.each do |r|
       sum += r.payment_amount

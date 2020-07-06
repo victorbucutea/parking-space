@@ -43,7 +43,8 @@ class ParkingSpace < ActiveRecord::Base
   validate :availability_stops_after_start
   validate :availability_includes_reservations
 
-  before_save :archive
+  after_save :archive
+  before_destroy :archive
 
   after_initialize :init
   attr_accessor :current_user, :comment
@@ -84,7 +85,6 @@ class ParkingSpace < ActiveRecord::Base
   end
 
   def archive
-    # TODO add comment and user to archive
     ParkingSpaceArchive.new(attributes).save_for self
   end
 

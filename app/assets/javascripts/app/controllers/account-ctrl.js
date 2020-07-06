@@ -35,10 +35,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('AccountCtrl',
                     return;
                 }
 
-                paymentService.withdraw(sum, iban, function (resp) {
-                    $scope.account = resp;
-                    $scope.sum = resp.amount;
-                    $rootScope.$emit('http.notif', 'Suma ' + sum + ' ' + resp.currency + ' a fost programată pentru retragere');
+                paymentService.withdraw(sum, iban, function (acc) {
+                    $scope.sum = acc.amount - acc.amount_pending;
+                    $scope.account = acc
+                    $scope.iban = acc.iban;
+                    $rootScope.$emit('http.notif', 'Suma ' + sum + ' ' + acc.currency + ' a fost programată pentru retragere');
                 })
 
             }
