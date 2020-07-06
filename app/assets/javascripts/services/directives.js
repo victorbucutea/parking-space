@@ -1855,7 +1855,7 @@ angular.module('ParkingSpace.directives')
                         }
 
                         if ($scope.maxCntReached()) {
-                            alert('Nu se pot încărca mai mult de' + $scope.maxCount + " fișiere.");
+                            alert('Nu se pot încărca mai mult de ' + $scope.maxCount + " fișiere.");
                             return;
                         }
 
