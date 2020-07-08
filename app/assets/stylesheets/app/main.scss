@@ -282,8 +282,9 @@ nav {
     position: absolute;
     right: 51px;
     top: 0;
-    padding: 14px;
     font-size: 1.5em;
+    background-color: #ffffffc4;
+    padding: 14px 14px 12px;
 
     &:hover {
       background-color: $gray-200;
