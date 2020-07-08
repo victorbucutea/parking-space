@@ -1266,8 +1266,19 @@ parking-spot-info-box {
 
   &.instruction {
     background-color: transparent;
-    position: fixed;
     text-align: left;
+    @include media-breakpoint-down(sm) {
+      width: 100%;
+      position: fixed;
+    }
+    @include media-breakpoint-only(md) {
+      width: 200%;
+      position: absolute;
+    }
+    @include media-breakpoint-up(lg) {
+      width: 300%;
+      position: absolute;
+    }
   }
 }
 
