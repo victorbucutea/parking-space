@@ -1859,6 +1859,11 @@ angular.module('ParkingSpace.directives')
                             return;
                         }
 
+                        if (!(/(\.|\/)(jpe?g|png|bmp)$/i).test(data.files[0].name)) {
+                            alert('Sunt permise doar imagini .png, .jpg sau .bmp .');
+                            return;
+                        }
+
 
                         $scope.uploadedFiles.push(data);
                         $scope.onSelect({file: data});
