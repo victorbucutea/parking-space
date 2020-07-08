@@ -24,7 +24,7 @@ module PayApi
     addr = @proposal.parking_space.address_line_1
     total_amount = (@proposal.amount_with_vat + @proposal.comision_with_vat)
     start_date = current_user.timezone.utc_to_local(@proposal.start_date)
-    end_date = current_user.timezone.utc_to_local(@proposal.start_date)
+    end_date = current_user.timezone.utc_to_local(@proposal.end_date)
     line_items = [{
       description: "Parcare #{addr} intre" \
         " #{start_date.strftime('%F %T')} - #{end_date.strftime('%F %T')}",
