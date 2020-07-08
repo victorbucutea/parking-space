@@ -19,6 +19,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('PaymentsCtrl',
                 paymentService.getPaymentDetails(paym.id, function (data) {
                     data.payment = paym;
                     $scope.paymentDetails = data;
+                    console.log($scope.paymentDetails);
                     $('#showDetails').show();
                 })
             };

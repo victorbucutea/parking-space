@@ -34,13 +34,13 @@
                     <div class="row ps-row">
                         <div class="col-4">TVA</div>
                         <div class="col-8">
-                            {{detail.tax_amount}}N
+                            {{detail.tax_amount}} {{paymentDetails.payment.currency_iso_code}}
                         </div>
                     </div>
                     <div class="row ps-row">
                         <div class="col-4">Pret cu TVA</div>
                         <div class="col-8">
-                            {{detail.total_amount}}
+                            {{detail.total_amount}} {{paymentDetails.payment.currency_iso_code}}
                         </div>
                     </div>
                     <div class="row ps-row">
