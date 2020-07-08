@@ -43,6 +43,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (9.0.0)
+    ast (2.4.1)
     aws_cf_signer (0.1.3)
     bcrypt (3.1.13)
     braintree (2.83.0)
@@ -111,6 +112,8 @@ GEM
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
+    parser (2.7.1.4)
+      ast (~> 2.4.1)
     pg (0.21.0)
     puma (3.12.0)
     pusher (1.3.3)
@@ -179,6 +182,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    scout_apm (2.6.8)
+      parser
     seed-fu (2.3.9)
       activerecord (>= 3.1)
       activesupport (>= 3.1)
@@ -249,6 +254,7 @@ DEPENDENCIES
   rails_12factor
   rest-client
   sass-rails (~> 5.0)
+  scout_apm
   seed-fu (~> 2.3)
   sendgrid-ruby
   serviceworker-rails
