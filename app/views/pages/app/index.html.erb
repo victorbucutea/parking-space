@@ -24,7 +24,6 @@
 <noscript>Your browser does not support JavaScript!</noscript>
 
 
-<script> window.vapidPublicKey = new Uint8Array(<%= Base64.urlsafe_decode64(ENV['WEBPUSH_PUBLIC_KEY']).bytes %>); </script>
 <script> window.cloudinaryName = "<%= ENV['CLOUDINARY_NAME'] %>"; </script>
 <script> window.cloudinaryPreset = "<%= ENV['CLOUDINARY_PRESET'] %>"; </script>
 

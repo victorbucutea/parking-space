@@ -27,11 +27,10 @@ gem 'high_voltage', '~> 3.0.0'
 gem 'icalendar'
 gem 'jbuilder'
 gem 'json'
-gem 'pusher'
-gem 'pushmeup'
+gem 'derailed_benchmarks', group: :development
+gem 'stackprof', group: :development
 gem 'rest-client'
 gem 'sass-rails', '~> 5.0'
-gem 'scout_apm'
 gem 'seed-fu', '~> 2.3'
 gem 'sendgrid-ruby'
 gem 'serviceworker-rails'

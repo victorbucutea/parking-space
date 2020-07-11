@@ -1,5 +1,3 @@
-require 'pusher'
-
 class SensorsController < ApplicationController
   before_action :set_sensor, only: %i[show edit update destroy]
   before_action :set_sensor_p, only: %i[snapshot new_perimeter perimeters

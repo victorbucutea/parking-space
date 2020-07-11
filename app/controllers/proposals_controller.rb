@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pushmeup'
-
 class ProposalsController < ApplicationController
   include SmsApi
   include PayApi
