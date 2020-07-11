@@ -27,8 +27,8 @@ gem 'high_voltage', '~> 3.0.0'
 gem 'icalendar'
 gem 'jbuilder'
 gem 'json'
-gem 'derailed_benchmarks', group: :development
-gem 'stackprof', group: :development
+gem 'derailed_benchmarks'
+gem 'stackprof'
 gem 'rest-client'
 gem 'sass-rails', '~> 5.0'
 gem 'seed-fu', '~> 2.3'
