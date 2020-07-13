@@ -40,7 +40,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                 $scope.spaces.forEach((s) => {
                     if (s.offers)
                         s.offers.forEach((o) => {
-                            if (o.paid) sum += o.amount;
+                            if (o.paid && !o.canceled) sum += o.amount;
                         })
                 });
                 return sum;
@@ -50,6 +50,7 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                 let sum = 0;
                 if (!$scope.account) return sum;
                 sum += $scope.account.amount;
+                sum -= $scope.account.amount_pending;
                 return sum;
             }
 
