@@ -400,11 +400,11 @@ angular.module('ParkingSpace.services')
         };
 
         this.navigateOnRedirect = function () {
-            return sessionStorage.getItem("navigateOnRedirect") !== "false";
+            return localStorage.getItem("navigateOnRedirect") !== "false";
         }
 
         this.getNavigateCoords = function () {
-            let item = sessionStorage.getItem("navigateOnRedirect");
+            let item = localStorage.getItem("navigateOnRedirect");
             if (!item) return;
             let coords = JSON.parse(item);
             let pos = new google.maps.LatLng(coords.lat, coords.lng);
@@ -413,9 +413,9 @@ angular.module('ParkingSpace.services')
 
         this.setNavigateOnRedirect = function (latLng) {
             if (latLng)
-                sessionStorage.setItem("navigateOnRedirect", JSON.stringify(latLng));
+                localStorage.setItem("navigateOnRedirect", JSON.stringify(latLng));
             else
-                sessionStorage.setItem("navigateOnRedirect", "false");
+                localStorage.setItem("navigateOnRedirect", "false");
 
         }
     }])

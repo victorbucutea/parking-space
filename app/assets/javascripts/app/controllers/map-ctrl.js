@@ -64,25 +64,29 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
                 $('#mapBlanket').fadeOut();
                 $rootScope.map = map;
 
-                setTimeout(() => {
-                    $rootScope.map.addListener('click', function (evt) {
-                        // to avoid mobile ggl autocomplete keeping focus when clicking on map
-                        $('#pac-input').blur();
-                    });
+                $rootScope.map.addListener('click', function (evt) {
+                    // to avoid mobile ggl autocomplete keeping focus when clicking on map
+                    $('#pac-input').blur();
+                });
 
-                    // center on request params if need be
-                    if ($stateParams.lat && $stateParams.lng) {
-                        let pos = new google.maps.LatLng($stateParams.lat, $stateParams.lng);
-                        if ($stateParams.zoom) {
-                            map.setZoom(parseInt($stateParams.zoom));
-                        } else {
-                            map.setZoom(17);
-                        }
-                        map.setCenter(pos);
-                    }
+                // center on request params if need be
+
+                if (parameterService.navigateOnRedirect()) {
+                    map.setCenter(parameterService.getNavigateCoords());
+                    parameterService.setNavigateOnRedirect(false);
+                }
+
+                google.maps.event.addListenerOnce(map, 'idle', () => {
                     createMap.resolve(map);
-                }, 1000);
+                })
 
+                // always record last coordinates
+                google.maps.event.addListener(map, 'idle', () => {
+                    if (!map.getCenter()) return;
+                    let coords = map.getCenter().toJSON();
+                    console.log('recording coords', coords);
+                    parameterService.setNavigateOnRedirect(coords);
+                })
             };
 
             $scope.mapError = function () {

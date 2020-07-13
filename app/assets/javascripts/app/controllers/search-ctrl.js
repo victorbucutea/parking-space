@@ -22,12 +22,34 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 $scope.showList = true;
             }
 
-            if (parameterService.navigateOnRedirect()) {
-                $scope.createMap().then((map) => {
-                    map.setCenter(parameterService.getNavigateCoords());
-                    parameterService.setNavigateOnRedirect(false);
+            $scope.scheduleDrawSpaces = () => {
+                if (ongoingDrawSpacesReq) {
+                    clearTimeout(ongoingDrawSpacesReq);
+                }
+                ongoingDrawSpacesReq = setTimeout(() => {
+                    let args = $rootScope.map.getBounds().toJSON();
+                    parkingSpaceService.getAvailableSpaces(args, (spaces) => {
+                        $scope.drawSpaces(spaces);
+                    })
+
+                }, 750);
+            };
+
+            $scope.createMap().then((map) => {
+                let event = google.maps.event;
+
+                dragHandle = event.addListener(map, 'dragend', $scope.scheduleDrawSpaces);
+                zoomHandle = event.addListener(map, 'zoom_changed', $scope.scheduleDrawSpaces);
+                $scope.scheduleDrawSpaces();
+
+                $scope.$on('$stateChangeStart', function (stateEventm, next, current) {
+                    if (!next.name.startsWith('map.search')) {
+                        observer.disconnect();
+                        event.removeListener(dragHandle);
+                        event.removeListener(zoomHandle);
+                    }
                 });
-            }
+            })
 
 
             if (offerService.showNextOffer())
@@ -51,34 +73,11 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                         icon2: 'fa-location-arrow',
                         href2: `https://www.google.com/maps/dir/?api=1&destination=${d.lat},${d.lng}`
                     });
-                })
-
-            $scope.scheduleDrawSpaces = () => {
-                if (ongoingDrawSpacesReq) {
-                    clearTimeout(ongoingDrawSpacesReq);
-                }
-                ongoingDrawSpacesReq = setTimeout(() => {
-                    let args = $rootScope.map.getBounds().toJSON();
-                    parkingSpaceService.getAvailableSpaces(args, (spaces) => {
-                        $scope.drawSpaces(spaces);
+                    $scope.createMap().then(() => {
+                        let latlng = new google.maps.LatLng({lat: d.lat, lng: d.lng});
+                        $rootScope.map.setCenter(latlng);
                     })
-                }, 1000);
-            };
-
-            $scope.createMap().then((map) => {
-                let event = google.maps.event;
-
-                dragHandle = event.addListener(map, 'dragend', $scope.scheduleDrawSpaces);
-                zoomHandle = event.addListener(map, 'zoom_changed', $scope.scheduleDrawSpaces);
-                $scope.scheduleDrawSpaces();
-                $scope.$on('$stateChangeStart', function (stateEventm, next, current) {
-                    if (!next.name.startsWith('map.search')) {
-                        observer.disconnect();
-                        event.removeListener(dragHandle);
-                        event.removeListener(zoomHandle);
-                    }
-                });
-            })
+                })
 
 
             $scope.$on('markerClick', function (event, payload) {
@@ -108,21 +107,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('SearchCtrl',
                 $rootScope.$emit('showCarouselImages', space.images);
                 evt.stopPropagation();
             };
-
-
-            function navigateToCompanyLot() {
-                userService.getRoles(function (roles) {
-                    if (!roles) return;
-                    if (roles.company && roles.company.locations && roles.company.locations[0]) {
-                        let lat = roles.company.locations[0].location_lat;
-                        let lng = roles.company.locations[0].location_long;
-                        let pos = new google.maps.LatLng(lat, lng);
-                        $rootScope.map.setCenter(pos);
-                    }
-                    $rootScope.company = roles.company;
-                    $rootScope.roles = roles.roles;
-                })
-            }
 
 
             $scope.showFullImage = function (evt) {

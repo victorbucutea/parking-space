@@ -173,7 +173,7 @@ angular.module('ParkingSpace.directives')
         window.onLoadMaps = function () {
             deferred.resolve(function (elm) {
                 // nasty workaround to send an initialization function
-                // which will be called in then() resolve function
+                // which will be called in the last then() resolve function
                 // if this code were to be present in the resolve function (e.g. map directive)
                 // it wouldd not work :OOOOOO
                 let mapOptions = {
@@ -1332,6 +1332,7 @@ angular.module('ParkingSpace.directives')
             link: function ($scope, $elm) {
                 let elms = $($elm).find('.fa');
                 $scope.$watch('space', function (newValue, oldValue) {
+                    if (!newValue) return;
                     let avg = $scope.space.review_avg;
                     elms.each((idx, elm) => {
                         let e = $(elm);
@@ -2064,21 +2065,21 @@ angular.module('ParkingSpace.directives')
             template: '<div class="notification-area animated">' +
                 '    <div class="notification-message alert-danger animated zoomIn" ng-show="errMsg.length">' +
                 '      <ul>' +
-                '        <li ng-repeat="msg in errMsg"> ' +
+                '        <li ng-repeat="msg in errMsg" ng-click="hide(errMsg)"> ' +
                 '          <i class="fa fa-exclamation-triangle"></i> {{msg}}' +
                 '        </li>' +
                 '      </ul>' +
                 '    </div>' +
                 '    <div class="notification-message alert-success animated zoomIn" ng-show="notifMsg.length">' +
                 '      <ul>' +
-                '        <li ng-repeat="msg in notifMsg">' +
+                '        <li ng-repeat="msg in notifMsg" ng-click="hide(notifMsg)">' +
                 '            <i class="fa fa-check float-left pt-1"></i>  {{msg}}' +
                 '        </li>' +
                 '      </ul>' +
                 '    </div>' +
                 '    <div class="notification-message alert-warning animated zoomIn" ng-show="warningMsg.length">' +
                 '      <ul>' +
-                '        <li ng-repeat="msg in warningMsg">' +
+                '        <li ng-repeat="msg in warningMsg" ng-click="hide(warningMsg)">' +
                 '            <i class="fa fa-exclamation  float-left pt-1"></i> {{msg}}' +
                 '        </li>' +
                 '      </ul>' +
@@ -2090,10 +2091,10 @@ angular.module('ParkingSpace.directives')
                 '           <span> {{msg.text}} </span>' +
                 '              <br>' +
                 '              <br>' +
-                '              <a href="{{msg.href1}}"  class="btn alert-link" ng-if="msg.btn1"> ' +
+                '              <a href="{{msg.href1}}"  class="btn btn-link alert-link" ng-if="msg.btn1"> ' +
                 '                  <i class="fa {{msg.icon1}}"></i> {{msg.btn1}}  ' +
                 '              </a>' +
-                '              <a href="{{msg.href2}}" class="m-2 btn alert-link" ng-if="msg.btn2">' +
+                '              <a href="{{msg.href2}}" class="m-2 btn btn-link alert-link" ng-if="msg.btn2">' +
                 '                    <i class="fa {{msg.icon2}}"></i> {{msg.btn2}}  ' +
                 '              </a>' +
                 '           </span>' +
@@ -2125,10 +2126,18 @@ angular.module('ParkingSpace.directives')
                         evt.preventDefault();
                 };
 
+
                 notifArea.on('mousedown', function (evt) {
                     // do not remove notification dialog
-                    if (evt.target.tagName === "A") {
-                        setTimeout(removeMsgs, 150);
+                    let target = $(evt.target);
+
+                    if (target.parents('.alert-info').length) {
+                        if (target.hasClass('close') || target.parents('.close').length) {
+                            removeMsgs(evt);
+                        }
+                        if (evt.target.tagName === "A") {
+                            setTimeout(removeMsgs, 150);
+                        }
                         return true;
                     }
 
