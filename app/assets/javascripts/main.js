@@ -65,6 +65,12 @@ angular.module('ParkingSpace', [
 
     .constant('currencies', [
         {
+            name: 'Ron',
+            label: "Ron / h",
+            icon: null
+        }
+       /* ,
+        {
             name: 'Usd',
             label: "Usd / h",
             icon: 'fa-usd'
@@ -73,11 +79,6 @@ angular.module('ParkingSpace', [
             name: 'Eur',
             label: "Eur / h",
             icon: 'fa-eur'
-        },
-        {
-            name: 'Ron',
-            label: "Ron / h",
-            icon: null
         },
         {
             name: 'Rur',
@@ -113,7 +114,7 @@ angular.module('ParkingSpace', [
             name: 'Krw',
             label: "Krw / h",
             icon: 'fa-krw'
-        }
+        }*/
     ])
     .constant("GEOCODE_API_URL", "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDy3JRKga_1LyeTVgWgmnaUZy5rSNcTzvY");
 

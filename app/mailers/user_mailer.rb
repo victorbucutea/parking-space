@@ -74,7 +74,7 @@ class UserMailer < ApplicationMailer
 
   def calendar_file(summary, location, start, stop)
     ical = Icalendar::Calendar.new
-    e = Icalendar::Event
+    e = Icalendar::Event.new
     start_date = @user.timezone.utc_to_local(start)
     end_date = @user.timezone.utc_to_local(stop)
     e.dtstart = Icalendar::Values::DateTime.new start_date
