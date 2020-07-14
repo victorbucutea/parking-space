@@ -430,9 +430,11 @@ nav {
   max-height: 90%;
   overflow: scroll;
 
+
   .form-control {
     box-shadow: none;
   }
+
 
   .ps-dialog-content {
     background-color: white;
@@ -442,6 +444,11 @@ nav {
     box-shadow: 1px 1px 3px;
     border-top: 4px solid $red;
     margin-bottom: 5px;
+
+
+    @include media-breakpoint-down(sm) {
+      width: 95%;
+    }
 
     .ps-question {
       padding: $sm-measure-unit;

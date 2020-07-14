@@ -11,7 +11,7 @@
         Nu sunt locuri in zonă.<br/>
         Fii primul care
         <u>
-          <a ng-click="showPostSpace()" >
+          <a ng-click="showPostSpace()">
             postează un loc.
           </a>
         </u>
@@ -112,7 +112,7 @@
               <div class="group-thumbnail col-4 ">
                 <i class="fa fa-2x fa-photo text-muted" ng-if="!space[2].images.length"></i>
                 <img ng-click="showFullImageThumb($event, space[2])"
-                     ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space[2].images[0].name}}"
+                     ng-src="https://res.cloudinary.com/{{cloudName}}/image/upload/q_auto,f_auto,w_150/{{space[2].images[0].file}}"
                      ng-if="space[2].images.length">
               </div>
 
@@ -149,28 +149,36 @@
         </ul>
       </div>
     </div>
+  </div>
 
-    <div id="showMultipleSpaces" class="ps-dialog animated zoomIn">
-      <div class="ps-dialog-content max-zoom-spaces pt-3">
-        <h5 class="text-center"> Mai multe locuri la aceeași locație </h5>
-        <img class="img-fluid"
-             id="scream"
-             crossorigin="anonymous"
-             ng-show="selectedSpaces[0].perimeter.section.interior_map"
-             ng-src="{{'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+selectedSpaces[0].perimeter.section.interior_map}}">
 
-        <ul>
-          <li class="list-group-item list-group-item-action p-0" ng-repeat="space in selectedSpaces" ng-click="markerClick(space)">
-            <parking-spot-info-box space="space"></parking-spot-info-box>
-          </li>
-        </ul>
-        <div class="ps-control-buttons">
-          <a tabindex class="btn btn-primary" onclick="$('#showMultipleSpaces').hide()">Ok</a>
-        </div>
+  <div id="showMultipleSpaces" class="ps-dialog animated zoomIn">
+    <div class="ps-dialog-content max-zoom-spaces p-3">
+
+      <div class="p-2 border-bottom"
+           ng-repeat="space in selectedSpaces | filter:{owner_is_current_user:true}"
+           ng-click="markerClick(space)">
+        <h5 class="mt-3 border-bottom pb-2 text-muted" ng-show="$index === 0">
+          <i class="fa fa-user text-success"></i>
+          Locuri postate de tine
+        </h5>
+        <parking-spot-info-box space="space"></parking-spot-info-box>
+      </div>
+
+      <div class="p-2 border-bottom"
+            ng-repeat="space in selectedSpaces | filter:{owner_is_current_user:false}"
+            ng-click="markerClick(space)">
+        <h5 class="mt-3 border-bottom pb-2 text-muted" ng-show="$index === 0">
+          <i class="fa fa-car text-success"></i>
+          Locuri rezervabile la aceeași locație
+        </h5>
+        <parking-spot-info-box space="space"></parking-spot-info-box>
+      </div>
+      <div class="ps-control-buttons">
+        <a tabindex class="btn btn-primary" onclick="$('#showMultipleSpaces').hide()">Ok</a>
       </div>
     </div>
   </div>
-
   <!-- Add review form-->
   <review-form space="reviewSpace" reviews="reviews"></review-form>
 

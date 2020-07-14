@@ -23,7 +23,7 @@ class ProposalsController < ApplicationController
 
   def next
     @proposals = @proposals.joins(:parking_space).active_or_future
-                     .approved.order(:end_date).limit(1)
+                           .approved.order(:end_date).limit(1)
     if @proposals.empty?
       render json: { Error: 'No offer found.' }, status: :not_found
     else
@@ -44,7 +44,7 @@ class ProposalsController < ApplicationController
 
     if submit_payment && @proposal.pay
       UserMailer.with(proposal: @proposal).new_offer.deliver_later
-      UserMailer.with(proposal: @proposal).reservation_notif.deliver_later
+      UserMailer.with(proposal: @proposal, user: current_user).reservation_notif.deliver_later
       send_sms @proposal.parking_space.user.phone_with_prefix,
                current_user.full_name + ' a achitat contravaloarea de ' + @proposal.payment_amount.to_s +
                ' Ron pentru locul de parcare ' + @proposal.parking_space.address_line_1 + '. https://go-park.ro'

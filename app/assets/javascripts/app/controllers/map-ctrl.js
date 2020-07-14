@@ -84,7 +84,6 @@ angular.module('ParkingSpaceMobile.controllers').controller('MapCtrl',
                 google.maps.event.addListener(map, 'idle', () => {
                     if (!map.getCenter()) return;
                     let coords = map.getCenter().toJSON();
-                    console.log('recording coords', coords);
                     parameterService.setNavigateOnRedirect(coords);
                 })
             };

@@ -33,6 +33,7 @@ class UserMailer < ApplicationMailer
   # Sent to reservation owner for being notified and also add event to calendar
   def reservation_notif
     @proposal = params[:proposal]
+    @user = params[:user]
     location = @proposal.parking_space.address_line_1 + "\n" + @proposal.parking_space.address_line_2
     summary = 'Rezervare loc parcare'
     ical = calendar_file summary, location, @proposal.start_date, @proposal.end_date
@@ -73,9 +74,11 @@ class UserMailer < ApplicationMailer
 
   def calendar_file(summary, location, start, stop)
     ical = Icalendar::Calendar.new
-    e = Icalendar::Event.new
-    e.dtstart = Icalendar::Values::DateTime.new start
-    e.dtend = Icalendar::Values::DateTime.new stop
+    e = Icalendar::Event
+    start_date = @user.timezone.utc_to_local(start)
+    end_date = @user.timezone.utc_to_local(stop)
+    e.dtstart = Icalendar::Values::DateTime.new start_date
+    e.dtend = Icalendar::Values::DateTime.new end_date
     e.location = location
     e.summary = summary
     # e.description = desc
