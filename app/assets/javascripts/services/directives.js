@@ -803,14 +803,16 @@ angular.module('ParkingSpace.directives')
                 };
 
                 $scope.cancel = function (space, offer) {
-                    offerService.cancelOffer(space, offer, (newOf) => {
-                        replaceById(newOf, $scope.offers);
-                    });
+                    if (confirm('Sunteți sigur că doriți să anulați rezervarea ?'))
+                        offerService.cancelOffer(space, offer, (newOf) => {
+                            replaceById(newOf, $scope.offers);
+                        });
                 };
                 $scope.reject = function (space, offer) {
-                    offerService.rejectOffer(space, offer, (newOf) => {
-                        replaceById(newOf, $scope.offers);
-                    });
+                    if (confirm('Sunteți sigur că doriți să anulați rezervarea ?'))
+                        offerService.rejectOffer(space, offer, (newOf) => {
+                            replaceById(newOf, $scope.offers);
+                        });
                 };
             }
         }

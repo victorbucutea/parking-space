@@ -1,5 +1,6 @@
-class Proposal < ActiveRecord::Base
+# frozen_string_literal: true
 
+class Proposal < ActiveRecord::Base
   scope :for_space, ->(sp_id) { where('proposals.parking_space_id = ? ', sp_id) }
   scope :for_spaces, ->(ids) { where('proposals.parking_space_id in (?) ', ids) }
   scope :for_user, ->(user) { where('proposals.user_id = ? ', user) }
@@ -8,7 +9,8 @@ class Proposal < ActiveRecord::Base
   scope :past, -> { where('proposals.end_date <= ?', Time.now) }
   scope :outside_period, lambda { |start, end_p|
     where('proposals.start_date <= ?
-                                  OR proposals.end_date >= ? ', start, end_p) }
+                                  OR proposals.end_date >= ? ', start, end_p)
+  }
 
   enum approval_status: %i[pending rejected approved canceled]
   enum payment_status: %i[unpaid paid]
@@ -41,9 +43,8 @@ class Proposal < ActiveRecord::Base
     self.skip_expiration_check = false
   end
 
-
   def bid_amount_valid
-    unless bid_amount.nil? or bid_amount >= 0
+    unless bid_amount.nil? || (bid_amount >= 0)
       errors.add :general, 'Cannot place a bid with negative price!'
       false
     end
@@ -103,11 +104,8 @@ class Proposal < ActiveRecord::Base
     end
   end
 
-
   def space_is_not_expired
-    if parking_space.expired?
-      errors.add :general, 'Locul de parcare a expirat!'
-    end
+    errors.add :general, 'Locul de parcare a expirat!' if parking_space.expired?
 
     if end_date > parking_space.space_availability_stop
       errors.add :general, 'Rezervarea depășește valabilitatea spațiului'
@@ -117,7 +115,7 @@ class Proposal < ActiveRecord::Base
   def reject
     self.skip_overlap_check = true
     self.skip_paid_check = true
-    if active? or expired?
+    if active? || expired?
       errors.add :general, 'Nu se poate refuza o ofertă expirată sau activă'
       return false
     end
@@ -125,17 +123,28 @@ class Proposal < ActiveRecord::Base
     rejected!
   end
 
+  def rollback_payment
+    total_with_vat = -(amount_with_vat + comision_with_vat)
+    total = (amount)
+    proposal_msg = "Anulare rezervare #{parking_space.address_line_1}"
+    owner_msg = "Anulare rezervare #{parking_space.address_line_1} ( #{user.full_name} )"
+    if user.account.withdraw! Withdrawal.new(iban: proposal_msg, amount: total_with_vat)
+      parking_space.user.account.withdraw! Withdrawal.new(iban: owner_msg, amount: total)
+    end
+  end
+
   def cancel
     self.skip_overlap_check = true
     self.skip_paid_check = true
 
-    if active? or expired?
+    if active? || expired?
       errors.add :general, 'Nu se poate anula o ofertă din trecut sau activă (în curs)'
       return false
     end
     # archive and return money
-
-    canceled!
+    if rollback_payment
+      canceled!
+    end
   end
 
   def approve

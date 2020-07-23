@@ -59,21 +59,11 @@ class AccountsController < ApplicationController
   end
 
   def withdraw
-    withdrawal = Withdrawal.new(account_params)
-    unless withdrawal.valid?
-      render json: { Error: withdrawal.errors }, status: :unprocessable_entity
-      return
-    end
-
-    unless @account.withdraw withdrawal, current_user
+    unless @account.withdraw Withdrawal.new(account_params)
       render json: { Error: @account.errors }, status: :unprocessable_entity
       return
     end
-
-    @account.withdrawals << withdrawal
-
-    UserMailer.with(withdrawal: withdrawal).withdrawal.deliver_later
-
+    UserMailer.with(withdrawal: @account.withdrawals.last).withdrawal.deliver_later
     render :show
   end
 

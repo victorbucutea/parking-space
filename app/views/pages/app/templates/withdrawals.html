@@ -10,19 +10,29 @@
 
         <div class="bid-table " ng-show="withdrawals.length">
 
-            <div class="offer d-flex justify-content-between" ng-repeat="withd in withdrawals"
+            <div class="offer row no-gutters border-bottom" ng-repeat="withd in withdrawals"
                  ng-click="selectWithd(withd)" ng-class="{selected: selWithd == withd}">
 
-                <span class="offer-price">
-                    {{withd.amount}} {{account.currency}}
+                <span class="col-3 col-md-2 offer-price">
+                    {{-1 * withd.amount}} {{account.currency}}
                 </span>
 
-                <span>{{ withd.created_at | moment: 'D/MM HH:mm' }}</span>
-                <span class="text-capitalize">{{ withd.status}}</span>
-                <span>
-                      <button class="btn btn-sm btn-link text-danger animated zoomIn"
+                <span class="col-9 col-md-8">
+                    <div  style="white-space: pre-line"> {{withd.iban}}</div>
+                </span>
+
+                <span class=" col-12 col-md-2">
+                      <button class="m-2 btn btn-sm btn-link text-danger animated zoomIn"
                               ng-show="withd.pending" ng-click="cancelWithdrawal(withd)">
                         <i class="fa fa-close "></i> Anuleaza
+                    </button>
+                      <button disabled class="m-2 btn btn-sm btn-link text-success animated zoomIn"
+                              ng-show="withd.executed" >
+                        <i class="fa fa-check "></i> Executat
+                    </button>
+                      <button disabled class="m-2 btn btn-sm btn-link text-danger animated zoomIn"
+                              ng-show="withd.canceled || withd.rejected" >
+                        <i class="fa fa-ban "></i> Anulat
                     </button>
                 </span>
             </div>

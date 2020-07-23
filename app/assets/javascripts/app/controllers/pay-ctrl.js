@@ -63,6 +63,9 @@ angular.module('ParkingSpaceMobile.controllers').controller('PayCtrl',
                     button.addEventListener('click', function () {
                         $scope.loading = true;
 
+                        if (!instance.isPaymentMethodRequestable())
+                            return;
+
                         instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
 
                             if (requestPaymentMethodErr) {
