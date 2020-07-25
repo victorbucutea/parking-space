@@ -10,12 +10,12 @@
     <p> Ați câștigat in total </p>
 
     <h2>
-      {{totalSum() | units}}.<small>{{totalSum() | subunits}}</small> {{startCurrency}}
+      {{totalSum() | units}}.<small>{{totalSum() | subunits}}</small> {{account.currency}}
     </h2>
 
     <hr style="width: 80%;">
     <p> Aveți în cont </p>
-    <h2> {{accountSum()| units }}.<small>{{accountSum()| subunits }}</small> Ron </h2>
+    <h2> {{accountSum()| units }}.<small>{{accountSum()| subunits }}</small> {{account.currency}} </h2>
 
     <a class="btn btn-outline-secondary" ui-sref="account.withdraw"> Vreau să retrag banii </a>
 

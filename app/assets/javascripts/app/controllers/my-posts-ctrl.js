@@ -54,13 +54,5 @@ angular.module('ParkingSpaceMobile.controllers').controller('MyPostsCtrl',
                 return sum;
             }
 
-            if (!$scope.spaces || !$scope.spaces.length) {
-                parameterService.getStartingAskingPrice().then((price) => {
-                    $scope.startCurrency = price.currency;
-                });
-            } else {
-                $scope.startCurrency = $scope.spaces[0].currency
-            }
-
 
         }]);

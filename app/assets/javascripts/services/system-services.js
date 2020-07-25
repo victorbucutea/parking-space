@@ -91,9 +91,12 @@ angular.module('ParkingSpace.services')
                     $http['delete']('/users/sign_out.json', {})
                         .then(function (res) {
                             sessionStorage.removeItem('current_user');
-                            if (clbk) {
-                                clbk(res);
-                            }
+                            //# 107
+                            setTimeout( () => {
+                                if (clbk) {
+                                    clbk(res);
+                                }
+                            },1000);
                         }, function (err) {
                             errorHandlingService.handle(err.data, err.status);
                         })
