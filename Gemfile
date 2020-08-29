@@ -27,8 +27,6 @@ gem 'high_voltage', '~> 3.0.0'
 gem 'icalendar'
 gem 'jbuilder'
 gem 'json'
-gem 'derailed_benchmarks'
-gem 'stackprof'
 gem 'rest-client'
 gem 'sass-rails', '~> 5.0'
 gem 'seed-fu', '~> 2.3'
@@ -39,7 +37,6 @@ gem 'turbolinks'
 gem 'tzinfo'
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker', '~> 3.5', require: false
-gem 'webpush'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
