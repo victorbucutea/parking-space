@@ -578,7 +578,7 @@ angular.module('ParkingSpace.services')
 
             _this.listUsers = function (query, clbk) {
                 query = query || '';
-                $http.get('/users/list.json', {
+                $http.get('/users/list_users.json', {
                     params: {
                         query: query
                     }

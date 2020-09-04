@@ -5,7 +5,10 @@ class Ability
 
   def initialize(user)
 
-    if user.role? 'city_admin'
+    if user.role? 'super_admin'
+      can :access, :rails_admin
+      can :manage, :all
+    elsif user.role? 'city_admin'
       can :manage, Role
       can :manage, Location
       can :manage, Company
@@ -14,6 +17,7 @@ class Ability
       can :manage, Proposal
       can :manage, Account
       can :manage, Review
+      can :manage, User
     elsif user.role? 'private_spaces_admin'
       # check private_spaces_admin allowed to validate parking space ( not user )
       # when city will be added (pb fk in roles) this role will only
@@ -30,9 +34,11 @@ class Ability
       can :manage, ParkingSpace, user_id: user.id
       can :index, ParkingSpace
       can :show, ParkingSpace
+      can :manage, User, user_id: user.id
       cannot :list_spaces, ParkingSpace
       cannot :list_offers, ParkingSpace
       cannot :list_account, Account
+      cannot :list_users, User
       cannot :execute_withdrawal, Account
       cannot :reject_withdrawal, Account
     end

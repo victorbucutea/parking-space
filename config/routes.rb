@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/parking-super-admin', as: 'rails_admin'
   resources :reviews
   post 'sensor_auth/authenticate'
 
@@ -37,15 +38,17 @@ Rails.application.routes.draw do
 
   # provide a screen to confirm the password reset
   devise_scope :user do
-    get '/users/client_token' => 'registrations#client_token', :as => 'client_token'
-    get '/users/create_payment_method' => 'registrations#create_payment_method', :as => 'create_payment_method'
-    get '/users/password/done' => 'passwords#done', :as => 'done_user_password'
-    get '/users/list' => 'registrations#list', :as => 'list'
-    post '/users/attach_images' => 'registrations#attach_images', :as => 'attach_images'
     post '/users/sign_in_fb' => 'sessions#sign_in_fb', :as => 'sign_in_fb'
-    post '/users/validate_code' => 'registrations#validate_code', :as => 'validate_code'
-    post '/users/send_new_code' => 'registrations#send_new_code', :as => 'send_new_code'
-    post '/users/register_for_notifications' => 'registrations#register_for_notifications', :as => 'register_for_notifications'
+    get '/users/password/done' => 'passwords#done', :as => 'done_user_password'
+  end
+
+  namespace :users do
+    get 'client_token'
+    get 'list_users'
+    post 'validate_code'
+    post 'send_new_code'
+    post 'attach_images'
+    post 'register_for_notifications'
   end
 
   resources :parameters

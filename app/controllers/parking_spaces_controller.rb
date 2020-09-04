@@ -9,12 +9,6 @@ class ParkingSpacesController < ApplicationController
   # GET /parking_spaces
   # GET /parking_spaces.json
   def index
-    if current_user.company
-      @parking_spaces = ParkingSpace.not_expired.active_or_owned
-                            .includes(:parking_perimeter)
-                            .for_company current_user.company
-      render :index, status: :ok
-    end
 
     lat_min = params[:lat_min]
     lat_max = params[:lat_max]

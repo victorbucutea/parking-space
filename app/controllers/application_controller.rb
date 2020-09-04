@@ -17,4 +17,5 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     render json: { Error: { general: 'Actiune neautorizata' } }, status: :forbidden
   end
+
 end

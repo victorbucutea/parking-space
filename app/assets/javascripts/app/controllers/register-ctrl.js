@@ -36,15 +36,16 @@ angular.module('ParkingSpaceMobile.controllers').controller('RegisterCtrl',
                 }
 
                 $scope.user.images.submit().then((publicIds) => {
-                    user.images = null;
+                    let userCopy = angular.copy(user);
+                    userCopy.images = null;
                     if ($stateParams.inside) {
-                        userService.saveUser(user, function () {
+                        userService.saveUser(userCopy, function () {
                             userService.attach_images(publicIds).then( () => {
                                 $state.go('map.search');
                             })
                         });
                     } else {
-                        userService.registerUser(user, function () {
+                        userService.registerUser(userCopy, function () {
                             userService.attach_images(publicIds).then( () => {
                                 $state.go('map.search');
                             })

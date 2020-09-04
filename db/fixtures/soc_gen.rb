@@ -11,97 +11,37 @@ Company.seed(:short_name) do |c|
 end
 
 
-User.seed(:email) do |user|
-  user.full_name = 'Sorin Diaconescu'
-  user.email = 'sorin.diaconescu-ext@socgen.com'
-  user.password = 'pasword123'
-  user.password_confirmation = 'pasword123'
-  user.company_id = 1
-end
+User.find_by_email('sorin.diaconescu-ext@socgen.com').try(:destroy)
+
+User.find_by_email('marius.dumitrescu-ext@socgen.com').try(:destroy)
+
+User.find_by_email('catalin.lupsa-ext@socgen.com').try(:destroy)
+
+User.find_by_email('alexandru-cosmin.ivan-ext@socgen.com').try(:destroy)
+
+User.find_by_email('constantin.agapi-ext@socgen.com').try(:destroy)
+
+
 
 User.seed(:email) do |user|
-  user.full_name = 'Marius Dumitrescu'
-  user.email = 'marius.dumitrescu-ext@socgen.com'
+  user.full_name = 'Super Admin'
+  user.email = 'victor.bucutea@gmail.com'
   user.password = 'pasword123'
   user.password_confirmation = 'pasword123'
-  user.company_id = 1
 end
 
-User.seed(:email) do |user|
-  user.full_name = 'Catalin Lupsa'
-  user.email = 'catalin.lupsa-ext@socgen.com'
-  user.password = 'pasword123'
-  user.password_confirmation = 'pasword123'
-  user.company_id = 1
-end
-
-User.seed(:email) do |user|
-  user.full_name = 'Alexandru-Cosmin Ivan'
-  user.email = 'alexandru-cosmin.ivan-ext@socgen.com'
-  user.password = 'pasword123'
-  user.password_confirmation = 'pasword123'
-  user.company_id = 1
-end
-
-User.seed(:email) do |user|
-  user.full_name = 'Constantin Agapi'
-  user.email = 'constantin.agapi-ext@socgen.com'
-  user.password = 'pasword123'
-  user.password_confirmation = 'pasword123'
-  user.company_id = 1
-end
 
 Role.seed(:id,
           { id: 1, identifier: 'sensor_admin' },
           { id: 2, identifier: 'city_admin' },
-          { id: 3, identifier: 'company_id_admin' },
+          { id: 3, identifier: 'company_admin' },
           { id: 4, identifier: 'parking_lot_admin' },
           { id: 5, identifier: 'parking_lot_viewer' },
-          id: 6, identifier: 'private_spaces_admin')
+          { id: 6, identifier: 'private_spaces_admin' },
+          id: 7, identifier: 'super_admin',
+          user_id: User.find_by_email('victor.bucutea@gmail.com').id)
 
-
-Rule.seed(:id, { id: 1,
-                description: 'Rezervarea locului se poate face doar cu 1h inaintea ocuparii locului.',
-                name: 'Rezervare doar cu 1h inainte',
-                start: 60,
-                stop: 0,
-                type: 'TimeBeforeReservationRule' },
-          { id: 2,
-           description: 'Rezervarea locului se poate face doar cu 1.5h inaintea ocuparii locului.',
-           name: 'Rezervare doar cu 1.5h inainte',
-           start: 90,
-           stop: 0,
-           type: 'TimeBeforeReservationRule' },
-          { id: 3,
-           description: 'Rezervarea locului se poate face doar cu 3h inaintea ocuparii locului.',
-           name: 'Rezervare doar cu 3h inainte',
-           start: 180,
-           stop: 0,
-           type: 'TimeBeforeReservationRule' },
-          { id: 4,
-           description: 'Durata maxima de rezervare a locului e de maxim 8h.',
-           name: 'Durata rezervare 8h',
-           start: 0,
-           stop: 60 * 8,
-           type: 'ReservationDurationRule' },
-          { id: 5,
-           description: 'Durata maxima de rezervare a locului e de maxim 12h.',
-           name: 'Durata rezervare 12h',
-           start: 0,
-           stop: 60 * 12,
-           type: 'ReservationDurationRule' },
-          { id: 6,
-           description: 'Rezervare doar in intervalul orelor lucratoare, incluzand week-end',
-           name: 'Ore lucratoare cu weekend',
-           start: 0,
-           stop: 60,
-           type: 'WorkingHoursRule' },
-          id: 7,
-          description: 'Rezervare doar in intervalul orelor lucratoare, excluzand week-end',
-          name: 'Ore lucratoare fara weekend',
-          start: 0,
-          stop: 60,
-          type: 'WorkingHoursRule')
+Rule.try(:destroy_all)
 
 ParameterValue.where(key: 'en').destroy_all
 
