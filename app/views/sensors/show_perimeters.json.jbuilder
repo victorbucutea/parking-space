@@ -1,6 +1,7 @@
 json.extract! @sensor, :id, :deviceid, :location_text, :title_message,
-              :lat, :lng, :snapshot, :active, :hook_active, :installation_date,
-              :module_info, :hit_count, :created_at, :updated_at, :last_touch_date
+              :lat, :lng, :snapshot, :active,  :installation_date,
+              :module_info, :top_left_x, :top_left_y, :hit_count, :created_at,
+              :updated_at, :last_touch_date
 json.perimeters do
   json.array! @sensor.parking_perimeters do |perimeter|
     if perimeter.parking_space?

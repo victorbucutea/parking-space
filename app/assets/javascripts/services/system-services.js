@@ -157,6 +157,10 @@ angular.module('ParkingSpace.services')
         let _this = this;
         _this = this;
 
+        _this.handleFn = function (error) {
+            _this.handle(error.data, error.status);
+        }
+
         _this.buildErrorMessages = function (data) {
             let errMsgs = [];
             let i = 0;

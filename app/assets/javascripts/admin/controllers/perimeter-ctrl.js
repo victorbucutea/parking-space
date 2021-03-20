@@ -61,26 +61,27 @@ angular.module('ParkingSpaceAdmin.controllers')
                     }, 1000)
                 });
 
-                let usertimeoutHandle = 0;
-                $scope.$watch('userSearchTxt', function (newVal) {
-                    if (!newVal || newVal.length < 2) return;
-                    if (usertimeoutHandle !== 0) {
-                        clearTimeout(usertimeoutHandle);
-                    }
-                    usertimeoutHandle = setTimeout(() => {
-                        userService.listUsers(newVal, (data) => {
-                            $scope.users = data;
-                        })
-                    }, 1000)
-                });
+                $scope.searchUser = function (newVal, clbk) {
+                    userService.listUsers(newVal).then((data) => {
+                        $scope.users = data;
+                        $scope.users.forEach(u => {
+                            u.name = u.email;
+                            u.description = u.full_name
+                        });
+                        if (clbk) {
+                            clbk(data);
+                        }
+                    })
+                }
 
                 $scope.selectUser = function (user) {
                     $scope.editablePer.user = user;
                     $scope.editablePer.user_id = user.id;
+                    console.log('select user ', user);
                 };
 
                 if ($scope.editablePer.user_id) {
-                    userService.findCompanyUser($scope.editablePer.user_id, (data) => {
+                    userService.findUser($scope.editablePer.user_id, (data) => {
                         $scope.editablePer.user = data;
                     })
                 }
@@ -89,6 +90,7 @@ angular.module('ParkingSpaceAdmin.controllers')
                 $scope.expression = [];
 
                 if ($scope.editablePer) {
+                    console.log($scope.editablePer);
                     let rulesExpression = $scope.editablePer.rules_expression;
                     if (rulesExpression) {
                         var ids = rulesExpression.match(/\d/g);

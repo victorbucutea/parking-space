@@ -1,0 +1,15 @@
+<div ng-controller="LocationListCtrl">
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="loc in locations">
+      <div>
+        <a ui-sref="locations.edit({locationId: loc.id})" ui-sref-active="font-weight-bold"> {{loc.name}} </a></div>
+      <div class="pl-4 text-truncate " ng-repeat="section in loc.sections">
+        <a class="text-muted" href ui-sref=".section({sectionId:section.id})" ui-sref-active="font-weight-bold"> {{section.name}}</a>
+      </div>
+    </li>
+    <li class="list-group-item" ng-repeat-end>
+      <a href ui-sref="locations.edit({})" ui-sref-opts="{inherit:false}"> Create new ... </a>
+    </li>
+  </ul>
+
+</div>

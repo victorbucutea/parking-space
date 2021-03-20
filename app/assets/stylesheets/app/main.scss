@@ -1514,129 +1514,129 @@ parking-spot-info-box {
   }
 }
 
-.edit-sensor-modal {
-  position: fixed;
-
-  > div:first-child {
-    max-width: 90%;
-  }
-
+.edit-sensor {
   .legend {
     border-top: 1px solid $gray-300;
     border-bottom: 1px solid $gray-300;
   }
+}
 
 
-  .perimeter-canvas {
-    position: relative;
+.perimeter-canvas {
+  position: relative;
 
-    .perim-buttons {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-    }
+  perimeter-box {
 
-    perimeter-box {
-
-      &.new {
-        .perimeter {
-          background-color: transparentize($green, .2);
-          border: 1px dashed $blue-800;
-        }
-      }
-
-      &.assigned {
-        .perimeter {
-          background-color: transparentize($gray-600, .2);
-          border: 1px solid darken($gray-600, 10%);
-        }
-      }
-
-      &.employee {
-        .perimeter {
-          background-color: transparentize($info, .2);
-          border: 1px solid darken($info, 10%);
-        }
-      }
-
-      &.public {
-        .perimeter {
-          background-color: transparentize($warning, .2);
-          border: 1px solid darken($warning, 10%);
-        }
-      }
-
+    &.new {
       .perimeter {
-        width: 60px;
-        height: 60px;
-        background-color: $gray-600;
-        position: absolute;
-
-        .resizer-right {
-          width: 5px;
-          height: 100%;
-          background: transparent;
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          cursor: ew-resize;
-        }
-
-        .resizer-bottom {
-          width: 100%;
-          height: 5px;
-          background: transparent;
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          cursor: ns-resize;
-        }
-
-        .resizer-both {
-          width: 5px;
-          height: 5px;
-          background: transparent;
-          z-index: 10;
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          cursor: nw-resize;
-        }
-
-        * {
-          -webkit-touch-callout: none; /* iOS Safari */
-          -webkit-user-select: none; /* Safari */
-          -khtml-user-select: none; /* Konqueror HTML */
-          -moz-user-select: none; /* Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none;
-          /* Non-prefixed version, currently
-                                           supported by Chrome and Opera */
-        }
-
-        .per-id {
-          font-size: .8em;
-          font-weight: bold;
-          color: #fff;
-        }
-
-        &:hover {
-          cursor: pointer;
-        }
-
-        &.selected {
-          background-color: transparentize($red, .2);
-        }
-
-
+        background-color: transparentize($green, .2);
+        border: 1px dashed $blue-800;
       }
     }
 
+    &.sensor {
+      .perimeter {
+        i {
+          color: $red;
+        }
+      }
+    }
+
+    &.assigned {
+      .perimeter {
+        background-color: transparentize($gray-600, .2);
+        border: 1px solid darken($gray-600, 10%);
+      }
+    }
+
+    &.employee {
+      .perimeter {
+        background-color: transparentize($info, .2);
+        border: 1px solid darken($info, 10%);
+      }
+    }
+
+    &.public {
+      .perimeter {
+        background-color: transparentize($warning, .2);
+        border: 1px solid darken($warning, 10%);
+      }
+    }
+
+    .perimeter {
+      width: 60px;
+      height: 60px;
+      background-color: $gray-600;
+      position: absolute;
+
+      .resizer-right {
+        width: 5px;
+        height: 100%;
+        background: transparent;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        cursor: ew-resize;
+      }
+
+      .resizer-bottom {
+        width: 100%;
+        height: 5px;
+        background: transparent;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        cursor: ns-resize;
+      }
+
+      .resizer-both {
+        width: 5px;
+        height: 5px;
+        background: transparent;
+        z-index: 10;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        cursor: nw-resize;
+      }
+
+      * {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently
+                                         supported by Chrome and Opera */
+      }
+
+      .per-id {
+        font-size: .8em;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &.selected {
+        background-color: transparentize($red, .2);
+      }
+
+
+    }
   }
 
 }
 
+
 .sensor-fleet {
+
+  &.ps-modal > div{
+    max-width: 75%;
+  }
 
   .online-status {
     height: 30px;

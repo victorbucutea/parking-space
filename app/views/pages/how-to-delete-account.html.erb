@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Go Park</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+  <meta name="Description" content="Gasește un loc de parcare in orasul aglomerat.
+   Go-Park pune la dispoziție locuri private, garaje, alei de parcare, parcări instituții publice, companii etc.">
+
+  <link rel="icon" type="image/png" href="<%= image_path 'favicon.png' %>"/>
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700&amp;subset=latin-ext" rel="stylesheet">
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="<%= asset_path 'fontawesome-webfont.woff2' %>">
+  <%= csrf_meta_tags %>
+</head>
+<body ng-app="ParkingSpace" ng-controller="IndexCtrl">
+
+<!-- Navigation Block -->
+<nav id="navbar" class="navbar navbar-dark navbar-expand-lg">
+  <a class="navbar-brand ml-3" href="#">
+    <img width="100" src="<%= image_path 'logo_sm_dark.png' %>"/>
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item text-right">
+        <a onclick="$.scrollTo('#faq',200)" class="nav-link">Cum funcționează?</a>
+      </li>
+      <li class="nav-item text-right">
+        <a onclick="$.scrollTo('#rent',200)" class="nav-link">Închiriază loc personal</a>
+      </li>
+      </li>
+      <li class="nav-item text-right" onclick="$.scrollTo('#business',200)">
+        <a class="nav-link">Soluții parcări private </a>
+      </li>
+    </ul>
+
+    <div class="navbar-form text-right">
+      <a href="/app/index.html#!/home/login" class="btn btn-outline-secondary">
+        <i class="fa fa-user"></i> INTRĂ ÎN CONT
+      </a>
+    </div>
+  </div>
+
+</nav>
+
+<h3 class="p-5 m-5 text-center"> We are sorry to see you go !</h3>
+
+
+<div class="p-5">
+  We are working hard to make the platform more accessible but the deletion of user data is still a manual task.
+  Please send us an email at <u><a href="mailto:office@go-park.ro">office@go-park.ro</a></u> with the subject
+  "User deletion request" and the text mentioning your username. We will be happy to assist.
+
+</div>
+
+<div class="footer mt-5 d-none d-md-block" id="footer">
+  <div class="row no-gutters align-items-center justify-content-center">
+    <div class="col-md-4 ">
+      <div class="row">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+          <a href="#">
+            <img width="120" src="<%= image_path 'logo_sm_dark.png' %>">
+          </a>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-4 p-3">
+      <h5>Asistență</h5>
+      <ul>
+        <li>
+          <i class="fa fa-phone fa-2x"></i>
+          <a href="tel:+40727.456.250">&nbsp;&nbsp;
+            +40727.456.250
+          </a>
+        </li>
+        <li>
+          <i class="fa fa-envelope fa-2x"></i>
+          <a href="mailto:office@go-park.ro">&nbsp;&nbsp;
+            office@go-park.ro
+          </a>
+        </li>
+      </ul>
+      <hr/>
+      <div class="text-center">
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-facebook "></span>
+        </a>
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-instagram"></span>
+        </a>
+        <a class="social-lg" href="https://www.facebook.com/softspot.ro/" target="_blank">
+          <span class="fa fa-twitter"></span>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4 p-2 contact-form">
+      <form method="POST" action="https://formspree.io/office@go-park.ro">
+        <div class="form-group">
+          <input required type="email" name="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <textarea required class="form-control" name="message" placeholder="Spune-ne cum te putem ajuta..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-sm btn-danger">Trimite</button>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="d-none d-md-flex ending row justify-content-center">
+  &copy;&nbsp;<a href="mailto:office@go-park.ro" target="_blank" style="color:#fff"> &nbsp;Softspot &nbsp;</a> 2017. All
+  rights reserved
+</div>
+</body>

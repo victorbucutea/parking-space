@@ -43,36 +43,38 @@ angular.module('ParkingSpaceAdmin', [
                 }
             })
             .state('locations', {
-                url: '/location?locationId',
+                url: '/locations?locationId',
                 views: {
-                    'content': {
-                        templateUrl: 'location.html'
+                    'menu': {
+                        templateUrl: 'location-list.html'
                     }
                 },
-                params: {
-                    locationId: null
-                }
             })
-            .state('locations.sensor', {
-                url: '/sensor?sensorId',
+            .state('locations.edit', {
+                url: '/edit',
                 views: {
-                    'detail': {
-                        templateUrl: 'sensor-edit.html'
+                    'content@': {
+                        templateUrl: 'location-edit.html'
                     }
-                },
-                params: {
-                    sensorId: null
                 }
             })
             .state('locations.section', {
                 url: '/section?sectionId',
                 views: {
-                    'detail': {
+                    'content@': {
                         templateUrl: 'section-edit.html'
                     }
                 },
                 params: {
                     section: null
+                }
+            })
+            .state('locations.section.sensor', {
+                url: '/sensor?sensorId',
+                views: {
+                    'detail': {
+                        templateUrl: 'sensor-edit.html'
+                    }
                 }
             })
             .state('locations.section.perimeter', {
@@ -131,7 +133,6 @@ angular.module('ParkingSpaceAdmin', [
                     }
                 }
             })
-
             .state('users.offers', {
                 url: "/offers?userId",
                 views: {
@@ -158,5 +159,5 @@ angular.module('ParkingSpaceAdmin', [
             })
 
 
-        $urlRouterProvider.otherwise('/')
+        $urlRouterProvider.otherwise('/locations')
     }])

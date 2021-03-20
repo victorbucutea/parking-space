@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class SectionsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
 
-  before_action :set_section, only: [:show, :edit, :update, :destroy]
-  before_action :set_section_p, only: %i[save_perimeters  perimeters]
-
+  before_action :set_section, only: %i[show edit update destroy]
+  before_action :set_section_p, only: %i[save_perimeters perimeters]
 
   # GET /sections
   # GET /sections.json
@@ -14,8 +15,7 @@ class SectionsController < ApplicationController
 
   # GET /sections/1
   # GET /sections/1.json
-  def show
-  end
+  def show; end
 
   # GET /sections/new
   def new
@@ -23,8 +23,7 @@ class SectionsController < ApplicationController
   end
 
   # GET /sections/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /sections
   # POST /sections.json
@@ -57,49 +56,24 @@ class SectionsController < ApplicationController
     end
   end
 
-
   def perimeters
     respond_to do |format|
       format.json { render 'sections/show_perimeters', status: :ok }
     end
   end
 
-
   def save_perimeters
-    pers = params[:perimeters]
-    @section.parking_perimeters.each do |per|
-      exists_in_req = false
-      pers.each do |incoming|
-        exists_in_req = true if incoming[:id] == per.id
-        break if exists_in_req
-      end
-      unless exists_in_req
-        # we consider what comes from the ui as the golden source
-        per.destroy
-      end
-    end
+    pers = perimeter_params[:perimeters]
+    sens = perimeter_params[:sensors]
+    # remove all perimeters not present in submit
+    @section.parking_perimeters.clear
+    # remove links with sensor
+    @section.sensors.clear
+    pers.each { |per| ParkingPerimeter.find_or_create_by(per[:id]).update per }
+    sens.each { |sen| Sensor.find(sen[:id]).update sen }
 
-
-    pers.each do |per|
-
-      if per[:id].nil? || per[:id] < 0
-        per[:id] = nil # needed as ui indexes using a negative id
-        perimeter = ParkingPerimeter.new(permiter_params(per))
-        perimeter.publish_parking_space
-      else
-        perimeter = ParkingPerimeter.find(per[:id])
-        perimeter.update(permiter_params(per))
-        perimeter.update_parking_space
-      end
-
-    end
-
-    respond_to do |format|
-      format.json { render 'sections/show_perimeters', status: :created }
-    end
-
+    render 'sections/show_perimeters', status: :created
   end
-
 
   private
 
@@ -119,11 +93,12 @@ class SectionsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def permiter_params(perim_params)
-    perim_params.permit(
-        :id, :top_left_y, :top_left_x, :bottom_right_y, :bottom_right_x, :price,
-        :identifier, :description, :perimeter_type, :lat, :lng, :section_id,
-        :rules_expression, :user_id
+  def perimeter_params
+    params.permit(perimeters: %i[
+                    id top_left_y top_left_x bottom_right_y bottom_right_x price
+                    identifier description perimeter_type lat lng section_id
+                    rules_expression user_id],
+                  sensors: %i[id top_left_y top_left_x section_id]
     )
   end
 end

@@ -1,31 +1,22 @@
+# frozen_string_literal: true
+
 class Sensor < ActiveRecord::Base
+  scope :for_section, ->(loc_id) { where('sensors.section_id = ? ', loc_id) }
 
-  scope :for_location, ->(loc_id) {where('sensors.section_id = ? ', loc_id)}
-
-  belongs_to :sensor
-  has_many :parking_perimeters, :dependent => :destroy
+  belongs_to :section
+  has_many :parking_perimeters, dependent: :destroy
 
   def do_heartbeat
-    self.hit_count = self.hit_count.nil? ? 0 : self.hit_count + 1
-    if self.hook_active
-      self.console_hit_count = self.console_hit_count.nil? ? 0 : self.console_hit_count + 1
-
-      if self.console_hit_count > 20 # 20 cycles (30s * 20 = 600s = 10m)
-        self.hook_active = false
-        self.console_hit_count = 0
-      end
-    end
+    self.hit_count = hit_count.nil? ? 0 : hit_count + 1
     self.last_touch_date = DateTime.now
     save
   end
 
   def publish_spaces(params)
-
     params[:free_perimeters].each do |p|
       parking_perimeter = ParkingPerimeter.find(p[:id])
       sensor_location = parking_perimeter.sensor.section
       next if sensor_location.nil?
-
 
       parking_space = parking_perimeter.parking_space || ParkingSpace.new
       parking_space.owner_name = 'n/a'
@@ -42,8 +33,5 @@ class Sensor < ActiveRecord::Base
       parking_perimeter.parking_space = parking_space
       parking_perimeter.save!
     end
-
   end
-
 end
-

@@ -60,11 +60,13 @@ class UsersController < ApplicationController
     render json: { token: token_str }
   end
 
-  def list_users
-    @users = if params[:query].nil?
-               []
-             else
+  def list
+    @users = if params[:id]
+               [User.includes(:roles).find(params[:id])]
+             elsif params[:query]
                User.includes(:roles).with_name(params[:query])
+             else
+               []
              end
   end
 

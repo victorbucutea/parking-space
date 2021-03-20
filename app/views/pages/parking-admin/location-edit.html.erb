@@ -1,0 +1,107 @@
+<div ng-controller="LocationCtrl">
+  <div class="mt-4" ng-show="location">
+
+    <div class="location_map"></div>
+    <div class="small text-center text-muted">
+      {{location.location_lat}} x {{location.location_long}}
+    </div>
+
+    <h2 class="mt-4">{{location.name}}</h2>
+
+    <hr>
+
+    <div class="row ">
+
+      <div class="col-sm-8 ">
+        <form novalidate id="locationForm" name="locationForm">
+          <div class="form-row form-group">
+            <label class="col-form-label col-sm-2" for="name"> Nume </label>
+            <div class="col-sm-10">
+              <input id="name" class="form-control" required ng-model="location.name">
+              <small class="form-text ">Descriere a parcarii (companie, repere,etc) vizibila de catre client.</small>
+            </div>
+
+          </div>
+          <div class="form-row form-group">
+            <label class="col-form-label col-sm-2" for="address" required> Adresa </label>
+            <div class="col-sm-10">
+              <input id="address" class="form-control" required ng-model="location.address">
+            </div>
+          </div>
+
+          <input id="lat" type="hidden" required ng-model="location.location_lat">
+
+          <input id="lng" type="hidden" required ng-model="location.location_long">
+
+          <button class="btn btn-primary" ng-click="saveLocation()" ng-disabled="loading">
+            <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+            Salveaza
+          </button>
+          <button class="btn btn-danger" ng-click="deleteLocation()" ng-disabled="loading">
+            <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+            Sterge
+          </button>
+
+        </form>
+      </div>
+      <div class="col-sm-4 text-center">
+        <img height=176" src="<%= image_path 'phone_map_blue.png' %>">
+      </div>
+    </div>
+
+    <h3 class="mt-4 d-flex justify-content-between">
+      Sectiuni
+    </h3>
+    <hr>
+    <div class="list-group my-4">
+      <div ng-repeat="section in location.sections" class="list-group-item  list-group-item-action ">
+        <div class="row">
+          <div class="col-4">
+            <h5> {{section.name}} </h5>
+          </div>
+          <div class="col-6">
+            {{section.description}}
+          </div>
+          <div class="col-2">
+            <button class="btn btn-link" ui-sref=".section({sectionId:section.id})">
+              <i class="fa fa-pencil"></i>
+              Editeaza
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item" ng-show="newSection">
+        <form novalidate id="newSectionForm" name="newSectionForm">
+          <div class="form-row">
+            <label class="col-form-label col-sm-3" for="sensor_name">
+              Nume:
+            </label>
+            <div class="col-sm-9">
+              <input class="form-control form-control-sm" required ng-model="newSection.name" id="sensor_name">
+            </div>
+          </div>
+          <div class="form-row">
+            <label class="col-form-label col-sm-3" for="sensor_desc">
+              Descriere:
+            </label>
+            <div class="col-sm-9">
+              <input class="form-control form-control-sm" required ng-model="newSection.description" id="sensor_desc">
+            </div>
+          </div>
+          <button class="btn btn-sm btn-primary" ng-disabled="loading" ng-click="saveSection(newSection, location)">
+            <i class="fa fa-spinner fa-spin" ng-show="loading"></i>
+            Salvează
+          </button>
+          <button class="btn btn-sm btn-secondary" ng-click="addNewSensor = null">Cancel</button>
+        </form>
+      </div>
+      <div class="list-group-item list-group-item-action" ng-click="newSection = {}">
+        Creaza Secțiune nouă ...
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit sensor modal -->
+  <ui-view name="detail"></ui-view>
+
+</div>

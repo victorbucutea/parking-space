@@ -30,6 +30,13 @@ User.seed(:email) do |user|
   user.password_confirmation = 'pasword123'
 end
 
+User.seed(:email) do |user|
+  user.full_name = 'Sensor'
+  user.email = 'sensor@go-park.ro'
+  user.password = 'Vic10Buc@'
+  user.password_confirmation = 'Vic10Buc@'
+end
+
 
 Role.seed(:id,
           { id: 1, identifier: 'sensor_admin' },

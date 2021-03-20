@@ -109,9 +109,7 @@ angular.module('ParkingSpace.services')
                     let data = response.data;
                     _this.convert(data);
                     return data;
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
             };
 
             this.deleteSpace = function (space) {
@@ -380,9 +378,7 @@ angular.module('ParkingSpace.services')
                     data.default_country = data.countries[data.default_country]
                     sessionStorage.setItem('parameters', JSON.stringify(data));
                     return data;
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
 
         };
 
@@ -541,7 +537,7 @@ angular.module('ParkingSpace.services')
                 })
             }
 
-            _this.rejectWithdrawal = function (withd, comment,  clbk) {
+            _this.rejectWithdrawal = function (withd, comment, clbk) {
                 $http.post(`/accounts/reject_withdrawal.json`,
                     {withdrawal_id: withd.id, comment: comment}
                 ).then(function (resp) {
@@ -578,18 +574,13 @@ angular.module('ParkingSpace.services')
 
             _this.listUsers = function (query, clbk) {
                 query = query || '';
-                $http.get('/users/list_users.json', {
+                return $http.get('/users/list.json', {
                     params: {
                         query: query
                     }
                 }).then((response) => {
-                    let data = response.data;
-                    if (clbk) {
-                        clbk(data);
-                    }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                    return response.data;
+                }, errorHandlingService.handleFn)
             };
 
             _this.getAllRoles = function (clbk) {
@@ -598,20 +589,22 @@ angular.module('ParkingSpace.services')
                     if (clbk) {
                         clbk(data);
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
             };
 
-            _this.findCompanyUser = function (id, clbk) {
-                $http.get('/employees/' + id + '.json').then((response) => {
+            _this.findUser = function (id, clbk) {
+                $http.get('/users/list.json', {
+                    params: {
+                        id: id
+                    }
+                }).then((response) => {
                     let data = response.data;
                     if (clbk) {
-                        clbk(data);
+                        if( data.length > 0)
+                        clbk(data[0]);
+                        else clbk()
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
             };
 
             _this.getCompany = function (clbk) {
@@ -620,9 +613,7 @@ angular.module('ParkingSpace.services')
                     if (clbk) {
                         clbk(data);
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
             }
         }])
 
@@ -644,9 +635,7 @@ angular.module('ParkingSpace.services')
                     if (clbk) {
                         clbk(data);
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
             };
 
             _this.deleteLocation = function (locationId, clbk) {
@@ -656,9 +645,7 @@ angular.module('ParkingSpace.services')
                     if (clbk) {
                         clbk(response.data);
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
             };
 
             _this.getLocations = function (clbk) {
@@ -666,9 +653,13 @@ angular.module('ParkingSpace.services')
                     if (clbk) {
                         clbk(response.data);
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
+            };
+
+            _this.getLocation = function (id) {
+                return $http.get('/locations/' + id + '.json').then((response) => {
+                    return response.data;
+                }, errorHandlingService.handleFn)
             };
 
             _this.getRules = function (query, ids, clbk) {
@@ -694,12 +685,14 @@ angular.module('ParkingSpace.services')
                     params: {location_id: location_id}
                 }).then((response) => {
                     let data = response.data;
+                    data.forEach((d) => {
+                        d.bottom_right_x = d.top_left_x;
+                        d.bottom_right_y = d.top_left_y;
+                    })
                     if (clbk) {
                         clbk(data);
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
+                }, errorHandlingService.handleFn)
             };
 
             _this.getSensors = function (clbk) {
@@ -740,118 +733,14 @@ angular.module('ParkingSpace.services')
                     if (clbk) {
                         clbk(data);
                     }
-                }, function (error) {
-                    errorHandlingService.handle(error.data, error.status);
-                })
-            };
-
-            _this.activateHook = function (sensor, clbk, errClbk) {
-                sensor.hook_active = true;
-                _this.saveSensor(sensor, clbk, errClbk, true);
-            };
-
-            _this.deActivateHook = function (sensor, clbk, errClbk) {
-                sensor.hook_active = false;
-                _this.saveSensor(sensor, clbk, errClbk, true);
-            };
-
-            _this.disconnectSensor = function () {
-                if (_this.channel != null) {
-                    _this.channel.unbind();
-                    _this.channel.disconnect();
-                }
-                if (_this.pusher != null) _this.pusher.disconnect();
-            };
-
-            _this.connectToSensor = function (sensor, onHello, onErr) {
-
-
-                _this.pusher = new Pusher('18d2d3638538f3cc4064', {
-                    cluster: 'eu',
-                    forceTLS: true,
-                    authEndpoint: '/sensor_auth/authenticate.json'
-                });
-                _this.channel = _this.pusher.subscribe('private-sensor-channel');
-
-                _this.channel.bind('client-helo-' + sensor.id, function (data) {
-                    if (onHello) onHello(data);
-                });
-                _this.channel.bind('client-disconnect', function (data) {
-                    if (onErr) onErr(data);
-                });
-
-                _this.channel.bind('pusher:error', function (err) {
-                    $rootScope.$emit('http.error', 'Eroare la conectarea cu agentul:' + err.message);
-                    if (onErr) onErr(err);
-                });
-
-                _this.channel.bind('pusher:subscription_succeeded', function (err) {
-                    _this.channel.trigger("client-helo-" + sensor.id, JSON.stringify({helo: 'helo'}));
-                });
-
-            };
-
-            _this.takeSnapshot = function (sensor, clbk, errClbk) {
-                _this.connectToSensor(sensor, () => {
-                    _this.channel.trigger("client-snapshot-" + sensor.id, JSON.stringify({params: "all"}));
-                    _this.channel.unbind('client-snapshot-ready-' + sensor.id);
-                    _this.channel.bind('client-snapshot-ready-' + sensor.id, function (data) {
-                        if (clbk) clbk(data);
-                    });
-                    _this.channel.unbind('client-snapshot-err-' + sensor.id);
-                    _this.channel.bind('client-snapshot-err-' + sensor.id, function (data) {
-                        $rootScope.$emit('http.error', 'Eroare la snapshot:' + data.err);
-                        if (errClbk) errClbk(data);
-                    });
-                })
-
-            };
-
-            _this.getSensorLogs = function (sensor, no_of_lines, clbk, errClbk) {
-                _this.channel.trigger("client-get-log-" + sensor.id, JSON.stringify({no_of_lines: no_of_lines}));
-                _this.channel.unbind('client-get-log-ready-' + sensor.id);
-                _this.channel.bind('client-get-log-ready-' + sensor.id, function (data) {
-                    if (clbk) clbk(data);
-                });
-            };
-
-            _this.restartModule = function (sensor, module, clbk, errClbk) {
-                _this.channel.trigger("client-restart-" + sensor.id, JSON.stringify({module_name: module}));
-                _this.channel.unbind('client-restart-ready-' + sensor.id);
-                _this.channel.bind('client-restart-ready-' + sensor.id, function (data) {
-                    if (clbk) clbk(data);
-                });
-
-                _this.channel.unbind('client-restart-err-' + sensor.id);
-                _this.channel.bind('client-restart-err-' + sensor.id, function (data) {
-                    $rootScope.$emit('http.error', 'Eroare la restart:' + data.err);
-                    if (errClbk) errClbk(data);
-                });
-            };
-
-            _this.updateModule = function (sensor, cloudinaryResponse, clbk, errClbk) {
-                let args = JSON.stringify({
-                    module_url: cloudinaryResponse.secure_url,
-                    file_name: cloudinaryResponse.fileName
-                });
-                _this.channel.trigger("client-update-" + sensor.id, args);
-                _this.channel.unbind('client-update-ready-' + sensor.id);
-                _this.channel.bind('client-update-ready-' + sensor.id, function (data) {
-                    if (clbk) clbk(data);
-                });
-
-                _this.channel.unbind('client-update-err-' + sensor.id);
-                _this.channel.bind('client-update-err-' + sensor.id, function (data) {
-                    $rootScope.$emit('http.error', 'Eroare la update' + data.err);
-                    if (errClbk) errClbk(data);
-                });
+                }, errorHandlingService.handleFn)
             };
         }])
 
     .service('sectionService', ['$rootScope', '$http', 'errorHandlingService', function ($rootScope, $http, errorHandlingService) {
         let _this = this;
 
-        _this.saveSection = function (section, clbk) {
+        _this.saveSection = function (section) {
 
             let sectionObj = {section: section};
 
@@ -860,18 +749,12 @@ angular.module('ParkingSpace.services')
 
             return restCall.then(function (response) {
                 $rootScope.$emit('http.notif', 'Sectiunea a fost salvată!');
-
-                let data = response.data;
-                if (clbk) {
-                    clbk(data);
-                }
-            }, function (error) {
-                errorHandlingService.handle(error.data, error.status);
-            })
+                return response.data;
+            }, errorHandlingService.handleFn)
         }
 
-        _this.getPerimeters = function (sensorId, clbk) {
-            $http.get('/sensors/' + sensorId + '/perimeters.json').then((response) => {
+        _this.getPerimeters = function (sensorId) {
+            return $http.get('/sensors/' + sensorId + '/perimeters.json').then((response) => {
                 let data = response.data;
                 data.created_at = new Date(data.created_at);
                 data.updated_at = new Date(data.updated_at);
@@ -885,18 +768,14 @@ angular.module('ParkingSpace.services')
                         data.modules.push({idx: arr[0], name: arr[1], version: arr[2]})
                     });
                 }
-                if (clbk) {
-                    clbk(data);
-                }
+                return data;
             })
         };
 
         _this.getSectionPerimeters = function (sectionId, clbk) {
-            $http.get('/sections/' + sectionId + '/perimeters.json').then((response) => {
-                if (clbk) {
-                    clbk(response.data);
-                }
-            });
+            return $http.get('/sections/' + sectionId + '/perimeters.json').then((response) => {
+                return response.data;
+            }, errorHandlingService.handleFn);
         };
 
         _this.savePerimeters = function (sensorId, perimeters, clbk) {
@@ -914,35 +793,26 @@ angular.module('ParkingSpace.services')
                 if (clbk) {
                     clbk(data);
                 }
-            }, function (error) {
-                errorHandlingService.handle(error.data, error.status);
-            })
+            }, errorHandlingService.handleFn)
         }
 
-        _this.saveSectionAndPerimeters = function (section, perimeters, clbk) {
+        _this.saveSectionAndPerimeters = function (section, perimeters, sensors) {
 
-            _this.saveSection(section, clbk);
+            return _this.saveSection(section).then((section) => {
+                let perimObj = {perimeters: perimeters, sensors: sensors};
 
-            let sectionObj = {perimeters: perimeters};
-            perimeters.forEach((p) => {
-                p.section_id = section.id;
-                if (p.user)
-                    p.user_email = p.user.email;
+                let url = '/sections/' + section.id + '/save_perimeters.json';
+
+                return $http.post(url, perimObj).then((data) => {
+                    console.log(data);
+                }, errorHandlingService.handleFn);
+
             });
-            let url = '/sections/' + section.id + '/save_perimeters.json';
 
-            $http.post(url, sectionObj).then(function (response) {
 
-                $rootScope.$emit('http.notif', 'Perimetre parcare salvate!');
-
-                let data = response.data;
-                if (clbk) {
-                    clbk(data);
-                }
-            }, function (error) {
-                errorHandlingService.handle(error.data, error.status);
-            })
         };
+
+
     }])
 
 ;

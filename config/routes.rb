@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
   namespace :users do
     get 'client_token'
-    get 'list_users'
+    get 'list'
     post 'validate_code'
     post 'send_new_code'
     post 'attach_images'

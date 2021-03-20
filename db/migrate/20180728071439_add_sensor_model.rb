@@ -34,7 +34,6 @@ class AddSensorModel < ActiveRecord::Migration[5.1]
     end
 
 
-
     add_reference :roles, :user, index: true
     add_foreign_key :roles, :users
 

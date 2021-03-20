@@ -1569,24 +1569,27 @@ angular.module('ParkingSpace.directives')
                 '<div class="perimeter d-flex justify-content-center align-items-center"' +
                 '     style="width: {{ width() }} ; height:{{ height() }} ; top: {{ top() }} ; left:{{left()}}"' +
                 '     ng-mouseup="clickPerim()" >' +
-                '   <i class="fa fa-car" ng-hide="perimeter.identifier"></i>' +
+                '   <i class="fa {{icon}}" ng-hide="perimeter.identifier"></i>' +
                 '  <span class="per-id">{{perimeter.identifier}}</span>' +
                 '</div>' +
                 '</div>',
             scope: {
                 onStop: '&',
                 onClick: '&',
-                perimeter: '='
+                perimeter: '=',
+                icon: '=?',
+                noResize: '='
             },
             link: function ($scope, elmnt) {
                 let isResizing = false;
                 let isDragging = false;
-                let imgLoaded = false;
+                let imgLoaded = false
                 let elm = elmnt.find('.perimeter')[0];// dom object
                 let per = $scope.perimeter;
                 let canvas = $('.perimeter-canvas');
                 let canvHeight = canvas.height();
                 let canvWidth = canvas.width();
+                $scope.icon = $scope.icon || 'fa-car'
                 $scope.factorWidth = 1;
                 $scope.factorHeight = 1;
 
@@ -1594,7 +1597,8 @@ angular.module('ParkingSpace.directives')
                 $scope.factorWidth = reference.width() / canvWidth;
                 $scope.factorHeight = reference.height() / canvWidth;
                 initDragElement();
-                initResizeElement();
+                if (!$scope.noResize)
+                    initResizeElement();
 
                 new ResizeSensor(canvas, function (e) {
                     if (e.height === canvHeight && e.width === canvWidth) {
@@ -1607,9 +1611,6 @@ angular.module('ParkingSpace.directives')
                     $scope.factorHeight = reference.height() / canvWidth;
                     $scope.$apply();
                 });
-
-                // on screen resize
-
 
                 function initDragElement() {
                     var pos1 = 0,
@@ -1731,10 +1732,12 @@ angular.module('ParkingSpace.directives')
                 };
 
                 $scope.width = function () {
+                    if (!per.bottom_right_x) return 0;
                     return (per.bottom_right_x - per.top_left_x) / $scope.factorWidth + 'px';
                 };
 
                 $scope.height = function () {
+                    if (!per.bottom_right_y) return 0;
                     return (per.bottom_right_y - per.top_left_y) / $scope.factorHeight + 'px';
                 }
 
@@ -1745,16 +1748,19 @@ angular.module('ParkingSpace.directives')
     .directive('autocomplete', [function () {
         return {
             restrict: 'E',
-            template: '<div class="d-inline-block pos-relative" ng-show="addingOperator">' +
-                '            <input id="ruleSearch" class="form-control form-control-sm" ng-model="ruleSearchTxt">' +
+            template: '<div class="d-inline-block pos-relative">' +
+                '            <input ng-required="required" id="ruleSearch" class="form-control form-control-sm" ng-model="ruleSearchTxt">' +
                 '            <div class="suggestion-container " ng-show="ruleSearchTxt.length > 2">' +
                 '              <ul class="list-group">' +
-                '                <li class="list-group-item" ng-hide="rules.length > 0">' +
-                '                  <small> No Rules found with that name. </small>' +
+                '                <li class="list-group-item" ng-hide="loading || rules.length > 0">' +
+                '                  <small> Nici un rezultat găsit. </small>' +
+                '                </li>' +
+                '                <li class="list-group-item" ng-show="loading">' +
+                '                  <i class="fa fa-spin fa-spinner text-muted"></i>' +
                 '                </li>' +
                 '                <li class="list-group-item list-group-item-action" ng-repeat="rule in rules" ' +
-                '                       ng-click="addOperator(rule)">' +
-                '                  <h5><span class="badge badge-dark">{{rule.name}} </span></h5>' +
+                '                       ng-click="selectItem(rule)">' +
+                '                  <div><span class="font-weight-bold">{{rule.name}} </span></div>' +
                 '                  <small class="text-muted"> {{rule.description}} </small>' +
                 '                </li>' +
                 '              </ul>' +
@@ -1762,7 +1768,31 @@ angular.module('ParkingSpace.directives')
                 '          </div>',
             scope: {
                 onSelect: '&',
-                search: '&'
+                search: '&',
+                required: '=?',
+                model: '=',
+
+            },
+            link: function ($scope, $elm) {
+
+                $scope.selectItem = function (item) {
+
+                }
+
+                $scope.$watch('ruleSearchTxt', function (newValue, oldValue) {
+                    if (!newValue || newValue.length <= 2) return;
+
+                    $scope.loading = true;
+                    $scope.search({userName: newValue, clbk: (data) => {
+                            $scope.rules = data;
+                            $scope.loading = false;
+                        }});
+                });
+
+                $scope.selectItem = function(rule) {
+                    $scope.onSelect({rule: rule});
+                }
+
             }
         }
     }])

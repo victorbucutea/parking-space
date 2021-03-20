@@ -1,9 +1,9 @@
 angular.module('ParkingSpaceAdmin.controllers')
-    .controller('SensorFleetCtrl', ['$scope', '$state', 'sectionService', function ($scope, $state, sectionService) {
+    .controller('SensorFleetCtrl', ['$scope', '$state', 'sensorService', function ($scope, $state, sensorService) {
 
         $scope.cloudinaryName = window.cloudinaryName;
 
-        sectionService.getSensorsWithLocation((data) => {
+        sensorService.getSensorsWithLocation((data) => {
             $scope.sensors = data;
         });
 

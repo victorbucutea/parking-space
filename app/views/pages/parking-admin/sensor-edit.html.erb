@@ -4,7 +4,9 @@
     <h3> Edit Sensor </h3>
 
     <div class="text-center perimeter-canvas">
-      <img style="width: 100%" id="scream" ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}" class="perim-img" crossorigin="anonymous">
+      <img style="width: 100%" id="scream"
+           ng-src="{{ 'https://res.cloudinary.com/'+cloudinaryName+'/image/upload/'+sensor.snapshot}}"
+           class="perim-img" crossorigin="anonymous">
 
       <!--  here be the place for draggable boxes -->
       <div ng-repeat="per in perimeters" class="drag per-drag-{{per.id}}" data-id="{{per.id}}"
@@ -49,7 +51,7 @@
         <i class="fa fa-camera" ng-hide="connecting"></i> Take new parking lot snapshot
       </button>
       <a href="" style="display: none" id="downloadSnapshots"></a>
-      <button class="btn btn-secondary" ng-disabled=" connecting" ng-click="downloadSnaphots()">
+      <button class="btn btn-secondary" ng-disabled="connecting" ng-click="evaluatePer()">
         <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
         <i class="fa fa-save" ng-hide="connecting"></i> Download Snapshots
       </button>
@@ -60,12 +62,6 @@
         <i class="fa fa-spin fa-spinner" ng-show="connecting"> </i>
         <i class="fa fa-bolt" ng-hide="connecting"></i> Evaluate
       </button>-->
-      <hr/>
-      <div class="form-text text-muted">
-        {{status}}
-      </div>
-
-
     </div>
 
     <hr/>
@@ -129,7 +125,7 @@
         </div>
 
         <!--  PERIMETER list -->
-        <h3 ng-show="!samplePerimeter && !perimeters.length"> No perimeters </h3>
+        <h6 class="text-muted py-3" ng-show="!samplePerimeter && !perimeters.length"> - No perimeters - </h6>
         <div class=" p-2 animated slideInLeft parking-space-perimeter" ng-repeat="per in perimeters">
           <div class="form-row">
             <div class="col-sm-8">
@@ -265,19 +261,9 @@
             </div>
           </div>
           <div class="form-group row">
-            <label for="updateDate" class="col-sm-2 col-form-label">Hook</label>
+            <label for="hitCnt" class="col-sm-2 col-form-label">Hit count</label>
             <div class="col-sm-10">
-              <button type="button" ng-show="sensor.hook_active" ng-class="{'btn-success': sensor.hook_active}" class="btn">Active</button>
-              <button type="button" ng-hide="sensor.hook_active" ng-class="{'btn-secondary': !sensor.hook_active}" class="btn">Inactive</button>
-              <small class="form-text text-muted">
-                An active hook triggers agent to ask for a console connection ( take snaphots, update module,etc. )
-              </small>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="updateDate" class="col-sm-2 col-form-label">Hit count</label>
-            <div class="col-sm-10">
-              <input type="text" readonly class="form-control-plaintext" ng-model="sensor.hit_count" id="deviceid">
+              <input type="text" readonly class="form-control-plaintext" ng-model="sensor.hit_count" id="hitCnt">
               <small class="form-text text-muted">
                 Number of times agent has contacted server.
               </small>

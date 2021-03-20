@@ -9,7 +9,8 @@ class ParkingPerimeter < ActiveRecord::Base
   belongs_to :user
 
   before_destroy :expire_old_space
-
+  after_update :update_parking_space
+  after_create :publish_parking_space
 
 
   def publish_parking_space
@@ -30,19 +31,20 @@ class ParkingPerimeter < ActiveRecord::Base
   end
 
   def expire_old_space
-    unless parking_space.nil?
-      parking_space.space_availability_stop = DateTime.now
-      parking_space.proposals.active_or_future.each do |prop|
-        prop.end_date = DateTime.now
-        prop.save
-      end
-      parking_space.save
+    return if parking_space.nil?
+
+    parking_space.space_availability_stop = DateTime.now
+    parking_space.proposals.active_or_future.each do |prop|
+      prop.end_date = DateTime.now
+      prop.save
     end
+    parking_space.save
   end
 
   def populate(parking_space)
     section_location = section.location
     return if section_location.nil?
+
     parking_space.owner_name = section_location.company.short_name
     parking_space.location_lat = section_location.location_lat
     parking_space.location_long = section_location.location_long

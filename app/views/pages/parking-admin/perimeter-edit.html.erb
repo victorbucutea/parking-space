@@ -3,7 +3,7 @@
   <div class=" my-4 p-4">
     <h3 ng-hide="editablePer">No Perimeter selected</h3>
     <form autocomplete="off" novalidate id="perForm" name="perForm" ng-show="editablePer">
-      <h4> Editare perimetru id {{editablePer.id}}</h4>
+      <h4 class="font-weight-bold"> Editare perimetru parcare </h4>
 
       <div class="form-row form-group mt-3">
         <label class="col-form-label col-sm-2" for="name"> Număr </label>
@@ -16,27 +16,43 @@
       <div class="form-row form-group mt-3">
         <label class="col-form-label col-sm-2" for="name"> Tip </label>
         <div class="col-sm-10">
-          <select id="perimeter_types" class="form-control" required
-                  ng-options="type.name as type.name for type in section.perimeter_types"
-                  ng-model="editablePer.perimeter_type">
-            <option value="" ng-selected="true"> --- alege tip parcare ---</option>
-          </select>
-          <small class="form-text ">Alege daca locul va fi asignat direct unui angajat sau liber pentru
-            rezervare.</small>
+          <ul class="nav nav-pills font-weight-bold" role="tablist">
+            <li class="nav-item" ng-init="editablePer.perimeter_type = 'employee_space'"
+              <a class="nav-link" href=""
+                 ng-class="{active: editablePer.perimeter_type == 'employee_space'} "
+                 ng-click="editablePer.perimeter_type = 'employee_space'" >
+                Rezervabil <br/>
+                <small> Loc rezevabil de catre angajati </small>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href=""
+                 ng-class="{active: editablePer.perimeter_type == 'assigned_space'} "
+                 ng-click="editablePer.perimeter_type = 'assigned_space'" >
+                Asignat <br/>
+                <small> Loc asignat unui singur angajat </small>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href=""
+                 ng-class="{active: editablePer.perimeter_type == 'public_space'} "
+                 ng-click="editablePer.perimeter_type = 'public_space'">
+                Public <br/>
+                <small> Loc rezervabil de catre toti utilizatorii </small>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
 
       <!-- assigned space form -->
-      <div ng-show="editablePer.perimeter_type == 'assigned_space' ">
+      <div ng-if="editablePer.perimeter_type == 'assigned_space' ">
         <div class="form-row form-group mt-3">
           <label class="col-form-label col-sm-2" for="name">
             User
           </label>
           <div class="col-sm-10" ng-hide="editablePer.user">
-            <input autocomplete="off" name="userSearch"
-                   ng-required="!editablePer.user"
-                   placeholder="Cauta dupa nume sau email ..." class="form-control"
-                   ng-model="userSearchTxt">
+            <autocomplete required="true" model="editablePer.user" on-select="selectUser(rule)" search="searchUser(userName, clbk)">
             <small class="form-text ">Angajatul caruia i se va asigna locul</small>
             <div class="suggestion-container user" ng-show="userSearchTxt.length > 2">
               <ul class="list-group">
@@ -55,18 +71,17 @@
             <div class="input-group">
               <input required disabled class="form-control" ng-model="editablePer.user.full_name">
               <div class="input-group-append">
-                <button class="btn btn-outline-primary" ng-click="editablePer.user = null"><i class="fa fa-pencil"></i>
+                <button class="btn btn-outline-primary" ng-click="editablePer.user = null">
+                  <i class="fa fa-pencil"></i>
                 </button>
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
 
       <!-- employee form -->
-      <div ng-show="editablePer.perimeter_type == 'employee_space' " class="form-row form-group mt-3">
+      <div ng-if="editablePer.perimeter_type == 'employee_space' " class="form-row form-group mt-3">
         <label class="col-form-label col-sm-2" for="name"> Reguli rezervare </label>
         <div class="col-sm-10">
           <h5 id="op-{{$index}}" ng-click="showOperatorTooltip(op)"
@@ -75,7 +90,7 @@
               {{op.name}}
               <i class="fa fa-close" ng-click="removeOperator($index)" ng-hide="op.type"></i>
             </span>
-            <div ng-repeat-end ng-init="initPopup(op)"></div>
+            <span ng-repeat-end ng-init="initPopup(op)"></span>
           </h5>
           <div class="d-inline-block pos-relative" ng-show="addingOperator">
 
