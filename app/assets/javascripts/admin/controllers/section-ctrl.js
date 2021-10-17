@@ -4,7 +4,7 @@ angular.module('ParkingSpaceAdmin.controllers')
             function ($scope, $state, $rootScope, sectionService, sensorService, replaceById) {
 
                 $scope.cloudinaryName = cloudinaryName;
-                let tmpId = -1;
+
                 $scope.savePerimeters = function () {
                     if (!$scope.sectionForm.$valid) {
                         $('#sectionForm').addClass('was-validated');
@@ -55,19 +55,20 @@ angular.module('ParkingSpaceAdmin.controllers')
 
                 $scope.parkingPerimeters = [];
                 $scope.sensors = [];
+
                 if ($state.params.sectionId) {
                     $scope.reloadPerimeters();
                 }
 
                 $scope.newPerimeter = function () {
                     $scope.parkingPerimeters.push({
-                        id: --tmpId,
                         top_left_x: 10,
                         description: "No desc. ",
                         top_left_y: 10,
                         bottom_right_x: 20,
                         bottom_right_y: 20,
-                        section_id: $scope.section.id
+                        section_id: $scope.section.id,
+                        is_new: true
                     })
                 };
 
@@ -99,7 +100,7 @@ angular.module('ParkingSpaceAdmin.controllers')
                 };
 
                 $scope.newSpaces = function () {
-                    return $scope.parkingPerimeters.filter(p => p.id <= 0).length;
+                    return $scope.parkingPerimeters.filter(p => p.is_new).length;
                 };
 
                 $scope.publicSpaces = function () {

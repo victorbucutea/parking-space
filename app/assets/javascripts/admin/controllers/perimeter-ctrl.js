@@ -90,7 +90,6 @@ angular.module('ParkingSpaceAdmin.controllers')
                 $scope.expression = [];
 
                 if ($scope.editablePer) {
-                    console.log($scope.editablePer);
                     let rulesExpression = $scope.editablePer.rules_expression;
                     if (rulesExpression) {
                         var ids = rulesExpression.match(/\d/g);

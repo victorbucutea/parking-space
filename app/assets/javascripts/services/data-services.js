@@ -799,6 +799,8 @@ angular.module('ParkingSpace.services')
         _this.saveSectionAndPerimeters = function (section, perimeters, sensors) {
 
             return _this.saveSection(section).then((section) => {
+                perimeters.forEach( p => p.section_id = section.id)
+                sensors.forEach( s => s.section_id = section.id)
                 let perimObj = {perimeters: perimeters, sensors: sensors};
 
                 let url = '/sections/' + section.id + '/save_perimeters.json';

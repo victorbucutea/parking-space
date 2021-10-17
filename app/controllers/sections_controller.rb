@@ -67,10 +67,10 @@ class SectionsController < ApplicationController
     sens = perimeter_params[:sensors]
     # remove all perimeters not present in submit
     @section.parking_perimeters.clear
-    # remove links with sensor
+    # remove links with sensors
     @section.sensors.clear
-    pers.each { |per| ParkingPerimeter.find_or_create_by(per[:id]).update per }
-    sens.each { |sen| Sensor.find(sen[:id]).update sen }
+    pers.each { |per| ParkingPerimeter.create per }
+    sens.each { |sen| Sensor.create sen }
 
     render 'sections/show_perimeters', status: :created
   end
