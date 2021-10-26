@@ -122,16 +122,16 @@ class SensorsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def sensor_params
     params.require(:sensor).permit(
-        :deviceid, :title_message, :location_text, :lat, :lng,
-        :sensor_location_id, :snapshot, :installation_date, :active
+      :deviceid, :title_message, :location_text, :lat, :lng,
+      :sensor_location_id, :snapshot, :installation_date, :active, :tunnel_name
     )
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def permiter_params(perim_params)
     perim_params.permit(
-        :top_left_y, :top_left_x, :bottom_right_y, :bottom_right_x, :price,
-        :identifier, :description, :perimeter_type, :lat, :lng
+      :top_left_y, :top_left_x, :bottom_right_y, :bottom_right_x, :price,
+      :identifier, :description, :perimeter_type, :lat, :lng
     )
   end
 end

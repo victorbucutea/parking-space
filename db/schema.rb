@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_123456) do
+ActiveRecord::Schema.define(version: 2021_10_24_191509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -303,6 +303,7 @@ ActiveRecord::Schema.define(version: 2020_10_24_123456) do
     t.bigint "section_id"
     t.decimal "top_left_x"
     t.decimal "top_left_y"
+    t.string "tunnel_name"
     t.index ["section_id"], name: "index_sensors_on_section_id"
   end
 
