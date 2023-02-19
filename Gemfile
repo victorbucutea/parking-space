@@ -8,7 +8,7 @@ ruby '3.1.2'
 
 gem 'rails', '7.0.3'
 
-gem 'pg', '~>0.20'
+gem 'pg', '1.1'
 group :development do
   gem 'thin'
 end
