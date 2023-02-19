@@ -28,7 +28,7 @@
     "jquery.scrollto": "^2.1.2",
     "jquery.ui.widget": "^1.10.3",
     "libphonenumber-js": "^1.7.48",
-    "moment": "^2.19.1",
+    "moment": "^2.29.4",
     "moment-duration-format": "^1.3.0",
     "ng-file-upload": "^12.2.13",
     "owl.carousel": "^2.3.4",
