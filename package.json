@@ -22,7 +22,7 @@
     "iban": "^0.0.10",
     "inputmask": "^5.0.3",
     "jquery": "^3.2.1",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.2",
     "jquery-ui-bundle": "^1.12.1-migrate",
     "jquery.iframe-transport": "^1.0.0",
     "jquery.scrollto": "^2.1.2",
