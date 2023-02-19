@@ -6,7 +6,7 @@
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+# workers Integer(ENV['WEB_CONCURRENCY'] || 2)
 
 # Puma can serve each request in a thread from an internal thread pool.
 # The `threads` method setting takes two numbers: a minimum and maximum.
@@ -26,7 +26,6 @@ threads threads_count, threads_count
 #
 preload_app!
 
-rackup DefaultRackup
 environment ENV['RACK_ENV'] || 'development'
 port ENV['PORT'] || 3001
 
