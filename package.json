@@ -21,7 +21,7 @@
     "geocluster": "^0.1.1",
     "iban": "^0.0.10",
     "inputmask": "^5.0.3",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "jquery-ui": "^1.12.1",
     "jquery-ui-bundle": "^1.12.1-migrate",
     "jquery.iframe-transport": "^1.0.0",
