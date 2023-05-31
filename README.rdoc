@@ -26,3 +26,18 @@ Things you may want to cover:
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
+
+
+Deci.
+
+Primele 2 sunt ok, dar cea mai ok pare a 2-a. Luam din astea si cu asta basta 😉
+
+https://www.booking.com/hotel/it/antico-stemma-di-corte-meneghella.fr.html?aid=304142&label=gen173nr-1FCAEoggI46AdIM1gEaE2IAQGYAQ24ARfIAQzYAQHoAQH4AQmIAgGoAgO4Apjv26MGwAIB0gIkYWZlNGQ5YzgtMWM3MS00MjRlLWIyZmEtMjJlY2I3ZWU4NGEw2AIG4AIB&age=2&age=4&all_sr_blocks=520145701_273569723_5_0_0&checkin=2023-07-08&checkout=2023-07-12&dest_id=1403997&dest_type=hotel&dist=0&group_adults=2&group_children=2&hapos=3&highlighted_blocks=520145701_273569723_5_0_0&hpos=3&matching_block_id=520145701_273569723_5_0_0&no_rooms=1&req_adults=2&req_age=2&req_age=4&req_children=2&room1=A%2CA%2C4%2C2&sb_price_type=total&sr_order=popularity&sr_pri_blocks=520145701_273569723_5_0_0__86780&srepoch=1685518389&srpvid=74933519fa0801f4&type=total&ucfs=1&activeTab=main#_
+
+
+https://www.booking.com/hotel/it/residence-san-vigilio.fr.html?aid=304142&label=gen173nr-1FCAEoggI46AdIM1gEaE2IAQGYAQ24ARfIAQzYAQHoAQH4AQmIAgGoAgO4Apjv26MGwAIB0gIkYWZlNGQ5YzgtMWM3MS00MjRlLWIyZmEtMjJlY2I3ZWU4NGEw2AIG4AIB&age=2&age=4&atlas_src=hp_iw_title&checkin=2023-07-08&checkout=2023-07-12&dist=0&group_adults=2&group_children=2&no_rooms=1&room1=A%2CA%2C4%2C2&sb_price_type=total&srepoch=1685518633&srpvid=82ac353183e500bc&type=total&#_
+
+https://www.booking.com/hotel/it/lake-garda-apartment-near-mincio-natural-park.fr.html?aid=304142&label=gen173nr-1FCAEoggI46AdIM1gEaE2IAQGYAQ24ARfIAQzYAQHoAQH4AQmIAgGoAgO4Apjv26MGwAIB0gIkYWZlNGQ5YzgtMWM3MS00MjRlLWIyZmEtMjJlY2I3ZWU4NGEw2AIG4AIB&age=2;age=4;all_sr_blocks=886206701_358183220_5_2_0;checkin=2023-07-08;checkout=2023-07-12;dest_id=1403997;dest_type=hotel;dist=0;group_adults=2;group_children=2;hapos=7;highlighted_blocks=886206701_358183220_5_2_0;hpos=7;matching_block_id=886206701_358183220_5_2_0;no_rooms=1;req_adults=2;req_age=2;req_age=4;req_children=2;room1=A%2CA%2C4%2C2;sb_price_type=total;sr_order=popularity;sr_pri_blocks=886206701_358183220_5_2_0__86380;srepoch=1685518389;srpvid=74933519fa0801f4;type=total;ucfs=1&#map_closed
+
+
+https://www.booking.com/hotel/it/agriturismo-tre-colline.fr.html?aid=304142&label=gen173nr-1FCAEoggI46AdIM1gEaE2IAQGYAQ24ARfIAQzYAQHoAQH4AQmIAgGoAgO4Apjv26MGwAIB0gIkYWZlNGQ5YzgtMWM3MS00MjRlLWIyZmEtMjJlY2I3ZWU4NGEw2AIG4AIB&age=2&age=4&all_sr_blocks=326669512_329601967_0_1_0&checkin=2023-07-08&checkout=2023-07-12&dest_id=1403997&dest_type=hotel&dist=0&group_adults=2&group_children=2&hapos=13&highlighted_blocks=326669512_329601967_0_1_0&hpos=13&matching_block_id=326669512_329601967_0_1_0&no_rooms=1&req_adults=2&req_age=2&req_age=4&req_children=2&room1=A%2CA%2C4%2C2&sb_price_type=total&sr_order=popularity&sr_pri_blocks=326669512_329601967_0_1_0__70800&srepoch=1685518389&srpvid=74933519fa0801f4&type=total&ucfs=1&activeTab=main
